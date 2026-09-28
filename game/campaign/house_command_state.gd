@@ -81,7 +81,7 @@ func validate(candidate: Variant) -> String:
 		if event.kind == "order_issued":
 			issued_ids.append(event.order_id)
 	for item in p.history:
-		var template := {"sequence": 0, "tick": 0, "kind": "", "actor_id": "", "order_id": "", "petition_id": ""}
+		var template := {"sequence": 0, "tick": 0, "kind": "", "actor_id": "", "order_id": "", "petition_id": "", "outpost_observed": false}
 		if not item is Dictionary or item.size() != template.size() or not _shape(item, template, "house_event").is_empty():
 			return "Malformed house event."
 		if not _whole(item.sequence, 1) or item.sequence != expected.history.size() + 1:
@@ -100,7 +100,7 @@ func validate(candidate: Variant) -> String:
 		if candidate.order.status not in ["reporting", "completed"] or candidate.reports.size() != 1:
 			return "House consequence has no resolved command."
 		var report: Dictionary = candidate.reports[0]
-		if report.order_id != expected.report.order_id or report.observed_at != expected.report.observed_at or report.outcome != expected.report.outcome:
+		if report.order_id != expected.report.order_id or report.observed_at != expected.report.observed_at or report.outcome != expected.report.outcome or ("outpost" in candidate.order.visited) != expected.report.outpost_observed:
 			return "House and patrol evidence disagree."
 	elif expected.phase != "dormant" and candidate.order.status in ["reporting", "completed"]:
 		return "A resolved house commission is missing its consequence."
@@ -128,7 +128,8 @@ func restore(candidate: Variant) -> String:
 func _house_event(kind: String, actor: String) -> Dictionary:
 	return {"sequence": _state.house_conflict.history.size() + 1,
 		"tick": _state.campaign_tick, "kind": kind, "actor_id": actor,
-		"order_id": _state.order.id, "petition_id": PETITION_ID}
+		"order_id": _state.order.id, "petition_id": PETITION_ID,
+		"outpost_observed": "outpost" in _state.order.visited}
 
 func _initial_house_state() -> Dictionary:
 	return {
@@ -157,7 +158,7 @@ func _reduce_house(p: Dictionary, event: Dictionary) -> String:
 		if p.phase not in ["awaiting_response", "decided"]:
 			return "There is no unresolved estate petition."
 		var outcome := kind.trim_prefix("patrol_")
-		if outcome == "secure" and p.decision not in ["respect_claim", "assert_authority", "reconcile"]:
+		if outcome == "secure" and (not event.outpost_observed or p.decision not in ["respect_claim", "assert_authority", "reconcile"]):
 			return "No authority to secure the road under this commission."
 		if outcome == "secure":
 			if p.decision == "assert_authority":
@@ -174,7 +175,8 @@ func _reduce_house(p: Dictionary, event: Dictionary) -> String:
 		p.report = {"id": event.order_id + ".house-report", "order_id": event.order_id,
 			"observer_id": CAPTAIN, "observed_at": event.tick,
 			"arrives_at": event.tick + REPORT_DELAY, "outcome": outcome,
-			"territory": p.territory.duplicate(true)}
+			"outpost_observed": event.outpost_observed,
+			"territory": p.territory.duplicate(true) if event.outpost_observed else null}
 	else:
 		if event.actor_id != RANJIT:
 			return "A house NPC or captain cannot issue Ranjit's concessions."

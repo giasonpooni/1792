@@ -32,6 +32,15 @@ func _build_ui() -> void:
 	_modal.remove_child(_choices)
 	_scroll = ScrollContainer.new()
 	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("202827")
+	style.border_color = Color("a58b62")
+	style.set_border_width_all(2)
+	style.content_margin_left = 20
+	style.content_margin_right = 20
+	style.content_margin_top = 16
+	style.content_margin_bottom = 16
+	_modal.add_theme_stylebox_override("panel", style)
 	_modal.add_child(_scroll)
 	_scroll.add_child(_choices)
 	_choices.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -45,10 +54,10 @@ func _layout_house_ui() -> void:
 	_modal.custom_minimum_size = Vector2.ZERO
 	_modal.size = Vector2(width, height)
 	_modal.position = (viewport_size - _modal.size) * 0.5
-	_scroll.custom_minimum_size = Vector2(width - 16.0, height - 16.0)
+	_scroll.custom_minimum_size = Vector2(width - 44.0, height - 36.0)
 	for child in _choices.get_children():
 		if child is Label:
-			child.custom_minimum_size.x = maxf(220.0, width - 52.0)
+			child.custom_minimum_size.x = maxf(220.0, width - 64.0)
 			child.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		if child is Button:
 			child.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -62,11 +71,18 @@ func _layout_house_ui() -> void:
 func _open_panel(title: String, description: String, actions: Array) -> void:
 	super._open_panel(title, description, actions)
 	_layout_house_ui()
+	_hud.hide()
+	_journal.hide()
 	_scroll.scroll_vertical = 0
 	for child in _choices.get_children():
 		if child is Button:
 			child.grab_focus()
 			break
+
+func _close_panel() -> void:
+	super._close_panel()
+	_hud.show()
+	_journal.show()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_H:
@@ -169,15 +185,17 @@ func _refresh_hud() -> void:
 	if p.phase != "dormant" and campaign.snapshot().order.status == "active" and p.decision in ["", "defer"]:
 		_hud.text += "\nPatrol may observe, not secure. Settle the commission at Lahore or withdraw."
 	var report: Dictionary = campaign.received_house_report()
-	if not report.is_empty():
+	if not report.is_empty() and report.territory != null:
 		var t: Dictionary = report.territory
 		_journal.text += "\n\nHOUSE REPORT\nMilitary: %s\nPassage: %s\nRevenue: %s\nAnnexed: no" % [
 			t.military_presence.replace("_", " "), t.passage, t.revenue_status.replace("_", " ")]
+	elif not report.is_empty():
+		_journal.text += "\n\nHOUSE REPORT\nTerritorial conditions: unknown\n(outpost not observed)."
 	elif p.phase == "resolved":
 		_journal.text += "\n\nHouse consequences: report not yet received."
 	if is_instance_valid(_field_sign):
 		_field_sign.text = ""
-		if not report.is_empty():
+		if not report.is_empty() and report.territory != null:
 			_field_sign.text = report.territory.military_presence.replace("_", " ") + "\nPassage: " + report.territory.passage
 		elif campaign.actor_id() == Campaign.CAPTAIN and campaign.near_site("outpost") and p.phase != "dormant":
 			_field_sign.text = "Local revenue claim remains disputed\nYour commission: " + (p.decision.replace("_", " ") if p.decision != "" else "observation only")

@@ -29,12 +29,12 @@ jobs:
           chmod +x "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
       - name: Structural checks, import, domain and scene tests
         run: python3 tools/run_checks.py --godot "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
-      - name: House-conflict rules, saves and UI assertions
+      - name: House-conflict rules, saves, information boundaries and UI assertions
         shell: bash
         run: |
           set -euo pipefail
           timeout 90 "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
-            --headless --path game --script res://tests/test_house_conflict.gd 2>&1 | tee test-results/houses.log
+            --headless --path game --script res://tests/test_house_reporting.gd 2>&1 | tee test-results/houses.log
           ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/houses.log
           grep -Eq 'HOUSE_CONFLICT_TESTS: [1-9][0-9]* passed, 0 failed' test-results/houses.log
       - name: Software-rendered scene smoke
