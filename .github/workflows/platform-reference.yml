@@ -1,0 +1,24 @@
+name: Platform reference runtime preparation
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  reference:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Fetch and verify public reference engine
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir reference
+          curl --fail --location --retry 3 --max-time 180 \
+            https://github.com/godotengine/godot-builds/releases/download/4.5.1-stable/Godot_v4.5.1-stable_linux.x86_64.zip \
+            -o reference/godot-linux.zip
+          echo '02ec53d1cc7dbb9cc6355393c61b9ab43d1244751a124f10248a4802830788cd  reference/godot-linux.zip' | sha256sum --check
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: platform-reference-runtime
+          path: reference/
+          retention-days: 3
