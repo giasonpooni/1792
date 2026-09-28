@@ -15,7 +15,7 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 | `game/world/mahan_camp.tscn` | New empty camp root (does not touch `home_territory.tscn`) |
 | `game/tests/test_mahan.gd` | Domain validate, cross-profile refusal, beat + save round-trip, menu smoke |
 
-## Extended (this slice — delayed custody + column march)
+## Extended (recon delay + column march)
 
 | Path | Change |
 | --- | --- |
@@ -23,7 +23,17 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 | `game/mahan/mahan_chapter.gd` | Dispatch / pending HUD / march panels; ford & ridge markers |
 | `game/tests/test_mahan.gd` | Delay-clock, pending-vs-delivered, hold vs advance march, provisions/adjacency, fence |
 | `docs/MAHAN_INTERLUDE.md` | Playable loop for recon delay + column nodes |
-| `docs/MAHAN_INTEGRATION_LEDGER.md` | This extension note |
+| `docs/MAHAN_INTEGRATION_LEDGER.md` | Extension note |
+
+## Extended (this slice — cavalry via riding_rules)
+
+| Path | Change |
+| --- | --- |
+| `game/mahan/mahan_state.gd` | Opt-in `enable_riding()`; mount/dismount/`record_ride` for rider `mahan_singh`; reuses `riding_rules` VERSION/HORSE_ID/distances without rewriting Lahore `Riding.validate`; `household_id: sukerchakia` graph object; dismount gates on dispatch/decide/march/endpoint |
+| `game/mahan/mahan_chapter.gd` | Spawns `horse.tscn` adapter; **F** mount/dismount; mounted physics step; HUD mount status; ride greybox toward authored nodes |
+| `game/tests/test_mahan.gd` | Cavalry opt-in, mount gates, short ride, Lahore validate still rejects `mahan_singh`, save/load + ontology refusal |
+| `docs/MAHAN_INTERLUDE.md` | Cavalry loop + ontology fence |
+| `docs/MAHAN_INTEGRATION_LEDGER.md` | This cavalry note |
 
 ## Touched (unchanged role)
 
@@ -41,13 +51,16 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 - `game/campaign/command_state.gd`, `house_command_state.gd` (pattern mirrored, not rewritten)
 - `game/world/home_territory.tscn` (byte-identical retention still enforced)
 - `game/characters/character_names.gd` (Buddh/Ranjit presentation policy unchanged)
-- `game/mounts/riding_rules.gd` and Lahore riding/companion libraries (not forked)
+- `game/mounts/riding_rules.gd` core contracts (reused, not rewritten; Lahore allowlist intact)
 - Silent cross-chapter knowledge merge (none added)
 - Existing draft PR merge / `main` merge
+- Full combat, economy UI, clan politics rewrite, expedition map
 
 ## Identity notes
 
 - Childhood/Lahore protagonist key remains `ranjit_singh`.
 - Mahan uses separate actor id `mahan_singh` and separate save path.
+- Household graph object `sukerchakia` is not a Person/Dynasty/Faction/Alignment collapse.
 - No automatic knowledge handoff into Buddh's journal.
 - Undelivered scout custody never becomes Mahan journal knowledge early, and never crosses the profile fence.
+- Mahan cavalry rider is `mahan_singh`; Lahore `Riding.validate` still admits only `ranjit_singh` / `patrol_captain`.
