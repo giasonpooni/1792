@@ -22,11 +22,11 @@ The opening menu offers three development entries:
 | --- | --- |
 | **1792 · Home territory** | The original home-territory ground, marker and movement scene, retained as the starting point. |
 | **Lahore · Command story** | A separate, fictional 1801 sandbox: assign a patrol, play its captain or delegate, visit two locations, make a decision and receive a delayed report. |
-| **Lahore · Houses and rivals** | The same command foundation with six non-playable antagonist biographies and one interactive estate petition. Negotiate, assert authority, defer or reconcile; the patrol carries the consequences. |
+| **Lahore · Houses and rivals** | A rideable, persistent household horse on the same route, six non-playable antagonist biographies and one interactive estate petition. Negotiate, assert authority, defer or reconcile; the patrol carries the consequences. |
 
 The Lahore sandboxes do **not** replace the childhood opening or assert that their invented missions
 actually happened. Their captain, envoys and compressed geography are placeholders, not reconstructions.
-The new entry extends the existing command implementation rather than duplicating its simulation.
+Houses and rivals extends the existing command implementation rather than duplicating its simulation.
 
 ## First command story
 
@@ -37,6 +37,30 @@ the captain's relationship with Lahore, and a delayed report returns to Ranjit.
 
 You can also delegate the same order or take control partway through. Switching does not reset
 its allocation, progress, character positions or world clock. A completed story cannot repeatedly award resources.
+
+## Ride the first route
+
+Choose **Lahore · Houses and rivals**. There is one household horse beside the hitching rail
+on the right of the courtyard. Walk close and press **F** to mount. Ride through the open end
+of the courtyard and follow the dirt road to the village and outpost, or turn around and ride home.
+
+**W** moves forward, **A/D** steer the horse, **Shift** requests a canter, and **Ctrl** requests
+a walk. **S** or **Space** brakes; releasing W also slows to a stop. The mouse orbits independently.
+Stop on clear ground and press **F** to dismount. A wall, blocked landing or airborne horse prevents
+dismounting. The horse has acceleration, speed-dependent turning and world collision; it does not strafe.
+
+Both Ranjit and the player-controlled captain can use the same horse. **The horse stays where it
+is left.** Dismount before handing control to the captain or back to Ranjit. Delegated patrols still
+travel on foot; the horse does not follow them, appear at their destination, or create extra riders.
+At the village/outpost, dismount and use **E** for the original encounters and house consequences.
+Completing the patrol still returns the viewpoint to Ranjit with the original delayed report;
+physical troop-return journeys are not simulated yet.
+
+**F5/F9** save/load horse position, facing, speed and rider together with the current patrol and house
+decisions. This version uses a separate riding save slot. **F1** offers explicit imports of earlier
+house-conflict or original command-story saves, preserving their state and adding a parked horse.
+The horse and rider are procedural blockout shapes, with a simple leg swing—not finished models or animation.
+See [Riding](docs/RIDING.md) for rules, checks and the next gaps.
 
 ## Houses, rivals and biographies
 
@@ -60,6 +84,7 @@ finished character campaigns. See [Houses and rivals](docs/HOUSE_CONFLICT.md) fo
 | --- | --- |
 | WASD / Shift | Walk / run |
 | Mouse | Orbit the third-person camera |
+| F | Mount / dismount in Houses and rivals |
 | E | Interact or open the captain's field menu |
 | H | Antagonist codex in the Houses and rivals entry |
 | F5 / F9 | Save / load the current sandbox (separate save slots for each entry) |
@@ -67,7 +92,7 @@ finished character campaigns. See [Houses and rivals](docs/HOUSE_CONFLICT.md) fo
 | Escape / click world | Release / recapture the mouse |
 
 Decision menus pause the sandbox. The first slices have a simple delegated policy, not general commander AI.
-The encounter is a choice interface; **combat, horses and marching troops are not implemented yet**.
+The encounter is a choice interface; **combat and marching companion troops are not implemented yet**.
 See [Command stories](docs/COMMAND_STORIES.md) for the original walkthrough, persistence rules and limitations.
 
 ## Where the game is going
@@ -97,19 +122,19 @@ The command slice extends the existing `world-state.v1` record with a `command-s
 The house slice adds a versioned `house-conflict.v1` substate to that same authority; the original
 command code and world schema remain unchanged. Orders, controlled characters, antagonist NPCs,
 groups, source notes and reports have separate identities. Manual and delegated execution share
-consequence rules. House, clan, misl and religious institution are not treated as synonyms.
+consequence rules. The optional `riding.v1` record belongs to the same campaign state; Godot physics
+submits mounted poses through that authority. House, clan, misl and religious institution are not synonyms.
 
 ## Develop and test
 
 ```sh
 python tools/check_project.py
 python tools/run_checks.py --godot /path/to/godot
-/path/to/godot --headless --path game --script res://tests/test_house_conflict.gd
 ```
 
 The structural checks run without Godot. Runtime checks require the engine and must not be
-reported as passed when it is absent. CI imports the project, exercises both command and house
-rules and scene interactions, and captures software-rendered screenshots. Inspect actual CI results;
+reported as passed when it is absent. The runner executes the original command suite, the house/reporting
+suite and riding rules plus actual input-driven physics checks. CI also captures software-rendered screenshots. Inspect actual CI results;
 [the earlier evidence note](docs/VALIDATION.md) covers the original command slice, not an automatic
 pass for new code. New results are recorded against their tested commit in the pull request.
 

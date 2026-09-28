@@ -20,7 +20,7 @@ def run(command: list[str], name: str, marker: str | None = None) -> None:
     print(result.stdout)
     if result.returncode or re.search(r"(?m)^(?:SCRIPT ERROR|ERROR):", result.stdout):
         raise RuntimeError(f"{name} failed (exit {result.returncode}); see test-results/{name}.log")
-    if marker and marker not in result.stdout:
+    if marker and not re.search(re.escape(marker) + r" [1-9][0-9]* passed, 0 failed", result.stdout):
         raise RuntimeError(f"{name} did not reach its completion marker")
 
 
@@ -35,6 +35,10 @@ def main() -> int:
     run([args.godot, "--headless", "--path", "game", "--editor", "--import"], "import")
     run([args.godot, "--headless", "--path", "game", "--script", "res://tests/test_command_story.gd"],
         "command-story", "COMMAND_STORY_TESTS:")
+    run([args.godot, "--headless", "--path", "game", "--script", "res://tests/test_house_reporting.gd"],
+        "houses", "HOUSE_CONFLICT_TESTS:")
+    run([args.godot, "--headless", "--path", "game", "--script", "res://tests/test_riding.gd"],
+        "riding", "RIDING_TESTS:")
     return 0
 
 

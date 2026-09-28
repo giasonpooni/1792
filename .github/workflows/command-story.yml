@@ -27,16 +27,8 @@ jobs:
           echo "02ec53d1cc7dbb9cc6355393c61b9ab43d1244751a124f10248a4802830788cd  $RUNNER_TEMP/godot.zip" | sha256sum --check
           unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
           chmod +x "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
-      - name: Structural checks, import, domain and scene tests
+      - name: Structural, import, original command, house and riding suites
         run: python3 tools/run_checks.py --godot "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
-      - name: House-conflict rules, saves, information boundaries and UI assertions
-        shell: bash
-        run: |
-          set -euo pipefail
-          timeout 90 "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
-            --headless --path game --script res://tests/test_house_reporting.gd 2>&1 | tee test-results/houses.log
-          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/houses.log
-          grep -Eq 'HOUSE_CONFLICT_TESTS: [1-9][0-9]* passed, 0 failed' test-results/houses.log
       - name: Software-rendered scene smoke
         shell: bash
         env:
@@ -55,9 +47,15 @@ jobs:
             --script res://tests/render_house_conflict.gd 2>&1 | tee test-results/house-render.log
           ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/house-render.log
           grep -q 'HOUSE_RENDER: 5 captures; 0 failures' test-results/house-render.log
+          timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_riding.gd 2>&1 | tee test-results/riding-render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/riding-render.log
+          grep -q 'RIDING_RENDER: 5 captures; 0 failures' test-results/riding-render.log
           mkdir -p test-results/screenshots
           cp "$HOME/.local/share/godot/app_userdata/1792/"command-*.png test-results/screenshots/
           cp "$HOME/.local/share/godot/app_userdata/1792/"house-*.png test-results/screenshots/
+          cp "$HOME/.local/share/godot/app_userdata/1792/"riding-*.png test-results/screenshots/
       - name: Retain test evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -70,6 +68,7 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: source-snapshot
+          include-hidden-files: true
           path: |
             game/**/*.gd
             game/**/*.tscn
@@ -80,4 +79,6 @@ jobs:
             data/
             docs/
             README.md
+            .github/workflows/command-story.yml
+            .gitignore
           retention-days: 14

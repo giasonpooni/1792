@@ -22,9 +22,9 @@ func _ready() -> void:
 	panel.add_child(subtitle)
 	_add_button(panel, "1792 · Home territory (original movement prototype)", "res://world/home_territory.tscn")
 	_add_button(panel, "Lahore · Command story (separate 1801 sandbox)", "res://world/command_sandbox.tscn")
-	_add_button(panel, "Lahore · Houses and rivals (antagonists / estate petition)", "res://world/house_sandbox.tscn")
+	_add_button(panel, "Lahore · Houses and rivals (riding / antagonists / estate petition)", "res://world/house_sandbox.tscn")
 	var note := Label.new()
-	note.text = "WASD: move · Shift: run · Mouse: look\nE interact · F5 save · F9 load · F1 menu · H houses (new slice)\nThe sandbox captain, missions and geography are fictional placeholders."
+	note.text = "WASD: move · Shift: run · Mouse: look\nE interact · F5 save · F9 load · F1 menu · H houses · F mount (Houses and rivals)\nThe sandbox captain, missions and geography are fictional placeholders."
 	panel.add_child(note)
 
 func _add_button(parent: Node, text: String, scene: String) -> void:

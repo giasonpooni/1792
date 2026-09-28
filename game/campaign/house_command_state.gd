@@ -2,6 +2,8 @@ extends "res://campaign/command_state.gd"
 ## Extends the existing authority. All mutable data stays in its ONE _state.
 ## Deliberately bounded: one fictional estate petition, not a general social simulator.
 
+const Riding := preload("res://mounts/riding_rules.gd")
+
 const ROSTER_PATH := "res://data/antagonists.json"
 const HOUSE_VERSION := "house-conflict.v1"
 const PETITION_ID := "kanhaiya_road_claim_01"
@@ -24,6 +26,8 @@ func house_state() -> Dictionary:
 	return _state.house_conflict.duplicate(true)
 
 func petition(action: String) -> String:
+	if is_mounted():
+		return "Dismount before negotiating at the table."
 	if actor_id() != RANJIT or not near_site("lahore_darbar"):
 		return "Only Ranjit can negotiate at the Lahore command table."
 	if _state.order.status in ["reporting", "completed"]:
@@ -37,6 +41,8 @@ func petition(action: String) -> String:
 	return error
 
 func _resolve(choice: String) -> String:
+	if is_mounted() and actor_id() == CAPTAIN:
+		return "Dismount before resolving the patrol."
 	var next: Dictionary = _state.house_conflict.duplicate(true)
 	if next.phase != "dormant":
 		if choice == "secure" and next.decision in ["", "defer"]:
@@ -65,6 +71,10 @@ func validate(candidate: Variant) -> String:
 	var base_error := super.validate(candidate)
 	if not base_error.is_empty():
 		return base_error
+	if candidate.has("riding"):
+		var riding_error := Riding.validate(candidate.riding, candidate)
+		if not riding_error.is_empty():
+			return riding_error
 	# Explicit additive import of a legacy command-story save; the caller installs
 	# an empty extension only AFTER the complete legacy state has passed validation.
 	if not candidate.has("house_conflict"):
@@ -107,6 +117,7 @@ func validate(candidate: Variant) -> String:
 	return ""
 
 func restore(candidate: Variant) -> String:
+	var riding_was_enabled := _state.has("riding")
 	var error := validate(candidate)
 	if not error.is_empty():
 		return error # Never install a partially valid snapshot.
@@ -122,6 +133,10 @@ func restore(candidate: Variant) -> String:
 			item.tick = int(item.tick)
 			_reduce_house(normalized, item)
 		next.house_conflict = normalized
+	if riding_was_enabled and not next.has("riding"):
+		next.riding = Riding.initial()
+	if next.has("riding"):
+		Riding.normalize(next.riding)
 	_state = next
 	return ""
 
@@ -235,3 +250,89 @@ func _same_value(a: Variant, b: Variant) -> bool:
 	else:
 		return a == b
 	return true
+
+
+# Riding is opt-in so legacy domain-only consumers retain their exact snapshots.
+# The Houses and rivals scene opts in; no additional world authority is created.
+func enable_riding() -> void:
+	if not _state.has("riding"):
+		_state.riding = Riding.initial()
+
+func horse_state() -> Dictionary:
+	return _state.riding.horse.duplicate(true) if _state.has("riding") else {}
+
+func is_mounted() -> bool:
+	return _state.has("riding") and _state.riding.horse.rider_id != ""
+
+func mount_horse() -> String:
+	if not _state.has("riding") or is_mounted():
+		return "No available household horse."
+	var h: Dictionary = _state.riding.horse
+	if actor_position(actor_id()).distance_to(Riding.position(h)) > Riding.MOUNT_DISTANCE:
+		return "Walk closer to the household horse."
+	if not h.grounded or h.speed != 0.0:
+		return "The horse must be stopped on the ground."
+	h.rider_id = actor_id()
+	_state.actors[actor_id()].position = h.position.duplicate()
+	_state.player.position = h.position.duplicate()
+	return ""
+
+func dismount_horse(landing: Vector3) -> String:
+	if not is_mounted():
+		return "You are not mounted."
+	var h: Dictionary = _state.riding.horse
+	if h.speed > Riding.DISMOUNT_SPEED or not h.grounded:
+		return "Stop on solid ground before dismounting."
+	if not landing.is_finite():
+		return "No clear dismount position."
+	var delta := landing - Riding.position(h)
+	var horizontal := Vector2(delta.x, delta.z).length()
+	if horizontal < 1.2 or horizontal > 2.8 or absf(delta.y) > 0.7:
+		return "Dismount position is too far from the horse."
+	h.rider_id = ""
+	h.speed = 0.0
+	h.vertical_speed = 0.0
+	record_position(landing)
+	return ""
+
+func record_ride(motion: Dictionary, delta: float) -> String:
+	if not is_mounted() or not is_finite(delta) or delta <= 0.0 or delta > 0.25:
+		return "No valid mounted physics step."
+	if motion.size() != 5:
+		return "Malformed horse motion."
+	var next: Dictionary = _state.riding.duplicate(true)
+	for key in ["position", "yaw", "speed", "vertical_speed", "grounded"]:
+		if not motion.has(key):
+			return "Incomplete horse motion."
+		next.horse[key] = motion[key]
+	if not Riding.valid_position(next.horse.position):
+		return "Invalid horse position."
+	var travelled := Riding.position(next.horse) - Riding.position(_state.riding.horse)
+	if Vector2(travelled.x, travelled.z).length() > Riding.MAX_SPEED * delta + 0.1 or absf(travelled.y) > Riding.MAX_FALL * delta + 0.1:
+		return "Horse step exceeds the movement envelope."
+	var candidate := {"player": {"character_id": actor_id(), "position": next.horse.position},
+		"actors": {}, "order": _state.order}
+	candidate.actors[actor_id()] = {"position": next.horse.position}
+	var error := Riding.validate(next, candidate)
+	if not error.is_empty():
+		return error
+	_state.riding = next
+	_state.actors[actor_id()].position = candidate.player.position.duplicate()
+	_state.player.position = candidate.player.position.duplicate()
+	return ""
+
+func record_position(position: Vector3) -> void:
+	if not is_mounted():
+		super.record_position(position)
+
+func play_commander() -> String:
+	return "Dismount before taking the captain's viewpoint." if is_mounted() else super.play_commander()
+
+func return_to_darbar() -> String:
+	return "Dismount before delegating the captain." if is_mounted() else super.return_to_darbar()
+
+func visit(site_id: String) -> String:
+	return "Dismount before speaking at this location." if is_mounted() else super.visit(site_id)
+
+func resolve(choice: String) -> String:
+	return "Dismount before resolving the patrol." if is_mounted() else super.resolve(choice)
