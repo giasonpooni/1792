@@ -8,6 +8,7 @@ import shutil
 import subprocess
 from pathlib import Path
 from package_platform import ROOT, stage
+from verify_platform import verify
 
 
 def checked(command: list[str], name: str, cwd: Path) -> str:
@@ -53,6 +54,8 @@ def main() -> None:
     stage(target, output, notices, target="windows_local", source_commit=source_commit,
           source_tree=source_tree, execution_id=record["execution_id"])
     shutil.make_archive(str(ROOT / "build/1792-windows-development"), "zip", output)
+    report = verify(ROOT / "build/1792-windows-development.zip", expected_commit=source_commit, expected_tree=source_tree)
+    (ROOT / "test-results/windows-package-verification.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
     print("WINDOWS_PACKAGE: exported, executed and staged; no signing or store upload")
 
 

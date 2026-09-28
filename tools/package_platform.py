@@ -60,6 +60,22 @@ def steam_id(value: str | None) -> str:
     return value
 
 
+def steam_recipes(app_id: str, depot_id: str, source_commit: str) -> dict[str, bytes]:
+    """Exact preview-only recipes. This function neither logs in nor invokes SteamCMD."""
+    steam_id(app_id); steam_id(depot_id); identity(source_commit, "source_commit")
+    if app_id == depot_id:
+        raise ValueError("App and depot identities must be distinct")
+    return {
+        "steam-preview/app_build.vdf": (
+            f'"AppBuild"\n{{\n "AppID" "{app_id}"\n "Desc" "1792 offline preview {source_commit}"\n'
+            ' "Preview" "1"\n "ContentRoot" "../content"\n "BuildOutput" "../steam-preview-output"\n'
+            f' "Depots"\n {{\n  "{depot_id}" "depot_build.vdf"\n }}\n}}\n').encode("utf-8"),
+        "steam-preview/depot_build.vdf": (
+            f'"DepotBuildConfig"\n{{\n "DepotID" "{depot_id}"\n'
+            ' "FileMapping"\n {\n  "LocalPath" "*"\n  "DepotPath" "."\n  "recursive" "1"\n }\n}\n').encode("utf-8"),
+    }
+
+
 def stage(source: Path, output: Path, notices: Path, *, target: str,
           source_commit: str, source_tree: str, execution_id: str,
           app_id: str | None = None, depot_id: str | None = None) -> dict:
@@ -110,26 +126,25 @@ def stage(source: Path, output: Path, notices: Path, *, target: str,
             "Synthetic controller and headless tests do not qualify physical hardware.\n",
             encoding="utf-8")
         manifest = {
-            "schema": "cg.platform-build.v1", "game_id": "1792", "target": target,
+            "schema": "cg.platform-build.v2", "game_id": "1792", "target": target,
             "source_commit": source_commit, "source_tree": source_tree,
             "operation_id": "platform.stage-payload.v1", "execution_id": execution_id,
             "runtime_provider": "cg.local-pc.v1", "engine": info["engine"],
             "packaging_only": True, "store_uploaded": False, "signed": False,
             "console_certified": False,
+            "steam_preview": None if target == "windows_local" else {
+                "app_id": app_id, "depot_id": depot_id, "preview": True},
+            "recipes": {},
             "files": {p.name: {"bytes": p.stat().st_size, "sha256": sha256(p)}
                       for p in sorted(content.iterdir())},
         }
-        (temporary / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
         if target == "steam_windows":
-            recipes = temporary / "steam-preview"; recipes.mkdir()
-            (recipes / "app_build.vdf").write_text(
-                f'"AppBuild"\n{{\n "AppID" "{app_id}"\n "Desc" "1792 offline preview {source_commit}"\n'
-                ' "Preview" "1"\n "ContentRoot" "../content"\n "BuildOutput" "../steam-preview-output"\n'
-                f' "Depots"\n {{\n  "{depot_id}" "depot_build.vdf"\n }}\n}}\n', encoding="utf-8")
-            (recipes / "depot_build.vdf").write_text(
-                f'"DepotBuildConfig"\n{{\n "DepotID" "{depot_id}"\n'
-                ' "FileMapping"\n {\n  "LocalPath" "*"\n  "DepotPath" "."\n  "recursive" "1"\n }\n}\n',
-                encoding="utf-8")
+            for name, data in steam_recipes(app_id, depot_id, source_commit).items():
+                recipe = temporary / name
+                recipe.parent.mkdir(exist_ok=True)
+                recipe.write_bytes(data)
+                manifest["recipes"][name] = {"bytes": len(data), "sha256": hashlib.sha256(data).hexdigest()}
+        (temporary / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
         # Do not silently replace another build produced while staging.
         if output.exists():
             raise ValueError("Output appeared while staging")

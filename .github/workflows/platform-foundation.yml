@@ -58,6 +58,17 @@ jobs:
             --script res://tests/render_platform.gd 2>&1 | tee test-results/platform-render.log
           ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/platform-render.log
           grep -q 'PLATFORM_RENDER: 4 captures; 0 failures' test-results/platform-render.log
+      - name: Render gameplay-button editor fixtures
+        if: runner.os == 'Linux'
+        shell: bash
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          set -euo pipefail
+          timeout 120 xvfb-run -a "$GODOT" --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_controller_remapping.gd 2>&1 | tee test-results/controller-remapping-render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/controller-remapping-render.log
+          grep -q 'CONTROLLER_REMAPPING_RENDER: 3 captures; 0 failures' test-results/controller-remapping-render.log
       - name: Actual Windows export, packaged boot and local staging
         if: runner.os == 'Windows'
         shell: bash
@@ -70,7 +81,7 @@ jobs:
           root = pathlib.Path(os.environ['APPDATA']) / 'Godot/app_userdata/1792' if os.name == 'nt' else pathlib.Path.home() / '.local/share/godot/app_userdata/1792'
           target = pathlib.Path('test-results')
           target.mkdir(exist_ok=True)
-          for pattern in ('platform-*.png', 'platform-foundation-audit.json', 'platform-engine-notices.json'):
+          for pattern in ('platform-*.png', 'platform-foundation-audit.json', 'platform-remapping-audit.json', 'platform-engine-notices.json'):
               for source in root.glob(pattern):
                   shutil.copyfile(source, target / source.name)
       - name: Retain source and conformance evidence

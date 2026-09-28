@@ -12,6 +12,10 @@ const Navigation := preload("res://patrol/patrol_navigator.gd")
 const InputProfile := preload("res://platform/input_profile.gd")
 const ControllerShell := preload("res://platform/controller_shell.gd")
 var controller_settings_path := InputProfile.SETTINGS_PATH
+var controller_bindings_path := InputProfile.BINDINGS_PATH
+var _controller_page := ""
+var _binding_action := ""
+var _binding_candidate: Dictionary={}
 var controls: Node
 var model := Story.new()
 var save_path := Story.AFTER_SAVE # checkpoints derive from this path; tests stay isolated
@@ -257,6 +261,15 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and not _paused:
 		model.record_look(event.relative.x * avatar.mouse_sensitivity)
 	if event.is_echo(): return
+	if _paused and event.is_action_pressed("ui_cancel") and _controller_page in ["bindings","choices","confirm"]:
+		match _controller_page:
+			"bindings": _open_controller_settings()
+			"choices": _open_controller_bindings()
+			"confirm":
+				if _binding_action.is_empty(): _open_controller_bindings()
+				else: _open_binding_choices(_binding_action)
+		get_viewport().set_input_as_handled()
+		return
 	if event.is_action_pressed("strike") and not _paused: _strike_requested = true
 	elif event.is_action_pressed("interact"): _interact_requested = not _paused
 	elif event.is_action_pressed("mount"): _mount_requested = not _paused
@@ -288,7 +301,57 @@ func _focus_actions() -> void:
 func _open_controller_settings() -> void:
 	var p: Dictionary=InputProfile.settings
 	_show_dialog("CONTROLLER SETTINGS",InputProfile.hints()+"\n\nStick deadzone: %.2f · Look speed: %.1f rad/s · Invert Y: %s\n%s"%[p.deadzone,p.look_speed,p.invert_y,InputProfile.settings_warning],
-		[["Cycle stick deadzone","controller_deadzone"],["Cycle look speed","controller_speed"],["Toggle inverted vertical look","controller_invert"],["Reset controller settings","controller_reset"],["Return","resume"]])
+		[["Cycle stick deadzone","controller_deadzone"],["Cycle look speed","controller_speed"],["Toggle inverted vertical look","controller_invert"],["Reset controller settings","controller_reset"],["Reassign gameplay buttons","controller_bindings"],["Return","resume"]])
+
+func _open_controller_bindings(note: String="") -> void:
+	var actions: Array=[]
+	for id in InputProfile.BUTTON_DEFAULTS:
+		actions.append(["%s · %s"%[InputProfile.ACTION_NAMES[id],InputProfile.button_name(id)],"binding_action:"+id])
+	actions.append(["Restore default gameplay buttons","binding_defaults"])
+	actions.append(["Back to controller settings","controller_settings"])
+	_show_dialog("GAMEPLAY BUTTONS",note+"\nChoose an action, then a button. Conflicts require an explicit swap confirmation.\nA/B, Menu/View, sticks, triggers and keyboard/mouse are unchanged.\nThese preferences do not alter your saved story.",actions)
+	_controller_page="bindings"
+
+func _open_binding_choices(id: String) -> void:
+	if not InputProfile.BUTTON_DEFAULTS.has(id): return
+	var actions: Array=[]
+	for code in InputProfile.BUTTON_NAMES:
+		var owner: String="unused"
+		for other in InputProfile.bindings:
+			if InputProfile.bindings[other]==code: owner=InputProfile.ACTION_NAMES[other]
+		actions.append(["%s · %s"%[InputProfile.BUTTON_NAMES[code],owner],"binding_button:%s|%d"%[id,code]])
+	actions.append(["Back to gameplay buttons","controller_bindings"])
+	_show_dialog("REASSIGN · "+InputProfile.ACTION_NAMES[id],"Current button: "+InputProfile.button_name(id)+"\nPick a button to review the proposed change. Nothing is saved until you confirm.",actions)
+	_controller_page="choices"
+	_binding_action=id
+
+func _open_binding_confirmation(id: String, code: int) -> void:
+	var proposal:=InputProfile.binding_proposal(id,code)
+	if not proposal.error.is_empty():
+		_open_controller_bindings(proposal.error)
+		return
+	_show_dialog("CONFIRM BUTTON CHANGE",proposal.summary+"\n\nSave and apply this layout? The two displayed actions swap when the new button is already assigned.",[["Save button layout","binding_apply"],["Cancel — keep current layout","binding_cancel"]])
+	_controller_page="confirm"
+	_binding_action=id
+	_binding_candidate=proposal.record
+
+func _binding_menu_action(action: String) -> void:
+	if action=="binding_defaults":
+		_show_dialog("RESTORE DEFAULT BUTTONS","Restore the original gameplay button assignments? Look/deadzone settings and game progress will be kept.",[["Save default button layout","binding_apply"],["Cancel — keep current layout","controller_bindings"]])
+		_controller_page="confirm"
+		_binding_candidate={"schema":InputProfile.BINDINGS_SCHEMA,"buttons":InputProfile.BUTTON_DEFAULTS.duplicate()}
+	elif action=="binding_apply":
+		if _controller_page!="confirm" or _binding_candidate.is_empty(): return
+		var error:=InputProfile.set_bindings(_binding_candidate,controller_bindings_path)
+		InputProfile.bindings_warning=error
+		_open_controller_bindings("Button layout saved." if error.is_empty() else "Not saved: "+error)
+	elif action=="binding_cancel":
+		if _binding_action.is_empty(): _open_controller_bindings()
+		else: _open_binding_choices(_binding_action)
+	elif action.begins_with("binding_action:"): _open_binding_choices(action.trim_prefix("binding_action:"))
+	elif action.begins_with("binding_button:"):
+		var parts:=action.trim_prefix("binding_button:").split("|",true,1)
+		if parts.size()==2 and parts[1].is_valid_int(): _open_binding_confirmation(parts[0],int(parts[1]))
 
 func _controller_setting(action: String) -> void:
 	var p: Dictionary=InputProfile.settings.duplicate(true)
@@ -302,6 +365,12 @@ func _controller_setting(action: String) -> void:
 
 func _menu_action(action: String) -> void:
 	if is_instance_valid(controls) and not controls.focused: return
+	if action.begins_with("binding_"):
+		_binding_menu_action(action)
+		return
+	if action=="controller_bindings":
+		_open_controller_bindings(InputProfile.bindings_warning)
+		return
 	if action=="controller_settings":
 		_open_controller_settings()
 		return
@@ -343,6 +412,9 @@ func _open_journal() -> void:
 func _resume() -> void:
 	if is_instance_valid(controls) and not controls.focused: return
 	if is_instance_valid(controls): controls.scroll_target=null
+	_controller_page=""
+	_binding_action=""
+	_binding_candidate={}
 	_paused = false
 	avatar.input_enabled = model.stage() != "caught"
 	avatar.set_physics_process(not model.mounted() and model.stage() != "caught")
@@ -627,7 +699,9 @@ func _refresh() -> void:
 	_marker.text = "Practice waypoint" if lesson in ["orientation","riding","sparring","tracking"] else "Speaker" if lesson=="letter" else "Return"
 	_marker.visible = lesson not in ["orientation","caught"] and model.aftermath_phase() != "complete"
 	if is_instance_valid(controls) and controls.using_gamepad:
-		_hud.text="1792 · BUDDH SINGH · HOME CHAPTER\n"+instructions.replace("[E]","[X]").replace("[F]","[Y]").replace("[Q]","[LB]").replace("[hold Q]","[hold LB]").replace("[left click]","[RB]").replace("[click]","[RB]").replace("[hold C + E]","[hold L3 + X]").replace("[look + E]","[look + X]")+"\nX interact · Y horse · View stories · Menu journal/save/settings\nLeft stick move · Right stick look · RT run · LB guard · RB counter"
+		_hud.text="1792 · BUDDH SINGH · HOME CHAPTER\n"+InputProfile.controller_text(instructions)+"\n"+\
+			"%s interact · %s horse · View stories · Menu journal/save/settings\n"%[InputProfile.button_name("interact"),InputProfile.button_name("mount")]+\
+			"Left stick move · Right stick look · RT run · %s guard · %s counter"%[InputProfile.button_name("guard"),InputProfile.button_name("strike")]
 	_sync_aftermath_visuals()
 
 func _set_actions(specs: Array) -> void:
@@ -645,6 +719,9 @@ func _set_actions(specs: Array) -> void:
 	_journal_scroll.scroll_vertical = 0
 
 func _clear_pending_actions() -> void:
+	_controller_page=""
+	_binding_action=""
+	_binding_candidate={}
 	_interact_requested = false
 	_mount_requested = false
 	_strike_requested = false

@@ -84,13 +84,21 @@ screen through the childhood lessons, inquiry, stories and save/load menus.
 Left stick moves; right stick looks; **X** interacts; **Y** mounts; **Menu** opens
 journal/save/settings; **View** opens remembered stories. **D-pad/A/B** navigate
 menus. Deadzone, look-speed and inversion settings are available under Menu.
-Keyboard and mouse controls remain.
+Keyboard and mouse controls remain. **Menu → Controller settings → Reassign
+gameplay buttons** opens the nine-action button editor. Occupied buttons require
+an explicit swap confirmation; A/B and the Menu/View recovery controls stay fixed.
 
 There is a public **Windows x86_64 (local)** export preset and an allowlisted,
 unsigned development packager. Steam gets an **offline preview-recipe generator**,
 not a published build or Steamworks SDK integration. Microsoft Store and Xbox
 remain explicitly blocked packaging/port targets pending their actual adapters.
 Local play invents no store account, achievement, cloud save or entitlement.
+
+The packager now emits a versioned manifest that binds Steam preview recipes as
+well as the payload. `python tools/verify_platform.py PACKAGE.zip` checks an
+archive or directory without extracting, executing or uploading it. It rejects
+changed/missing/extra files and non-preview recipes; it is not a signature check.
+[Remapping and package-verification guide](docs/PLATFORM_CONTINUATION.md).
 
 [Controller controls, Windows builds and platform qualification](docs/PLATFORM_FOUNDATION.md)
 
