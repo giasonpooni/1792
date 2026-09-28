@@ -66,7 +66,7 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 | `docs/MAHAN_INTEGRATION_LEDGER.md` | This politics note |
 
 
-## Extended (this slice -- subordinate orders / pursuit stub)
+## Extended (prior slice -- subordinate orders / pursuit stub)
 
 | Path | Change |
 | --- | --- |
@@ -79,17 +79,60 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 | `docs/MAHAN_INTERLUDE.md` | Orders loop + pursuit stub fence |
 | `docs/MAHAN_INTEGRATION_LEDGER.md` | This orders note |
 
+## Extended (this slice -- historical-event schema stub)
+
+| Path | Change |
+| --- | --- |
+| `schemas/historical_event.schema.json` | NEW optional `historical-event.v1` schema (does **not** touch `world_state.schema.json`) |
+| `schemas/historical_location.schema.json` | NEW optional `historical-location.v1` for settlement/road stubs |
+| `data/history/locations/gujranwala_*.json` | Gujranwala settlement, garhi, fort road, Lahore approach (+ field camp stub) |
+| `data/history/mahan_gujranwala_home_ground.json` | Home-ground historical-event frame referencing Gujranwala settlement |
+| `data/history/mahan_singh_death_fixed.json` | Authored fixed-death frame; game-canon; player_knowledge starts false |
+| `data/history/mahan_late_campaign_illness.json` | Authored illness frame; Mahan direct observer; delayed report route |
+| `game/mahan/data/*.json` | Runtime copies identical to `data/history/` for `res://` load |
+| `game/mahan/mahan_history_state.gd` | Loader/validator + knowledge fence on orders adapter; delayed historical custody |
+| `game/mahan/mahan_history_chapter.gd` | Historical-frames panel; known-only display; keeps orders stack |
+| `game/mahan/mahan_orders_chapter.gd` | Additive guard: do not replace a pre-installed adapter that exposes `observe_historical_event` |
+| `game/mahan/mahan_launch.gd` | Composes `mahan_history_chapter.gd` |
+| `game/tests/test_mahan_history.gd` | History checks: observe fence, delayed delivery, endpoint knowledge grant, ontology, Raj Kaur absence, launch smoke |
+| `tools/run_checks.py` | Registers `test_mahan_history.gd` after orders |
+| `tools/check_project.py` | Structural check: schema shape + data/history ↔ game/mahan/data identity |
+| `docs/HISTORICAL_EVENTS.md` | Short historical-event stub doc |
+| `docs/MAHAN_INTERLUDE.md` | Historical frames loop + schema fence |
+| `docs/MAHAN_INTEGRATION_LEDGER.md` | This history note |
+
+
+## Extended (this tip -- Gujranwala home-ground geography)
+
+| Path | Change |
+| --- | --- |
+| `docs/GUJRANWALA.md` | NEW research notes: 1770s–1790s Sukerchakia/Gujranwala geography; source-class vs game-canon; uncertainty |
+| `schemas/historical_location.schema.json` | Optional `historical-location.v1` (settlement/road/camp/fort stubs) |
+| `data/history/locations/*.json` | Gujranwala settlement, camp, fort road, garhi, Lahore approach + field-camp stub |
+| `data/history/mahan_gujranwala_home_ground.json` | Home-ground historical-event frame |
+| `game/mahan/data/**` | Runtime mirrors of history locations + home-ground event |
+| `game/mahan/mahan_state.gd` | March graph: `camp ↔ gujranwala_fort_road ↔ gujranwala_camp ↔ gujranwala_settlement` (+ retained ford/ridge); scout texts; labels |
+| `game/mahan/mahan_chapter.gd` | Dynamic scout dispatch; Gujranwala greybox markers |
+| `game/mahan/mahan_logistics_state.gd` | Forage yields for Gujranwala nodes |
+| `game/mahan/mahan_*_chapter.gd` | Scout panels iterate `scout_targets()` |
+| `game/mahan/mahan_history_state.gd` | Loads location stubs; resolves event `place_id` / `related_place_ids` |
+| `game/tests/test_mahan.gd` | Gujranwala march path + epistemic fence |
+| `game/tests/test_mahan_history.gd` | Location resolve + home-ground observe |
+| `tools/check_project.py` | Location mirror identity + schema shape |
+| `docs/MAHAN_INTERLUDE.md` / `docs/HISTORICAL_EVENTS.md` | Home-ground / march notes |
+| `docs/MAHAN_INTEGRATION_LEDGER.md` | This note |
+
 ## Touched (unchanged role)
 
 | Path | Change |
 | --- | --- |
 | `game/ui/main_menu.gd` | Fourth entry launching Mahan via `MahanLaunch.enter` |
-| `tools/run_checks.py` | Registers base `test_mahan.gd`, `test_mahan_cavalry.gd`, `test_mahan_logistics.gd`, `test_mahan_politics.gd`, then `test_mahan_orders.gd`; prior suites remain invoked |
+| `tools/run_checks.py` | Registers base `test_mahan.gd` … `test_mahan_orders.gd`, then `test_mahan_history.gd`; prior suites remain invoked |
 | `tools/check_project.py` | Menu assertion still requires home + command entries; also requires Mahan launch path |
 
 ## Deliberately left alone
 
-- `schemas/world_state.schema.json`
+- `schemas/world_state.schema.json` (unchanged; new optional file is `historical_event.schema.json` only)
 - `data/world/1792_start.json`
 - `game/childhood/childhood_state.gd`, `aftermath_state.gd`, `checkpoint_store.gd`, `home_chapter.gd`, `home_launch.gd`
 - `game/campaign/command_state.gd`, `house_command_state.gd` (pattern mirrored, not rewritten)
@@ -100,6 +143,7 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 - Existing draft PR merge / `main` merge
 - Full combat, full economy sim/taxation UI, full social sim / `house_command_state` rewrite, `antagonists.json` roster gates, expedition map
 - Full combat sandbox / `patrol_director` rewrite (pursuit is delayed-custody stub only)
+- Full research dossier pipeline / SuperGrok synthesis / Latif rewrites (historical-event stub only)
 
 ## Identity notes
 
@@ -111,3 +155,6 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 - Mahan cavalry rider is `mahan_singh`; Lahore `Riding.validate` still admits only `ranjit_singh` / `patrol_captain`.
 - Politics subordinates are separate Person ids under household relations to `sukerchakia`; not Faction tags; Raj Kaur absent from this slice.
 - Orders reuses politics subordinate ids; scout/hold_rear/pursue stay under household relations; pursuit knowledge arrives only on delay-clock delivery.
+- Historical-event actors keep Person ≠ Household ≠ Faction; Raj Kaur absent; `player_knowledge` refused unless observer / delivered report / campaign-frame endpoint ack.
+- Gujranwala settlement is a place object (`gujranwala_settlement`); household remains `sukerchakia`; not a faction tag.
+- Gujranwala march nodes enter `known_nodes` only on delivered scout custody; no silent childhood/Lahore knowledge handoff.
