@@ -63,6 +63,9 @@ def main() -> int:
     run([sys.executable, "tools/check_youth.py"], "youth-catalogue")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_youth_brawl.gd"],
         "youth-brawl", "YOUTH_BRAWL_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_locomotion.gd"],
+        "locomotion", "LOCOMOTION_TESTS:")
+    run([sys.executable, "tools/check_locomotion_rates.py", "--godot", args.godot], "locomotion-rates")
     return 0
 
 

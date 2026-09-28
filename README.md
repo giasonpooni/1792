@@ -10,6 +10,20 @@ later public names follow the [naming policy](docs/CHARACTER_NAMES.md).
 
 **Playable greybox in development, not a finished city or historical survey.**
 
+## Current foundation work: movement before more content
+
+The existing stories remain intact. A new **Movement qualification** menu entry
+uses the **same Player scene and motor** to test analog control, isotropic
+acceleration, buffered jumping, low vaults, mantles and a connected gap/drop route.
+It includes an articulated skeletal proxy and collision-aware camera, not final art.
+
+Campaign scenes retain their qualified legacy acceleration profile, with analog
+magnitude now preserved. Vertical traversal stays opt-in until campaign saves,
+interactions and companions support it. The course has its own isolated save slot;
+it does not advance Buddh's biography or replace a story chapter.
+
+[Movement controls, rules, evidence and remaining gates](docs/LOCOMOTION_FOUNDATION.md)
+
 ## Play
 
 Import `game/project.godot` in standard **Godot 4.5.1** and press **F5**.

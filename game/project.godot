@@ -18,22 +18,52 @@ renderer/rendering_method.mobile="gl_compatibility"
 
 [input]
 move_forward={
-"deadzone": 0.5,
-"events": [Object(InputEventKey,"physical_keycode":87)]
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":87), Object(InputEventJoypadMotion,"axis":1,"axis_value":-1.0)]
 }
 move_backward={
-"deadzone": 0.5,
-"events": [Object(InputEventKey,"physical_keycode":83)]
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":83), Object(InputEventJoypadMotion,"axis":1,"axis_value":1.0)]
 }
 move_left={
-"deadzone": 0.5,
-"events": [Object(InputEventKey,"physical_keycode":65)]
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":65), Object(InputEventJoypadMotion,"axis":0,"axis_value":-1.0)]
 }
 move_right={
-"deadzone": 0.5,
-"events": [Object(InputEventKey,"physical_keycode":68)]
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":68), Object(InputEventJoypadMotion,"axis":0,"axis_value":1.0)]
 }
 sprint={
-"deadzone": 0.5,
-"events": [Object(InputEventKey,"physical_keycode":4194325)]
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":4194325), Object(InputEventJoypadButton,"button_index":9)]
+}
+
+traverse_jump={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":32), Object(InputEventJoypadButton,"button_index":0)]
+}
+
+traverse_obstacle={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":86), Object(InputEventJoypadButton,"button_index":2)]
+}
+
+look_left={
+"deadzone": 0.2,
+"events": [Object(InputEventJoypadMotion,"axis":2,"axis_value":-1.0)]
+}
+
+look_right={
+"deadzone": 0.2,
+"events": [Object(InputEventJoypadMotion,"axis":2,"axis_value":1.0)]
+}
+
+look_up={
+"deadzone": 0.2,
+"events": [Object(InputEventJoypadMotion,"axis":3,"axis_value":-1.0)]
+}
+
+look_down={
+"deadzone": 0.2,
+"events": [Object(InputEventJoypadMotion,"axis":3,"axis_value":1.0)]
 }
