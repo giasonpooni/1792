@@ -45,6 +45,21 @@ knowledge or save history. Punjabi authoring and voice production remain future 
 [Reconstruction and historical sources](docs/GUJRANWALA_1792.md) ·
 [Integration receipt](docs/GUJRANWALA_INTEGRATION.md)
 
+## New playable task: Water for the Household
+
+After accepting the household allowance, ask the quartermaster for the optional
+water round. Leave through the courtyard's open front, take the east lane to the
+well, face it and press **E**. Draw a load, carry it back on foot, and deposit it
+with the quartermaster. Two trips complete the six-unit assignment. Drawing takes
+180 existing physics ticks; leaving cancels without consuming water. A full open
+carrier slows movement and prevents mounting until deposited.
+
+The task, pending draw and transfers use the existing save and clock. Its six
+units are not litres or a measured well yield. It grants no repeat cash reward;
+recurring consumption and water-dependent production are not implemented.
+
+[Water-round walkthrough and research](docs/GUJRANWALA_WATER_ROUND.md)
+
 ## Other retained modes
 
 The menu also retains the separate Lahore command story, houses-and-rivals patrol

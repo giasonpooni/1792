@@ -1,6 +1,7 @@
 extends "res://childhood/aftermath_state.gd"
 ## Additive economy in the inherited active world; all clocks derive from childhood.tick.
 const Economy := preload("res://territory/misl_rules.gd")
+const Water := preload("res://territory/water_round_rules.gd")
 const TERRITORY_SAVE := "user://1792-gujranwala-v1.json"
 
 func has_economy() -> bool:
@@ -19,6 +20,7 @@ func begin_allowance() -> String:
 
 func advance() -> void:
 	super.advance()
+	_advance_water()
 	if not has_economy(): return
 	var m: Dictionary = _state.misl
 	if int(_state.childhood.tick)==int(m.origin_tick)+(m.ledger.watch+1)*Economy.WATCH_TICKS:
@@ -45,6 +47,7 @@ func _post(kind: String,arg: String) -> String:
 	return ""
 
 func rest_watch() -> String:
+	if has_water_round() and water_round().ledger.phase=="drawing": return "Finish or cancel drawing before resting."
 	if not has_economy() or mounted() or distance(position(),Economy.QUARTERMASTER)>3:
 		return "Rest at the quartermaster on foot."
 	if _state.misl.ledger.caravan=="active": return "Return the active caravan before resting."
@@ -69,13 +72,17 @@ func validate(value: Variant) -> String:
 	if not value is Dictionary: return "Malformed home world."
 	var base: Dictionary=value.duplicate(true)
 	base.erase("misl")
+	base.erase("water_round")
 	var error:=super.validate(base)
 	if not error.is_empty(): return error
-	if not value.has("misl"): return "" # Older saves invent no allowance, purchases or obligations.
+	if not value.has("misl"):
+		return "Water round without an allowance." if value.has("water_round") else "" # Older saves invent no allowance, purchases or obligations.
 	if not value.has("aftermath") or value.aftermath.reported_tick<0: return "Economy before the completed household inquiry."
 	error=Economy.validate(value.misl,int(value.childhood.tick))
 	if not error.is_empty(): return error
 	if value.misl.origin_tick<value.aftermath.reported_tick: return "Allowance predates the household report."
+	if value.has("water_round"):
+		return Water.validate(value.water_round,int(value.childhood.tick),int(value.misl.origin_tick),point(value.player.position),value.riding.horse.rider_id!="")
 	return ""
 
 func restore(value: Variant) -> String:
@@ -88,4 +95,60 @@ func restore(value: Variant) -> String:
 			e.seq=int(e.seq)
 			e.tick=int(e.tick)
 		_state.misl.ledger=Economy.replay(_state.misl.events)
+	if has_water_round():
+		_state.water_round.origin_tick=int(_state.water_round.origin_tick)
+		for e in _state.water_round.events:
+			e.seq=int(e.seq)
+			e.tick=int(e.tick)
+		_state.water_round.ledger=Water.replay(_state.water_round.events)
 	return ""
+
+# Optional bounded household task; legacy saves and economy are unchanged until accepted.
+func has_water_round() -> bool:
+	return _state.has("water_round")
+
+func water_round() -> Dictionary:
+	return _state.water_round.duplicate(true) if has_water_round() else {}
+
+func begin_water_round() -> String:
+	if has_water_round(): return "The household water round was already assigned."
+	if not has_economy() or mounted() or not Water.near_site(position(),Water.STORE): return "Hear the quartermaster after accepting the household allowance."
+	_state.water_round={"schema":Water.VERSION,"model_id":Water.MODEL_ID,"origin_tick":int(_state.childhood.tick),"events":[],"ledger":Water.initial()}
+	return ""
+
+func water_action(kind: String) -> String:
+	if kind not in ["draw","cancel","deposit"]: return "That water transition belongs to the clock, not the player."
+	if not has_water_round() or mounted(): return "Accept the water round and dismount first."
+	if kind=="draw" and _state.water_round.events.size()>Water.MAX_EVENTS-3: return "Water receipt budget exhausted; other missions remain available."
+	return _post_water(kind)
+
+func _post_water(kind: String) -> String:
+	var w: Dictionary=_state.water_round
+	if w.events.size()>=Water.MAX_EVENTS: return "Water receipt budget exhausted."
+	var candidate: Dictionary=w.ledger.duplicate(true)
+	var error:=Water.apply(candidate,kind,int(_state.childhood.tick),position())
+	if not error.is_empty(): return error
+	w.events.append({"seq":w.events.size()+1,"tick":int(_state.childhood.tick),"kind":kind,"actor_id":"ranjit_singh","position":coords(position())})
+	w.ledger=candidate
+	return ""
+
+func _advance_water() -> void:
+	if not has_water_round() or _state.water_round.ledger.phase!="drawing": return
+	var s: Dictionary=_state.water_round.ledger
+	if not Water.near_site(position(),Water.WELL) or mounted(): _post_water("cancel")
+	elif _state.childhood.tick==s.started_tick+Water.DRAW_TICKS: _post_water("filled")
+
+func record_position(p: Vector3, delta: float) -> String:
+	# The renderer's speed cap is not authority: enforce it at the admitted motion seam too.
+	if has_water_round() and _state.water_round.ledger.carried>0:
+		if not is_finite(delta) or delta<=0 or delta>0.1 or distance(position(),p)>Water.CARRY_SPEED*delta+0.08:
+			return "Walking too fast for an open water carrier."
+	var error:=super.record_position(p,delta)
+	if error.is_empty() and has_water_round() and _state.water_round.ledger.phase=="drawing" and not Water.near_site(position(),Water.WELL):
+		_post_water("cancel")
+	return error
+
+func mount() -> String:
+	if has_water_round() and (_state.water_round.ledger.carried>0 or _state.water_round.ledger.phase=="drawing"):
+		return "Deposit the water or cancel the draw before mounting."
+	return super.mount()

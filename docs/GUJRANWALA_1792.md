@@ -56,7 +56,9 @@ Mandatory exclusions, source references, finite geometry and the existing frame
 are checked before the district is built. Python additionally checks conservative
 clearance from new solid geometry; native tests exercise the actual swept routes.
 
-The well has a collision body, but no new water economy. Other new frontages and
+The well has a collision body and now supports the optional finite
+[household water round](GUJRANWALA_WATER_ROUND.md). Recurring water consumption
+and water-dependent production are not implemented. Other new frontages and
 props are visual dressing; existing walls still provide the qualified barriers.
 Peripheral courts are scenery outside the playable boundary, not newly streamed
 interiors. Field and market figures sample the existing tick deterministically;

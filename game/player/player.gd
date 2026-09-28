@@ -7,6 +7,7 @@ extends CharacterBody3D
 @export var mouse_sensitivity := 0.0025
 @export var menu_shortcut := true
 var input_enabled := true
+var external_speed_limit := INF # Optional game-owned load constraint; no default change.
 @onready var pivot: Node3D = $CameraPivot
 
 func _ready() -> void:
@@ -34,7 +35,7 @@ func _physics_process(delta: float) -> void:
 	var direction := pivot.global_basis.x * input_2d.x + pivot.global_basis.z * input_2d.y
 	direction.y = 0.0
 	direction = direction.normalized()
-	var speed := run_speed if Input.is_action_pressed("sprint") else walk_speed
+	var speed := minf(run_speed if Input.is_action_pressed("sprint") else walk_speed,external_speed_limit)
 	velocity.x = move_toward(velocity.x, direction.x * speed, acceleration * delta)
 	velocity.z = move_toward(velocity.z, direction.z * speed, acceleration * delta)
 	velocity.y = 0.0 if is_on_floor() else velocity.y - gravity_strength * delta
