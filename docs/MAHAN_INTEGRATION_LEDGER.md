@@ -51,7 +51,7 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 | `docs/MAHAN_INTEGRATION_LEDGER.md` | This logistics note |
 
 
-## Extended (this slice -- clan/subordinate politics)
+## Extended (prior slice -- clan/subordinate politics)
 
 | Path | Change |
 | --- | --- |
@@ -65,12 +65,26 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 | `docs/MAHAN_INTERLUDE.md` | Politics loop + ontology fence |
 | `docs/MAHAN_INTEGRATION_LEDGER.md` | This politics note |
 
+
+## Extended (this slice -- subordinate orders / pursuit stub)
+
+| Path | Change |
+| --- | --- |
+| `game/mahan/mahan_orders_state.gd` | Mahan-only orders adapter on politics: scout / hold_rear / pursue_contact to politics subordinates; disposition gates; pursuit timed custody stub (not combat AI); no `house_command_state` / `patrol_director` rewrite |
+| `game/mahan/mahan_orders_chapter.gd` | Subordinate-orders panel on march; pursuit pending HUD; keeps politics + logistics + horse adapters |
+| `game/mahan/mahan_politics_chapter.gd` | Additive guard: do not replace a pre-installed adapter model that already exposes `consult_subordinates` |
+| `game/mahan/mahan_launch.gd` | Composes `mahan_orders_chapter.gd` |
+| `game/tests/test_mahan_orders.gd` | Orders checks: hold rear, scout, pursue delay clock, strained disposition gate, ontology, Raj Kaur absence, launch smoke |
+| `tools/run_checks.py` | Registers `test_mahan_orders.gd` after politics |
+| `docs/MAHAN_INTERLUDE.md` | Orders loop + pursuit stub fence |
+| `docs/MAHAN_INTEGRATION_LEDGER.md` | This orders note |
+
 ## Touched (unchanged role)
 
 | Path | Change |
 | --- | --- |
 | `game/ui/main_menu.gd` | Fourth entry launching Mahan via `MahanLaunch.enter` |
-| `tools/run_checks.py` | Registers base `test_mahan.gd`, `test_mahan_cavalry.gd`, `test_mahan_logistics.gd`, then `test_mahan_politics.gd`; prior suites remain invoked |
+| `tools/run_checks.py` | Registers base `test_mahan.gd`, `test_mahan_cavalry.gd`, `test_mahan_logistics.gd`, `test_mahan_politics.gd`, then `test_mahan_orders.gd`; prior suites remain invoked |
 | `tools/check_project.py` | Menu assertion still requires home + command entries; also requires Mahan launch path |
 
 ## Deliberately left alone
@@ -85,6 +99,7 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 - Silent cross-chapter knowledge merge (none added)
 - Existing draft PR merge / `main` merge
 - Full combat, full economy sim/taxation UI, full social sim / `house_command_state` rewrite, `antagonists.json` roster gates, expedition map
+- Full combat sandbox / `patrol_director` rewrite (pursuit is delayed-custody stub only)
 
 ## Identity notes
 
@@ -95,3 +110,4 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 - Undelivered scout custody never becomes Mahan journal knowledge early, and never crosses the profile fence.
 - Mahan cavalry rider is `mahan_singh`; Lahore `Riding.validate` still admits only `ranjit_singh` / `patrol_captain`.
 - Politics subordinates are separate Person ids under household relations to `sukerchakia`; not Faction tags; Raj Kaur absent from this slice.
+- Orders reuses politics subordinate ids; scout/hold_rear/pursue stay under household relations; pursuit knowledge arrives only on delay-clock delivery.
