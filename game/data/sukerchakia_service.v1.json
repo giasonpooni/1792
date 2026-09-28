@@ -1,0 +1,119 @@
+{
+  "schema": "sukerchakia-context.v1",
+  "year": 1792,
+  "sources": [
+    {
+      "id": "district-headquarters",
+      "title": "District Gujranwala: Decline of the Mughal Empire",
+      "url": "https://gujranwala.punjab.gov.pk/mughal_empire",
+      "scope": "Retrospective district account, consulted 2026-09-28. Contains evaluative wording and conflicting dates; not a contemporary 1792 register."
+    },
+    {
+      "id": "pattidari",
+      "title": "The Sikh Encyclopedia: Pattidari",
+      "url": "https://www.thesikhencyclopedia.com/pattidari/",
+      "scope": "Online secondary account citing H.T. Prinsep (1834) and Indu Banga. Only opening Sikh-period tenure discussion used; later southeast-Punjab statistics excluded."
+    },
+    {
+      "id": "administration",
+      "title": "District Gujranwala: Sikh Administration under Ranjit Singh",
+      "url": "https://gujranwala.punjab.gov.pk/administration_under_ranjit_singh",
+      "scope": "Describes subsequent consolidated rule. Not a direct description of the child protagonist's authority or a 1792 taxation schedule."
+    },
+    {
+      "id": "geography",
+      "title": "District Gujranwala: Geography",
+      "url": "https://gujranwala.punjab.gov.pk/geography",
+      "scope": "Present-day geographical orientation only; administrative extents not treated as historical Misl borders."
+    }
+  ],
+  "claims": [
+    {
+      "id": "headquarters",
+      "source_id": "district-headquarters",
+      "statement": "The district account describes Gujranwala as the headquarters of Charat Singh, Maha Singh and Ranjit Singh before Lahore.",
+      "limit": "It supplies context, not a measured city plan. Its Charat Singh dates conflict internally (1773/1778); its Maha Singh death date differs from the existing fixed 1792 game chronology. No automatic chronology changes or adopted moral characterizations."
+    },
+    {
+      "id": "shared-tenure",
+      "source_id": "pattidari",
+      "statement": "The opening account distinguishes shared holdings and shares assigned among participating leaders and followers.",
+      "limit": "This motivates separate person, household, service and land relations. It does not establish particular rights, payments or quotas for these fictional Gujranwala requests."
+    },
+    {
+      "id": "later-services",
+      "source_id": "administration",
+      "statement": "The later administrative account distinguishes directly managed lands, contracted collections and jagirs associated with military or other service.",
+      "limit": "Those later structures are not transplanted wholesale into 1792. The game does not implement revenue farms, title grants or historical taxation percentages."
+    },
+    {
+      "id": "regional-position",
+      "source_id": "geography",
+      "statement": "The present district geography places the Chenab to the north and describes neighbouring districts.",
+      "limit": "Local market and well coordinates remain authored in the inherited 56-metre test cell, not distant historical places or Misl borders."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "ranjit_singh",
+      "kind": "person",
+      "label": "Buddh Singh (existing childhood display identity)"
+    },
+    {
+      "id": "sukerchakia",
+      "kind": "household",
+      "label": "Sukerchakia household"
+    },
+    {
+      "id": "sukerchakia_misl",
+      "kind": "misl",
+      "label": "Sukerchakia Misl"
+    },
+    {
+      "id": "gujranwala",
+      "kind": "place",
+      "label": "Gujranwala"
+    },
+    {
+      "id": "household_service_detail",
+      "kind": "service_detail",
+      "label": "One reserved hired guard; authored local detail"
+    }
+  ],
+  "relations": [
+    {
+      "from": "ranjit_singh",
+      "to": "sukerchakia",
+      "relation": "home_context",
+      "claim_id": "headquarters",
+      "basis": "authored_model"
+    },
+    {
+      "from": "sukerchakia_misl",
+      "to": "gujranwala",
+      "relation": "headquarters_context",
+      "claim_id": "headquarters",
+      "basis": "source_context"
+    },
+    {
+      "from": "sukerchakia",
+      "to": "sukerchakia_misl",
+      "relation": "service_context",
+      "claim_id": "shared-tenure",
+      "basis": "authored_model"
+    },
+    {
+      "from": "household_service_detail",
+      "to": "sukerchakia",
+      "relation": "service_context",
+      "claim_id": "later-services",
+      "basis": "authored_model"
+    }
+  ],
+  "limits": [
+    "The two requests, the speakers, appointment, costs and timing are original game design, not recorded incidents or reconstructed muster rolls.",
+    "One guard is reserved from existing hires. No extra population, garrison, treasury, revenue, land title or regional conquest is created.",
+    "Person, kinship, household service and Misl allegiance are not interchangeable. Existing Raj Kaur/Phulkian and other character records are untouched.",
+    "No borders, ranks, headcounts, equipment rosters or all-Punjab political organization are inferred from this local prototype."
+  ]
+}

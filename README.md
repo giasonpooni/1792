@@ -124,3 +124,16 @@ plans, licensed game assets or voice recordings were imported for this update.
 
 [LICENSE](LICENSE) · [Licensing scope](docs/LICENSING.md) ·
 [Asset rules](docs/ASSET_LICENSING.md) · [Third-party notices](THIRD_PARTY_NOTICES.md)
+
+## Sukerchakia household service (this development branch)
+
+After the home inquiry and allowance, hear the quartermaster's service brief.
+Visit the market or eastern well approach, then commit one already-hired,
+provisioned guard. The home post becomes empty while he attends and physically
+returns. Hear his account before reusing the detail. Existing food, wages,
+production, supply shortages and saves remain authoritative.
+
+F2 extends the Gujranwala research notebook with distinct person/household/Misl
+records and source limitations. These two local errands are original fiction,
+not a completed regional Misl simulation. No main merge or other draft merge is
+implied by this branch. [Rules, research, controls and checks](docs/SUKERCHAKIA_SERVICE.md).
