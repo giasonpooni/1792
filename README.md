@@ -214,6 +214,19 @@ The design references are the embodied world of *Red Dead*, personal traversal a
 from *Assassin's Creed*, local territorial struggle from *Saints Row 2*, and campaign command
 from *Shogun: Total War*. These are inspirations, not implemented feature claims or affiliations.
 
+## Required Mahan Singh interlude before Lahore
+
+The planned 1797–1798 lead-up pauses Buddh's forward story for a mandatory playable
+Mahan Singh retrospective. **Mahan's death is fixed**; ordinary mission failures
+are retryable, not alternative historical endings. A reprise of Buddh's beginning
+then reconnects with the suspended pre-Lahore story. It does not reset the save or
+carry items and private knowledge from the father's viewpoint into the son's.
+
+The sequencing, gate, preservation and single-use return contract is implemented
+and tested. The actual father missions, reprise scenes, late-campaign routing and
+Lahore transition are not yet playable. This does not trigger immediately after
+the existing childhood chapter. See [Mahan interlude](docs/MAHAN_INTERLUDE.md).
+
 ## Keep the technology behind the game
 
 **Godot** owns gameplay and the current world state. **Blender** is the intended asset-authoring
@@ -238,7 +251,7 @@ python tools/run_checks.py --godot /path/to/godot
 
 The structural checks run without Godot. Runtime checks require the engine and must not be
 reported as passed when it is absent. The runner executes the original command suite, the house/reporting
-suite, riding rules, companion round-trip physics, character-name checks and the childhood input-driven tutorial/encounter suite. CI also captures software-rendered screenshots. Inspect actual CI results;
+suite, riding rules, companion round-trip physics, character-name checks, the childhood/aftermath gameplay suites, and the fixed-history interlude contract tests. CI also captures software-rendered screenshots. Inspect actual CI results;
 [the earlier evidence note](docs/VALIDATION.md) covers the original command slice, not an automatic
 pass for new code. New results are recorded against their tested commit in the pull request.
 
