@@ -1,8 +1,8 @@
 # 1792
 
-**1792** is a historical open-world game project about the early life and rise of Ranjit Singh.
+**1792** is a historical open-world game project about the early life and rise of Buddh Singh.
 
-The game begins in **1792**, when Ranjit Singh is still a child and the Sikh Empire does not yet exist. The player starts inside the Sukerchakia Misl's home territory with a horse, a household, a small network of trusted people, and only partial knowledge of the wider Punjab.
+The game begins in **1792**, when Buddh Singh is still a child and the Sikh Empire does not yet exist. The player starts inside the Sukerchakia Misl's home territory with a horse, a household, a small network of trusted people, and only partial knowledge of the wider Punjab.
 
 The long-term design target is an embodied open world: ride, explore, hunt, talk, train, escort, trade, gather intelligence, build relationships, lead small groups, and gradually grow into military and political command.
 
@@ -14,14 +14,14 @@ The world should not initially feel like a strategy map.
 
 At the start:
 
-- the player controls Ranjit Singh directly;
+- the player controls Buddh Singh directly;
 - the Sukerchakia heartland is the only reliably friendly territory;
 - nearby settlements have varying relationships and incomplete information;
 - roads, rivers, horses, weather, distance, and local knowledge matter;
 - companions are people with trust and loyalty, not disposable unit slots;
 - political power grows from relationships, reputation, logistics, and control of physical places.
 
-As Ranjit grows older, the game expands in abstraction without abandoning third-person play:
+As Buddh Singh grows older, the game expands in abstraction without abandoning third-person play:
 
 ```text
 person
