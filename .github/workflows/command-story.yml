@@ -29,6 +29,14 @@ jobs:
           chmod +x "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
       - name: Structural checks, import, domain and scene tests
         run: python3 tools/run_checks.py --godot "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
+      - name: House-conflict rules, saves and UI assertions
+        shell: bash
+        run: |
+          set -euo pipefail
+          timeout 90 "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --headless --path game --script res://tests/test_house_conflict.gd 2>&1 | tee test-results/houses.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/houses.log
+          grep -Eq 'HOUSE_CONFLICT_TESTS: [1-9][0-9]* passed, 0 failed' test-results/houses.log
       - name: Software-rendered scene smoke
         shell: bash
         env:
@@ -42,12 +50,34 @@ jobs:
             --script res://tests/render_smoke.gd 2>&1 | tee test-results/render.log
           ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/render.log
           grep -q 'RENDER_SMOKE: 4 captures attempted; 0 failures' test-results/render.log
+          timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_house_conflict.gd 2>&1 | tee test-results/house-render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/house-render.log
+          grep -q 'HOUSE_RENDER: 5 captures; 0 failures' test-results/house-render.log
           mkdir -p test-results/screenshots
           cp "$HOME/.local/share/godot/app_userdata/1792/"command-*.png test-results/screenshots/
+          cp "$HOME/.local/share/godot/app_userdata/1792/"house-*.png test-results/screenshots/
       - name: Retain test evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: command-story-evidence
           path: test-results/
+          retention-days: 14
+      - name: Retain exact source snapshot for reproducing this prototype
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: source-snapshot
+          path: |
+            game/**/*.gd
+            game/**/*.tscn
+            game/**/*.json
+            game/project.godot
+            tools/
+            schemas/
+            data/
+            docs/
+            README.md
           retention-days: 14
