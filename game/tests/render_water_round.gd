@@ -66,8 +66,9 @@ func _run() -> void:
 	ok(Pose.pose(scene.model,Water.STORE-Vector3(0,0,1)))
 	scene._apply()
 	ok(scene.model.water_action("deposit"))
-	camera.position=Vector3(11,5,-3)
-	camera.look_at(Vector3(5,0.7,5))
+	camera.position=Vector3(8,3.8,0.5) # In the yard, clear of the stable roof at z=-7..-1.
+	camera.fov=60
+	camera.look_at(Vector3(4.5,0.9,5.5))
 	await frames()
 	check(scene.water_view.tank_water.visible,"rendered household vessel is provisioned")
 	await capture("complete",camera,scene.water_view.tank_water)
