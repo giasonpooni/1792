@@ -1,58 +1,111 @@
 # 1792
 
-**1792** is a historical open-world game about the early life and rise of **Ranjit Singh**, beginning in **Gujranwala in 1792**.
+**Build outward from home.**
 
-The first playable world is being built outward from the Sukerchakia home territory rather than from a strategy map. Gujranwala is the initial vertical slice: household space, a compact settlement, bazaar activity, roads into cultivated country, and incomplete knowledge beyond familiar places.
+A Cartesian Graphics historical open-world game following **Buddh Singh** from
+Gujranwala and the Sukerchakia home territory toward wider command. Travel,
+relationships, provisions and incomplete knowledge matter before empire management.
+The stable character ID remains `ranjit_singh`; the childhood display name and
+later public names follow the [naming policy](docs/CHARACTER_NAMES.md).
 
-> **Current build:** researched Gujranwala greybox. Geometry is a reconstruction for play, not a surveyed 1792 town plan.
+**Playable greybox in development, not a finished city or historical survey.**
 
-## Why Gujranwala first
+## Play
 
-Gujranwala was the Sukerchakia political center before Lahore. Historical scholarship describes it as a small settlement that expanded after Charat Singh established his capital there. The surviving Ranjit Singh birthplace haveli provides an architectural anchor: a brick-and-plaster residence organized around multiple courtyards. Pakistan's Department of Archaeology and Museums also notes that it likely had substantially more greenery and open space around it in the late eighteenth century than today.
+Import `game/project.godot` in standard **Godot 4.5.1** and press **F5**.
+No .NET SDK, Python service, Bevy process or NET server is required to play.
+Choose **1792 · Buddh Singh · Home territory** for the integrated home chapter.
 
-The prototype therefore **does not back-project later nineteenth-century Gujranwala** into 1792. It does not treat the later street grid, Mahan Singh's later-built samadhi, or Ranjit Singh's Sheranwala baradari as features already present at game start.
+Learn the yard, hear a letter read, ride, train, follow traces, survive an authored
+ambush, investigate and report home. After the inquiry, administer a limited
+household allowance: carry provisions to market, physically escort a carrier home,
+hire workers or guards, build infrastructure, and meet food, fodder and wage costs.
+Your personal purse and the household coffers are separate. Contracts pay once.
 
-See `docs/GUJRANWALA_1792.md` and `data/history/gujranwala_sources.v1.json`.
+[Full walkthrough, rules and save behavior](docs/PLAYABLE_GUIDE.md) ·
+[Household economy](docs/GUJRANWALA.md)
 
-## First playable target
+## Gujranwala now has an evidence-bound setting
 
-```text
-home compound → settlement lanes / bazaar → cultivated edge
-              → outbound roads → uncertain country → return home
-```
+The existing missions run within a compressed **56 × 56 metre** test area. The
+new reconstruction layer adds a verandah arcade, open forecourt, courtyard
+frontages, a collision-tested well, market props, field strips and ambient figures.
+Peripheral buildings are scenery, not a secretly enlarged playable city.
 
-The current Godot greybox supplies a multi-courtyard household type, compact irregular settlement, bazaar/workshop markers, cultivated plots, wells/trees/open ground, route exits, player traversal, orbit camera, and an exploration HUD. Reconstructed features are explicitly labelled.
+**F2** opens a paused reconstruction notebook. Feature records bind original
+geometry to source claims, uncertainty classes and an exact content digest.
+Later or disputed monuments cannot silently appear at the 1792 start date.
+The notebook is a developer reference, not information granted to Buddh.
+
+**Shah Muhammad** is the retrospective narrator. Four milestone cues currently
+use original English development text—not historical verse, translations or a
+recorded voice. They observe the existing state without altering resources,
+knowledge or save history. Punjabi authoring and voice production remain future work.
+
+[Reconstruction and historical sources](docs/GUJRANWALA_1792.md) ·
+[Integration receipt](docs/GUJRANWALA_INTEGRATION.md)
+
+## Other retained modes
+
+The menu also retains the separate Lahore command story, houses-and-rivals patrol
+sandbox, and the political-exposure/perception experiment. These are development
+scenarios, not completed transitions in the childhood-to-Lahore biography.
+
+## Controls
+
+| Control | Action |
+| --- | --- |
+| WASD / Shift / mouse | Walk, run and look |
+| F / mounted W,A,D | Mount or dismount / ride and steer |
+| E / B | Interact / oral household accounts |
+| Q / left click / C | Childhood guard / counter / quiet approach |
+| G / J / F1 | Follow or hold where available / journal / pause |
+| F2 | Paused reconstruction notebook in the home chapter |
+| F5 / F9 / R | Save / load / restore childhood checkpoint |
+
+The detailed guide covers mounted gaits, alternate modes and optional framing.
+Loading and checkpoints retain their existing validation and rollback semantics.
 
 ## Architecture
 
-Godot owns the playable world. Blender owns future authored assets. Bevy is reserved for simulation workloads that justify it. Notations Engineering Terminal may later run experiments, replay and validation; it does not own the game loop.
+Godot owns the active game, state and clock. Blender is the intended asset-authoring
+path. The shared **C++–Rust–Python–Julia** architecture remains documented for
+bounded provider workloads; this update does not pretend all four runtimes have
+been integrated. Bevy and Notations Engineering Terminal remain optional external
+simulation/experiment providers, not competing game loops.
 
-## Run
+[Shared game architecture](docs/SHARED_GAME_ARCHITECTURE.md) ·
+[Campaign direction](docs/COUPLED_CAMPAIGN.md)
 
-Target: Godot 4.x compatibility renderer.
+## Develop and verify
 
-```bash
-git clone https://github.com/giasonpooni/1792.git
-cd 1792
-godot --path game --editor
+```sh
+python tools/check_project.py
+python tools/check_reconstruction.py
+python tools/run_checks.py --godot /path/to/godot
 ```
 
-Controls: **WASD** move, **Shift** sprint, **right mouse drag** orbit camera, **Esc** release mouse.
-
-## Historical method
-
-Features are classed **A documented**, **B reconstructed**, **C gameplay abstraction**, or **D fictional connective material**. A surviving building is evidence for architectural vocabulary, not automatic proof that every surviving element existed in exactly that form in 1792. Later monuments can be comparative evidence but are not silently inserted into the start-year town.
-
-## Repository layout
+The runner retains every inherited gameplay suite and adds reconstruction,
+narration-isolation and political/perception tests. GitHub Actions uses pinned
+Godot 4.5.1, retains logs and exact source, and produces software-rendered captures.
+A test suite passing is not human playtesting or verification of historical truth.
 
 ```text
-game/          Godot playable application
-data/world/    canonical starting world records
-data/history/  source and reconstruction records
-docs/          design and historical research
-schemas/       interchange contracts
+game/       Game, state authority, original meshes, source-bound layout and tests
+data/       Design fixtures and historical source index
+schemas/    Retained world-state contract
+docs/       Player guide, research, design, architecture and rights
+tools/      Offline and native verification runner
+archive/    Earlier disconnected layout study, not an active world
 ```
 
-## Licensing
+## Rights
 
-Copyright © 2026 Cartesian Graphics. All rights reserved for original protected material except where a separate licence explicitly applies. Historical facts, public-domain material and third-party works remain outside that claim. See `LICENSE`.
+**Copyright (c) 2026 Cartesian Graphics. All rights reserved.**
+Original protected game code and content are proprietary unless explicitly
+licensed otherwise. Engine and third-party rights remain separate. No claim is
+made over historical facts or public-domain material. No archival photos, copied
+plans, licensed game assets or voice recordings were imported for this update.
+
+[LICENSE](LICENSE) · [Licensing scope](docs/LICENSING.md) ·
+[Asset rules](docs/ASSET_LICENSING.md) · [Third-party notices](THIRD_PARTY_NOTICES.md)

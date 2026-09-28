@@ -1,0 +1,126 @@
+name: Command story checks
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: command-story-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  godot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Install pinned reference Godot
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/godot"
+          curl --fail --location --retry 3 --max-time 180 \
+            'https://github.com/godotengine/godot-builds/releases/download/4.5.1-stable/Godot_v4.5.1-stable_linux.x86_64.zip' \
+            -o "$RUNNER_TEMP/godot.zip"
+          echo "02ec53d1cc7dbb9cc6355393c61b9ab43d1244751a124f10248a4802830788cd  $RUNNER_TEMP/godot.zip" | sha256sum --check
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
+      - name: Structural, import, command, house, riding, companion, naming, childhood and aftermath suites
+        run: python3 tools/run_checks.py --godot "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
+      - name: Software-rendered scene smoke
+        shell: bash
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install --yes --no-install-recommends xvfb xauth libgl1-mesa-dri
+          timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_smoke.gd 2>&1 | tee test-results/render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/render.log
+          grep -q 'RENDER_SMOKE: 4 captures attempted; 0 failures' test-results/render.log
+          timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_house_conflict.gd 2>&1 | tee test-results/house-render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/house-render.log
+          grep -q 'HOUSE_RENDER: 5 captures; 0 failures' test-results/house-render.log
+          timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_riding.gd 2>&1 | tee test-results/riding-render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/riding-render.log
+          grep -q 'RIDING_RENDER: 5 captures; 0 failures' test-results/riding-render.log
+          timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_companions.gd 2>&1 | tee test-results/companion-render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/companion-render.log
+          grep -q 'COMPANION_RENDER: 6 captures; 0 failures' test-results/companion-render.log
+          timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_character_names.gd 2>&1 | tee test-results/character-names-render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/character-names-render.log
+          grep -q 'CHARACTER_NAMES_RENDER: 3 captures; 0 failures' test-results/character-names-render.log
+          timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_childhood.gd 2>&1 | tee test-results/childhood-render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/childhood-render.log
+          grep -q 'CHILDHOOD_RENDER: 4 captures; 0 failures' test-results/childhood-render.log
+          timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_aftermath.gd 2>&1 | tee test-results/aftermath-render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/aftermath-render.log
+          grep -q 'AFTERMATH_RENDER: 5 captures; 0 failures' test-results/aftermath-render.log
+          timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_gujranwala.gd 2>&1 | tee test-results/gujranwala-render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/gujranwala-render.log
+          grep -q 'GUJRANWALA_RENDER: 6 captures; 0 failures' test-results/gujranwala-render.log
+          timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_reconstruction.gd 2>&1 | tee test-results/reconstruction-render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/reconstruction-render.log
+          grep -q 'RECONSTRUCTION_RENDER: 4 captures; 0 failures' test-results/reconstruction-render.log
+          mkdir -p test-results/screenshots
+          cp "$HOME/.local/share/godot/app_userdata/1792/"command-*.png test-results/screenshots/
+          cp "$HOME/.local/share/godot/app_userdata/1792/"house-*.png test-results/screenshots/
+          cp "$HOME/.local/share/godot/app_userdata/1792/"riding-*.png test-results/screenshots/
+          cp "$HOME/.local/share/godot/app_userdata/1792/"companions-*.png test-results/screenshots/
+          cp "$HOME/.local/share/godot/app_userdata/1792/"names-*.png test-results/screenshots/
+          cp "$HOME/.local/share/godot/app_userdata/1792/"childhood-*.png test-results/screenshots/
+          cp "$HOME/.local/share/godot/app_userdata/1792/"aftermath-*.png test-results/screenshots/
+          cp "$HOME/.local/share/godot/app_userdata/1792/"gujranwala-*.png test-results/screenshots/
+          cp "$HOME/.local/share/godot/app_userdata/1792/"reconstruction-*.png test-results/screenshots/
+          cp "$HOME/.local/share/godot/app_userdata/1792/gujranwala-reconstruction-audit.json" test-results/
+      - name: Retain test evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: command-story-evidence
+          path: test-results/
+          retention-days: 14
+      - name: Retain exact source snapshot for reproducing this prototype
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: source-snapshot
+          include-hidden-files: true
+          path: |
+            game/**/*.gd
+            game/**/*.gdshader
+            game/**/*.tscn
+            game/**/*.json
+            game/project.godot
+            tools/
+            schemas/
+            data/
+            docs/
+            README.md
+            LICENSE
+            CONTRIBUTING.md
+            THIRD_PARTY_NOTICES.md
+            licenses/
+            .github/workflows/command-story.yml
+            .gitignore
+          retention-days: 14

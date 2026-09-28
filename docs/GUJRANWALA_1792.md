@@ -1,37 +1,94 @@
-# Gujranwala, 1792 — reconstruction brief
+# Gujranwala, 1792 — evidence-bound playable reconstruction
 
-## Premise
+Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 
-The game needs a traversable Gujranwala, but surviving evidence does not provide a complete measured town plan for 1792. The implementation is therefore a constrained reconstruction: preserve documented anchors and period-appropriate spatial logic while exposing invented geometry as reconstruction.
+## What this build represents
 
-## Anchors
+A compressed household-to-market journey, not a complete surveyed town. The
+56 × 56 metre playable envelope, terrain profile, riding, inquiry, provision
+ledger and caravan navigation remain the qualified gameplay substrate. New
+courtyard frontages, verandah arches, an open forecourt, a well, trade props and
+peripheral fields give that substrate a more specific architectural setting.
 
-**Sukerchakia political center.** J. S. Grewal's survey describes Gujranwala as a small village that became large as the capital of Charat Singh. The game should therefore read as an expanding regional headquarters embedded in countryside, not a mature imperial metropolis.
+`game/data/gujranwala_reconstruction.v1.json` is the authoritative record for
+these new features. Each mesh root retains claim IDs and a reconstruction class.
+The notebook opened with **F2** shows the manifest's exact SHA-256. It pauses the
+existing game clock; consulting it grants no places, reports or memories to Buddh.
 
-**Household architecture.** Pakistan's Department of Archaeology and Museums describes the surviving Ranjit Singh birthplace haveli as brick-and-plaster with wood elements, reception space and multiple courtyards, and suggests more greenery/open space around it in the late eighteenth century. The greybox uses a multi-courtyard household as an architectural type anchor. Exact dimensions and room arrangement remain class B.
+## Research decisions
 
-**Temporal exclusions.** The same department dates Mahan Singh's samadhi construction to 1835 and identifies the Sheranwala Garden baradari as a Ranjit Singh-reign structure. Neither is instantiated as a standing 1792 landmark.
+**Courtyard vocabulary, not a copied 1792 floor plan.** Ahmad and Khilat's 2023
+field study documents verandahs, courtyards, masonry and timber features and an
+open forecourt (kucha). These support architectural comparison, not our exact
+footprints, arch counts, wall heights or placement. Their study also describes
+modern alterations, so surviving fabric is not automatically original fabric.
+Source: [study, Spatial Organization and Access](https://journals.umt.edu.pk/index.php/JAABE/article/download/3188/1851?inline=1).
+The inline plan images were not successfully retrieved for measured transcription.
+No surveyed plan, figure tracing or archival image is bundled.
 
-## Reconstructed / abstracted in the greybox
+**A settlement with a regional role.** Grewal's analysis of Ganesh Das describes
+Gujranwala's expansion from a village as Charat Singh's capital. This supports a
+regional settlement context; it supplies neither a 1792 parcel map nor a numerical
+population model. Source: [Grewal, printed pp. 25–26](https://punjab.global.ucsb.edu/sites/default/files/sitefiles/journals/volume20/3-JS%20Grewal%2020.pdf).
 
-Exact lane geometry, bazaar placement, field boundaries, wells, trees, minor compounds, workshops, route exits, household dimensions and population density are class B/C pending stronger evidence. Irregular lanes and dispersed clusters deliberately avoid importing the later grid plan.
+**Separate the fabric phases.** The [Walled City Lahore Authority description](https://walledcitylahore.gop.pk/gujranwala-project/)
+uses a nineteenth-century description alongside a birthplace attribution. We do
+not resolve that into a single construction date for every surviving component.
+Detailed fabric-phase research remains necessary.
 
-## Chronology caution
+**Exclude the completed later samadhi.** The [DOAM inventory](https://doam.gov.pk/public/sites/10110)
+records establishment in 1835. The completed monument is not instantiated in the
+1792 scene. This does not decide Mahan Singh's disputed death year or rewrite the
+fixed retrospective already implemented in the narrative system.
 
-Sources disagree over whether Mahan Singh died in 1790 or 1792. The title fixes the start year, but the exact opening day and succession-state narrative should not depend on one disputed date until that chronology is resolved.
+**Correct the pavilion rule.** The [DOAM baradari entry](https://doam.gov.pk/public/sites/6546)
+attributes it to Ranjit Singh's reign, while Ahmad and Khilat's Table 1 attributes
+the garden and baradari to Mahan Singh. The earlier blanket assertion that it is
+certainly later is too strong. Its status is now `defer_disputed`: absent from this
+prototype pending reconciliation, not proven absent from historical Gujranwala.
 
-## Research backlog
+## Runtime boundaries
 
-1. Obtain Bhagat Singh's *A History of the Sikh Misals* and relevant Hari Ram Gupta volumes.
-2. Locate cadastral, survey and early photographic evidence for pre-grid Gujranwala.
-3. Build a fabric-phase dossier for the birthplace haveli.
-4. Research water supply, crops, roads, market organization, craft production and domestic material culture in the Rechna Doab c.1790.
-5. Keep 1792 evidence separate from later Sikh Empire urban interventions.
+The 11 feature records are original primitive geometry. Their placements are
+class B reconstruction and their exact dimensions are class C abstractions. No
+structure is admitted merely because a generator supplied a plausible date.
+Mandatory exclusions, source references, finite geometry and the existing frame
+are checked before the district is built. Python additionally checks conservative
+clearance from new solid geometry; native tests exercise the actual swept routes.
 
-## Web sources consulted — 2026-09-28
+The well has a collision body, but no new water economy. Other new frontages and
+props are visual dressing; existing walls still provide the qualified barriers.
+Peripheral courts are scenery outside the playable boundary, not newly streamed
+interiors. Field and market figures sample the existing tick deterministically;
+they are not persistent NPCs, witnesses, merchants or additional state authorities.
 
-- Department of Archaeology & Museums, “Ranjit Singh Birthplace”: https://doam.gov.pk/public/sites/10111
-- Department of Archaeology & Museums, “Mahan Singh Samadhi”: https://doam.gov.pk/public/sites/10110
-- Department of Archaeology & Museums, “Baradari at Sheranwala Garden”: https://doam.gov.pk/public/sites/6546
-- J. S. Grewal, Journal of Punjab Studies 20: https://punjab.global.ucsb.edu/sites/default/files/sitefiles/journals/volume20/3-JS%20Grewal%2020.pdf
-- Ali et al., “Before The Raj: A Historical Survey of Gujranwala (C. 1500–1849),” 2026: https://rjsaonline.org/index.php/JGST/article/view/685
+## Shah Muhammad's retrospective voice
+
+The user's narrator assignment is implemented as a read-only text presentation
+layer at home, allowance, delivery and return milestones. All four lines are
+original English development writing, not historical quotations, verse,
+translations or a recorded performance. Punjabi authoring and voice production
+remain unimplemented. Narrator perspective never becomes protagonist knowledge.
+Save/load silently rebinds the view; rewinding removes later cues.
+
+## Integration and validation
+
+The current work joins the tested supply branch, the separate political/perception
+experiment, and the previously prepared licensing/four-language documentation.
+The full childhood, riding, command and economic suites remain in the runner.
+The original generic 180-metre layout is retained as a non-imported source study
+under `archive/gujranwala-layout-v0/`; it is not substituted for working missions.
+
+Run `python tools/check_reconstruction.py` for offline checks and
+`python tools/run_checks.py --godot /path/to/godot` for the native suite.
+The latter must pass before describing this integration as runtime-verified.
+CI also captures the district, verandah, well and paused evidence notebook.
+Software-rendered captures are not human playtesting or historical verification.
+
+## Next evidence needed
+
+A dated construction-phase study, rights-cleared measured drawings, early town
+plans and archaeology are needed before expanding the exact haveli footprint or
+asserting an eleven-gate 1792 wall alignment. Crop species, prices, street widths,
+water yields and household population remain uncalibrated. Later imagery can
+constrain hypotheses, but cannot silently become start-year truth.
