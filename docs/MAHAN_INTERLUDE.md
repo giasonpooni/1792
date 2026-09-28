@@ -1,30 +1,32 @@
-# Mahan Singh interlude (first bounded slice)
+# Mahan Singh interlude (recon delay + column march)
 
 ## Playable loop intent
 
-This slice introduces a **separate playable profile** for **Mahan Singh** (stable actor
-id `mahan_singh`) during a compressed field-camp command beat. It is a modular
-campaign extension parallel to childhood → aftermath, not a rewrite of those chapters
-and not a merge into the Lahore sandboxes.
+This slice deepens the **separate playable profile** for **Mahan Singh** (stable actor
+id `mahan_singh`) with delayed scout custody and authored column movement on greybox
+nodes. It remains a modular campaign extension parallel to childhood → aftermath, not a
+rewrite of those chapters and not a merge into the Lahore sandboxes.
 
 | Step | Actual interaction |
 | --- | --- |
 | Enter | Main menu → **1790 · Mahan Singh · Field camp (interlude)** |
-| Delayed report | Walk to the scout marker and press **E**. One delayed reconnaissance account is remembered. |
-| Column order | Return to the camp table and press **E**. Choose **advance a scout detachment** or **hold for corroboration**. |
-| Fixed endpoint frame | Press **E** again at the table to acknowledge that Mahan's historical death is fixed campaign history. |
+| Dispatch | At the **camp table**, press **E**. Dispatch a scout detachment to the **ford** or **ridge** (costs 1 provision stub). |
+| Delay clock | Walk or wait. Pending custody shows on the HUD. **Player knowledge updates only when the report arrives** (`arrives_at`); undelivered text stays out of the journal. |
+| Column order | After ≥1 delivered report, press **E** at the table. Choose **advance the horse column** or **hold for corroboration**. Optional: dispatch a second scout before ordering. |
+| March | If advancing: walk to an adjacent authored node (**camp → ford → ridge**) and press **E** to commit the march (costs 2 provisions + time). Hold keeps the column at camp. |
+| Fixed endpoint frame | Press **E** with the column (or at the table) and **acknowledge** that Mahan's historical death is fixed campaign history. |
 
-WASD moves; mouse looks; **J** opens the attributed field journal; **F5/F9** save/load
-`user://1792-mahan-v1.json`; **F1** pauses. This is skeleton geometry and one authored
-beat only.
+WASD moves; mouse looks; **J** opens the attributed field journal (delivered memories only;
+pending targets listed without text); **F5/F9** save/load `user://1792-mahan-v1.json`;
+**F1** pauses. Greybox geometry and one authored recon/march beat only.
 
 ## Fixed historical endpoint
 
-**Mahan Singh's death is FIXED campaign history.** Player column orders in this interlude
-do **not** create an alternate-history branch in which he survives, nor a playable rescue
-or succession rewrite. The endpoint acknowledgement records that constraint explicitly.
-Later slices may dramatize illness, retirement from the field, or succession framing, but
-they must not offer a player-alterable survival outcome.
+**Mahan Singh's death is FIXED campaign history.** Player column orders and marches in
+this interlude do **not** create an alternate-history branch in which he survives, nor a
+playable rescue or succession rewrite. The endpoint acknowledgement records that
+constraint explicitly. Later slices may dramatize illness, retirement from the field, or
+succession framing, but they must not offer a player-alterable survival outcome.
 
 The year label `1790` on this profile is a scenario tag for the late field-command
 context, not a claim that every authored beat happened on a verified calendar day.
@@ -39,6 +41,8 @@ Mahan observations, scout reports, map knowledge and command decisions live only
 - Childhood and Lahore save slots **must not** load a Mahan envelope, and a Mahan load
   **must refuse** childhood/Lahore/aftermath profiles.
 - There is **no** silent cross-chapter knowledge merge in this slice.
+- **Delayed custody:** undelivered scout reports are not journal knowledge and do not
+  unlock `known_nodes` until `delivered` flips on the delay clock.
 
 Buddh remains the player-facing early identity elsewhere; public Ranjit/Maharaja
 presentation in Lahore is unchanged. The stable childhood/Lahore key remains
@@ -49,19 +53,28 @@ presentation in Lahore is unchanged. The stable childhood/Lahore key remains
 | Layer | Treatment in this slice |
 | --- | --- |
 | Source class | Nominated secondary narratives place Mahan's final illness during a late campaign (often linked to Sodhra / Bhangi contest) and his death as fixed lineage history. This slice does **not** quote those works or promote a single edition as verified chronology. |
-| Game-canon | Authored scout speech, camp geography, and the advance/hold decision are **fiction** used to exercise command, delayed information and subordinate orders. |
-| Non-claim | No claim that a specific scout report, fort-road state, or table dialogue is documentary fact. |
+| Game-canon | Authored scout speech, camp/ford/ridge geography, dispatch/march costs and the advance/hold decision are **fiction** used to exercise command, delayed information and subordinate orders. |
+| Non-claim | No claim that a specific scout report, ford state, ridge dust, or table dialogue is documentary fact. |
 
 Keep source account, editorial interpretation, game-canon decision, world event and
 character knowledge distinct (see [HISTORICAL_SOURCES.md](HISTORICAL_SOURCES.md) and
 [HISTORICAL_METHOD.md](HISTORICAL_METHOD.md)).
 
+## Delayed information (library-shaped reuse)
+
+Scout detachments append reports shaped like Lahore command custody
+(`observed_at`, `arrives_at = observed_at + REPORT_DELAY`, `delivered`) and deliver
+inside `advance()` — the same *pattern* as `command_state.received_reports()`, without
+rewriting `command_state.gd` or sharing mutable authority. Mahan keeps its own
+`REPORT_DELAY` (tick-scale for the interlude clock) and its own save envelope.
+
 ## Design concentration
 
 In scope for the interlude family: command, movement, clan/house politics,
 reconnaissance, delayed information, cavalry, logistics and subordinate-command
-decisions. This first slice only delivers the profile skeleton plus one recon/command
-beat. Broad religious-conflict framing is a non-goal.
+decisions. This slice delivers the profile skeleton, delayed scout custody, authored
+column nodes (camp/ford/ridge), a provisions stub, and the fixed endpoint frame. Broad
+religious-conflict framing is a non-goal.
 
 ## Non-goals (this PR)
 
@@ -74,6 +87,7 @@ beat. Broad religious-conflict framing is a non-goal.
 - Touching `schemas/world_state.schema.json`, `data/world/1792_start.json`,
   childhood/Lahore core validators (except test registration), or
   `home_territory.tscn` bytes
+- Rewriting `game/campaign/command_state.gd`
 
 ## Architecture
 
