@@ -24,7 +24,7 @@ No Python, .NET, Bevy, NET service or scientific provider is required to play.
 
 | Menu entry | Current gameplay |
 | --- | --- |
-| **1792 · Buddh Singh · Home territory** | Childhood training, oral accounts, an ambush, a protection agreement and inquiry, then a small Gujranwala supply/production loop. |
+| **1792 · Buddh Singh · Home territory** | Childhood training, oral accounts, an ambush, a protection agreement and inquiry, then Gujranwala supplies/production and a missing-remounts investigation. |
 | **Lahore · Command story** | Separate fictional 1801 sandbox: assign a patrol, play or delegate its captain, investigate and receive a delayed report. |
 | **Lahore · Houses and rivals** | The same command loop with a house dispute, a rideable horse, visible companions, follow/hold orders and physical return. |
 
@@ -53,6 +53,21 @@ Later information is not merged into an earlier attempt.
 [Childhood walkthrough](docs/CHILDHOOD.md) ·
 [Aftermath and checkpoints](docs/AFTERMATH.md) ·
 [Perspective](docs/NARRATIVE_PERSPECTIVE.md)
+
+## Missing remounts: access, witnesses and delayed reports
+
+After the inquiry and allowance, ask the quartermaster about two missing horses.
+Enter the new southern yard with a market introduction, through its service gap,
+or over the low walkable ramp. Face the tally and horses and press E, then return
+with an account. The tally is read aloud; no culprit is automatically identified.
+
+Local witnesses distinguish hearing, seeing and recognition. An unauthorized visit
+can send a physical runner to the duty post; one reserve then visits the reported
+location and returns. Reports do not track the player's live coordinates. Permission,
+observations, relationships and messenger custody survive save/load.
+
+This is a small fictional investigation, not horse collection, new combat or a
+complete faction simulator. [Walkthrough and implementation limits](docs/MISSING_REMOUNTS.md).
 
 ## Gujranwala: earn, provision, build and meet obligations
 
@@ -123,8 +138,9 @@ Menus pause both motion and the scenario clock. The peripheral option changes
 presentation, not knowledge or health. It is not a medical visual-field model,
 and no progressive eye-loss or alcohol mechanic is attached to the child.
 
-The new home profile uses **`user://1792-gujranwala-v1.json`** and a separate
-checkpoint sidecar. Old childhood/aftermath saves can be read by the new loader
+The home profile now uses **`user://1792-remounts-v1.json`** and a separate
+checkpoint sidecar. J offers explicit loading of the prior Gujranwala supply slot.
+Old childhood/aftermath saves can be read by the new loader
 without inventing an allowance or completed contracts. Older checkpoints replace
 the whole later session, including economic progress.
 
@@ -203,7 +219,7 @@ python tools/check_project.py
 python tools/run_checks.py --godot /path/to/godot
 ```
 
-The runner executes every inherited suite plus the home-territory checks.
+The runner executes every inherited suite plus the home-territory and remount checks.
 CI also retains source snapshots, logs and software-rendered captures.
 A successful numerical or scene test is not human playtesting, a physical-GPU
 benchmark, or proof that the historical model is accurate.

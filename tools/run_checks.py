@@ -51,6 +51,8 @@ def main() -> int:
         "fixed-interlude", "FIXED_INTERLUDE_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_gujranwala.gd"],
         "gujranwala", "GUJRANWALA_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_remounts.gd"],
+        "remounts", "REMOUNTS_TESTS:")
     return 0
 
 
