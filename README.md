@@ -32,6 +32,29 @@ supply contracts and the missing-remounts investigation remain in the same entry
 New stalls and sacks are environmental detail, not a second trading economy.
 [Town walkthrough, research and implementation](docs/GUJRANWALA_TOWN.md).
 
+## New: a working smith's commission
+
+The west-side courtyard now has a **playable workshop errand**, not just scenery.
+After the household inquiry and allowance, ask the quartermaster to commission
+two tool bundles. Carry **two timber bundles and four household coins** through
+the west gate to the smith. Hand them over, let ten active seconds pass, collect
+the finished bundles, and carry them home. Tools enter household stock only when
+you return them to the quartermaster. The timber and payment come from the same
+stores and coffers used for construction and upkeep.
+
+Carried loads are visible, restrict you to a walk, and prevent mounting. You can
+cancel before handover; a full store refuses a return without destroying the
+load. The smith visibly works while the order is active; nearby pottery and
+cloth work poses follow the existing chapter clock. These are bounded authored
+activities, not a general autonomous town population.
+
+**Current save:** `1792-gujranwala-workshop-v1.json`. **M** offers an explicit
+import of the previous town save. Old saves invent no commission, and rollback
+removes later workshop progress. **E** handles local interactions; **B** keeps the
+oral accounts; **F5/F9** saves/loads the whole chapter.
+
+[Workshop walkthrough, mechanics and validation](docs/GUJRANWALA_WORKSHOP.md).
+
 ## Start playing
 
 Import **`game/project.godot`** into standard **Godot 4.5.1** and press **F5**.
@@ -39,7 +62,7 @@ No Python, .NET, Bevy, NET service or scientific provider is required to play.
 
 | Menu entry | Current gameplay |
 | --- | --- |
-| **1792 · Buddh Singh · Home territory** | Childhood training, oral accounts, an ambush, a protection agreement and inquiry, then supplies/production, a missing-remounts investigation and connected town exploration. |
+| **1792 · Buddh Singh · Home territory** | Childhood training, oral accounts, an ambush, a protection agreement and inquiry, then supplies/production, a missing-remounts investigation, connected town exploration and a workshop commission. |
 | **Lahore · Command story** | Separate fictional 1801 sandbox: assign a patrol, play or delegate its captain, investigate and receive a delayed report. |
 | **Lahore · Houses and rivals** | The same command loop with a house dispute, a rideable horse, visible companions, follow/hold orders and physical return. |
 
@@ -143,6 +166,8 @@ a bounded flat-lane profile.
 | Q / left click in childhood | Guard / counter |
 | C in childhood | Quiet approach |
 | B in home territory | Oral supply accounts |
+| M in home territory | Remembered places and prior-town save import |
+| F2 in home territory | Reconstruction notes, outside character knowledge |
 | G | Household guard or patrol follow/hold, where available |
 | J / F1 | Childhood journal / pause |
 | H in Houses and rivals | Antagonist codex |
@@ -154,8 +179,9 @@ Menus pause both motion and the scenario clock. The peripheral option changes
 presentation, not knowledge or health. It is not a medical visual-field model,
 and no progressive eye-loss or alcohol mechanic is attached to the child.
 
-The home profile now uses **`user://1792-remounts-v1.json`** and a separate
-checkpoint sidecar. J offers explicit loading of the prior Gujranwala supply slot.
+The home profile now uses **`user://1792-gujranwala-workshop-v1.json`** and a separate
+checkpoint sidecar. M explicitly imports the prior town or remounts slot;
+J retains loading of the earlier Gujranwala supply slot.
 Old childhood/aftermath saves can be read by the new loader
 without inventing an allowance or completed contracts. Older checkpoints replace
 the whole later session, including economic progress.
@@ -235,7 +261,8 @@ python tools/check_project.py
 python tools/run_checks.py --godot /path/to/godot
 ```
 
-The runner executes every inherited suite plus the home-territory and remount checks.
+The runner executes every inherited suite, including town travel, supplies, remounts
+and the workshop commission.
 CI also retains source snapshots, logs and software-rendered captures.
 A successful numerical or scene test is not human playtesting, a physical-GPU
 benchmark, or proof that the historical model is accurate.
