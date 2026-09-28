@@ -1,6 +1,6 @@
 # Mahan integration fence audit
 
-Tip audited: draft PR #9 `feat/mahan-interlude-v1` @ `99fa0cab01ed3223d9517ac8f15885d23d5a0a25` (pre-fence commit), then fence-test landing on the same branch.
+Tip audited: draft PR #9 `feat/mahan-interlude-v1` (fence matrix + opt-in handoff cutter). Prior fence landing retained; handoff stub added on tip.
 
 Scope: **Mahan vs childhood vs Lahore** save / knowledge / identity / ontology / schema / menu fences. No architecture rewrite. Core validators and `world_state.schema.json` / `home_territory.tscn` left untouched except test registration.
 
@@ -15,7 +15,7 @@ Automated proof lives in:
 | # | Fence | Result | Proof | Notes |
 | --- | --- | --- | --- | --- |
 | 1 | **Save isolation** — Mahan save must not load into childhood / aftermath / command / house slots and vice versa | **PASS** | `test_mahan.gd` `_cross_profile_fence`; **extended** in `test_mahan_fence.gd` `_save_isolation` | Bidirectional file + dictionary refuse for childhood, aftermath, Lahore `command_state`, and `house_command_state`. Canonical paths stay distinct (`user://1792-mahan-v1.json` ≠ childhood/aftermath/command/house). |
-| 2 | **Knowledge isolation** — Mahan journal / `known_nodes` / history events must not appear in Ranjit/Buddh childhood or Lahore `known_places` after any transition stub (no auto handoff) | **PASS** (no handoff exists) | `test_mahan_fence.gd` `_knowledge_isolation`; prior Gujranwala epistemic checks in `test_mahan.gd` | Grafting Mahan nodes into childhood `known_places` or Lahore allowlist is refused; childhood journal lacks Mahan tokens; no `handoff_to_*` / `merge_knowledge` APIs; history `profile_scope` stays `mahan.v1`. |
+| 2 | **Knowledge isolation** — Mahan journal / `known_nodes` / history events must not appear in Ranjit/Buddh childhood or Lahore `known_places` after any transition stub (no auto handoff) | **PASS** (default deny; opt-in cutter) | `test_mahan_fence.gd` `_knowledge_isolation`; **`test_mahan_handoff.gd`**; prior Gujranwala epistemic checks in `test_mahan.gd` | Grafting Mahan nodes into childhood `known_places` or Lahore allowlist is refused; childhood journal lacks Mahan tokens; no silent `handoff_to_*` / `merge_knowledge` on the Mahan authority; explicit `mahan_handoff.gd` cutter **refuses by default** and never copies journal wholesale; history `profile_scope` stays `mahan.v1`. |
 | 3 | **Identity** — `HERO_ID` remains `ranjit_singh`; `mahan_singh` is separate; Lahore riding validate still rejects `mahan_singh` | **PASS** | `test_mahan_cavalry.gd`; **extended** in `test_mahan_fence.gd` `_identity` | Explicit `Names.HERO_ID == "ranjit_singh"`; positive control that `Riding.validate` still admits `ranjit_singh`. |
 | 4 | **Ontology** — Sukerchakia household ≠ person; no Raj Kaur on Sandhawalia in Mahan data | **PASS** | cavalry / logistics / politics / orders / history suites; **extended** in `test_mahan_fence.gd` `_ontology` | `household_id: sukerchakia` is not an `actors` Person key; Sandhawalia / Person-as-household restores refused; Raj Kaur / Sandhawalia / Phulkian tokens absent from snapshot + authored catalog. |
 | 5 | **Schema** — `historical_event.schema.json` additive; `world_state.schema.json` unchanged digest | **PASS** | `check_project.py` `test_original_world_schema_is_not_replaced` (git blob sha1 `5bb28190…`); history suite + fence schema smoke | Optional `historical-event.v1` / `historical-location.v1` only. Mirror sync: tip had drifted `game/mahan/data/locations/gujranwala_settlement.json` vs `data/history/…` (`connects` missing `gujranwala_camp`); **synced to `data/history` copy** so `check_project` identity holds. |
@@ -39,7 +39,7 @@ Automated proof lives in:
 
 | Gap | Severity | Suggested follow-up |
 | --- | --- | --- |
-| No authored *transition scene* yet — fence proves absence of handoff APIs and graft refusal, not a future accession cutter | Low (by design) | When an accession beat is authored, add an explicit refuse/opt-in test rather than silent merge |
+| Opt-in handoff cutter stub landed (`mahan_handoff.gd`) — still no accession *scene* / Buddh receiver UI; live childhood slot write refused (future) | Low (by design) | Keep `mahan-handoff` green; future receiver must stay allowlist-gated; never silent journal merge |
 | Player-facing save UI still uses per-chapter paths; no shared save browser that could mix slots | Low | Keep chapter-local F5/F9; if a meta save UI appears, gate by `profile` |
 | `test_mahan.gd` Gujranwala cases are on tip; concurrent-agent PLACEHOLDER risk on core files remains procedural | Process | Keep ledger “do not stub” note; prefer `push_files` for large restores |
 | Full `run_checks` wall-clock across all non-Mahan suites not re-proven in this beat if machine time-boxes | Ops | Re-run full `tools/run_checks.py --godot …` on tip after fence land |
@@ -59,6 +59,22 @@ Automated proof lives in:
 
 ## Suggested next beat
 
-1. Keep fence suite green on every Mahan tip push.
-2. If accession / Buddh handoff is designed, add an *opt-in* transfer schema with explicit player consent — never silent journal merge.
-3. Optional: pack any remaining local-only Gujranwala march-node extras already noted in the PR body.
+1. Keep `mahan-fence` + `mahan-handoff` green on every Mahan tip push.
+2. Buddh-side receiver UI (still allowlist + controller opt-in; never silent journal merge; no childhood slot write until explicitly designed).
+3. Optional: fuller Gujranwala combat/town sim (explicit opt-in) — still no alternate-history survival.
+
+
+## Handoff cutter (this beat)
+
+| Item | Result | Proof |
+| --- | --- | --- |
+| Default refuse (`can_handoff` / propose / apply) | **PASS** | `test_mahan_handoff.gd` `_default_refuse` |
+| Wholesale journal merge refused | **PASS** | `_reject_wholesale_journal` |
+| `known_nodes` → fake Buddh bag without allowlist refused | **PASS** | `_reject_known_nodes_without_allowlist` |
+| Opt-in propose + dry-run apply (no slot write) | **PASS** | `_opt_in_propose_and_dry_run` |
+| Childhood slot write + historical_outcome mutate refused | **PASS** | `_refuse_childhood_slot_and_outcome` |
+| Design doc | **PASS** | `docs/MAHAN_HANDOFF.md` |
+
+Docs: [MAHAN_HANDOFF.md](MAHAN_HANDOFF.md). Module: `game/mahan/mahan_handoff.gd`.
+
+Local wall-clock this beat: structure **9 OK**; prior mahan family unchanged; **mahan-handoff 101** passed, 0 failed.
