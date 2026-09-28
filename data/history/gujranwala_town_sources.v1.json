@@ -1,0 +1,50 @@
+{
+  "schema": "1792.town-research.v1",
+  "accessed": "2026-09-28",
+  "map_id": "gujranwala-neighbourhood.v1",
+  "georeferenced": false,
+  "sources": [
+    {
+      "id": "doam_birthplace",
+      "publisher": "Department of Archaeology and Museums, Pakistan",
+      "title": "Ranjit Singh Birthplace",
+      "url": "https://doam.gov.pk/public/sites/10111",
+      "underlying_reference": "Asian Historical Architecture; retrieved 2021; anonymous in catalogue",
+      "supports": "Brick/plaster/wood courtyard architectural vocabulary and tentative historical open-space context",
+      "does_not_establish": "Exact 1792 plan, footprints, survey or street locations"
+    },
+    {
+      "id": "doam_samadhi",
+      "publisher": "Department of Archaeology and Museums, Pakistan",
+      "title": "Mahan Singh Samadhi",
+      "url": "https://doam.gov.pk/public/sites/10110",
+      "supports": "Reported 1835 construction is later than the opening scene",
+      "constraint": "Do not instantiate this monument in the 1792 neighbourhood",
+      "chronology_limit": "Entry has conflicting 1790/1792 death/rule references; no death-year decision made"
+    },
+    {
+      "id": "doam_baradari",
+      "publisher": "Department of Archaeology and Museums, Pakistan",
+      "title": "Baradari at Sheranwala Garden",
+      "url": "https://doam.gov.pk/public/sites/6546",
+      "underlying_reference": "Ahmad Nabi Khan, archaeological monuments catalogue, 1987",
+      "supports": "Attributed to Ranjit Singh's reign, relative chronology 1799-1849",
+      "constraint": "Do not instantiate this monument at the 1792 opening"
+    }
+  ],
+  "authored": {
+    "building_count": 7,
+    "bazaar_stalls": 6,
+    "landmarks": 5,
+    "extent_local_metres": [
+      -58,
+      28,
+      -80,
+      28
+    ],
+    "placement_evidence_class": "D",
+    "architecture_type_class": "B",
+    "compression_and_access_gates_class": "C",
+    "exact_historical_layout": false
+  }
+}
