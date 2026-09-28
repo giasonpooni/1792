@@ -70,6 +70,69 @@ class ProjectChecks(unittest.TestCase):
         digest = hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest()
         self.assertEqual(digest, "5bb28190b77453920895b0595b260822d3f22b61")
 
+
+    def test_mahan_historical_events_match_schema_shape(self) -> None:
+        schema = json.loads((ROOT / "schemas/historical_event.schema.json").read_text())
+        self.assertEqual(schema["$id"], "https://1792.game/schemas/historical_event.schema.json")
+        self.assertEqual(schema["properties"]["schema_version"]["const"], "historical-event.v1")
+        # world_state schema remains untouched (digest asserted elsewhere).
+        root_events = sorted(p.name for p in (ROOT / "data/history").glob("*.json"))
+        game_events = sorted(p.name for p in (GAME / "mahan/data").glob("*.json"))
+        self.assertEqual(root_events, game_events)
+        self.assertEqual(root_events, [
+            "mahan_gujranwala_home_ground.json",
+            "mahan_late_campaign_illness.json",
+            "mahan_singh_death_fixed.json",
+        ])
+        loc_root = sorted(p.name for p in (ROOT / "data/history/locations").glob("*.json"))
+        loc_game = sorted(p.name for p in (GAME / "mahan/data/locations").glob("*.json"))
+        self.assertEqual(loc_root, loc_game)
+        self.assertIn("gujranwala_settlement.json", loc_root)
+        self.assertIn("gujranwala_fort_road.json", loc_root)
+        self.assertIn("gujranwala_camp.json", loc_root)
+        schema_loc = json.loads((ROOT / "schemas/historical_location.schema.json").read_text())
+        self.assertEqual(schema_loc["properties"]["schema_version"]["const"], "historical-location.v1")
+        for name in loc_root:
+            root_bytes = (ROOT / "data/history/locations" / name).read_bytes()
+            game_bytes = (GAME / "mahan/data/locations" / name).read_bytes()
+            self.assertEqual(root_bytes, game_bytes, name)
+            loc = json.loads(root_bytes)
+            self.assertEqual(loc["schema_version"], "historical-location.v1")
+            for key in schema_loc["required"]:
+                self.assertIn(key, loc)
+            self.assertEqual(loc["gameplay"].get("profile_scope", "mahan.v1"), "mahan.v1")
+            blob = json.dumps(loc).lower()
+            for token in ["raj_kaur", "phulkian", "sandhawalia"]:
+                self.assertNotIn(token, blob)
+        # Events may reference Gujranwala place ids
+        illness = json.loads((ROOT / "data/history/mahan_late_campaign_illness.json").read_text())
+        self.assertIn("gujranwala_fort_road", illness["location"].get("related_place_ids", []))
+        home = json.loads((ROOT / "data/history/mahan_gujranwala_home_ground.json").read_text())
+        self.assertEqual(home["location"]["place_id"], "gujranwala_settlement")
+        for name in root_events:
+            root_bytes = (ROOT / "data/history" / name).read_bytes()
+            game_bytes = (GAME / "mahan/data" / name).read_bytes()
+            self.assertEqual(root_bytes, game_bytes, name)
+            event = json.loads(root_bytes)
+            self.assertEqual(event["schema_version"], "historical-event.v1")
+            for key in schema["required"]:
+                self.assertIn(key, event)
+            self.assertFalse(event["knowledge"]["player_knowledge"])
+            self.assertEqual(event["gameplay"].get("profile_scope", "mahan.v1"), "mahan.v1")
+            kinds = {}
+            for actor in event["actors"]:
+                aid = actor["id"]
+                kind = actor["kind"]
+                self.assertIn(kind, ["person", "household", "faction"])
+                if aid in kinds:
+                    self.assertEqual(kinds[aid], kind)
+                kinds[aid] = kind
+            blob = json.dumps(event).lower()
+            for token in ["raj_kaur", "phulkian", "sandhawalia"]:
+                self.assertNotIn(token, blob)
+            if event["historical_outcome"]["fixed"]:
+                self.assertNotEqual(event["gameplay"]["intervention_scope"], "alter_outcome")
+
     def test_main_menu_keeps_both_entries(self) -> None:
         project = (GAME / "project.godot").read_text()
         menu = (GAME / "ui/main_menu.gd").read_text()
