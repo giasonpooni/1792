@@ -1,0 +1,74 @@
+name: Missing remounts qualification
+on:
+  pull_request:
+    paths:
+      - 'game/**'
+      - 'tools/**'
+      - '.github/workflows/remounts-qualification.yml'
+permissions:
+  contents: read
+concurrency:
+  group: remounts-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  godot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Install exact existing Godot runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/godot"
+          curl --fail --location --retry 3 --max-time 180 'https://github.com/godotengine/godot-builds/releases/download/4.5.1-stable/Godot_v4.5.1-stable_linux.x86_64.zip' -o "$RUNNER_TEMP/godot.zip"
+          echo "02ec53d1cc7dbb9cc6355393c61b9ab43d1244751a124f10248a4802830788cd  $RUNNER_TEMP/godot.zip" | sha256sum --check
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
+      - name: Existing and added game checks
+        run: python3 tools/run_checks.py --godot "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
+      - name: Actual software-rendered remount scenes
+        shell: bash
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install --yes --no-install-recommends xvfb xauth libgl1-mesa-dri
+          timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --path game --rendering-method gl_compatibility --audio-driver Dummy --script res://tests/render_remounts.gd 2>&1 | tee test-results/remounts-render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/remounts-render.log
+          grep -q 'REMOUNTS_RENDER: 7 captures; 0 failures' test-results/remounts-render.log
+          mkdir -p test-results/remounts-screenshots
+          cp "$HOME/.local/share/godot/app_userdata/1792/"remounts-*.png test-results/remounts-screenshots/
+          cp "$HOME/.local/share/godot/app_userdata/1792/remounts-trace.json" test-results/
+      - name: Render research-informed Gujranwala fabric
+        shell: bash
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          set -euo pipefail
+          timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --path game --rendering-method gl_compatibility --audio-driver Dummy --script res://tests/render_gujranwala_fabric.gd 2>&1 | tee test-results/fabric-render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/fabric-render.log
+          grep -q 'GUJRANWALA_FABRIC_RENDER: 5 captures; 0 failures' test-results/fabric-render.log
+          mkdir -p test-results/fabric-screenshots
+          cp "$HOME/.local/share/godot/app_userdata/1792/"fabric-*.png test-results/fabric-screenshots/
+          cp "$HOME/.local/share/godot/app_userdata/1792/gujranwala-fabric-manifest.json" test-results/
+      - name: Bind retained source and runtime
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p test-results
+          git rev-parse HEAD > test-results/source-commit.txt
+          git rev-parse HEAD^{tree} > test-results/source-tree.txt
+          git archive --format=tar HEAD > test-results/source.tar
+          sha256sum "$RUNNER_TEMP/godot.zip" > test-results/runtime-sha256.txt
+      - name: Retain logs, source, trace and captures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: missing-remounts-evidence
+          path: test-results/
+          retention-days: 14
