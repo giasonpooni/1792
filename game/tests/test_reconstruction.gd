@@ -45,6 +45,10 @@ func _run() -> void:
 	check(not Fabric.validate(bad).is_empty(),"existing simulation frame retained")
 	bad=data.duplicate(true);bad.routes=[]
 	check(not Fabric.validate(bad).is_empty(),"protected routes required")
+	bad=data.duplicate(true);bad.extent=[-28,28,-28,28]
+	check(Fabric.validate(bad).is_empty(),"integer and JSON-float bounds agree")
+	bad=data.duplicate(true);bad.extent=[-28,28.5,-28,28]
+	check(not Fabric.validate(bad).is_empty(),"numeric normalization does not widen bounds")
 	var model:=State.new()
 	var narrator:=Narrator.new()
 	var before:=model.snapshot()

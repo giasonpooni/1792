@@ -22,7 +22,13 @@ static func _vec(value: Variant, positive: bool = false) -> bool:
 static func validate(value: Variant) -> String:
 	if not value is Dictionary or value.get("schema")!="1792.gujranwala-reconstruction.v1": return "Unknown reconstruction contract."
 	if value.get("year")!=1792 or value.get("georeferenced")!=false: return "Wrong epoch or invented georeferencing."
-	if value.get("id")!="gujranwala-fabric.v1" or value.get("frame")!="gujranwala-compressed-local-metres" or value.get("extent")!=[-28,28,-28,28]: return "Unsupported model frame."
+	if value.get("id")!="gujranwala-fabric.v1" or value.get("frame")!="gujranwala-compressed-local-metres": return "Unsupported model frame."
+	var bounds: Variant=value.get("extent")
+	if not bounds is Array or bounds.size()!=4: return "Invalid bounds."
+	# JSON numbers are floats in Godot; Array equality is type-sensitive.
+	var expected: Array[float]=[-28.0,28.0,-28.0,28.0]
+	for i in range(4):
+		if typeof(bounds[i]) not in [TYPE_INT,TYPE_FLOAT] or float(bounds[i])!=expected[i]: return "Unsupported bounds."
 	for key in ["features","claims","sources","exclusions","routes","ambient"]:
 		if not value.get(key) is Array: return "Missing reconstruction collection: "+key
 	var sources: Array=[]

@@ -11,7 +11,7 @@ The player knows himself as Buddh. In the authored later campaign, other
 characters address him as **Ranjit Singh**, formally **Maharaja Ranjit Singh**.
 The timing of that public-name switch is a narrative convention, not a finding
 that the historical childhood renaming occurred at accession. Internal
-`ranjit_singh` references remain stable. [Naming policy](docs/CHARACTER_NAMES.md).
+`ranjit_singh` references remain stable. [Naming policy](CHARACTER_NAMES.md).
 
 **Early playable greybox, not a finished historical reconstruction.** There are
 no production character models, finished cities, full combat system, or complete
@@ -50,9 +50,9 @@ Checkpoints before the ambush and before the aftermath allow retrying an attempt
 **R** restores the last checkpoint, including its earlier memories and decisions.
 Later information is not merged into an earlier attempt.
 
-[Childhood walkthrough](docs/CHILDHOOD.md) ·
-[Aftermath and checkpoints](docs/AFTERMATH.md) ·
-[Perspective](docs/NARRATIVE_PERSPECTIVE.md)
+[Childhood walkthrough](CHILDHOOD.md) ·
+[Aftermath and checkpoints](AFTERMATH.md) ·
+[Perspective](NARRATIVE_PERSPECTIVE.md)
 
 ## Gujranwala: earn, provision, build and meet obligations
 
@@ -96,8 +96,8 @@ yard, with farmland scenery beyond the boundary. It is not surveyed Gujranwala,
 a historical Misl border or streamed Punjab. Current group navigation remains
 a bounded flat-lane profile.
 
-[Home territory and economic rules](docs/GUJRANWALA.md) ·
-[Coupled campaign direction](docs/COUPLED_CAMPAIGN.md)
+[Home territory and economic rules](GUJRANWALA.md) ·
+[Coupled campaign direction](COUPLED_CAMPAIGN.md)
 
 ## Controls and saves
 
@@ -151,8 +151,8 @@ well as an appropriate commission. Return with everyone and check in on foot.
 Resources remain reserved until check-in and the delayed report releases the
 original riders once. Without mustering, the earlier abstract patrol remains.
 
-[Commands](docs/COMMAND_STORIES.md) · [House dispute](docs/HOUSE_CONFLICT.md) ·
-[Riding](docs/RIDING.md) · [Companions](docs/COMPANIONS.md)
+[Commands](COMMAND_STORIES.md) · [House dispute](HOUSE_CONFLICT.md) ·
+[Riding](RIDING.md) · [Companions](COMPANIONS.md)
 
 ## People, perspective and the fixed past
 
@@ -172,7 +172,7 @@ ending: **Mahan dies; Buddh succeeds; the story revisits Buddh's beginning and
 returns to the suspended present**. The sequencing/preservation contract is
 implemented. Father missions, reprise scenes, the 1797–1798 world and its actual
 scene router are **not yet playable**. No retrospective loot or private knowledge
-is transferred into Buddh's present. [Interlude contract](docs/MAHAN_INTERLUDE.md).
+is transferred into Buddh's present. [Interlude contract](MAHAN_INTERLUDE.md).
 
 ## Architecture and scope
 
@@ -194,7 +194,7 @@ targets, not capabilities implied by this prototype.
 Our design muses include *Prince of Persia*, *Red Dead*, *Saints Row 2*,
 *Elder Scrolls*, *GTA*, *Victoria 2*, *Assassin's Creed*, *The Witcher*, *Far Cry*,
 *Splinter Cell* and *Shogun/Total War*. They are aspect-level inspirations, not
-affiliations or borrowed proprietary assets. [Design references](docs/INSPIRATIONS.md).
+affiliations or borrowed proprietary assets. [Design references](INSPIRATIONS.md).
 
 ## Develop and verify
 
@@ -221,8 +221,8 @@ Documented history, attributed accounts, reconstruction, gameplay abstraction an
 fictional connective material remain distinct. Authoring an antagonist does not
 verify every allegation about a real person's private motives.
 
-[Historical sources](docs/HISTORICAL_SOURCES.md) ·
-[Historical method](docs/HISTORICAL_METHOD.md) ·
-[Game design](docs/GAME_DESIGN.md)
+[Historical sources](HISTORICAL_SOURCES.md) ·
+[Historical method](HISTORICAL_METHOD.md) ·
+[Game design](GAME_DESIGN.md)
 
 **Make one small journey and its obligations work before building all Punjab.**
