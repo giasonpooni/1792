@@ -57,6 +57,8 @@ def main() -> int:
         "mahan-politics", "MAHAN_POLITICS_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_mahan_orders.gd"],
         "mahan-orders", "MAHAN_ORDERS_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_mahan_history.gd"],
+        "mahan-history", "MAHAN_HISTORY_TESTS:")
     return 0
 
 
