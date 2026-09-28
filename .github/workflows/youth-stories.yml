@@ -1,0 +1,28 @@
+name: Youth runtime qualification bootstrap
+on:
+  push:
+    branches: [feat/youth-stories-bazaar-v1]
+    paths: ['.github/workflows/youth-stories.yml']
+permissions:
+  contents: read
+jobs:
+  runtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify existing pinned runtime for development
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/runtime"
+          curl --fail --location --retry 3 --max-time 180 'https://github.com/godotengine/godot-builds/releases/download/4.5.1-stable/Godot_v4.5.1-stable_linux.x86_64.zip' -o "$RUNNER_TEMP/runtime/godot.zip"
+          echo "02ec53d1cc7dbb9cc6355393c61b9ab43d1244751a124f10248a4802830788cd  $RUNNER_TEMP/runtime/godot.zip" | sha256sum --check
+          cp licenses/third-party/Godot-MIT.txt "$RUNNER_TEMP/runtime/"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: youth-dev-runtime
+          path: ${{ runner.temp }}/runtime/
+          retention-days: 1
