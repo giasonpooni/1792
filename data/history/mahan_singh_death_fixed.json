@@ -12,7 +12,12 @@
   "location": {
     "place_id": "sukarchakia_field_camp",
     "label": "Sukerchakia field context (authored place string)",
-    "certainty": "authored"
+    "certainty": "authored",
+    "related_place_ids": [
+      "gujranwala_settlement",
+      "gujranwala_garhi",
+      "gujranwala_fort_road"
+    ]
   },
   "actors": [
     {
