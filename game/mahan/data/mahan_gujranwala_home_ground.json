@@ -1,0 +1,81 @@
+{
+  "schema_version": "historical-event.v1",
+  "event_id": "mahan_gujranwala_home_ground",
+  "title": "Gujranwala as Sukerchakia home-ground (authored frame)",
+  "summary": "Authored recognition that Gujranwala is the Sukerchakia political home-ground behind the field column. Secondary narratives place Charat Singh's HQ move and Mahan's garhi motif here; this event is game-canon connective tissue for location references, not a primary-source quotation.",
+  "date_range": {
+    "start_year": 1774,
+    "end_year": 1790,
+    "precision": "approximate",
+    "note": "Broad HQ window under Charat/Mahan; interlude uses it as named home-ground, not a dated scene."
+  },
+  "location": {
+    "place_id": "gujranwala_settlement",
+    "label": "Gujranwala settlement (home-ground)",
+    "certainty": "reconstructed",
+    "related_place_ids": [
+      "gujranwala_garhi",
+      "gujranwala_fort_road",
+      "gujranwala_lahore_approach",
+      "sukarchakia_field_camp"
+    ]
+  },
+  "actors": [
+    {
+      "id": "mahan_singh",
+      "role": "household_chief",
+      "kind": "person"
+    },
+    {
+      "id": "sukerchakia",
+      "role": "household_home_ground",
+      "kind": "household"
+    }
+  ],
+  "evidence": [
+    {
+      "source": "nominated_secondary_narratives (Sukerchakia HQ at Gujranwala; Garhi Mahan Singh motif)",
+      "confidence": "medium",
+      "evidence_class": "B",
+      "note": "Reconstructed home-ground association; no invented primary citation."
+    },
+    {
+      "source": "game_canon.mahan_interlude_gujranwala_home_ground",
+      "confidence": "none",
+      "evidence_class": "C",
+      "note": "Named so historical events/locations can reference Gujranwala without a town sim."
+    }
+  ],
+  "canon_class": "game_canon",
+  "historical_outcome": {
+    "fixed": false,
+    "summary": "Home-ground framing only; does not alter fixed death or open Gujranwala as a combat map.",
+    "invariants": [
+      "reference_home_ground_only",
+      "person_not_household_collapse"
+    ]
+  },
+  "knowledge": {
+    "direct_observers": [
+      "mahan_singh"
+    ],
+    "report_routes": [
+      {
+        "from": "fictional_camp_retainer",
+        "to": "mahan_singh",
+        "channel": "delayed_historical_report"
+      }
+    ],
+    "propagation_delay": 60,
+    "player_knowledge": false
+  },
+  "gameplay": {
+    "playable": true,
+    "intervention_scope": "observe",
+    "historical_invariants": [
+      "observe_or_delayed_report_only",
+      "no_town_sim"
+    ],
+    "profile_scope": "mahan.v1"
+  }
+}
