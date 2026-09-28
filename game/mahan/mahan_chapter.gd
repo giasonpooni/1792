@@ -90,10 +90,10 @@ func _interact() -> void:
 			_notice = "No interaction here."
 
 func _open_dispatch_panel() -> void:
-	var lines := "Dispatch a scout detachment. The report is not knowledge until it arrives (delay %d ticks).\nProvisions: %d." % [Model.REPORT_DELAY, campaign.provisions()]
+	var lines := "Dispatch a scout detachment. The report is not knowledge until it arrives (delay %d ticks).\nProvisions: %d.\nTargets include the ford/ridge line and the Gujranwala home-ground approach." % [Model.REPORT_DELAY, campaign.provisions()]
 	var actions: Array = []
-	actions.append(["Scout the ford approach (−%d provisions)" % Model.DISPATCH_COST, "dispatch_ford"])
-	actions.append(["Scout the ridge approach (−%d provisions)" % Model.DISPATCH_COST, "dispatch_ridge"])
+	for target in Model.scout_targets():
+		actions.append(["Scout the %s (−%d provisions)" % [Model.node_label(target), Model.DISPATCH_COST], "dispatch_%s" % target])
 	actions.append(["Cancel", "close"])
 	_open_panel("Scout dispatch", lines, actions)
 
@@ -122,6 +122,25 @@ func _open_journal() -> void:
 	_open_panel("Field journal", "\n".join(lines), [["Close", "close"]])
 
 func _perform(action: String) -> void:
+	if action.begins_with("dispatch_"):
+		var target := action.trim_prefix("dispatch_")
+		var err: String = campaign.dispatch_scout(target)
+		if err.is_empty():
+			_notice = "Detachment sent to the %s. Knowledge updates only when the report arrives." % Model.node_label(target)
+		else:
+			_notice = err
+		_close()
+		return
+	if action.begins_with("march_"):
+		var dest := action.trim_prefix("march_")
+		var err3: String = campaign.march_to(dest)
+		if err3.is_empty():
+			avatar.global_position = campaign.position()
+			_notice = "Column marched to the %s." % Model.node_label(dest)
+		else:
+			_notice = err3
+		_close()
+		return
 	match action:
 		"close":
 			_close()
@@ -134,29 +153,12 @@ func _perform(action: String) -> void:
 		"open_dispatch":
 			_close()
 			_open_dispatch_panel()
-		"dispatch_ford", "dispatch_ridge":
-			var target := action.trim_prefix("dispatch_")
-			var err: String = campaign.dispatch_scout(target)
-			if err.is_empty():
-				_notice = "Detachment sent to the %s. Knowledge updates only when the report arrives." % target
-			else:
-				_notice = err
-			_close()
 		"advance_scouts", "hold_for_corroboration":
 			var err2: String = campaign.decide_column(action)
 			if err2.is_empty():
 				_notice = "Column order recorded. Press E to march (if advancing) or acknowledge the fixed endpoint."
 			else:
 				_notice = err2
-			_close()
-		"march_ford", "march_ridge", "march_camp":
-			var dest := action.trim_prefix("march_")
-			var err3: String = campaign.march_to(dest)
-			if err3.is_empty():
-				avatar.global_position = campaign.position()
-				_notice = "Column marched to the %s." % dest
-			else:
-				_notice = err3
 			_close()
 		"ack_endpoint":
 			var err4: String = campaign.acknowledge_fixed_endpoint()
@@ -191,6 +193,9 @@ func _build_world() -> void:
 	_marker(Model.SITES.camp, Color("8b6b4a"), "Column · camp")
 	_marker(Model.SITES.ford, Color("5a7a8b"), "Ford")
 	_marker(Model.SITES.ridge, Color("6b5a7a"), "Ridge")
+	_marker(Model.SITES.gujranwala_fort_road, Color("7a6b4a"), "Gujranwala fort road")
+	_marker(Model.SITES.gujranwala_camp, Color("8a5a4a"), "Gujranwala camp")
+	_marker(Model.SITES.gujranwala_settlement, Color("9a4a3a"), "Gujranwala town")
 
 func _marker(p: Vector3, color: Color, label_text: String) -> void:
 	var mesh := MeshInstance3D.new()
