@@ -32,10 +32,13 @@ jobs:
           GODOT="$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
           timeout 90 "$GODOT" --headless --path game --editor --import --quit 2>&1 | tee test-results/political-import.log
           ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/political-import.log
+          for SCRIPT in test_political_exposure render_political_vision; do
+            timeout 30 "$GODOT" --headless --path game --check-only --script "res://tests/$SCRIPT.gd" 2>&1 | tee "test-results/$SCRIPT-parse.log"
+            ! grep -E '^(SCRIPT ERROR|ERROR):' "test-results/$SCRIPT-parse.log"
+          done
           timeout 180 "$GODOT" --headless --path game --script res://tests/test_political_exposure.gd 2>&1 | tee test-results/political-tests.log
           ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/political-tests.log
           grep -E 'POLITICAL_EXPOSURE: [0-9]+ assertions; 0 failures' test-results/political-tests.log
-          cp "$HOME/.local/share/godot/app_userdata/1792/political-1000.jsonl" test-results/
       - name: Software-rendered perception and journal fixtures
         shell: bash
         env:
@@ -49,6 +52,13 @@ jobs:
           grep -q 'POLITICAL_RENDER: 6 captures; 0 failures' test-results/political-render.log
           mkdir -p test-results/screenshots
           cp "$HOME/.local/share/godot/app_userdata/1792/"political-*.png test-results/screenshots/
+      - name: Retain campaign trace even on failure
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p test-results
+          TRACE="$HOME/.local/share/godot/app_userdata/1792/political-1000.jsonl"
+          if [ -f "$TRACE" ]; then cp "$TRACE" test-results/; fi
       - name: Retain verification evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

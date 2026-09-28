@@ -19,6 +19,10 @@ func check(condition: bool, message: String) -> void:
 		failures += 1
 		printerr("FAIL: "+message)
 
+func wire(value: Variant) -> Variant:
+	# JSON has one number type; compare full serialized values rather than Variant type tags.
+	return JSON.parse_string(JSON.stringify(value,"",true,true))
+
 func _complete() -> Campaign:
 	var m := Campaign.new()
 	check(m.restore(Fixture.survived()).is_empty(),"import survived fixture")
@@ -150,13 +154,16 @@ func _run() -> void:
 	for i in range(600): m.advance()
 	check(m.validate(m.snapshot()).is_empty(),"extended snapshot validates")
 	var clone := Campaign.new()
-	check(clone.restore(JSON.parse_string(JSON.stringify(m.snapshot(),"",true,true))).is_empty(),"restore extended world")
+	check(clone.restore(wire(m.snapshot())).is_empty(),"restore extended world")
 	check(clone.political_debug() == m.political_debug(),"restored hidden state is reproduced, not merged")
 	check(clone.journal() == m.journal(),"restored knowledge is reproduced")
 	before = JSON.stringify(m.snapshot())
 	bad = m.snapshot()
 	bad.erase("vision")
 	check(not m.restore(bad).is_empty() and JSON.stringify(m.snapshot()) == before,"missing extended identity refused atomically")
+	bad = m.snapshot()
+	bad.erase("aftermath")
+	check(not m.restore(bad).is_empty() and JSON.stringify(m.snapshot()) == before,"missing household identity refused atomically")
 	bad = m.snapshot()
 	bad.vision.onset_tick = -1
 	check(not m.restore(bad).is_empty() and JSON.stringify(m.snapshot()) == before,"invalid vision refused atomically")
@@ -169,7 +176,14 @@ func _run() -> void:
 	check(Checkpoint.write("user://test-political-checkpoint.json",cp.snapshot(),Vector3.ZERO,"return_trail",Campaign).is_empty(),"shared checkpoint store accepts declared authority")
 	var envelope := Checkpoint.read("user://test-political-checkpoint.json",Campaign)
 	check(envelope.error.is_empty(),"extended checkpoint read")
-	if envelope.error.is_empty(): check(envelope.envelope.snapshot == cp.snapshot(),"checkpoint retains complete political and vision snapshot")
+	if envelope.error.is_empty():
+		check(envelope.envelope.snapshot == wire(cp.snapshot()),"checkpoint retains every serialized field and value")
+		var recovered := Campaign.new()
+		check(recovered.restore(envelope.envelope.snapshot).is_empty(),"checkpoint actually restores through authority")
+		check(wire(recovered.snapshot()) == wire(cp.snapshot()),"restored checkpoint preserves complete serialized world")
+		check(recovered.perception() == cp.perception(),"checkpoint preserves perception semantics")
+		check(recovered.political_debug() == cp.political_debug(),"checkpoint preserves reducer semantics")
+		check(recovered.journal() == cp.journal(),"checkpoint preserves received knowledge")
 
 	var world: Node3D = World.instantiate()
 	root.add_child(world)
@@ -181,8 +195,34 @@ func _run() -> void:
 	check(chapter.model == chapter.campaign,"controller aliases one authority")
 	check(chapter._eye_level,"extended chapter starts eye-level")
 	check(chapter.avatar.get_node("CameraPivot/SpringArm3D").spring_length == 0.0,"eye camera is not a distant chase camera")
+	var foot_eye: Vector3 = chapter._eye_origin()
+	chapter.avatar.pivot.position.y = 2.5
+	var riding_eye: Vector3 = chapter._eye_origin()
+	check(is_equal_approx(riding_eye.y-foot_eye.y,1.1),"perception follows inherited riding height")
+	chapter.avatar.pivot.position.y = 1.4
+	check(is_equal_approx(chapter.avatar.get_node("CameraPivot/SpringArm3D").position.x,0.032),"functional-eye offset lives on spring arm")
 	check(chapter.campaign.restore(saved).is_empty(),"scene uses completed-inquiry fixture")
 	chapter._apply()
+	chapter.avatar.set_physics_process(false)
+	chapter.avatar.pivot.rotation = Vector3(0,PI,0)
+	var obstacle: MeshInstance3D = chapter._box(Vector3(1.0,3.0,0.3),Vector3(-5,1.5,8),Color.GRAY,true)
+	await physics_frame
+	await process_frame
+	check(not chapter._seen(Campaign.MOTHER+Vector3.UP,4.0),"real collider blocks protagonist recognition")
+	chapter._sample_observers()
+	check(chapter.campaign.political_inputs().is_empty(),"real collider blocks Raj Kaur surveillance")
+	obstacle.get_parent().queue_free()
+	await process_frame
+	await physics_frame
+	chapter._sample_observers()
+	check(chapter.campaign.political_inputs().size() == 1,"unblocked physical gaze enters ledger")
+	check(chapter._attention_cue.contains("Raj Kaur"),"perceived watcher yields local cue")
+	check(chapter.campaign.restore(saved).is_empty(),"reset geometry fixture")
+	chapter.avatar.pivot.rotation = Vector3.ZERO
+	chapter._sample_observers()
+	check(chapter.campaign.political_inputs().size() == 1,"looking away does not erase rival observation")
+	check(not chapter._attention_cue.contains("Raj Kaur"),"unperceived watcher does not yield omniscient cue")
+	check(chapter.campaign.restore(saved).is_empty(),"reset UI dispatch fixture")
 	chapter.avatar.pivot.rotation = Vector3(0,PI,0)
 	chapter._interact()
 	check(chapter._paused and chapter._panel_text.text.contains("PHULKIAN"),"physical household interaction opens policy choices")

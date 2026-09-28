@@ -85,7 +85,8 @@ func validate(value: Variant) -> String:
 	var profile: Variant = value.get("profile")
 	if profile not in ["childhood.v1","childhood.politics.v1"]: return "Unknown chapter profile."
 	var extended: bool = profile == "childhood.politics.v1"
-	if extended and (not value.has("politics") or not value.has("vision")): return "Extended save lost its politics or perception identity."
+	if extended and (not value.has("politics") or not value.has("vision") or not value.has("aftermath")):
+		return "Extended save lost its politics, perception or household identity."
 	if not extended and (value.has("politics") or value.has("vision")): return "Ambiguous legacy profile."
 	var base: Dictionary = value.duplicate(true)
 	base.erase("politics")
