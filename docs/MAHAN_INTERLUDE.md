@@ -184,6 +184,18 @@ When the column stands at `gujranwala_settlement` (or after encounter
   stays false until delivery
 - No combat AI, no town economy sim, no alternate-history win, no childhood/Lahore rewrite
 
+
+
+## Gujranwala garhi landmark observation greybox
+
+When the column stands at `gujranwala_settlement` / `gujranwala_fort_road` (or after
+encounter `advance_under_custody`):
+
+- Examine greybox **rampart / gatehouse / bastion** markers on place `gujranwala_garhi`
+- Each examine writes an attributed journal memory; sealed observations refuse a surveyed fort plan
+- Optional delayed **garhi landmark word** report via custody -- `player_knowledge` stays false until delivery
+- No combat AI, no siege map, no alternate-history win, no childhood/Lahore rewrite
+
 ## Non-goals (this PR)
 
 - Full expedition map, navmesh campaign or Sodhra reconstruction
@@ -204,9 +216,9 @@ When the column stands at `gujranwala_settlement` (or after encounter
 
 ## Architecture
 
-- Profile authority: `game/mahan/mahan_state.gd` (`mahan.v1`) plus Mahan-only adapters through `mahan_settlement_state.gd`
+- Profile authority: `game/mahan/mahan_state.gd` (`mahan.v1`) plus Mahan-only adapters through `mahan_garhi_state.gd`
 - Launch composition: `game/mahan/mahan_launch.gd` onto `game/world/mahan_camp.tscn`
-- Chapter presentation: base `mahan_chapter.gd` -> `mahan_cavalry_chapter.gd` -> `mahan_logistics_chapter.gd` -> `mahan_politics_chapter.gd` -> `mahan_orders_chapter.gd` -> `mahan_history_chapter.gd` -> `mahan_encounter_chapter.gd` -> `mahan_settlement_chapter.gd`
+- Chapter presentation: base `mahan_chapter.gd` -> `mahan_cavalry_chapter.gd` -> `mahan_logistics_chapter.gd` -> `mahan_politics_chapter.gd` -> `mahan_orders_chapter.gd` -> `mahan_history_chapter.gd` -> `mahan_encounter_chapter.gd` -> `mahan_settlement_chapter.gd` -> `mahan_garhi_chapter.gd`
 - Reuses existing player controller, `riding_rules` / `horse` adapter and save/load
   pattern; does **not** replace childhood checkpoint, companion or Lahore command
   machinery
