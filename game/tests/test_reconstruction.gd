@@ -75,6 +75,9 @@ func _run() -> void:
 	check(scene.model.restore(Fixture.complete()).is_empty(),"scene uses inherited state")
 	root.add_child(home)
 	await frames()
+	check(scene._narrator_label.get_parent()==scene._hud.get_parent(),"narration shares responsive HUD column")
+	check(not scene._narrator_label.get_global_rect().intersects(scene._hud.get_global_rect()),"narration does not overlap controls")
+	check(not scene._narrator_label.get_global_rect().intersects(scene._caption.get_global_rect()),"narrator and protagonist captions stay separate")
 	check(scene.fabric.built_features.size()==data.features.size(),"all approved features built")
 	check(not scene.fabric.has_node("mahan_singh_samadhi"),"excluded monument has no node")
 	check(not scene.fabric.has_node("sheranwala_baradari"),"disputed monument has no node")
@@ -98,10 +101,14 @@ func _run() -> void:
 	event.keycode=KEY_F2;event.pressed=true
 	scene._unhandled_input(event)
 	check(scene._paused and scene._panel_text.text.contains("not Buddh"),"research view is explicit and paused")
+	check(not scene._narrator_label.visible,"research dialog hides narration immediately")
 	captured=scene.model.snapshot()
 	await frames(15)
 	check(scene.model.snapshot()==captured,"research notebook freezes existing clock")
 	check(scene._panel_text.text.contains(scene.fabric.digest),"notebook binds exact content")
+	scene._resume()
+	scene._open_journal()
+	check(not scene._narrator_label.visible,"journal also hides narration")
 	scene._resume()
 	var audit: Dictionary={"schema":"1792.reconstruction-observation.v1","evidence_kind":"synthetic_validation",
 		"operation_id":"gujranwala-layout-and-narration-conformance.v1","model_id":data.id,

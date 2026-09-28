@@ -14,6 +14,10 @@ func capture(name: String) -> void:
 	var image:=root.get_texture().get_image()
 	count+=1
 	if image.is_empty() or image.save_png("user://reconstruction-"+name+".png")!=OK: failed+=1
+func check(condition: bool,label: String) -> void:
+	if not condition:
+		failed+=1
+		push_error("RECONSTRUCTION_RENDER: "+label)
 func _run() -> void:
 	root.size=Vector2i(1280,720)
 	var home:=Launch.make_world()
@@ -28,6 +32,9 @@ func _run() -> void:
 	camera.position=Vector3(56,48,64)
 	camera.look_at(Vector3(0,0,-2))
 	await frames()
+	check(scene._narrator_label.visible,"initial narration is visible")
+	check(not scene._narrator_label.get_global_rect().intersects(scene._hud.get_global_rect()),"narrator overlaps controls")
+	check(not scene._narrator_label.get_global_rect().intersects(scene._caption.get_global_rect()),"narrator overlaps protagonist caption")
 	await capture("district")
 	camera.position=Vector3(15,6,-3)
 	camera.look_at(Vector3(0,2,11.35))
@@ -38,6 +45,7 @@ func _run() -> void:
 	await frames()
 	await capture("well")
 	scene._show_dialog("GUJRANWALA — RESEARCH VIEW",scene.fabric.notebook(),[["Return","resume"]])
+	check(not scene._narrator_label.visible,"narrator remains behind paused notebook")
 	await capture("evidence")
 	home.queue_free()
 	await frames()
