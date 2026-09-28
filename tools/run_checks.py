@@ -60,6 +60,9 @@ def main() -> int:
         "water-round", "WATER_ROUND_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_sukerchakia_service.gd"],
         "sukerchakia-service", "SUKERCHAKIA_SERVICE_TESTS:")
+    run([sys.executable, "tools/check_youth.py"], "youth-catalogue")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_youth_brawl.gd"],
+        "youth-brawl", "YOUTH_BRAWL_TESTS:")
     return 0
 
 

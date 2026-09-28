@@ -60,6 +60,23 @@ recurring consumption and water-dependent production are not implemented.
 
 [Water-round walkthrough and research](docs/GUJRANWALA_WATER_ROUND.md)
 
+## Playable youth stories (this development branch)
+
+The childhood years now have a **28-entry playable-story development slate**, not
+just a tutorial or codex. The **Bhangi Bazaar Brawl** is the first new playable
+increment: after the household inquiry, meet Mela and Jiva at the western market,
+walk to the challenge, stand and counter or leave together, regroup and report
+home. **Q** guards, **left click** counters, **E** interacts. The two fictional
+friends physically follow within sight; they are not hired garrison guards.
+
+F5/F9 use the separate youth-bazaar slot; the confrontation has a whole-world
+retry sidecar. **T** opens the paused full story slate. Only the brawl is newly
+playable here; other entries explicitly distinguish existing seeds from planned
+work. Lore and conflicting versions remain included, with evidence and timeline
+framing kept separate from the stable actor identity.
+
+[Youth walkthrough, all required stories, sources and remaining work](docs/YOUTH_CAMPAIGN.md)
+
 ## Other retained modes
 
 The menu also retains the separate Lahore command story, houses-and-rivals patrol
