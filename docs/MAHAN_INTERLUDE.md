@@ -118,6 +118,10 @@ Mahan observations, scout reports, map knowledge and command decisions live only
 - Childhood and Lahore save slots **must not** load a Mahan envelope, and a Mahan load
   **must refuse** childhood/Lahore/aftermath profiles.
 - There is **no** silent cross-chapter knowledge merge in this slice.
+- Explicit Mahan→Buddh transfer is a **refuse-by-default** cutter only
+  ([MAHAN_HANDOFF.md](MAHAN_HANDOFF.md)): controller opt-in + allowlisted report IDs;
+  journal texts never copy wholesale; childhood save-slot writes are future / refused
+  in the stub; no menu auto-transition.
 - **Delayed custody:** undelivered scout reports are not journal knowledge and do not
   unlock `known_nodes` until `delivered` flips on the delay clock.
 - Undelivered pursuit custody likewise stays out of the journal until delivery.
@@ -170,7 +174,7 @@ Authored playable beat on the Gujranwala march path (fort road / camp / settleme
 
 - Full expedition map, navmesh campaign or Sodhra reconstruction
 - Alternate history / player-alterable survival of Mahan
-- Automatic childhood -> Mahan -> Lahore handoff or accession scene
+- Automatic childhood -> Mahan -> Lahore handoff or accession scene (opt-in cutter exists; default deny — see MAHAN_HANDOFF.md)
 - Combat redesign, schema bump, or rewriting Latif/childhood content
 - Full economy sim / taxation UI
 - Merging existing draft PRs or merging this branch to `main`
