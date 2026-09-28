@@ -1,13 +1,15 @@
-# Mahan Singh interlude (recon delay + column march + cavalry + logistics)
+# Mahan Singh interlude (recon delay + column march + cavalry + logistics + politics)
 
 ## Playable loop intent
 
 This slice deepens the **separate playable profile** for **Mahan Singh** (stable actor
 id `mahan_singh`) with delayed scout custody, authored column movement on greybox
 nodes, **opt-in cavalry** that reuses the existing riding library, and a
-**small logistics** module (forage / wait consumption / stockout). It remains a
-modular campaign extension parallel to childhood -> aftermath, not a rewrite of those
-chapters and not a merge into the Lahore sandboxes.
+**small logistics** module (forage / wait consumption / stockout), and a
+**bounded clan/subordinate politics** slice (retainer counsel, delayed household rumor,
+march-willingness pressure). It remains a modular campaign extension parallel to
+childhood -> aftermath, not a rewrite of those chapters and not a merge into the Lahore
+sandboxes.
 
 | Step | Actual interaction |
 | --- | --- |
@@ -15,8 +17,8 @@ chapters and not a merge into the Lahore sandboxes.
 | Mount | Near the **field horse**, press **F** to mount (or dismount when stopped). Only this chapter opts into riding. |
 | Dispatch | On foot at the **camp table**, press **E**. Dispatch a scout detachment to the **ford** or **ridge** (costs 1 provision). Optional: **forage** at the column node when packs have room. |
 | Delay clock | Walk, wait, or ride. Pending custody shows on the HUD. **Player knowledge updates only when the report arrives** (`arrives_at`); undelivered text stays out of the journal. |
-| Column order | After >=1 delivered report, press **E** at the table (dismounted). Choose **advance the horse column** or **hold for corroboration**. **Stockout** (provisions below march cost) blocks advance and forces hold/forage. Optional: dispatch a second scout or forage before ordering. |
-| March | If advancing: walk or **ride** to an adjacent authored node (**camp -> ford -> ridge**), **dismount**, and press **E** to commit the march (costs 2 provisions + time). **Forage** once per node. Wait time drains provisions. Stockout blocks further marches. Hold keeps the column at camp. |
+| Column order | After >=1 delivered report, press **E** at the table (dismounted). Optional: **consult subordinates** (hold vs advance counsel) and/or **request household word** (delayed clan-house rumor). Choose **advance the horse column** or **hold for corroboration**. **Stockout** blocks advance; advancing against active retainer hold-pressure **strains** disposition. Optional: dispatch a second scout or forage before ordering. |
+| March | If advancing: walk or **ride** to an adjacent authored node (**camp -> ford -> ridge**), **dismount**, and press **E** to commit the march (costs 2 provisions + time). **Strained** disposition blocks march until **acknowledge clan-house pressure**. **Forage** once per node. Wait time drains provisions. Stockout blocks further marches. Hold keeps the column at camp. |
 | Fixed endpoint frame | Press **E** with the column (or at the table) and **acknowledge** that Mahan's historical death is fixed campaign history. |
 
 WASD moves (or mounts: W forward, A/D steer, Shift canter, Ctrl walk, S/Space brake);
@@ -43,9 +45,28 @@ recon/march/cavalry beat only.
 - Field packs are a **small logistics ledger**, not an economy UI: start 10 / max 12.
 - **Forage** once per authored node while standing with the column (`camp` +2, `ford`/`ridge` +1). Full yield only; refuse when packs cannot take it.
 - **Wait consumption:** every 60 ticks drains 1 provision while stock remains; stockout stops further drain.
-- **Stockout** (provisions < march cost 2) blocks **advance** and **march**; **hold**, forage, dispatch (if affordable), and the fixed endpoint remain available.
+- **Stockout** (provisions below march cost 2) blocks **advance** and **march**; **hold**, forage, dispatch (if affordable), and the fixed endpoint remain available.
 - Dispatch (-1) and march (-2) costs from the prior tip still apply and compose with forage/wait in the logistics adapter.
 - Implemented as `mahan_logistics_*.gd` on top of the cavalry adapter -- does **not** rewrite `house_command_state`, `command_state`, or a taxation UI.
+
+
+## Clan / subordinate politics (bounded)
+
+- Subordinates are **separate Person actors** inside `mahan.politics` (camp retainer,
+  horse jemadar) with **household relations** to graph object `sukerchakia` and
+  time-bounded **alignments** (`prefer_hold` / `prefer_advance` / `counsel_noted`).
+  They are **not** Faction tags on people and do **not** appear in the top-level
+  `actors` fence (only `mahan_singh` does).
+- **Consult subordinates** at the camp table: authored hold-vs-advance counsel.
+- **Request household word**: delayed rumor with scout-shaped custody
+  (`observed_at` / `arrives_at` / `delivered`); journal text appears **only on delivery**.
+- **Consequences:** matching hold advice raises retainer loyalty and sets disposition
+  `aligned`. Advancing against active `prefer_hold` **strains** disposition and blocks
+  **march willingness** until the player **acknowledges clan-house pressure** (or the
+  delivered rumor softens stance to `counsel_noted`).
+- Raj Kaur / Phulkian / Sandhawalia research dumps are **out of this slice** — no
+  antagonist roster rewrite, no `house_command_state` rewrite.
+- Implemented as `mahan_politics_*.gd` on top of the logistics adapter.
 
 ## Ontology fence
 
@@ -55,7 +76,9 @@ recon/march/cavalry beat only.
 - **Household graph object:** `sukerchakia` (`mahan.household_id`) -- field authority
   for this interlude; not a Dynasty, Faction, or Alignment label
 - Place id `sukarchakia_field_camp` remains the camp place string (existing spelling)
+- Subordinate counsel uses household relations + time-bounded alignments, never Faction tags on Person
 - This slice does **not** collapse Raj Kaur into Sandhawalia, or Person into Household
+- Raj Kaur does **not** appear in this Mahan politics slice
 
 ## Fixed historical endpoint
 
@@ -91,7 +114,7 @@ presentation in Lahore is unchanged. The stable childhood/Lahore key remains
 | Layer | Treatment in this slice |
 | --- | --- |
 | Source class | Nominated secondary narratives place Mahan's final illness during a late campaign (often linked to Sodhra / Bhangi contest) and his death as fixed lineage history. This slice does **not** quote those works or promote a single edition as verified chronology. |
-| Game-canon | Authored scout speech, camp/ford/ridge geography, dispatch/march costs, the advance/hold decision and the field-horse park are **fiction** used to exercise command, delayed information, cavalry reuse and subordinate orders. |
+| Game-canon | Authored scout speech, camp/ford/ridge geography, dispatch/march costs, the advance/hold decision, the field-horse park, and fictional subordinate counsel / household-courier rumor are **fiction** used to exercise command, delayed information, cavalry reuse, logistics and subordinate-house pressure. |
 | Non-claim | No claim that a specific scout report, ford state, ridge dust, table dialogue or horse park is documentary fact. |
 
 Keep source account, editorial interpretation, game-canon decision, world event and
@@ -112,7 +135,8 @@ In scope for the interlude family: command, movement, clan/house politics,
 reconnaissance, delayed information, cavalry, logistics and subordinate-command
 decisions. This slice delivers the profile skeleton, delayed scout custody, authored
 column nodes (camp/ford/ridge), **cavalry opt-in via riding_rules**, a **logistics**
-forage/wait/stockout module, and the fixed endpoint frame. Broad religious-conflict framing is a non-goal.
+forage/wait/stockout module, a **bounded clan/subordinate politics** slice, and the
+fixed endpoint frame. Broad religious-conflict framing is a non-goal.
 
 ## Non-goals (this PR)
 
@@ -127,13 +151,15 @@ forage/wait/stockout module, and the fixed endpoint frame. Broad religious-confl
   childhood/Lahore core validators (except test registration), or
   `home_territory.tscn` bytes
 - Rewriting `game/campaign/command_state.gd` or `riding_rules.gd` core contracts
-- Rewriting `house_command_state.gd` clan politics
+- Rewriting `house_command_state.gd` or `antagonists.json` roster gates
+- Full social sim, Sandhawalia research dump into game, or Raj Kaur in this Mahan slice
+- Rewriting `house_command_state.gd` clan politics (pattern mirrored in Mahan-only adapter)
 
 ## Architecture
 
-- Profile authority: `game/mahan/mahan_state.gd` (`mahan.v1`) plus Mahan-only `mahan_cavalry_state.gd` and `mahan_logistics_state.gd` adapters
+- Profile authority: `game/mahan/mahan_state.gd` (`mahan.v1`) plus Mahan-only `mahan_cavalry_state.gd`, `mahan_logistics_state.gd`, and `mahan_politics_state.gd` adapters
 - Launch composition: `game/mahan/mahan_launch.gd` onto `game/world/mahan_camp.tscn`
-- Chapter presentation: base `mahan_chapter.gd` -> `mahan_cavalry_chapter.gd` -> `mahan_logistics_chapter.gd`
+- Chapter presentation: base `mahan_chapter.gd` -> `mahan_cavalry_chapter.gd` -> `mahan_logistics_chapter.gd` -> `mahan_politics_chapter.gd`
 - Reuses existing player controller, `riding_rules` / `horse` adapter and save/load
   pattern; does **not** replace childhood checkpoint, companion or Lahore command
   machinery
