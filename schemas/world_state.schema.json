@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://1792.game/schemas/world_state.schema.json",
+  "title": "1792 World State",
+  "type": "object",
+  "required": ["schema_version", "game_time", "player", "places", "relationships"],
+  "properties": {
+    "schema_version": { "const": "world-state.v1" },
+    "game_time": {
+      "type": "object",
+      "required": ["year", "day", "hour"],
+      "properties": {
+        "year": { "type": "integer", "minimum": 1792 },
+        "day": { "type": "integer", "minimum": 1, "maximum": 366 },
+        "hour": { "type": "number", "minimum": 0, "exclusiveMaximum": 24 }
+      }
+    },
+    "player": {
+      "type": "object",
+      "required": ["character_id", "position", "known_places"],
+      "properties": {
+        "character_id": { "type": "string" },
+        "position": {
+          "type": "array",
+          "items": { "type": "number" },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "known_places": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "places": { "type": "array", "items": { "type": "object" } },
+    "relationships": { "type": "array", "items": { "type": "object" } }
+  }
+}
