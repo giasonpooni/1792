@@ -1,32 +1,60 @@
-# Mahan Singh interlude (recon delay + column march)
+# Mahan Singh interlude (recon delay + column march + cavalry)
 
 ## Playable loop intent
 
 This slice deepens the **separate playable profile** for **Mahan Singh** (stable actor
-id `mahan_singh`) with delayed scout custody and authored column movement on greybox
-nodes. It remains a modular campaign extension parallel to childhood → aftermath, not a
-rewrite of those chapters and not a merge into the Lahore sandboxes.
+id `mahan_singh`) with delayed scout custody, authored column movement on greybox
+nodes, and **opt-in cavalry** that reuses the existing riding library. It remains a
+modular campaign extension parallel to childhood → aftermath, not a rewrite of those
+chapters and not a merge into the Lahore sandboxes.
 
 | Step | Actual interaction |
 | --- | --- |
 | Enter | Main menu → **1790 · Mahan Singh · Field camp (interlude)** |
-| Dispatch | At the **camp table**, press **E**. Dispatch a scout detachment to the **ford** or **ridge** (costs 1 provision stub). |
-| Delay clock | Walk or wait. Pending custody shows on the HUD. **Player knowledge updates only when the report arrives** (`arrives_at`); undelivered text stays out of the journal. |
-| Column order | After ≥1 delivered report, press **E** at the table. Choose **advance the horse column** or **hold for corroboration**. Optional: dispatch a second scout before ordering. |
-| March | If advancing: walk to an adjacent authored node (**camp → ford → ridge**) and press **E** to commit the march (costs 2 provisions + time). Hold keeps the column at camp. |
+| Mount | Near the **field horse**, press **F** to mount (or dismount when stopped). Only this chapter opts into riding. |
+| Dispatch | On foot at the **camp table**, press **E**. Dispatch a scout detachment to the **ford** or **ridge** (costs 1 provision stub). |
+| Delay clock | Walk, wait, or ride. Pending custody shows on the HUD. **Player knowledge updates only when the report arrives** (`arrives_at`); undelivered text stays out of the journal. |
+| Column order | After ≥1 delivered report, press **E** at the table (dismounted). Choose **advance the horse column** or **hold for corroboration**. Optional: dispatch a second scout before ordering. |
+| March | If advancing: walk or **ride** to an adjacent authored node (**camp → ford → ridge**), **dismount**, and press **E** to commit the march (costs 2 provisions + time). Hold keeps the column at camp. |
 | Fixed endpoint frame | Press **E** with the column (or at the table) and **acknowledge** that Mahan's historical death is fixed campaign history. |
 
-WASD moves; mouse looks; **J** opens the attributed field journal (delivered memories only;
-pending targets listed without text); **F5/F9** save/load `user://1792-mahan-v1.json`;
-**F1** pauses. Greybox geometry and one authored recon/march beat only.
+WASD moves (or mounts: W forward, A/D steer, Shift canter, Ctrl walk, S/Space brake);
+mouse looks; **F** mounts/dismounts; **J** opens the attributed field journal (delivered
+memories only; pending targets listed without text); **F5/F9** save/load
+`user://1792-mahan-v1.json`; **F1** pauses. Greybox geometry and one authored
+recon/march/cavalry beat only.
+
+## Cavalry (library reuse)
+
+- Reuses `game/mounts/riding_rules.gd` (`riding.v1`, `household_horse_01`, mount/
+  dismount distances, speed envelope) and the `horse.tscn` / `horse.gd` adapter.
+- Rider id in this profile is **`mahan_singh`**. Mahan validates riding on its own
+  envelope; it does **not** rewrite Lahore `Riding.validate` allowlists
+  (`ranjit_singh` / `patrol_captain` remain Lahore-only).
+- Riding is **opt-in** via `enable_riding()` from the Mahan chapter only. Domain-only
+  consumers retain snapshots without a horse key.
+- Table / march / endpoint actions require a dismount (same pattern as house sandbox).
+- Short mounted travel is physical greybox riding between camp markers — not a new
+  expedition map and not a rewrite of column `march_to` logistics.
+
+## Ontology fence
+
+`Person ≠ Dynasty ≠ Household ≠ Faction ≠ Alignment`.
+
+- **Person:** actor `mahan_singh`
+- **Household graph object:** `sukerchakia` (`mahan.household_id`) — field authority
+  for this interlude; not a Dynasty, Faction, or Alignment label
+- Place id `sukarchakia_field_camp` remains the camp place string (existing spelling)
+- This slice does **not** collapse Raj Kaur into Sandhawalia, or Person into Household
 
 ## Fixed historical endpoint
 
-**Mahan Singh's death is FIXED campaign history.** Player column orders and marches in
-this interlude do **not** create an alternate-history branch in which he survives, nor a
-playable rescue or succession rewrite. The endpoint acknowledgement records that
-constraint explicitly. Later slices may dramatize illness, retirement from the field, or
-succession framing, but they must not offer a player-alterable survival outcome.
+**Mahan Singh's death is FIXED campaign history.** Player column orders, marches and
+rides in this interlude do **not** create an alternate-history branch in which he
+survives, nor a playable rescue or succession rewrite. The endpoint acknowledgement
+records that constraint explicitly. Later slices may dramatize illness, retirement from
+the field, or succession framing, but they must not offer a player-alterable survival
+outcome.
 
 The year label `1790` on this profile is a scenario tag for the late field-command
 context, not a claim that every authored beat happened on a verified calendar day.
@@ -53,8 +81,8 @@ presentation in Lahore is unchanged. The stable childhood/Lahore key remains
 | Layer | Treatment in this slice |
 | --- | --- |
 | Source class | Nominated secondary narratives place Mahan's final illness during a late campaign (often linked to Sodhra / Bhangi contest) and his death as fixed lineage history. This slice does **not** quote those works or promote a single edition as verified chronology. |
-| Game-canon | Authored scout speech, camp/ford/ridge geography, dispatch/march costs and the advance/hold decision are **fiction** used to exercise command, delayed information and subordinate orders. |
-| Non-claim | No claim that a specific scout report, ford state, ridge dust, or table dialogue is documentary fact. |
+| Game-canon | Authored scout speech, camp/ford/ridge geography, dispatch/march costs, the advance/hold decision and the field-horse park are **fiction** used to exercise command, delayed information, cavalry reuse and subordinate orders. |
+| Non-claim | No claim that a specific scout report, ford state, ridge dust, table dialogue or horse park is documentary fact. |
 
 Keep source account, editorial interpretation, game-canon decision, world event and
 character knowledge distinct (see [HISTORICAL_SOURCES.md](HISTORICAL_SOURCES.md) and
@@ -73,8 +101,8 @@ rewriting `command_state.gd` or sharing mutable authority. Mahan keeps its own
 In scope for the interlude family: command, movement, clan/house politics,
 reconnaissance, delayed information, cavalry, logistics and subordinate-command
 decisions. This slice delivers the profile skeleton, delayed scout custody, authored
-column nodes (camp/ford/ridge), a provisions stub, and the fixed endpoint frame. Broad
-religious-conflict framing is a non-goal.
+column nodes (camp/ford/ridge), a provisions stub, **cavalry opt-in via riding_rules**,
+and the fixed endpoint frame. Broad religious-conflict framing is a non-goal.
 
 ## Non-goals (this PR)
 
@@ -87,14 +115,16 @@ religious-conflict framing is a non-goal.
 - Touching `schemas/world_state.schema.json`, `data/world/1792_start.json`,
   childhood/Lahore core validators (except test registration), or
   `home_territory.tscn` bytes
-- Rewriting `game/campaign/command_state.gd`
+- Rewriting `game/campaign/command_state.gd` or `riding_rules.gd` core contracts
+- Rewriting `house_command_state.gd` clan politics
 
 ## Architecture
 
 - Profile authority: `game/mahan/mahan_state.gd` (`mahan.v1`)
 - Launch composition: `game/mahan/mahan_launch.gd` onto `game/world/mahan_camp.tscn`
-- Chapter presentation: `game/mahan/mahan_chapter.gd`
-- Reuses existing player controller and save/load pattern; does **not** replace
-  childhood checkpoint, companion, riding or Lahore command machinery
+- Chapter presentation: `game/mahan/mahan_chapter.gd` (opts into riding + horse adapter)
+- Reuses existing player controller, `riding_rules` / `horse` adapter and save/load
+  pattern; does **not** replace childhood checkpoint, companion or Lahore command
+  machinery
 
 See [MAHAN_INTEGRATION_LEDGER.md](MAHAN_INTEGRATION_LEDGER.md).
