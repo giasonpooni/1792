@@ -53,6 +53,8 @@ def main() -> int:
         "gujranwala", "GUJRANWALA_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_remounts.gd"],
         "remounts", "REMOUNTS_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_town.gd"],
+        "town", "TOWN_TESTS:")
     return 0
 
 

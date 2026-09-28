@@ -17,6 +17,21 @@ that the historical childhood renaming occurred at accession. Internal
 no production character models, finished cities, full combat system, or complete
 childhood-to-Lahore campaign.
 
+## Gujranwala now extends beyond the home yard
+
+Complete the household inquiry, then walk or ride through the **north or west
+town gate**. Connected lanes lead to seven courtyard compounds, a bazaar, well
+square, pottery and cloth workshops, a grain yard and the cultivated edge.
+**E** examines nearby places; **M** recalls only places you have examined;
+**J** keeps those observations with the rest of the chapter. Saving works in the
+new districts, including while mounted on the existing horse.
+
+This is an **86 × 108 metre compressed neighbourhood**, including the original
+56 × 56 metre mission core—not the whole historical city. Existing tutorials,
+supply contracts and the missing-remounts investigation remain in the same entry.
+New stalls and sacks are environmental detail, not a second trading economy.
+[Town walkthrough, research and implementation](docs/GUJRANWALA_TOWN.md).
+
 ## Start playing
 
 Import **`game/project.godot`** into standard **Godot 4.5.1** and press **F5**.
@@ -24,7 +39,7 @@ No Python, .NET, Bevy, NET service or scientific provider is required to play.
 
 | Menu entry | Current gameplay |
 | --- | --- |
-| **1792 · Buddh Singh · Home territory** | Childhood training, oral accounts, an ambush, a protection agreement and inquiry, then Gujranwala supplies/production and a missing-remounts investigation. |
+| **1792 · Buddh Singh · Home territory** | Childhood training, oral accounts, an ambush, a protection agreement and inquiry, then supplies/production, a missing-remounts investigation and connected town exploration. |
 | **Lahore · Command story** | Separate fictional 1801 sandbox: assign a patrol, play or delegate its captain, investigate and receive a delayed report. |
 | **Lahore · Houses and rivals** | The same command loop with a house dispute, a rideable horse, visible companions, follow/hold orders and physical return. |
 
@@ -105,7 +120,8 @@ Prices, recipes, capacities, social deltas and wages are **authored game units**
 The two finite contracts pay once. There is no infinite mission-money loop.
 The palisade changes the visible structure; siege defense is not simulated yet.
 
-The home landscape is a seeded **56 × 56 metre compressed test container**:
+The retained home mission core is a seeded **56 × 56 metre test container**, now
+inside the larger [town neighbourhood](docs/GUJRANWALA_TOWN.md):
 retained tutorial/escort lanes, shallow field relief, a market and production
 yard, with farmland scenery beyond the boundary. It is not surveyed Gujranwala,
 a historical Misl border or streamed Punjab. Current group navigation remains
