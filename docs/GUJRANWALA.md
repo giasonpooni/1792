@@ -63,6 +63,23 @@ gujranwala_settlement — gujranwala_camp — gujranwala_fort_road — camp — 
 - Scout / march speech is **authored fiction (class D / C)** informed by home-ground framing — **not** primary quotations.
 - Does **not** open a town sim, siege map, or childhood/Lahore authority rewrite.
 
+
+## Authored encounter stub (ridge→settlement)
+
+Playable greybox beat on the existing march path
+(`gujranwala_fort_road` / `gujranwala_camp` / `gujranwala_settlement`):
+
+| Piece | Role |
+| --- | --- |
+| Historical-event frame | `mahan_gujranwala_ridge_settlement_approach` (`authored_fiction`, class D/B) |
+| Greybox marker | Approach encounter marker between fort road and camp |
+| Delayed scout custody | `dispatch_approach_scout` → delay clock → journal on delivery only |
+| Player choices | `hold_observe` or `advance_under_custody` (requires delivered scout) |
+| Endpoint fence | Choices do **not** alter Mahan's fixed death; no alternate-history win; no combat AI |
+
+Adapter: `mahan_encounter_state.gd` / `mahan_encounter_chapter.gd` (extends history).
+Ontology unchanged: settlement is a place; household remains `sukerchakia`.
+
 ## What this is not
 
 - Not a full Punjab regional map or river-accurate navmesh.

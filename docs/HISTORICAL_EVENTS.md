@@ -33,10 +33,11 @@ Companion: `schemas/historical_location.schema.json` (`historical-location.v1`).
 ## Authored seeds
 
 | Event | Canon | Fixed? | Knowledge |
-| --- | --- | --- | --- |
+| --- | --- | --- |
 | `mahan_singh_death_fixed` | game_canon | yes | campaign-frame endpoint ack |
 | `mahan_late_campaign_illness` | game_canon | no | observe or delayed report |
 | `mahan_gujranwala_home_ground` | game_canon | no | observe (place_id=gujranwala_settlement) |
+| `mahan_gujranwala_ridge_settlement_approach` | authored_fiction | no | order_around / delayed scout (fort_road→settlement stub) |
 
 ## Gujranwala locations
 
