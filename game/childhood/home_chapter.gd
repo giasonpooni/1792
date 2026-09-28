@@ -106,8 +106,7 @@ func _build_world() -> void:
 		_box(Vector3(0.8,4,0.8), at + Vector3.UP*2.1, Color("5e533c"), true)
 		_box(Vector3(5,2.8,5), at + Vector3.UP*4.7, Color("506248"))
 	_box(Vector3(3,0.3,2), Model.SITES.reflection - Vector3(1,0,1), Color("9e956e"))
-	for x in [-29,29]: _box(Vector3(0.4,3,58),Vector3(x,1.5,0),Color("506248"),true)
-	for z in [-29,29]: _box(Vector3(58,3,0.4),Vector3(0,1.5,z),Color("506248"),true)
+	_build_boundaries()
 	attacker = CharacterBody3D.new()
 	attacker.name = "UnknownAssailant"
 	add_child(attacker)
@@ -156,6 +155,10 @@ func _build_world() -> void:
 	escort.caption.text = "Household guard"
 	escort.add_collision_exception_with(avatar)
 	escort.add_collision_exception_with(horse)
+
+func _build_boundaries() -> void:
+	for x in [-29,29]: _box(Vector3(0.4,3,58),Vector3(x,1.5,0),Color("506248"),true)
+	for z in [-29,29]: _box(Vector3(58,3,0.4),Vector3(0,1.5,z),Color("506248"),true)
 
 func _build_ui() -> void:
 	var visual_layer := CanvasLayer.new()

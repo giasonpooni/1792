@@ -101,7 +101,7 @@ func record_look(radians: float) -> void:
 	_state.childhood.looked = minf(1.0, _state.childhood.looked + minf(absf(radians), 0.3))
 
 func record_position(p: Vector3, delta: float) -> String:
-	if not valid_point(coords(p)) or not is_finite(delta) or delta <= 0.0 or delta > 0.1:
+	if not valid_player_point(coords(p)) or not is_finite(delta) or delta <= 0.0 or delta > 0.1:
 		return "Invalid motion sample."
 	if mounted(): return "Mounted pose belongs to horse motion."
 	var d := distance(position(), p)
@@ -126,7 +126,7 @@ func mount() -> String:
 func dismount(p: Vector3) -> String:
 	var h: Dictionary = _state.riding.horse
 	if not mounted() or h.speed > Riding.DISMOUNT_SPEED or not h.grounded: return "Stop on solid ground first."
-	if not valid_point(coords(p)) or distance(Riding.position(h), p) > 2.5: return "Invalid dismount position."
+	if not valid_player_point(coords(p)) or distance(Riding.position(h), p) > 2.5: return "Invalid dismount position."
 	h.rider_id = ""
 	h.speed = 0.0
 	_set_position(p)
@@ -138,7 +138,7 @@ func record_ride(motion: Dictionary, delta: float) -> String:
 	for key in motion:
 		if key not in ["position", "yaw", "speed", "vertical_speed", "grounded"]: return "Unknown horse motion field."
 		candidate.riding.horse[key] = motion[key]
-	if not valid_point(candidate.riding.horse.position): return "Horse left the bounded home scene."
+	if not valid_player_point(candidate.riding.horse.position): return "Horse left the bounded home scene."
 	var p := point(candidate.riding.horse.position)
 	if distance(position(), p) > Riding.MAX_SPEED * delta + 0.08: return "Horse motion exceeds the declared bound."
 	candidate.player.position = coords(p)
@@ -247,6 +247,11 @@ static func valid_point(p: Variant) -> bool:
 		if not Riding.finite_number(value): return false
 	return absf(p[0]) <= 28.0 and absf(p[2]) <= 28.0 and p[1] >= -0.5 and p[1] <= 10.0
 
+## Trusted subclass hook for a declared player/horse map, not an input-selected validator.
+## Encounter, caravan and escort domains keep the original static valid_point contract.
+func valid_player_point(p: Variant) -> bool:
+	return valid_point(p)
+
 func _shape(value: Variant, reference: Variant) -> bool:
 	if reference is Dictionary:
 		if not value is Dictionary or value.size() != reference.size(): return false
@@ -264,7 +269,7 @@ func validate(value: Variant) -> String:
 		if value[key] != seed[key]: return "Unsupported childhood identity or static data."
 	if value.player.character_id != Names.HERO_ID or value.player.known_places != ["sukerchakia_home"]:
 		return "Unknown protagonist or invented map knowledge."
-	if not valid_point(value.player.position) or value.actors[Names.HERO_ID].position != value.player.position:
+	if not valid_player_point(value.player.position) or value.actors[Names.HERO_ID].position != value.player.position:
 		return "Invalid or inconsistent protagonist pose."
 	var s: Dictionary = value.childhood
 	for key in ["tick", "ride_gate", "parries", "counters", "tracks"]:
@@ -300,7 +305,7 @@ func validate(value: Variant) -> String:
 	if (a.status == "caught") != (a.hits == 3): return "Caught state and damage disagree."
 	var error := Riding.validate(value.riding, value)
 	if not error.is_empty(): return error
-	if not valid_point(value.riding.horse.position): return "Horse left the home scene."
+	if not valid_player_point(value.riding.horse.position): return "Horse left the home scene."
 	var expected: Array = []
 	if s.letter_seen: expected.append("letter")
 	expected.append_array(s.heard)
