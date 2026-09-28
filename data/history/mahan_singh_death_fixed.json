@@ -1,0 +1,74 @@
+{
+  "schema_version": "historical-event.v1",
+  "event_id": "mahan_singh_death_fixed",
+  "title": "Mahan Singh death (fixed campaign endpoint)",
+  "summary": "Mahan Singh's death is FIXED campaign history. This authored record frames the interlude endpoint; it does not quote a primary source or assert a verified calendar day.",
+  "date_range": {
+    "start_year": 1790,
+    "end_year": 1790,
+    "precision": "approximate",
+    "note": "Scenario tag for late field-command context; not a claim of a verified day."
+  },
+  "location": {
+    "place_id": "sukarchakia_field_camp",
+    "label": "Sukerchakia field context (authored place string)",
+    "certainty": "authored"
+  },
+  "actors": [
+    {
+      "id": "mahan_singh",
+      "role": "deceased_subject",
+      "kind": "person"
+    },
+    {
+      "id": "sukerchakia",
+      "role": "household_authority",
+      "kind": "household"
+    }
+  ],
+  "evidence": [
+    {
+      "source": "nominated_secondary_narratives (illness/death as lineage history; not quoted here)",
+      "confidence": "medium",
+      "evidence_class": "B",
+      "note": "Source-class: secondary narratives commonly treat Mahan's death as fixed lineage history. This file does not invent primary-source claims or edition page anchors."
+    },
+    {
+      "source": "game_canon.mahan_interlude_fixed_endpoint",
+      "confidence": "none",
+      "evidence_class": "C",
+      "note": "Gameplay abstraction: player column orders cannot create an alternate-history survival branch."
+    }
+  ],
+  "canon_class": "game_canon",
+  "historical_outcome": {
+    "fixed": true,
+    "summary": "Mahan Singh dies; survival is not player-alterable in this campaign.",
+    "invariants": [
+      "no_player_survival_branch",
+      "person_mahan_singh_not_household_sukerchakia",
+      "ontology_cross_household_research_absent"
+    ]
+  },
+  "knowledge": {
+    "direct_observers": [],
+    "report_routes": [
+      {
+        "from": "authorial_frame",
+        "to": "mahan_singh",
+        "channel": "campaign_frame"
+      }
+    ],
+    "propagation_delay": 0,
+    "player_knowledge": false
+  },
+  "gameplay": {
+    "playable": false,
+    "intervention_scope": "none",
+    "historical_invariants": [
+      "fixed_death",
+      "acknowledge_via_campaign_frame_only"
+    ],
+    "profile_scope": "mahan.v1"
+  }
+}
