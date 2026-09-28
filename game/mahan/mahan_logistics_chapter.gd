@@ -3,7 +3,9 @@ extends "res://mahan/mahan_cavalry_chapter.gd"
 const LogisticsModel := preload("res://mahan/mahan_logistics_state.gd")
 
 func _ready() -> void:
-	campaign = LogisticsModel.new()
+	# Allow politics (or other) adapters to install their model before super._ready().
+	if not campaign.has_method("forage"):
+		campaign = LogisticsModel.new()
 	campaign.enable_riding()
 	super._ready()
 	_notice = "E at the table for scouts/orders. F to mount. Forage at the column node when packs have room."
@@ -44,7 +46,7 @@ func _interact() -> void:
 			if not campaign.near("camp_table"):
 				_notice = "Return to the camp table once scout custody has been delivered."
 				return
-			var body := "Delivered scout reports: %d. Pending: %d.\nProvisions: %d · Foraged: %s\nStockout (<%d provisions) blocks advance; hold or forage remains available.\nChoose a subordinate command; this does not rewrite Mahan's fixed historical endpoint." % [
+			var body := "Delivered scout reports: %d. Pending: %d.\nProvisions: %d · Foraged: %s\nStockout (\u003c%d provisions) blocks advance; hold or forage remains available.\nChoose a subordinate command; this does not rewrite Mahan's fixed historical endpoint." % [
 				campaign.received_reports().size(), campaign.pending_reports().size(),
 				campaign.provisions(), _foraged_label(), LogisticsModel.MARCH_COST
 			]
@@ -82,7 +84,7 @@ func _refresh() -> void:
 	super._refresh()
 	if not is_instance_valid(_hud):
 		return
-	var stock := "STOCKOUT" if campaign.provisions() < LogisticsModel.MARCH_COST else "supplied"
+	var stock := "STOCKOUT" if not (campaign.provisions() >= LogisticsModel.MARCH_COST) else "supplied"
 	_hud.text += "\nLogistics: %s · forage ledger [%s] · wait units %d · Household graph: %s" % [
 		stock, _foraged_label(), campaign.wait_units(), LogisticsModel.HOUSEHOLD_ID
 	]
