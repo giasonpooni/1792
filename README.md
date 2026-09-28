@@ -1,5 +1,7 @@
 # 1792
 
+**Copyright (c) 2026 Cartesian Graphics. All rights reserved.** Original project material is proprietary; see [licensing](#licensing).
+
 **1792** is a historical open-world game project about the early life and rise of Buddh Singh.
 
 The game begins in **1792**, when Buddh Singh is still a child and the Sikh Empire does not yet exist. The player starts inside the Sukerchakia Misl's home territory with a horse, a household, a small network of trusted people, and only partial knowledge of the wider Punjab.
@@ -179,3 +181,11 @@ Every expansion should preserve the same question:
 ## Status
 
 Early foundation. The repository currently contains the first project scaffold and design contracts.
+
+## Licensing
+
+1792's original game code, authored content, and creative assets are proprietary to **Cartesian Graphics**, subject to the scope and exclusions in [LICENSE](LICENSE). Public repository access is not an open-source licence; applicable law, existing licences, and GitHub's hosting terms remain unaffected.
+
+Selected reusable technology may be released separately under MPL-2.0 or Apache-2.0, but **no component is designated under either licence by this change**. Third-party material retains its own ownership and terms, including the separately supplied Godot Engine.
+
+See the [licensing policy](docs/LICENSING.md), [asset terms](docs/ASSET_LICENSING.md), [third-party notices](THIRD_PARTY_NOTICES.md), and [contribution policy](CONTRIBUTING.md). These notices are not a player EULA or an automatic copyright assignment.
