@@ -43,17 +43,17 @@ Modular `historical-location.v1` stubs under `data/history/locations/` (mirrored
 Godot at `game/mahan/data/locations/`):
 
 | `location_id` | Kind | Gameplay role |
-| --- | --- | --- |
+| --- | --- |
 | `sukarchakia_field_camp` | camp | Existing greybox column root |
 | `gujranwala_fort_road` | road | Approach toward home-ground |
 | `gujranwala_camp` | camp | Household staging column node |
 | `gujranwala_settlement` | settlement | Named town / home-ground |
-| `gujranwala_garhi` | fort | Reference-only landmark motif |
+| `gujranwala_garhi` | fort | Landmark observation greybox (no siege) |
 | `gujranwala_lahore_approach` | road | Reference-only long axis (no Lahore rewrite) |
 
 ### March graph (greybox)
 
-Authored nodes in `mahan_state.gd` (positions stay inside the existing ±28 greybox):
+Authored nodes in `mahan_state.gd` (positions stay inside the existing +/-28 greybox):
 
 ```
 gujranwala_settlement - gujranwala_camp - gujranwala_fort_road - camp - ford - ridge
@@ -90,18 +90,37 @@ encounter choice `advance_under_custody`:
 | Piece | Role |
 | --- | --- |
 | Greybox markers | `walls` / `gate` / `well` / `house` near the settlement node |
-| Examine | Direct attributed memories (`source_id` / `channel` / `received_tick`) - **sealed facts ≠ omniscience** |
+| Examine | Direct attributed memories (`source_id` / `channel` / `received_tick`) - **sealed facts != omniscience** |
 | Optional local rumor | `request_local_settlement_rumor` -> delay custody -> journal + `player_knowledge` only on delivery |
-| Endpoint fence | No combat AI; no town economy sim; fixed death unchanged; place ≠ person |
+| Endpoint fence | No combat AI; no town economy sim; fixed death unchanged; place != person |
 
 Adapter: `mahan_settlement_state.gd` / `mahan_settlement_chapter.gd` (extends encounter).
 Ontology unchanged: settlement is a place; household remains `sukerchakia`; Raj Kaur /
 Sandhawalia absent; no religious framing.
 
+
+
+## Garhi landmark observation greybox (this tip)
+
+Playable beat on the existing place graph using location stub `gujranwala_garhi`
+(connected to `gujranwala_settlement` / `gujranwala_fort_road`):
+
+| Piece | Role |
+| --- | --- |
+| Greybox markers | `rampart` / `gatehouse` / `bastion` near settlement / fort-road approach |
+| Examine | Direct attributed memories (`source_id` / `channel` / `received_tick`) -- **sealed facts != fort plan** |
+| Optional delayed report | `request_delayed_garhi_report` -> delay custody -> journal + `player_knowledge` only on delivery |
+| Unlock | Column at settlement **or** fort road, **or** after encounter `advance_under_custody` |
+| Endpoint fence | No combat AI; no siege map; fixed death unchanged; place != person |
+
+Adapter: `mahan_garhi_state.gd` / `mahan_garhi_chapter.gd` (extends settlement).
+Ontology unchanged: garhi is a place; household remains `sukerchakia`; Raj Kaur /
+Sandhawalia absent; no religious framing.
+
 ## What this is not
 
 - Not a full Punjab regional map or river-accurate navmesh.
-- Not a documentary reconstruction of Garhi Mahan Singh’s plan.
+- Not a documentary reconstruction of Garhi Mahan Singh's plan.
 - Not permission to invent Sandhawalia cast or put Raj Kaur on this politics slice.
 - Not a merge with childhood Gujranwala supply-loop PRs on other stacks.
 
