@@ -1,181 +1,102 @@
 # 1792
 
-**1792** is a historical open-world game project about the early life and rise of Ranjit Singh.
+**Grow from a young heir in the Sukerchakia heartland into a commander and state builder — without leaving the world behind.**
 
-The game begins in **1792**, when Ranjit Singh is still a child and the Sikh Empire does not yet exist. The player starts inside the Sukerchakia Misl's home territory with a horse, a household, a small network of trusted people, and only partial knowledge of the wider Punjab.
+1792 is an early historical open-world game project centered on Ranjit Singh. The long-term
+experience combines horseback travel and personal relationships, close-range exploration and
+infiltration, contested local territory, and larger military campaigns.
 
-The long-term design target is an embodied open world: ride, explore, hunt, talk, train, escort, trade, gather intelligence, build relationships, lead small groups, and gradually grow into military and political command.
+**This is not a finished game.** The repository contains small Godot prototypes that we can build,
+play, test and improve one at a time. There are no finished historical environments or character assets yet.
 
-This repository is intentionally being built **slowly, as a playable game**. Systems are added when they improve the player experience or make the simulated world more coherent.
+## Run it
 
-## Core premise
+Import **`game/project.godot`** into the standard Godot editor and press **F5**.
+The reference test target is **Godot 4.5.1**; no Python, Rust or external service is needed to play.
 
-The world should not initially feel like a strategy map.
+The opening menu offers two deliberately separate prototypes:
 
-At the start:
+| Prototype | What is there |
+| --- | --- |
+| **1792 · Home territory** | The original home-territory ground, marker and movement scene, retained as the starting point. |
+| **Lahore · Command story** | A separate, fictional 1801 sandbox: assign a patrol, play its captain or delegate, visit two locations, make a decision and receive a delayed report. |
 
-- the player controls Ranjit Singh directly;
-- the Sukerchakia heartland is the only reliably friendly territory;
-- nearby settlements have varying relationships and incomplete information;
-- roads, rivers, horses, weather, distance, and local knowledge matter;
-- companions are people with trust and loyalty, not disposable unit slots;
-- political power grows from relationships, reputation, logistics, and control of physical places.
+The Lahore sandbox does **not** replace the childhood opening or assert that its invented mission
+actually happened. Its captain and compressed geography are placeholders, not reconstructions.
 
-As Ranjit grows older, the game expands in abstraction without abandoning third-person play:
+## First command story
 
-```text
-person
-  ↓
-rider
-  ↓
-small warband
-  ↓
-local commander
-  ↓
-campaign leader
-  ↓
-state builder
+Walk to the courtyard table and press **E**. Assign the four-rider patrol, interact with the table again,
+and choose **Play as the captain**. Follow the road to the village, press E to gather information,
+then continue to the outpost. Organize a patrol or withdraw. The result changes local security and
+the captain's relationship with Lahore, and a delayed report returns to Ranjit.
+
+You can also delegate the same order or take control partway through. Switching does not reset
+its allocation, progress, character positions or world clock. A completed story cannot repeatedly award resources.
+
+| Control | Action |
+| --- | --- |
+| WASD / Shift | Walk / run |
+| Mouse | Orbit the third-person camera |
+| E | Interact or open the captain's field menu |
+| F5 / F9 | Save / load the command sandbox |
+| F1 | Return-menu controls |
+| Escape / click world | Release / recapture the mouse |
+
+Decision menus pause the sandbox. The first slice has a simple delegated policy, not general commander AI.
+The encounter is a choice interface; **combat, horses and marching troops are not implemented yet**.
+See [Command stories](docs/COMMAND_STORIES.md) for the full walkthrough, persistence rules and limitations.
+
+## Where the game is going
+
+The main story starts from a small familiar home territory. Travel, local knowledge, companions,
+relationships and contested roads should matter before large armies or administration enter play.
+Greater power adds responsibilities without removing the ability to walk or ride through the world.
+
+Later, Lahore becomes a command hub. Ranjit remains the main character, while smaller playable
+stories follow subordinate commanders. Their decisions affect the same campaign world instead
+of becoming disconnected missions. Documented commanders and expeditions will be added only
+after their dates, command relationships and sources have been checked.
+
+The design references are the embodied world of *Red Dead*, personal traversal and infiltration
+from *Assassin's Creed*, local territorial struggle from *Saints Row 2*, and campaign command
+from *Shogun: Total War*. These are inspirations, not implemented feature claims or affiliations.
+
+## Keep the technology behind the game
+
+**Godot** owns gameplay and the current world state. **Blender** is the intended asset-authoring
+pipeline. **Bevy** is reserved for simulation workloads that justify a separate runtime.
+**Notations Engineering Terminal (NET)** can later provide external experiments, inspection,
+replay tooling and validation. None of those future integrations is required to start these prototypes.
+
+The command slice extends the existing `world-state.v1` record with a `command-story.v1` profile.
+The original world schema is retained. Orders, controlled characters, reports and event records
+have separate identities. Manual and delegated execution share the same consequence rules.
+
+## Develop and test
+
+```sh
+python tools/check_project.py
+python tools/run_checks.py --godot /path/to/godot
 ```
 
-The player should still be able to mount a horse and ride through the same world even after gaining command responsibilities.
-
-## First playable target
-
-The first milestone is deliberately small:
-
-**A rideable Sukerchakia home-territory prototype.**
-
-It should contain:
-
-- one home compound / misl headquarters;
-- one controllable player character;
-- one rideable horse;
-- one nearby settlement;
-- one road network;
-- one patrol route;
-- one neighboring uncertain or hostile area;
-- a day/night clock;
-- persistent NPC state;
-- a minimal relationship system;
-- a minimal world-intelligence system;
-- save/load;
-- one small encounter that can be solved by movement, conversation, avoidance, or combat.
-
-The success criterion is simple:
-
-> It should be enjoyable to leave home on horseback, travel through the countryside, encounter people, and return.
-
-## Architecture
-
-1792 uses a layered architecture, but the game remains the authority for player experience.
+The structural checks run without Godot. Runtime checks require the engine and must not be
+reported as passed when it is absent. CI is configured to import the project, exercise the command
+rules and scene interactions, and attempt software-rendered screenshots. Check the actual run
+for validation status; see [the evidence note](docs/VALIDATION.md).
 
 ```text
-                   1792
-                    │
-             GAMEPLAY AUTHORITY
-                  Godot
-                    │
-       player / horse / UI / scenes
-                    │
-        ┌───────────┴───────────┐
-        │                       │
- world-state seam         content pipeline
-        │                       │
-   future Bevy                Blender
- simulation runtime       models / terrain
-        │
-        └───────────┬───────────┘
-                    │
-             optional NET seam
-      replay / experiments / validation
+ game/          Godot project, gameplay, sandbox data and engine tests
+ data/          Original historical-start fixture
+ schemas/       Existing interchange contract
+ docs/          Design, historical method and implementation notes
+ tools/         Structural and engine test runners
 ```
 
-### Godot
+## History and scope
 
-Godot owns the current playable application:
+Separate documented history, reconstruction, gameplay abstraction and invented connective material.
+The prototype's quantities and outcomes are game rules, not measured historical facts.
+See [Historical method](docs/HISTORICAL_METHOD.md) and [Game design](docs/GAME_DESIGN.md).
 
-- third-person movement;
-- scene composition;
-- camera;
-- interaction;
-- horse gameplay;
-- dialogue;
-- UI;
-- encounters;
-- local world presentation.
-
-### Bevy
-
-Bevy is reserved for simulation workloads that actually justify it:
-
-- large persistent populations;
-- asynchronous settlement simulation;
-- faction-state evolution;
-- campaign logistics;
-- high-entity-count ECS workloads;
-- deterministic/headless world stepping.
-
-It should plug into the game through a versioned world-state boundary rather than duplicating gameplay logic.
-
-### Blender
-
-Blender is the content-authoring environment for:
-
-- terrain;
-- buildings;
-- props;
-- characters;
-- horses;
-- weapons;
-- animation;
-- environmental reconstruction.
-
-### NET
-
-Notations Engineering Terminal can later connect as an external development and scientific-analysis layer for:
-
-- simulation runs;
-- campaign replay;
-- parameter sweeps;
-- historical-data inspection;
-- provenance;
-- validation;
-- comparison between runs.
-
-NET does **not** own the game loop.
-
-## Repository layout
-
-```text
-1792/
-├─ game/                  Godot project
-├─ data/                  versioned world/game data
-├─ docs/                  design and historical notes
-├─ schemas/               stable interchange contracts
-└─ tools/                 import/build/validation utilities
-```
-
-## Historical approach
-
-1792 should distinguish between:
-
-1. **documented history**;
-2. **reasonable reconstruction**;
-3. **gameplay abstraction**;
-4. **fictional connective material**.
-
-Historical claims should eventually carry source notes in the project data or documentation. Where evidence is uncertain, the game should represent uncertainty rather than quietly presenting invention as fact.
-
-## Design rule
-
-Do not build Punjab all at once.
-
-Build outward from home.
-
-Every expansion should preserve the same question:
-
-> Does this make riding through, understanding, and acting within the world more compelling?
-
-## Status
-
-Early foundation. The repository currently contains the first project scaffold and design contracts.
+**Build outward from home.** Make one small journey and its consequences work before building all Punjab.
