@@ -3,7 +3,9 @@ extends "res://mahan/mahan_orders_chapter.gd"
 const HistoryModel := preload("res://mahan/mahan_history_state.gd")
 
 func _ready() -> void:
-	campaign = HistoryModel.new()
+	# Allow encounter (or other) adapters to install their model before super._ready().
+	if campaign == null or not campaign.has_method("begin_ridge_settlement_encounter"):
+		campaign = HistoryModel.new()
 	campaign.enable_riding()
 	super._ready()
 	_notice = "E at the table for scouts, counsel, orders, or historical frames. F to mount. Known history appears only after observation or delivery."
