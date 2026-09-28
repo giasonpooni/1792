@@ -1,0 +1,28 @@
+{
+  "schema_version": "world-state.v1",
+  "game_time": {
+    "year": 1792,
+    "day": 1,
+    "hour": 7.0
+  },
+  "player": {
+    "character_id": "ranjit_singh",
+    "position": [0.0, 0.0, 0.0],
+    "known_places": ["sukerchakia_home"]
+  },
+  "places": [
+    {
+      "id": "sukerchakia_home",
+      "name": "Sukerchakia Home Territory",
+      "knowledge": "known",
+      "disposition": "friendly"
+    },
+    {
+      "id": "nearby_settlement_01",
+      "name": "Nearby Settlement",
+      "knowledge": "rumored",
+      "disposition": "uncertain"
+    }
+  ],
+  "relationships": []
+}
