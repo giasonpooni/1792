@@ -3,7 +3,9 @@ extends "res://mahan/mahan_encounter_chapter.gd"
 const SettlementModel := preload("res://mahan/mahan_settlement_state.gd")
 
 func _ready() -> void:
-	campaign = SettlementModel.new()
+	# Allow garhi (or other) adapters to install their model before super._ready().
+	if campaign == null or not campaign.has_method("examine_garhi_marker"):
+		campaign = SettlementModel.new()
 	campaign.enable_riding()
 	super._ready()
 	for kind in SettlementModel.SETTLEMENT_MARKERS:
