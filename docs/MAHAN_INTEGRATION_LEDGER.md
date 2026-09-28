@@ -1,4 +1,4 @@
-# Mahan interlude — integration ledger
+# Mahan interlude -- integration ledger
 
 Stacked on PR #7 tip `feat/ambush-aftermath-v1` @ `012145721af9fb2b9fc4be46399151765a888404`.
 Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
@@ -19,13 +19,13 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 
 | Path | Change |
 | --- | --- |
-| `game/mahan/mahan_state.gd` | Scout detachments with Lahore-shaped delay custody; `known_nodes`; camp→ford→ridge march; provisions stub; knowledge on delivery only |
+| `game/mahan/mahan_state.gd` | Scout detachments with Lahore-shaped delay custody; `known_nodes`; camp->ford->ridge march; provisions stub; knowledge on delivery only |
 | `game/mahan/mahan_chapter.gd` | Dispatch / pending HUD / march panels; ford & ridge markers |
 | `game/tests/test_mahan.gd` | Delay-clock, pending-vs-delivered, hold vs advance march, provisions/adjacency, fence |
 | `docs/MAHAN_INTERLUDE.md` | Playable loop for recon delay + column nodes |
 | `docs/MAHAN_INTEGRATION_LEDGER.md` | Extension note |
 
-## Extended (this slice — cavalry via riding_rules)
+## Extended (prior slice -- cavalry via riding_rules)
 
 | Path | Change |
 | --- | --- |
@@ -36,12 +36,26 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 | `docs/MAHAN_INTERLUDE.md` | Cavalry loop + ontology fence |
 | `docs/MAHAN_INTEGRATION_LEDGER.md` | This cavalry note |
 
+
+## Extended (this slice -- logistics forage / wait / stockout)
+
+| Path | Change |
+| --- | --- |
+| `game/mahan/mahan_logistics_state.gd` | Mahan-only logistics adapter on cavalry: forage once/node, wait drain every 60 ticks, stockout blocks advance/march; `logistics` ledger; compose with dispatch/march costs; no economy UI |
+| `game/mahan/mahan_logistics_chapter.gd` | Forage actions on dispatch/decision/march panels; stockout HUD; keeps horse adapter |
+| `game/mahan/mahan_cavalry_chapter.gd` | Additive guard: do not replace a pre-installed adapter model that already exposes `enable_riding` |
+| `game/mahan/mahan_launch.gd` | Composes `mahan_logistics_chapter.gd` |
+| `game/tests/test_mahan_logistics.gd` | Logistics checks: forage, wait drain, stockout->hold, forage lifts advance, save/load, ontology refusal, launch smoke |
+| `tools/run_checks.py` | Registers `test_mahan_logistics.gd` after cavalry |
+| `docs/MAHAN_INTERLUDE.md` | Logistics loop + non-goals |
+| `docs/MAHAN_INTEGRATION_LEDGER.md` | This logistics note |
+
 ## Touched (unchanged role)
 
 | Path | Change |
 | --- | --- |
 | `game/ui/main_menu.gd` | Fourth entry launching Mahan via `MahanLaunch.enter` |
-| `tools/run_checks.py` | Registers base `test_mahan.gd`, then `test_mahan_cavalry.gd`; prior suites remain invoked |
+| `tools/run_checks.py` | Registers base `test_mahan.gd`, `test_mahan_cavalry.gd`, then `test_mahan_logistics.gd`; prior suites remain invoked |
 | `tools/check_project.py` | Menu assertion still requires home + command entries; also requires Mahan launch path |
 
 ## Deliberately left alone
@@ -55,7 +69,7 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 - `game/mounts/riding_rules.gd` core contracts (reused, not rewritten; Lahore allowlist intact)
 - Silent cross-chapter knowledge merge (none added)
 - Existing draft PR merge / `main` merge
-- Full combat, economy UI, clan politics rewrite, expedition map
+- Full combat, full economy sim/taxation UI, clan politics rewrite, expedition map
 
 ## Identity notes
 
