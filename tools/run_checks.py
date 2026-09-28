@@ -47,6 +47,8 @@ def main() -> int:
         "childhood", "CHILDHOOD_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_aftermath.gd"],
         "aftermath", "AFTERMATH_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_mahan.gd"],
+        "mahan", "MAHAN_TESTS:")
     return 0
 
 

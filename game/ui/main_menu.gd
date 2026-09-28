@@ -1,6 +1,7 @@
 extends Control
 
 const HomeLaunch := preload("res://childhood/home_launch.gd")
+const MahanLaunch := preload("res://mahan/mahan_launch.gd")
 const Names := preload("res://characters/character_names.gd")
 
 func _ready() -> void:
@@ -11,8 +12,8 @@ func _ready() -> void:
 	add_child(background)
 	var panel := VBoxContainer.new()
 	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	panel.position = Vector2(-330, -220)
-	panel.size = Vector2(660, 440)
+	panel.position = Vector2(-330, -260)
+	panel.size = Vector2(660, 520)
 	panel.add_theme_constant_override("separation", 18)
 	add_child(panel)
 	var title := Label.new()
@@ -26,6 +27,7 @@ func _ready() -> void:
 	_add_button(panel, "1792 · " + Names.PLAYER_NAME + " · Home territory", "res://world/home_territory.tscn")
 	_add_button(panel, "Lahore · Command story (separate 1801 sandbox)", "res://world/command_sandbox.tscn")
 	_add_button(panel, "Lahore · Houses and rivals (riding / companions / house politics)", "res://world/house_sandbox.tscn")
+	_add_button(panel, "1790 · Mahan Singh · Field camp (interlude)", "res://world/mahan_camp.tscn")
 	var note := Label.new()
 	note.text = "WASD: move · Shift: run · Mouse: look\nE interact · F5 save · F9 load · F1 menu · H houses · F mount · G companions (Houses and rivals)\nThe sandbox captain, missions and geography are fictional placeholders."
 	panel.add_child(note)
@@ -37,6 +39,8 @@ func _add_button(parent: Node, text: String, scene: String) -> void:
 	button.pressed.connect(func():
 		if scene == "res://world/home_territory.tscn":
 			HomeLaunch.enter.call_deferred(get_tree())
+		elif scene == "res://world/mahan_camp.tscn":
+			MahanLaunch.enter.call_deferred(get_tree())
 		else:
 			get_tree().change_scene_to_file(scene))
 	parent.add_child(button)

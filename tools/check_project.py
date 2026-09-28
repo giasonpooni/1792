@@ -76,6 +76,8 @@ class ProjectChecks(unittest.TestCase):
         self.assertIn('run/main_scene="res://ui/main_menu.tscn"', project)
         self.assertIn("res://world/home_territory.tscn", menu)
         self.assertIn("res://world/command_sandbox.tscn", menu)
+        self.assertIn("res://world/mahan_camp.tscn", menu)
+        self.assertIn("res://mahan/mahan_launch.gd", menu)
 
 
 if __name__ == "__main__":
