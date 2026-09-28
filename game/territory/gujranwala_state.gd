@@ -37,7 +37,7 @@ func _post(kind: String,arg: String) -> String:
 	var m: Dictionary = _state.misl
 	if m.events.size()>=Economy.MAX_EVENTS: return "This prototype's retained-receipt limit is reached. Start a new scenario."
 	var candidate: Dictionary = m.ledger.duplicate(true)
-	var error := Economy.apply(candidate,kind,arg)
+	var error := _ledger_apply(candidate,kind,arg)
 	if not error.is_empty(): return error
 	m.events.append({"seq":m.events.size()+1,"tick":int(_state.childhood.tick),"kind":kind,"arg":arg})
 	m.ledger = candidate
@@ -73,7 +73,7 @@ func validate(value: Variant) -> String:
 	if not error.is_empty(): return error
 	if not value.has("misl"): return "" # Older saves invent no allowance, purchases or obligations.
 	if not value.has("aftermath") or value.aftermath.reported_tick<0: return "Economy before the completed household inquiry."
-	error=Economy.validate(value.misl,int(value.childhood.tick))
+	error=_ledger_validate(value.misl,int(value.childhood.tick))
 	if not error.is_empty(): return error
 	if value.misl.origin_tick<value.aftermath.reported_tick: return "Allowance predates the household report."
 	return ""
@@ -87,5 +87,16 @@ func restore(value: Variant) -> String:
 		for e in _state.misl.events:
 			e.seq=int(e.seq)
 			e.tick=int(e.tick)
-		_state.misl.ledger=Economy.replay(_state.misl.events)
+		_state.misl.ledger=_ledger_replay(_state.misl.events)
 	return ""
+
+# Code-owned extension points: original saves and default economy keep the same reducer.
+# No callback, import or provider is read from a save. The active controller chooses these.
+func _ledger_apply(ledger: Dictionary, kind: String, arg: String) -> String:
+	return Economy.apply(ledger,kind,arg)
+
+func _ledger_validate(value: Variant, tick: int) -> String:
+	return Economy.validate(value,tick)
+
+func _ledger_replay(events: Array) -> Dictionary:
+	return Economy.replay(events)
