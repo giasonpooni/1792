@@ -20,7 +20,7 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 | Path | Change |
 | --- | --- |
 | `game/mahan/mahan_state.gd` | Scout detachments with Lahore-shaped delay custody; `known_nodes`; camp->ford->ridge march; provisions stub; knowledge on delivery only |
-| `game/mahan/mahan_chapter.gd` | Dispatch / pending HUD / march panels; ford & ridge markers |
+| `game/mahan/mahan_chapter.gd` | Dispatch / pending HUD / march panels; ford and ridge markers |
 | `game/tests/test_mahan.gd` | Delay-clock, pending-vs-delivered, hold vs advance march, provisions/adjacency, fence |
 | `docs/MAHAN_INTERLUDE.md` | Playable loop for recon delay + column nodes |
 | `docs/MAHAN_INTEGRATION_LEDGER.md` | Extension note |
@@ -37,7 +37,7 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 | `docs/MAHAN_INTEGRATION_LEDGER.md` | This cavalry note |
 
 
-## Extended (this slice -- logistics forage / wait / stockout)
+## Extended (prior slice -- logistics forage / wait / stockout)
 
 | Path | Change |
 | --- | --- |
@@ -50,12 +50,27 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 | `docs/MAHAN_INTERLUDE.md` | Logistics loop + non-goals |
 | `docs/MAHAN_INTEGRATION_LEDGER.md` | This logistics note |
 
+
+## Extended (this slice -- clan/subordinate politics)
+
+| Path | Change |
+| --- | --- |
+| `game/mahan/mahan_politics_state.gd` | Mahan-only politics adapter on logistics: subordinate Persons with household relations + time-bounded alignments; consult counsel; delayed household rumor (scout-shaped custody); disposition/march-willingness gates; no `house_command_state` / antagonists rewrite |
+| `game/mahan/mahan_politics_validate.gd` | Split-out ledger/memory validators (tooling size split; same ontology rules) |
+| `game/mahan/mahan_politics_chapter.gd` | Counsel / household-word / pressure-ack panels; politics HUD; keeps logistics + horse adapters |
+| `game/mahan/mahan_logistics_chapter.gd` | Additive guard: do not replace a pre-installed adapter model that already exposes `forage` |
+| `game/mahan/mahan_launch.gd` | Composes `mahan_politics_chapter.gd` |
+| `game/tests/test_mahan_politics.gd` | Politics checks: consult, hold-align, advance-strain+ack, delayed rumor, ontology, Raj Kaur absence, launch smoke |
+| `tools/run_checks.py` | Registers `test_mahan_politics.gd` after logistics |
+| `docs/MAHAN_INTERLUDE.md` | Politics loop + ontology fence |
+| `docs/MAHAN_INTEGRATION_LEDGER.md` | This politics note |
+
 ## Touched (unchanged role)
 
 | Path | Change |
 | --- | --- |
 | `game/ui/main_menu.gd` | Fourth entry launching Mahan via `MahanLaunch.enter` |
-| `tools/run_checks.py` | Registers base `test_mahan.gd`, `test_mahan_cavalry.gd`, then `test_mahan_logistics.gd`; prior suites remain invoked |
+| `tools/run_checks.py` | Registers base `test_mahan.gd`, `test_mahan_cavalry.gd`, `test_mahan_logistics.gd`, then `test_mahan_politics.gd`; prior suites remain invoked |
 | `tools/check_project.py` | Menu assertion still requires home + command entries; also requires Mahan launch path |
 
 ## Deliberately left alone
@@ -69,7 +84,7 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 - `game/mounts/riding_rules.gd` core contracts (reused, not rewritten; Lahore allowlist intact)
 - Silent cross-chapter knowledge merge (none added)
 - Existing draft PR merge / `main` merge
-- Full combat, full economy sim/taxation UI, clan politics rewrite, expedition map
+- Full combat, full economy sim/taxation UI, full social sim / `house_command_state` rewrite, `antagonists.json` roster gates, expedition map
 
 ## Identity notes
 
@@ -79,3 +94,4 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 - No automatic knowledge handoff into Buddh's journal.
 - Undelivered scout custody never becomes Mahan journal knowledge early, and never crosses the profile fence.
 - Mahan cavalry rider is `mahan_singh`; Lahore `Riding.validate` still admits only `ranjit_singh` / `patrol_captain`.
+- Politics subordinates are separate Person ids under household relations to `sukerchakia`; not Faction tags; Raj Kaur absent from this slice.
