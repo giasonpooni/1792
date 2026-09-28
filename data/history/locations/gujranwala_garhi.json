@@ -1,0 +1,30 @@
+{
+  "schema_version": "historical-location.v1",
+  "location_id": "gujranwala_garhi",
+  "kind": "fort",
+  "label": "Garhi Mahan Singh (Gujranwala walled-town motif)",
+  "summary": "Named fortress motif associated with Mahan Singh inside Gujranwala in secondary narratives. Authored as a reference landmark for home-ground framing; not a playable siege map in this slice.",
+  "region": "rechna_doab_west_punjab",
+  "household_context": "sukerchakia",
+  "connects": ["gujranwala_settlement", "gujranwala_fort_road"],
+  "evidence": [
+    {
+      "source": "nominated_secondary_narratives (Garhi Mahan Singh / fortress within Gujranwala)",
+      "confidence": "low",
+      "evidence_class": "B",
+      "note": "Motif only; no surveyed plan or primary building account is claimed here."
+    },
+    {
+      "source": "game_canon.mahan_interlude_garhi_landmark",
+      "confidence": "none",
+      "evidence_class": "D",
+      "note": "Fictional connective landmark id for event location references."
+    }
+  ],
+  "canon_class": "game_canon",
+  "gameplay": {
+    "profile_scope": "mahan.v1",
+    "role": "reference_only",
+    "notes": "Not a combat sandbox; reference_only."
+  }
+}
