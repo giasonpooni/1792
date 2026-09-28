@@ -66,6 +66,22 @@ The menu also retains the separate Lahore command story, houses-and-rivals patro
 sandbox, and the political-exposure/perception experiment. These are development
 scenarios, not completed transitions in the childhood-to-Lahore biography.
 
+## Local social-field prototype
+
+In **Living politics + one-eye vision (extended home chapter)**, complete the
+household inquiry, then speak to the market keeper and gate keeper with **E**.
+A raid can change their manner only after reports reach their own communication
+links. Reparations travel too; helping one relationship does not erase every
+other observer's account. Raj Kaur's policy dialogue also reflects her received
+reports. No numerical social score is exposed to the player.
+
+This is an authored, bounded social model: five local observers, delayed and
+attenuated reports, trust/grievance/fear/attention/obligation, and three rendered
+conversation fixtures. It is not validated social science, a completed city-wide
+NPC simulation, or an extension of the separate household trade economy.
+
+[Social-field implementation and walkthrough](docs/SOCIAL_FIELD.md)
+
 ## Controls
 
 | Control | Action |

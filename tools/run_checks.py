@@ -58,6 +58,9 @@ def main() -> int:
         "political-exposure", "POLITICAL_EXPOSURE:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_water_round.gd"],
         "water-round", "WATER_ROUND_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_social_field.gd",
+         "--", "--evidence-out=" + str(ROOT / "test-results" / "social-field-observation.json")],
+        "social-field", "SOCIAL_FIELD_TESTS:")
     return 0
 
 

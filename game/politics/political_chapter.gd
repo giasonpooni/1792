@@ -7,6 +7,7 @@ var _eye_level := true
 var _attention_cue := "No watchful glance has been observed. This is not proof of privacy."
 var _north_observer: MeshInstance3D
 var _outpost_visuals: Array = []
+var _social_visuals: Array = []
 
 func _init() -> void:
 	campaign = Campaign.new()
@@ -29,6 +30,17 @@ func _ready() -> void:
 		label.pixel_size = 0.002
 		node.add_child(label)
 		_outpost_visuals.append(node)
+	for id in Campaign.Politics.SocialProfile.ADDED_RESIDENTS:
+		var at: Vector3 = Campaign.Politics.SocialProfile.SITES[id]
+		var resident := _box(Vector3(0.55,1.65,0.5),at+Vector3.UP*0.825,Color("796f5b"))
+		var label := Label3D.new()
+		label.text = Campaign.Registry.PEOPLE[id].name+" [E]"
+		label.position.y = 1.2
+		label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+		label.font_size = 20
+		label.pixel_size = 0.002
+		resident.add_child(label)
+		_social_visuals.append(resident)
 	_sync_eye_camera()
 	_refresh()
 
@@ -116,12 +128,14 @@ func _refresh() -> void:
 		_hud.text += "\nPrototype ledger full: further political inputs are refused; save remains available."
 	if is_instance_valid(_north_observer): _north_observer.get_parent().visible = model.stage() == "escaped"
 	for node in _outpost_visuals: node.get_parent().visible = model.aftermath_phase() == "complete"
+	for node in _social_visuals: node.get_parent().visible = model.aftermath_phase() == "complete"
 
 func _open_journal() -> void:
 	super._open_journal()
 	_panel_text.text = _panel_text.text.replace("Eye loss is already present; F4 changes only subjective framing. There is no historically established progressive-blindness schedule here.",
 		"The extended new-game profile gradually reduces left-eye contribution during active play and stops at one-eye vision. This is authored, not a verified disease timeline. Imported legacy saves retain stable one-eye vision. F4 changes rendering only; F6 changes viewpoint, not perception or rival knowledge.")
 	_panel_text.text += "\n\nPOLITICAL PROTOTYPE\nAfter the inquiry, E at Raj Kaur arranges scouts, reparations or discretion. E at authored outpost nodes orders an abstract raid/incursion. No physical army deployment or complete historical retainer roster is claimed. Rival metrics and undiscovered plots are not exposed in this journal."
+	_panel_text.text += "\n\nLOCAL SOCIAL FIELD\nAfter the inquiry, E at the market keeper or gate keeper hears their current response. News reaches each through authored delayed channels. Their manner is evidence of their own response, not a view of every faction. These conversations do not alter the separate household trade economy."
 	var button := Button.new()
 	button.text = "Import previous aftermath save (original slot is not overwritten)"
 	button.custom_minimum_size.y = 48
@@ -133,8 +147,16 @@ func _interact() -> void:
 	if model.aftermath_phase() != "complete" or model.mounted():
 		super._interact()
 		return
+	for id in Campaign.Politics.SocialProfile.SITES:
+		var at: Vector3 = Campaign.Politics.SocialProfile.SITES[id]
+		if Model.distance(model.position(),at)>3.0: continue
+		var response := campaign.local_social_response(id,_seen(at+Vector3.UP,4.0))
+		if not response.is_empty():
+			_show_dialog(response.speaker.to_upper()+" · LOCAL CONVERSATION",response.text,[["Leave","resume"]])
+			return
 	if Model.distance(model.position(),Story.MOTHER) <= 3.0 and _seen(Story.MOTHER+Vector3.UP,4.0):
-		_show_dialog("PHULKIAN HOUSEHOLD · RAJ KAUR", "Authored household arrangements. Scouts produce delayed, fallible reports; reparations address one grievance, not every rival. Discretion lowers public exposure and supports abstract protective precautions.",
+		var household := campaign.local_social_response("raj_kaur",true)
+		_show_dialog("PHULKIAN HOUSEHOLD · RAJ KAUR", str(household.get("text",""))+"\n\nAuthored household arrangements. Scouts produce delayed, fallible reports; reparations address one grievance, not every rival. Discretion lowers public exposure and supports abstract protective precautions.",
 			[["Send scouts toward Bhangi (8)","policy:scout:bhangi"],["Send scouts toward Sandhawalia (8)","policy:scout:sandhawalia"],
 			["Offer Phulkian reparations (15)","policy:reparation:phulkian"],["Offer Bhangi reparations (15)","policy:reparation:bhangi"],
 			["Offer Sandhawalia reparations (15)","policy:reparation:sandhawalia"],["Reduce public exposure / precautions (5)","policy:discretion:sukerchakia"],["Leave","resume"]])
