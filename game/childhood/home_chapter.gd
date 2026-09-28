@@ -9,6 +9,10 @@ const Story := preload("res://childhood/aftermath_state.gd")
 const Checkpoint := preload("res://childhood/checkpoint_store.gd")
 const EscortAgent := preload("res://patrol/patrol_agent.gd")
 const Navigation := preload("res://patrol/patrol_navigator.gd")
+const InputProfile := preload("res://platform/input_profile.gd")
+const ControllerShell := preload("res://platform/controller_shell.gd")
+var controller_settings_path := InputProfile.SETTINGS_PATH
+var controls: Node
 var model := Story.new()
 var save_path := Story.AFTER_SAVE # checkpoints derive from this path; tests stay isolated
 var avatar: CharacterBody3D
@@ -45,6 +49,12 @@ var _message := "Buddh · I know the yard, the horse, and the voices. I do not y
 func _ready() -> void:
 	avatar = get_parent().get_node("Player")
 	avatar.menu_shortcut = false
+	avatar.managed_controller_look = true
+	controls=ControllerShell.new()
+	controls.name="ControllerShell"
+	add_child(controls)
+	controls.interrupted.connect(_platform_interrupted)
+	controls.device_changed.connect(_refresh)
 	avatar.get_node("HomeIdentity").hide()
 	get_parent().get_node("HomeMarker").hide()
 	horse = Horse.instantiate()
@@ -227,6 +237,7 @@ func _build_ui() -> void:
 	_panel_text.add_theme_font_size_override("font_size",17)
 	content.add_child(_panel_text)
 	_actions = VBoxContainer.new()
+	_actions.child_order_changed.connect(func(): _focus_actions.call_deferred())
 	_actions.add_theme_constant_override("separation",8)
 	content.add_child(_actions)
 	_panel.hide()
@@ -242,32 +253,61 @@ func _layout() -> void:
 	# Wrap text independently of the visual impairment treatment.
 
 func _unhandled_input(event: InputEvent) -> void:
+	if is_instance_valid(controls) and not controls.focused: return
 	if event is InputEventMouseMotion and not _paused:
 		model.record_look(event.relative.x * avatar.mouse_sensitivity)
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and not _paused:
-		_strike_requested = true
-	if not event is InputEventKey or not event.pressed or event.echo: return
-	match event.keycode:
-		KEY_E: _interact_requested = not _paused
-		KEY_F: _mount_requested = not _paused
-		KEY_F5: _save_requested = true
-		KEY_F9: _load_requested = true
-		KEY_R: _retry_requested = true
-		KEY_G:
-			if _paused: return
-			var instruction: String = model.aftermath().escort.instruction
-			_escort_order_requested = "follow" if instruction == "hold" else "hold"
-		KEY_J, KEY_F1: _open_journal()
-		KEY_ESCAPE:
-			if _paused: _resume()
-			else: _open_journal()
-		KEY_F4:
-			_subjective = not _subjective
-			_veil.visible = _subjective
-		_ : return
+	if event.is_echo(): return
+	if event.is_action_pressed("strike") and not _paused: _strike_requested = true
+	elif event.is_action_pressed("interact"): _interact_requested = not _paused
+	elif event.is_action_pressed("mount"): _mount_requested = not _paused
+	elif event.is_action_pressed("save_game"): _save_requested = true
+	elif event.is_action_pressed("load_game"): _load_requested = true
+	elif event.is_action_pressed("retry_checkpoint"): _retry_requested = true
+	elif event.is_action_pressed("escort_order") and not _paused:
+		var instruction: String = model.aftermath().escort.instruction
+		_escort_order_requested = "follow" if instruction == "hold" else "hold"
+	elif event.is_action_pressed("open_journal"): _open_journal()
+	elif event.is_action_pressed("pause_game") or event.is_action_pressed("ui_cancel"):
+		if _paused: _resume()
+		else: _open_journal()
+	elif event.is_action_pressed("toggle_framing"):
+		_subjective = not _subjective
+		_veil.visible = _subjective
+	else: return
 	get_viewport().set_input_as_handled()
 
+func _platform_interrupted(reason: String) -> void:
+	if not is_instance_valid(_panel): return
+	_clear_pending_actions()
+	_show_dialog("PAUSED",reason+"\nUnsaved progress remains in this session. No automatic save or time catch-up.",[["Resume","resume"],["Controller settings","controller_settings"],["Main menu (unsaved changes lost)","menu"]])
+
+func _focus_actions() -> void:
+	if not is_instance_valid(_actions) or not _panel.visible: return
+	ControllerShell.focus_buttons(_actions,_journal_scroll)
+
+func _open_controller_settings() -> void:
+	var p: Dictionary=InputProfile.settings
+	_show_dialog("CONTROLLER SETTINGS",InputProfile.hints()+"\n\nStick deadzone: %.2f · Look speed: %.1f rad/s · Invert Y: %s\n%s"%[p.deadzone,p.look_speed,p.invert_y,InputProfile.settings_warning],
+		[["Cycle stick deadzone","controller_deadzone"],["Cycle look speed","controller_speed"],["Toggle inverted vertical look","controller_invert"],["Reset controller settings","controller_reset"],["Return","resume"]])
+
+func _controller_setting(action: String) -> void:
+	var p: Dictionary=InputProfile.settings.duplicate(true)
+	match action:
+		"controller_deadzone": p.deadzone=0.2 if p.deadzone<0.2 else 0.3 if p.deadzone<0.3 else 0.15
+		"controller_speed": p.look_speed=2.4 if p.look_speed<2.4 else 3.6 if p.look_speed<3.6 else 1.2
+		"controller_invert": p.invert_y=not p.invert_y
+		"controller_reset": p=InputProfile.DEFAULTS.duplicate(true)
+	InputProfile.settings_warning=InputProfile.set_preferences(p,controller_settings_path)
+	_open_controller_settings()
+
 func _menu_action(action: String) -> void:
+	if is_instance_valid(controls) and not controls.focused: return
+	if action=="controller_settings":
+		_open_controller_settings()
+		return
+	if action.begins_with("controller_"):
+		_controller_setting(action)
+		return
 	match action:
 		"resume": _resume()
 		"save": _save_requested = true
@@ -292,13 +332,17 @@ func _open_journal() -> void:
 	_panel_text.text = text
 	_set_actions([["Resume","resume"],["Save chapter","save"],["Load chapter","load"],
 		["Restore last checkpoint [R] — replaces current progress","retry"],
-		["Import previous childhood save","import"],["Main menu (unsaved changes lost)","menu"]])
+		["Import previous childhood save","import"],["Controller settings / controls","controller_settings"],["Main menu (unsaved changes lost)","menu"]])
 	_panel.show()
+	if is_instance_valid(controls): controls.scroll_target=_journal_scroll
+	_focus_actions.call_deferred()
 	_hud.hide()
 	_caption.hide()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func _resume() -> void:
+	if is_instance_valid(controls) and not controls.focused: return
+	if is_instance_valid(controls): controls.scroll_target=null
 	_paused = false
 	avatar.input_enabled = model.stage() != "caught"
 	avatar.set_physics_process(not model.mounted() and model.stage() != "caught")
@@ -338,6 +382,7 @@ func _physics_process(delta: float) -> void:
 		_message = "Chapter saved." if error.is_empty() else error
 		if _paused: _resume()
 	if _paused: return
+	model.record_look(avatar.controller_look(delta))
 	if model.stage() == "caught":
 		_message = "This attempt ended. Restore the last checkpoint [R], or load a manual save."
 		_show_dialog("ATTEMPT ENDED",_message+"\n\n"+_checkpoint_note,
@@ -347,13 +392,13 @@ func _physics_process(delta: float) -> void:
 		_mount_requested = false
 		_toggle_mount()
 	if model.mounted():
-		var motion: Dictionary = horse.step(delta,Input.get_action_strength("move_forward"),Input.get_axis("move_left","move_right"),Input.is_action_pressed("sprint"),Input.is_key_pressed(KEY_CTRL),Input.is_action_pressed("move_backward") or Input.is_key_pressed(KEY_SPACE))
+		var motion: Dictionary = horse.step(delta,Input.get_action_strength("move_forward"),Input.get_axis("move_left","move_right"),Input.is_action_pressed("sprint"),Input.is_action_pressed("ride_slow"),Input.is_action_pressed("move_backward") or Input.is_action_pressed("ride_brake"))
 		var error := model.record_ride(motion,delta)
 		if not error.is_empty(): horse.apply_record(model.horse_record())
 		avatar.global_position = model.position()
 	else:
-		avatar.walk_speed = 2.0 if Input.is_key_pressed(KEY_C) else 4.5
-		avatar.run_speed = 2.0 if Input.is_key_pressed(KEY_C) else 7.5
+		avatar.walk_speed = 2.0 if Input.is_action_pressed("cautious") else 4.5
+		avatar.run_speed = 2.0 if Input.is_action_pressed("cautious") else 7.5
 		var error := model.record_position(avatar.global_position,delta)
 		if not error.is_empty(): avatar.global_position = model.position()
 	model.advance()
@@ -364,7 +409,7 @@ func _physics_process(delta: float) -> void:
 	_step_ambush(delta)
 	_step_escort(delta)
 	_strike_requested = false
-	guard_visual.visible = not model.mounted() and Input.is_key_pressed(KEY_Q)
+	guard_visual.visible = not model.mounted() and Input.is_action_pressed("guard")
 	_refresh()
 
 func _interact() -> void:
@@ -389,7 +434,7 @@ func _interact() -> void:
 			error = model.inspect_track(expected)
 			_message = "Buddh · Another trace. I can learn the ground without a reader."
 		elif model.near("quarry",6.0) and _seen(Model.SITES.quarry+Vector3.UP*0.8,7.0):
-			error = model.observe_quarry(Input.is_key_pressed(KEY_C))
+			error = model.observe_quarry(Input.is_action_pressed("cautious"))
 			_message = "Buddh · The quarry is here. Time to return; I remember the bend."
 			if error.is_empty(): _capture_checkpoint("return_trail")
 		else: error = "Look toward the nearby trace, then examine it [E]."
@@ -415,7 +460,7 @@ func _step_practice() -> void:
 	var facing := _facing(Model.SITES.spar)
 	if phase >= 90 and phase < 120: _message = "Trainer · Watch the raised arm. Face me and hold Q to guard."
 	if phase == 120:
-		if Input.is_key_pressed(KEY_Q) and facing:
+		if Input.is_action_pressed("guard") and facing:
 			model.spar_result("parry")
 			_message = "Trainer · Guard held. After two guards, counter during my recovery [left click]."
 		else: _message = "Trainer · Turn toward the strike and guard. Again."
@@ -453,7 +498,7 @@ func _step_ambush(delta: float) -> void:
 	if not stopped and d < 3.0:
 		if phase >= 90: _message = "[Nearby movement: a strike is being raised.] Face it and guard [Q], or create distance."
 		if phase == 119:
-			if not model.mounted() and Input.is_key_pressed(KEY_Q) and _facing(attacker.global_position):
+			if not model.mounted() and Input.is_action_pressed("guard") and _facing(attacker.global_position):
 				model.parry_threat()
 				_message = "Buddh · The blow is checked. Counter [left click] or leave now."
 			else:
@@ -581,6 +626,8 @@ func _refresh() -> void:
 	_marker.position = target+Vector3.UP*2.1
 	_marker.text = "Practice waypoint" if lesson in ["orientation","riding","sparring","tracking"] else "Speaker" if lesson=="letter" else "Return"
 	_marker.visible = lesson not in ["orientation","caught"] and model.aftermath_phase() != "complete"
+	if is_instance_valid(controls) and controls.using_gamepad:
+		_hud.text="1792 · BUDDH SINGH · HOME CHAPTER\n"+instructions.replace("[E]","[X]").replace("[F]","[Y]").replace("[Q]","[LB]").replace("[hold Q]","[hold LB]").replace("[left click]","[RB]").replace("[click]","[RB]").replace("[hold C + E]","[hold L3 + X]").replace("[look + E]","[look + X]")+"\nX interact · Y horse · View stories · Menu journal/save/settings\nLeft stick move · Right stick look · RT run · LB guard · RB counter"
 	_sync_aftermath_visuals()
 
 func _set_actions(specs: Array) -> void:
@@ -617,6 +664,8 @@ func _show_dialog(title: String, body: String, actions: Array) -> void:
 	_panel_text.text = title + "\n\n" + body
 	_set_actions(actions)
 	_panel.show()
+	if is_instance_valid(controls): controls.scroll_target=_journal_scroll
+	_focus_actions.call_deferred()
 	_hud.hide()
 	_caption.hide()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE

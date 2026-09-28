@@ -30,3 +30,13 @@ Bevy, Blender, and Notations Engineering Terminal are architecture or tool refer
 For each incoming third-party component, record the exact repository paths, upstream source, pinned revision or version, actual copyright holder, licence identifier and text, modifications, and release obligations. Retain permission evidence privately where necessary. Follow [asset intake](docs/ASSET_LICENSING.md) for media and [contribution review](CONTRIBUTING.md) for externally authored code.
 
 Unresolved rights are not cleared by this inventory. Preserve applicable upstream terms and obtain review before combining licences that could conflict with the intended distribution.
+
+## Platform-foundation development packages
+
+The Windows development packager now includes the original game notice, Godot MIT
+notice and `ENGINE-NOTICES.json` emitted by the executed export build through
+Godot's runtime licence/copyright APIs. The JSON retains full component attribution
+and licence texts. Source-tree inspection above remains bounded to its stated
+revision; it is not relabelled as a dependency audit of this later export. No
+third-party photo, standalone font asset or restricted SDK is added to source.
+See [platform build and qualification](docs/PLATFORM_FOUNDATION.md).

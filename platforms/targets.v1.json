@@ -1,0 +1,33 @@
+{
+  "schema": "cg.platform-targets.v1",
+  "game_id": "1792",
+  "engine_reference": "4.5.1.stable",
+  "targets": {
+    "windows_local": {
+      "status": "implemented_unsigned_payload",
+      "runtime_provider": "local_pc",
+      "export_preset": "Windows x86_64 (local)",
+      "store_upload": false,
+      "console_certification": false
+    },
+    "steam_windows": {
+      "status": "offline_preview_recipe_only",
+      "runtime_provider": "local_pc",
+      "export_preset": "Windows x86_64 (local)",
+      "store_upload": false,
+      "console_certification": false
+    },
+    "microsoft_pc": {
+      "status": "blocked_unimplemented_packaging",
+      "reason": "Requires a separately qualified GDK/MSIXVC packaging integration and configured product identity. A Windows executable is not a Microsoft Store package.",
+      "store_upload": false,
+      "console_certification": false
+    },
+    "xbox_series": {
+      "status": "blocked_unimplemented_port",
+      "reason": "Requires approved console access, private SDK/export templates, platform integration, hardware tests and certification. No Xbox binary is produced.",
+      "store_upload": false,
+      "console_certification": false
+    }
+  }
+}

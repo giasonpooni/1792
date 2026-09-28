@@ -77,6 +77,23 @@ import the previous integrated Gujranwala save without overwriting that old file
 
 [Oral-memory walkthrough, source lineage and tests](docs/ORAL_MEMORY.md)
 
+## PC and controller foundation
+
+The Home territory entry now accepts an Xbox-style controller from the title
+screen through the childhood lessons, inquiry, stories and save/load menus.
+Left stick moves; right stick looks; **X** interacts; **Y** mounts; **Menu** opens
+journal/save/settings; **View** opens remembered stories. **D-pad/A/B** navigate
+menus. Deadzone, look-speed and inversion settings are available under Menu.
+Keyboard and mouse controls remain.
+
+There is a public **Windows x86_64 (local)** export preset and an allowlisted,
+unsigned development packager. Steam gets an **offline preview-recipe generator**,
+not a published build or Steamworks SDK integration. Microsoft Store and Xbox
+remain explicitly blocked packaging/port targets pending their actual adapters.
+Local play invents no store account, achievement, cloud save or entitlement.
+
+[Controller controls, Windows builds and platform qualification](docs/PLATFORM_FOUNDATION.md)
+
 ## Other retained modes
 
 The menu also retains the separate Lahore command story, houses-and-rivals patrol
@@ -117,6 +134,7 @@ python tools/check_project.py
 python tools/check_reconstruction.py
 python tools/check_oral_memory.py
 python tools/run_checks.py --godot /path/to/godot
+python tools/run_platform_checks.py --godot /path/to/godot
 /path/to/godot --headless --fixed-fps 60 --path game --script res://tests/test_oral_memory.gd
 ```
 

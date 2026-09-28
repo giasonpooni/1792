@@ -46,7 +46,16 @@ func _build_world() -> void:
 		_oral_props.append(label)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_F7:
+	# The active consumer routes semantic actions; earlier chapter implementations remain intact.
+	if event.is_action_pressed("open_accounts") and (not _paused or event is InputEventKey):
+		_open_accounts()
+		get_viewport().set_input_as_handled()
+		return
+	if event.is_action_pressed("open_research") and (not _paused or event is InputEventKey):
+		if not _paused: _show_dialog("GUJRANWALA — RESEARCH VIEW",fabric.notebook(),[["Return","resume"]])
+		get_viewport().set_input_as_handled()
+		return
+	if event.is_action_pressed("open_memories") and not event.is_echo():
 		_open_oral_memory()
 		get_viewport().set_input_as_handled()
 		return
@@ -172,6 +181,8 @@ func _open_journal() -> void:
 func _refresh() -> void:
 	super._refresh()
 	if is_instance_valid(_hud): _hud.text+="\nF7: remembered stories · E: hear, inspect or retell locally"
+	if is_instance_valid(controls) and controls.using_gamepad and is_instance_valid(_hud):
+		_hud.text=InputProfile.controller_text(_hud.text)
 	for prop in _oral_props:
 		prop.visible=model.aftermath_phase()=="complete"
 
