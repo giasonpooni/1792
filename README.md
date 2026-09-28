@@ -24,7 +24,7 @@ No Python, .NET, Bevy, NET service or scientific provider is required to play.
 
 | Menu entry | Current gameplay |
 | --- | --- |
-| **1792 · Buddh Singh · Home territory** | Childhood training, oral accounts, an ambush, a protection agreement and inquiry, then a small Gujranwala supply/production loop. |
+| **1792 · Buddh Singh · Home territory** | Childhood training, oral accounts, an ambush, a protection agreement and inquiry, then Gujranwala supplies/production, a disputed-road caravan, and Shah Muhammad captions. |
 | **Lahore · Command story** | Separate fictional 1801 sandbox: assign a patrol, play or delegate its captain, investigate and receive a delayed report. |
 | **Lahore · Houses and rivals** | The same command loop with a house dispute, a rideable horse, visible companions, follow/hold orders and physical return. |
 
@@ -99,6 +99,44 @@ a bounded flat-lane profile.
 [Home territory and economic rules](docs/GUJRANWALA.md) ·
 [Coupled campaign direction](docs/COUPLED_CAMPAIGN.md)
 
+## Gujranwala now has a usable household setting
+
+The starting cell now contains a **walk-in store chamber**, a protected well,
+trough, market/storage details, procedural earthen wall materials, and seeded low
+settlement silhouettes beyond the playable boundary. Enter the store, explore the
+yard and retain your position through save/load. The added props do not create
+free inventory, a second production facility or a new treasury.
+
+**O** opens a research/authoring notebook and the optional haze control. Latif's
+selected account supports the early enclosure/store role; district material
+supports wells as a regional feature. Every building position and dimension,
+mechanism, skyline dwelling and material/shader setting is authored. No surveyed
+1792 street plan has been established, and later Nalwa/colonial features are not
+backdated. The original 56-metre cell, lesson sites and playable routes remain.
+[Research, build and limits](docs/GUJRANWALA_RESEARCH_BUILD.md).
+
+## A road and a claim
+
+After delivering the first food cargo, select **Escort via the disputed crossing**
+at the market. The same carrier reaches a closed bar. Speak on foot to its keeper:
+recognize the local passage claim, ask for a delayed answer, or take a longer field
+bypass. Confirmation needs ten unpaused seconds **and actually hearing the reply**;
+the timer alone cannot reveal knowledge or open the road. Bring the original load
+home for its original single check-in and payment. There is no new toll, extra
+shipment, annexation or armed checkpoint fight.
+[Road walkthrough and engineering](docs/DISPUTED_ROAD.md).
+
+## Shah Muhammad narrates; Buddh experiences
+
+Eight event-driven **original English narrator drafts** now accompany home,
+survival, household responsibility, road choices and the actual load's return.
+They are captions, not recordings or historical quotations. Punjabi writing and
+performance remain future work. **N** opens the distinct narrator transcript and
+toggle. It never writes Buddh's memories, exposes an unseen culprit, grants
+passage or settles money. Dialogue/danger suspend the captions; loading silently
+baselines past events rather than replaying them as new information.
+[Narration contract](docs/SHAH_NARRATION.md).
+
 ## Controls and saves
 
 | Control | Action |
@@ -112,6 +150,7 @@ a bounded flat-lane profile.
 | Q / left click in childhood | Guard / counter |
 | C in childhood | Quiet approach |
 | B in home territory | Oral supply accounts |
+| N / O in home territory | Narrator transcript / research and atmosphere |
 | G | Household guard or patrol follow/hold, where available |
 | J / F1 | Childhood journal / pause |
 | H in Houses and rivals | Antagonist codex |
@@ -123,8 +162,9 @@ Menus pause both motion and the scenario clock. The peripheral option changes
 presentation, not knowledge or health. It is not a medical visual-field model,
 and no progressive eye-loss or alcohol mechanic is attached to the child.
 
-The new home profile uses **`user://1792-gujranwala-v1.json`** and a separate
-checkpoint sidecar. Old childhood/aftermath saves can be read by the new loader
+The new home profile uses **`user://1792-shah-road-v1.json`** and a separate
+checkpoint sidecar. J/F1 explicitly imports the previous Gujranwala supply slot
+without overwriting it. Old childhood/aftermath saves can be read by the new loader
 without inventing an allowance or completed contracts. Older checkpoints replace
 the whole later session, including economic progress.
 
@@ -203,7 +243,8 @@ python tools/check_project.py
 python tools/run_checks.py --godot /path/to/godot
 ```
 
-The runner executes every inherited suite plus the home-territory checks.
+The runner executes every inherited suite plus the home-territory, disputed-road,
+narrator and researched-setting checks.
 CI also retains source snapshots, logs and software-rendered captures.
 A successful numerical or scene test is not human playtesting, a physical-GPU
 benchmark, or proof that the historical model is accurate.

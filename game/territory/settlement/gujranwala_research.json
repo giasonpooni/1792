@@ -1,0 +1,64 @@
+{
+  "schema": "1792.setting-research.v1",
+  "id": "gujranwala-home-setting.v1",
+  "review_date": "2026-09-28",
+  "chapter_label": 1792,
+  "coordinate_basis": "authored_compressed_local_metres_not_georeferenced",
+  "surveyed_plan_available": false,
+  "sources": [
+    {
+      "id": "latif_1891_fort",
+      "title": "Syad Muhammad Latif, History of the Panjab (1891)",
+      "url": "https://archive.org/details/in.ernet.dli.2015.109845",
+      "text_url": "https://archive.org/stream/in.ernet.dli.2015.109845/2015.109845.History-Of-The-Panjab1891_djvu.txt",
+      "locator": "Archive text lines 25195-25205; passage beginning Nodh Singh died in 1752",
+      "perspective": "Selected biased retrospective narrative; not an impartial survey",
+      "consultation": "Metadata and this text passage read; page-image confirmation still pending",
+      "supports": "Latif describes Charat Singh building a small mud fort at Gujraoli as a rendezvous and store-house.",
+      "does_not_support": "The exact 1792 footprint, street plan, store dimensions, wall height or material recipe. Archive text has OCR errors."
+    },
+    {
+      "id": "district_village_origins",
+      "title": "District Gujranwala, Origin of Existing Villages in Gujranwala",
+      "url": "https://gujranwala.punjab.gov.pk/origin",
+      "locator": "Paragraph on renewed settlement and restored wells",
+      "perspective": "Official website reproducing retrospective historical prose; original relative dates are not resolved here",
+      "consultation": "Full short webpage read",
+      "supports": "The account connects settlement recovery with reclaimed homesteads, restored wells and village proprietary shares.",
+      "does_not_support": "A specific well at the game courtyard, its mechanism, dimensions or exact date."
+    },
+    {
+      "id": "district_eminabad_context",
+      "title": "District Gujranwala, Colonization of District",
+      "url": "https://gujranwala.punjab.gov.pk/colonization_of_district",
+      "locator": "Paragraphs on principal places and the old parganahs",
+      "perspective": "Retrospective administrative history; contains older conjectural antiquarian identifications",
+      "consultation": "Relevant regional-administration paragraphs read",
+      "supports": "The account places the Gujranwala site within the old Eminabad parganah and identifies Eminabad and Hafizabad as earlier principal places.",
+      "does_not_support": "A continuous friendly territorial polygon, a precise safe radius, or route/river coordinates for 1792."
+    },
+    {
+      "id": "nalwa_later_town",
+      "title": "Hari Singh Nalwa Foundation Trust, Jagirdar / Towns, Forts, Gardens and Shrines",
+      "url": "https://www.harisinghnalwa.com/gen_multan.html",
+      "locator": "Gujranwala jagir and New Town paragraphs",
+      "perspective": "Commemorative secondary account, not a contemporary cadastral map",
+      "consultation": "Selected Gujranwala passages read; the cited original Cave-Browne account was not independently inspected",
+      "supports": "This account assigns Nalwa's Gujranwala jagir and town development to the period around 1815-1837.",
+      "does_not_support": "Backdating his later urban development into Buddh's childhood."
+    }
+  ],
+  "features": [
+    {"id": "earthen_enclosure", "basis": "source_supported_function_authored_geometry", "source_ids": ["latif_1891_fort"], "scope": "Earth-toned enclosure and household military/storage role; original test-wall dimensions retained."},
+    {"id": "walk_in_store", "basis": "source_supported_function_authored_geometry", "source_ids": ["latif_1891_fort"], "scope": "A small usable store chamber. Its position, U-shaped walls, open doorway, roof, sacks and timber details are authored."},
+    {"id": "courtyard_well", "basis": "regional_analogy_authored_placement", "source_ids": ["district_village_origins"], "scope": "A protected well as a water landmark. It is not a located historical well and has no water-production simulation."},
+    {"id": "trough_and_market", "basis": "authored_connective_material", "source_ids": [], "scope": "Stable trough, market props and supply sacks support existing play; no specific 1792 inventory is asserted."},
+    {"id": "settlement_silhouette", "basis": "authored_connective_material", "source_ids": [], "scope": "Seeded low dwellings outside the playable cell suggest a settlement. They are not streamed, habitable or a surveyed street map."},
+    {"id": "earthen_shader_and_haze", "basis": "authored_presentation", "source_ids": [], "scope": "Procedural rough color variation, courses and a fixed warm haze. No physically measured material or historical weather claim."}
+  ],
+  "excluded_from_childhood_build": [
+    "Nalwa's later New Town is not used as the 1792 street layout.",
+    "No unverified surviving gateway, tomb, clock tower, railway or colonial canal is copied into this childhood cell.",
+    "No exact safe-radius polygon, district population or number of shops is inferred from the supplied AI conversations."
+  ]
+}
