@@ -43,3 +43,8 @@ Godot **4.5.1.stable**; structure + mahan family (counts filled after local run)
 | mahan-garhi | **140** (new) |
 | mahan-fence | **121** |
 | mahan-handoff | **101** |
+
+
+## Full `tools/run_checks.py` wall-clock (tip `919448e`)
+
+Full inherited + mahan* suite on tip `919448e163233fdd849ebcf41fcc1d56b209b123` (Godot **4.5.1.stable**): **2436** runtime asserts passed, 0 failed (+ **9** structural). See [MAHAN_INTEGRATION_LEDGER.md](MAHAN_INTEGRATION_LEDGER.md) for the complete table. No Mahan-side hook fixes; childhood/Lahore untouched.

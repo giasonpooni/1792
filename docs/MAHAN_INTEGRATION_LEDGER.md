@@ -36,6 +36,7 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 | `docs/MAHAN_INTERLUDE.md` | Cavalry loop + ontology fence |
 | `docs/MAHAN_INTEGRATION_LEDGER.md` | This cavalry note |
 
+
 ## Extended (prior slice -- logistics forage / wait / stockout)
 
 | Path | Change |
@@ -48,6 +49,7 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 | `tools/run_checks.py` | Registers `test_mahan_logistics.gd` after cavalry |
 | `docs/MAHAN_INTERLUDE.md` | Logistics loop + non-goals |
 | `docs/MAHAN_INTEGRATION_LEDGER.md` | This logistics note |
+
 
 ## Extended (prior slice -- clan/subordinate politics)
 
@@ -62,6 +64,7 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 | `tools/run_checks.py` | Registers `test_mahan_politics.gd` after logistics |
 | `docs/MAHAN_INTERLUDE.md` | Politics loop + ontology fence |
 | `docs/MAHAN_INTEGRATION_LEDGER.md` | This politics note |
+
 
 ## Extended (prior slice -- subordinate orders / pursuit stub)
 
@@ -93,7 +96,7 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 | `game/mahan/mahan_launch.gd` | Composes `mahan_history_chapter.gd` |
 | `game/tests/test_mahan_history.gd` | History checks: observe fence, delayed delivery, endpoint knowledge grant, ontology, Raj Kaur absence, launch smoke |
 | `tools/run_checks.py` | Registers `test_mahan_history.gd` after orders |
-| `tools/check_project.py` | Structural check: schema shape + data/history <-> game/mahan/data identity |
+| `tools/check_project.py` | Structural check: schema shape + data/history ↔ game/mahan/data identity |
 | `docs/HISTORICAL_EVENTS.md` | Short historical-event stub doc |
 | `docs/MAHAN_INTERLUDE.md` | Historical frames loop + schema fence |
 | `docs/MAHAN_INTEGRATION_LEDGER.md` | This history note |
@@ -221,3 +224,40 @@ Godot **4.5.1.stable**; structure + mahan family:
 See **[MAHAN_GARHI_NOTE.md](MAHAN_GARHI_NOTE.md)** for path table, identity notes, and suite counts (ledger size split).
 
 `mahan_garhi_*` on settlement: examine rampart/gatehouse/bastion; delayed report; fort_road/settlement unlock; no combat/siege; fence+handoff green.
+
+
+## Full `tools/run_checks.py` wall-clock (tip `919448e`)
+
+Proven on tip `919448e163233fdd849ebcf41fcc1d56b209b123` (`feat/mahan-interlude-v1`) with Godot **4.5.1.stable** (`/workspace/godot451/Godot_v4.5.1-stable_linux.x86_64`), `python3 tools/run_checks.py --godot …`, exit **0**. No Mahan-side hook fixes required; childhood/Lahore architecture untouched; no merge.
+
+| Suite | Result |
+| --- | --- |
+| structure (`check_project`) | **9 OK** |
+| import | OK |
+| command-story | **202** passed, 0 failed |
+| houses | **272** passed, 0 failed |
+| riding | **177** passed, 0 failed |
+| companions | **229** passed, 0 failed |
+| character-names | **56** passed, 0 failed |
+| childhood | **110** passed, 0 failed |
+| aftermath | **164** passed, 0 failed |
+| mahan | **197** passed, 0 failed |
+| mahan-cavalry | **44** passed, 0 failed |
+| mahan-logistics | **75** passed, 0 failed |
+| mahan-politics | **89** passed, 0 failed |
+| mahan-orders | **101** passed, 0 failed |
+| mahan-history | **96** passed, 0 failed |
+| mahan-encounter | **123** passed, 0 failed |
+| mahan-settlement | **139** passed, 0 failed |
+| mahan-garhi | **140** passed, 0 failed |
+| mahan-fence | **121** passed, 0 failed |
+| mahan-handoff | **101** passed, 0 failed |
+| **Total runtime asserts** | **2436** passed, 0 failed (+ 9 structural) |
+
+Inherited non-Mahan runtime: **1210**. Mahan-family runtime: **1226**.
+
+Residual / suggested next playable beat (pick one; still no combat AI rewrite, no childhood/Lahore architecture rewrite, no merge):
+
+1. **Column contact stub** — deepen the existing ridge→settlement / pursuit delayed-custody contact without combat AI (hold_observe / advance_under_custody presentation + custody clocks only).
+2. **Baggage train logistics deepen** — extend forage / wait / stockout / march-cost on Gujranwala nodes (still no economy UI).
+3. Keep `mahan-garhi` + settlement + fence + handoff green on every tip push; prefer `push_files`; never PLACEHOLDER-stub.
