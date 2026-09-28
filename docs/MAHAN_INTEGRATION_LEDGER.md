@@ -207,7 +207,7 @@ Proven on tip `92be95dd2f68765a900ff221e5af2f440f5eb923` with Godot **4.5.1.stab
 Residual after full suite:
 
 - Authored Gujranwala ridge→settlement encounter stub is on tip (greybox + historical-event frame; still no full combat / town sim).
-- No accession / Buddh handoff cutter (fence proves absence; future opt-in only).
+- Opt-in Mahan→Buddh handoff cutter stub landed (default deny; live childhood apply future).
 - Concurrent-agent PLACEHOLDER risk on core files remains procedural — prefer `push_files` for large restores.
 
 
@@ -252,3 +252,42 @@ Godot **4.5.1.stable**; suites run at least:
 | mahan-encounter | **123** |
 | mahan-fence | **121** |
 
+
+## Extended (this tip -- Mahan→Buddh opt-in handoff cutter)
+
+| Path | Change |
+| --- | --- |
+| `docs/MAHAN_HANDOFF.md` | NEW design: explicit controller-approved transfer of selected report IDs; default deny; journal never wholesale; historical_outcome fixed; live childhood apply future |
+| `game/mahan/mahan_handoff.gd` | NEW cutter: `can_handoff` / `propose_transfer` / `apply_transfer` / `refuse_wholesale_journal_merge`; refuse unless opt-in+allowlist; apply dry-run only (no childhood slot write) |
+| `game/tests/test_mahan_handoff.gd` | NEW suite: default refuse; wholesale journal refuse; known_nodes bag refuse without allowlist; dry-run opt-in; slot/outcome refuse |
+| `tools/run_checks.py` | Registers `mahan-handoff` after `mahan-fence` |
+| `docs/MAHAN_FENCE_AUDIT.md` | Knowledge row + residual updated for opt-in cutter |
+| `docs/MAHAN_INTERLUDE.md` | Epistemic fence + non-goals point at handoff cutter |
+| `docs/MAHAN_INTEGRATION_LEDGER.md` | This note |
+
+Identity notes (handoff):
+
+- Default deny: no controller opt-in + allowlist → every API refuses.
+- Selected report IDs only; journal text bodies never copy; `known_nodes` require separate allowlist.
+- `historical_outcome` / fixed death stay fixed; no alternate-history flip via handoff.
+- Apply stub never writes `user://1792-childhood-v1.json` or mutates `childhood_state`.
+- No rewrite of `childhood_state` / `command_state` / `house_command_state` / `character_names`.
+- No silent menu-load transition; Mahan authority still has no `handoff_to_*` / `merge_knowledge` methods.
+- Out of scope: Buddh receiver UI, stack merge, combat, accession scene, merge to `main`.
+
+### Handoff cutter local wall-clock (this tip)
+
+Godot **4.5.1.stable**; structure + mahan family:
+
+| Suite | Result |
+| --- | --- |
+| structure | **9 OK** |
+| mahan | **197** |
+| mahan-cavalry | **44** |
+| mahan-logistics | **75** |
+| mahan-politics | **89** |
+| mahan-orders | **101** |
+| mahan-history | **96** |
+| mahan-encounter | **123** |
+| mahan-fence | **121** |
+| mahan-handoff | **101** (new) |
