@@ -1,52 +1,17 @@
 {
   "version": "1792.history-sources.v1",
   "accessed": "2026-09-28",
-  "sources": [
-    {
-      "id": "doam_ranjit_birthplace",
-      "authority": "Department of Archaeology & Museums, Government of Pakistan",
-      "title": "Ranjit Singh Birthplace",
-      "url": "https://doam.gov.pk/public/sites/10111",
-      "use": "Architectural type anchor and late-18th-century open-space context",
-      "evidence_class": "A/B"
-    },
-    {
-      "id": "grewal_urbanization",
-      "authority": "J. S. Grewal / Journal of Punjab Studies",
-      "title": "Punjab urbanization discussion",
-      "url": "https://punjab.global.ucsb.edu/sites/default/files/sitefiles/journals/volume20/3-JS%20Grewal%2020.pdf",
-      "use": "Small village enlarged as Charat Singh's capital",
-      "evidence_class": "A"
-    },
-    {
-      "id": "doam_mahan_samadhi",
-      "authority": "Department of Archaeology & Museums, Government of Pakistan",
-      "title": "Mahan Singh Samadhi",
-      "url": "https://doam.gov.pk/public/sites/10110",
-      "use": "Negative temporal constraint: later 1835 construction",
-      "evidence_class": "A"
-    },
-    {
-      "id": "doam_sheranwala",
-      "authority": "Department of Archaeology & Museums, Government of Pakistan",
-      "title": "Baradari at Sheranwala Garden",
-      "url": "https://doam.gov.pk/public/sites/6546",
-      "use": "Negative temporal constraint: later Sikh-period construction",
-      "evidence_class": "A"
-    },
-    {
-      "id": "ali_2026",
-      "authority": "Journal of Global Social Transformation",
-      "title": "Before The Raj: A Historical Survey of Gujranwala (C. 1500–1849)",
-      "url": "https://rjsaonline.org/index.php/JGST/article/view/685",
-      "use": "Regional route, agricultural/artisanal and political context",
-      "evidence_class": "B"
-    }
+  "active_manifest": "game/data/gujranwala_reconstruction.v1.json",
+  "active_sources": ["ahmad_khilat_2023", "wcla_haveli", "grewal_urbanization", "doam_mahan_samadhi", "doam_sheranwala"],
+  "prior_finding_aids": [
+    {"id": "doam_ranjit_birthplace", "url": "https://doam.gov.pk/public/sites/10111", "status": "not retrieved in this pass; architectural claims now bind the published field study"},
+    {"id": "ali_2026", "url": "https://rjsaonline.org/index.php/JGST/article/view/685", "status": "unverified in this pass; not used to admit geometry"}
   ],
   "reconstruction_rules": [
-    "Do not infer an exact 1792 street plan from the modern city.",
-    "Do not instantiate later nineteenth-century monuments at game start.",
-    "Treat surviving haveli fabric as an architectural anchor, not a complete timestamped 1792 plan.",
-    "Keep exact opening succession chronology unresolved until Mahan Singh death-date conflict is reconciled."
+    "No exact 1792 street network or georeference is claimed.",
+    "Mahan Singh samadhi is excluded on the cited later construction date.",
+    "Sheranwala pavilion is deferred because construction attributions conflict.",
+    "Surviving fabric is architectural comparison, not proof of every component in 1792.",
+    "Mahan Singh death-date uncertainty does not rewrite the existing authored interlude."
   ]
 }

@@ -1,0 +1,82 @@
+{
+  "schema_version": "antagonist-roster.v1",
+  "framing": "Authored campaign roles: house, clan, estate, patronage and command conflicts. An antagonist is an NPC with competing objectives, not an automatically hostile religion or an entire surname group.",
+  "sources": {
+    "user_dossier": {"kind": "user_research_intake", "status": "mixed_claims_not_independently_verified", "note": "The supplied AI-conversation dossier supplies names and story proposals; it is not independent corroboration."},
+    "raj_kaur_page": {"kind": "user_supplied_book_page_crop", "status": "attributed_account_bibliography_pending", "note": "The supplied crop alleges Ranjit killed Mai Malwain after a chamber confrontation. It says Laik Missar fled. The crop does not identify author, title, edition or page. Existence of this account is distinct from independent confirmation of every detail."},
+    "campaign_direction": {"kind": "authorial_design_decision", "status": "game_canon", "note": "These six women are non-playable antagonist characters with changing relationships, not alternative protagonists. Their motives below are authored portrayals, not findings about private historical intentions."}
+  },
+  "groups": [
+    {"id": "sukerchakia_house", "name": "Sukerchakia ruling household", "kind": "house", "authority_basis": "kinship_and_retinue"},
+    {"id": "kanhaiya_house", "name": "Kanhaiya leadership household", "kind": "house", "authority_basis": "estates_and_retinue"},
+    {"id": "nakai_house", "name": "Nakai leadership household", "kind": "house", "authority_basis": "kinship_and_estates"},
+    {"id": "moran_network", "name": "Moran's court network", "kind": "patronage_network", "authority_basis": "access_and_patronage"},
+    {"id": "jind_household", "name": "Jind Kaur's household", "kind": "household", "authority_basis": "succession_and_retinue"},
+    {"id": "sukerchakia_misl", "name": "Sukerchakia Misl", "kind": "military_confederacy", "authority_basis": "military_service"},
+    {"id": "kanhaiya_misl", "name": "Kanhaiya Misl", "kind": "military_confederacy", "authority_basis": "military_service"},
+    {"id": "nakai_misl", "name": "Nakai Misl", "kind": "military_confederacy", "authority_basis": "military_service"},
+    {"id": "akali_nihang", "name": "Akali / Nihang institution", "kind": "religious_military_institution", "authority_basis": "religious_discipline_and_autonomous_command"}
+  ],
+  "people": [
+    {
+      "id": "raj_kaur", "name": "Raj Kaur / Mai Malwain", "narrative_role": "antagonist", "playable": false,
+      "primary_group": "sukerchakia_house", "organization_ids": ["sukerchakia_misl"], "scenario_presence": "earlier_chapter",
+      "conflict_domains": ["regency", "household_authority", "inheritance"],
+      "biography": "Campaign portrayal: the household authority the young Buddh Singh must confront before he can govern in his own name. She has retainers, obligations and a claim to direct the inheritance; she is not a combat enemy by default. Her decisions can restrict access to men, money and trusted messengers. The rupture of the regency is a family struggle for command, not a conflict between religions.",
+      "objective": "Preserve control of the household and the regency's appointments.",
+      "leverage": "Retainers, treasury access and authority over the young heir.",
+      "source_refs": ["user_dossier", "raj_kaur_page", "campaign_direction"],
+      "source_note": "The supplied matricide account is retained as a source for the selected narrative direction. This prototype does not stage the death, adjudicate its historiography or invent missing bibliographic details."
+    },
+    {
+      "id": "sada_kaur", "name": "Sada Kaur", "narrative_role": "antagonist", "playable": false,
+      "primary_group": "kanhaiya_house", "organization_ids": ["kanhaiya_misl"], "scenario_presence": "active",
+      "conflict_domains": ["autonomy", "estates", "patronage", "succession"],
+      "biography": "Campaign portrayal: a kingmaker whose help carries obligations. She can support Ranjit's rise while defending an independent power base. Her cooperation must be negotiated rather than treated as a resource owned by Lahore. In this fictional sandbox, an envoy asks that a road patrol recognize a local revenue claim. A concession preserves an alliance; a unilateral assertion of authority creates a rival; reconciliation remains possible before the patrol reports.",
+      "objective": "Preserve independent authority over her household's estate claims.",
+      "leverage": "Military following, local contacts and the value of her alliance.",
+      "source_refs": ["user_dossier", "campaign_direction"],
+      "source_note": "The envoy, revenue claim, dialogue, scores and patrol are invented gameplay. This is not evidence for a historical 1801 dispute or the dossier's specific conspiracy allegations."
+    },
+    {
+      "id": "mehtab_kaur", "name": "Mehtab Kaur", "narrative_role": "antagonist", "playable": false,
+      "primary_group": "kanhaiya_house", "organization_ids": [], "scenario_presence": "active",
+      "conflict_domains": ["inheritance", "household_status", "patronage"],
+      "biography": "Campaign portrayal: a dynastic counterweight between connected but competing households. She seeks to protect her own position and the future of her line, rather than automatically endorsing the player's appointments. Influence is exercised through access, obligations and relationships. Her interests may align with Sada Kaur's on one decision and diverge on another; membership of a household does not make her an identical copy of its leader.",
+      "objective": "Protect her household position and dynastic interests.",
+      "leverage": "Kinship connections and court access.",
+      "source_refs": ["user_dossier", "campaign_direction"],
+      "source_note": "These are authored antagonist objectives. Specific private motives and alleged anti-Moran conspiracies are not independently established here. No independent decision AI is implemented for this profile yet."
+    },
+    {
+      "id": "datar_kaur", "name": "Datar Kaur / Mai Nakain", "narrative_role": "antagonist", "playable": false,
+      "primary_group": "nakai_house", "organization_ids": ["nakai_misl"], "scenario_presence": "active",
+      "conflict_domains": ["succession", "appointments", "household_resources"],
+      "biography": "Campaign portrayal: an influential household ally with objectives of her own. She can oppose a command appointment or allocation that weakens her line while supporting Ranjit's government overall. The player faces a competing patron, not a permanent enemy. Her profile is part of the antagonist cast by design; this does not assert that she historically conspired against Ranjit.",
+      "objective": "Protect the position of her household and its succession interests.",
+      "leverage": "Nakai connections, patronage and access to the ruler.",
+      "source_refs": ["user_dossier", "campaign_direction"],
+      "source_note": "Authored characterization. Future personal story and appointment conflicts remain unimplemented."
+    },
+    {
+      "id": "moran", "name": "Moran Sarkar", "narrative_role": "antagonist", "playable": false,
+      "primary_group": "moran_network", "organization_ids": [], "scenario_presence": "later_chapter",
+      "conflict_domains": ["court_access", "patronage", "reputation"],
+      "biography": "Campaign portrayal: a court power centre outside the established landed-house networks. Competition around her concerns access, patronage and reputation. She may bargain with the player or block a rival's audience without commanding a territorial army. Her religious identity is not an automatic hostility rule, and a conflict involving religious authority must be an explicit story event.",
+      "objective": "Maintain an independent network of access and patronage.",
+      "leverage": "Court relationships, introductions and reputation.",
+      "source_refs": ["user_dossier", "campaign_direction"],
+      "source_note": "Later-chapter profile only. The dossier's detailed complaint coalition is not silently adopted as verified history."
+    },
+    {
+      "id": "jind_kaur", "name": "Jind Kaur", "narrative_role": "antagonist", "playable": false,
+      "primary_group": "jind_household", "organization_ids": [], "scenario_presence": "later_chapter",
+      "conflict_domains": ["succession", "court_coalitions", "military_patronage"],
+      "biography": "Campaign portrayal: a later dynastic power centre whose objectives can conflict with the currently controlled household or commander. Her opposition is perspective-dependent, not a declaration that she is an enemy of Punjab. The early command sandbox does not spawn her into a period before her role belongs. Her late and successor-era stories need their own chronology and circumstances.",
+      "objective": "Protect her household's succession claim and political survival.",
+      "leverage": "Dynastic legitimacy and coalition building.",
+      "source_refs": ["user_dossier", "campaign_direction"],
+      "source_note": "Later-chapter profile only; no 1801 actor or commander slot is created."
+    }
+  ]
+}

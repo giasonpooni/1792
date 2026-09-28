@@ -1,0 +1,50 @@
+1792 - Proprietary Copyright Notice
+
+Copyright (c) 2026 Cartesian Graphics. All rights reserved.
+
+Scope
+-----
+This notice applies to original material in this repository in which
+Cartesian Graphics holds copyright, including game source code, scripts,
+scenes, authored world and campaign content, documentation, and original
+creative assets, except where an explicit separate licence applies.
+
+Reservation of rights
+---------------------
+No permission is granted by this notice to reproduce, modify, distribute,
+sublicense, sell, or otherwise exploit protected material covered by this
+notice. Such permission must come from a separate written licence from
+Cartesian Graphics, except to the extent the activity is already permitted
+by applicable law, an existing valid licence, or the applicable hosting
+platform's terms.
+
+Public access to this repository is not an open-source licence and does
+not grant a general right to commercial or noncommercial reuse. Nothing
+in this notice limits viewing or forking rights granted under GitHub's
+applicable terms while the repository is hosted publicly there.
+
+Excluded material and preserved rights
+--------------------------------------
+Third-party code, assets, tools, libraries, and other material retain their
+respective owners, licences, copyright notices, and attribution requirements.
+This notice does not relicense them or narrow rights previously granted
+under an applicable third-party or open-source licence. An explicit valid
+separate licence governs only the material it identifies.
+
+No copyright is asserted by this notice over historical facts, ideas,
+mathematical methods, public-domain material, or other material not subject
+to copyright protection. No trademark or patent licence is granted here.
+Nothing in this notice limits rights or exceptions under applicable law.
+
+Separate permissions
+--------------------
+Original creative assets are subject to the same reservation of rights;
+see docs/ASSET_LICENSING.md. Any deliberately open-sourced component must
+have an explicit scope and licence as described in docs/LICENSING.md.
+Simply mentioning MPL-2.0 or Apache-2.0 does not apply either licence to
+1792 or any of its files.
+
+This is a rights-reservation notice, not a player EULA, a contributor
+agreement, a copyright assignment, or a promise of support or warranty.
+For permissions, contact Cartesian Graphics through the repository
+maintainer. See THIRD_PARTY_NOTICES.md for third-party information.
