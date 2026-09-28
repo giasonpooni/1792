@@ -24,6 +24,12 @@ func _build_world() -> void:
 		if n is Node3D and not n is StaticBody3D:
 			var p: Vector3=n.position
 			if Layout.valid_position([p.x,0,p.z]) and (p.x< -30 or p.z< -30): n.hide()
+	# The parent fabric's distant house silhouettes are visual-only. Suppress
+	# only pieces now inside the expanded playable space; keep original core dressing.
+	for n in fabric.get_children():
+		if n is MeshInstance3D:
+			var p: Vector3=n.position
+			if Layout.valid_position([p.x,0,p.z]) and (p.x< -30 or p.z< -30): n.hide()
 	_sync_town()
 
 func _ready() -> void:
@@ -67,6 +73,10 @@ func _interact() -> void:
 	super._interact()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_F2:
+		var notes: String=fabric.inspection_text().replace("Playable 56 m test cell;", "Retained 56 m mission core within the 86 × 108 m town;")
+		_show_dialog("GUJRANWALA · RECONSTRUCTION NOTES",notes,[["Return","resume"]])
+		get_viewport().set_input_as_handled();return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_M:
 		_open_places();get_viewport().set_input_as_handled();return
 	super._unhandled_input(event)

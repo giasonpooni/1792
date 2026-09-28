@@ -130,6 +130,14 @@ func _geometry_and_gates() -> void:
 	check(scene.town.compound_nodes.size()==7,"seven courtyard compounds built")
 	check(scene.town.landmarks.size()==5,"five observation anchors built")
 	check(scene.town.crop_instances==360,"bounded instanced field detail")
+	check(scene.fabric.manifest().material_replacements==10,"preserve parent courtyard material dressing")
+	var hidden:=0
+	for n in scene.fabric.get_children():
+		if n is MeshInstance3D and not n.visible: hidden+=1
+	check(hidden>0,"suppress only background silhouettes now inside the playable town")
+	await tap(scene,KEY_F2)
+	check(scene._panel_text.text.contains("86 × 108") and scene._panel_text.text.contains("OUTSIDE CHARACTER KNOWLEDGE"),"combined reconstruction notes distinguish map envelope and knowledge")
+	scene._resume()
 	for gate in scene.town.gates: check(gate.collision_layer==1 and gate.visible,"early gate physically shut")
 	check(not scene._navigation.clear_segment(Vector3(0,0.14,-25),Vector3(0,0.14,-33)),"north exit blocked by actual collider")
 	ok(scene.model.restore(Fixture.complete()),"scene migration fixture")

@@ -94,6 +94,18 @@ existing C++/Rust/Python/Julia architecture direction is not a reason to send
 these Godot scene operations through four runtimes. Specialist integration stays
 an explicit later capability.
 
+## Concurrent parent update retained
+
+During development the remounts parent advanced to `06fccd1` with its
+research-informed brick/plaster shader, blind courtyard bays, stable details,
+background silhouettes and F2 reconstruction notes. This branch composes that
+increment rather than replacing it. All its source files and assertions remain
+unchanged. The extended controller hides only old visual-only silhouettes whose
+centres are now inside the new playable districts; it retains the existing core
+masonry and timber dressing. F2 identifies the original 56 m mission core within
+the expanded town and remains outside the character's knowledge. Both sets of
+research records keep their own claims and limitations.
+
 ## Research basis and reconstruction limits
 
 Research records: `data/history/gujranwala_town_sources.v1.json`. The existing
