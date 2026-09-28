@@ -164,6 +164,10 @@ func _test_delegation() -> void:
 
 func _test_persistence() -> void:
 	var model = assigned()
+	var decoded = JSON.parse_string(JSON.stringify(model.snapshot(), "", true, true))
+	ok(model.restore(decoded), "JSON float allocation accepts exact integer quantities")
+	check(typeof(model.snapshot().resources.riders) == TYPE_INT, "restored resource counts are canonical integers")
+	check(typeof(model.snapshot().order.allocation.riders) == TYPE_INT, "restored allocation counts are canonical integers")
 	ok(model.play_commander(), "save active captain")
 	model.record_position(Vector3(12.25, 0.2, -20.75))
 	ok(model.save_to(SAVE), "write manual save")
@@ -237,6 +241,13 @@ func _test_corruption() -> void:
 	bad = model.snapshot()
 	bad.player.known_places = ["outpost"]
 	reject_restore(model, bad, "desynchronized knowledge")
+	var allocated = assigned()
+	bad = allocated.snapshot()
+	bad.order.allocation.riders = 4.5
+	reject_restore(allocated, bad, "fractional allocation cannot be coerced")
+	bad = allocated.snapshot()
+	bad.order.allocation.riders = true
+	reject_restore(allocated, bad, "boolean allocation cannot be coerced")
 	var before: Dictionary = model.snapshot()
 	model.record_position(Vector3(INF, 0, 0))
 	check(model.snapshot() == before, "nonfinite physics input ignored")

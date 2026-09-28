@@ -13,7 +13,7 @@ const SAVE_LIMIT := 1048576
 var _state: Dictionary
 
 func _init() -> void:
-	_state = JSON.parse_string(FileAccess.get_file_as_string(SEED_PATH))
+	_state = _seed()
 
 func snapshot() -> Dictionary:
 	return _state.duplicate(true)
@@ -251,10 +251,11 @@ func restore(candidate: Variant) -> String:
 	var error := validate(candidate)
 	if error.is_empty():
 		_state = candidate.duplicate(true)
+		_normalize_counts(_state)
 	return error
 
 func validate(candidate: Variant) -> String:
-	var seed: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(SEED_PATH))
+	var seed := _seed()
 	var shape_error := _shape(candidate, seed, "state")
 	if not shape_error.is_empty():
 		return shape_error
@@ -313,9 +314,9 @@ func validate(candidate: Variant) -> String:
 		return "Control and command executor disagree."
 	var allocation: Dictionary = order.allocation
 	if order.status == "available":
-		if allocation != seed.order.allocation or order.id != "" or not order.visited.is_empty():
+		if not _same_budget(allocation, seed.order.allocation) or order.id != "" or not order.visited.is_empty():
 			return "Available command holds an allocation or progress."
-	elif allocation not in PACKAGES.values() or order.id != "road_patrol_%04d" % (int(s.next_order) - 1):
+	elif (not _same_budget(allocation, PACKAGES.scout) and not _same_budget(allocation, PACKAGES.patrol)) or order.id != "road_patrol_%04d" % (int(s.next_order) - 1):
 		return "Invalid allocation or order identity."
 	if order.status == "assigned" and not order.visited.is_empty():
 		return "Unstarted command has progress."
@@ -394,3 +395,34 @@ func _position(value: Array) -> bool:
 		if typeof(coordinate) not in [TYPE_INT, TYPE_FLOAT] or not is_finite(float(coordinate)) or absf(float(coordinate)) > 1000000.0:
 			return false
 	return true
+
+func _same_budget(actual: Dictionary, expected: Dictionary) -> bool:
+	# JSON decodes numbers as floats; container equality is type-sensitive.
+	if actual.size() != expected.size():
+		return false
+	for key in expected:
+		if not actual.has(key) or not _whole(actual[key], 0) or actual[key] != expected[key]:
+			return false
+	return true
+
+func _seed() -> Dictionary:
+	var value: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(SEED_PATH))
+	_normalize_counts(value)
+	return value
+
+func _normalize_counts(value: Dictionary) -> void:
+	# Only trusted seed data or an already validated snapshot reaches this function.
+	# Do not coerce malformed fractional/bool inputs before validation.
+	for key in ["campaign_tick", "next_order"]:
+		value[key] = int(value[key])
+	for key in ["year", "day"]:
+		value.game_time[key] = int(value.game_time[key])
+	for key in ["riders", "supplies", "treasury"]:
+		value.resources[key] = int(value.resources[key])
+		value.order.allocation[key] = int(value.order.allocation[key])
+	for event in value.events:
+		event.sequence = int(event.sequence)
+		event.tick = int(event.tick)
+	for report in value.reports:
+		report.observed_at = int(report.observed_at)
+		report.arrives_at = int(report.arrives_at)

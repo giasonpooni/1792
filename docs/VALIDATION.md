@@ -23,3 +23,13 @@ not inferred from the presence of tests.
 
 Human review still needs to cover mouse/camera comfort, both mission routes, failed-load UI,
 return-to-menu behavior, different window sizes and Windows save replacement.
+
+## First actual engine run
+
+GitHub Actions run `36393966294` on feature commit `9332373a72ce7cd141131994fd39cb07922db5e0`
+installed the SHA-verified Godot binary and imported the project. The engine suite reached its
+completion marker: **184 assertions passed, 10 failed**. Rendering was correctly skipped.
+The failures exposed type-sensitive Dictionary equality after JSON decoded integer quantities
+as floats. The correction compares allocation quantities numerically and canonicalizes validated
+discrete counts after loading; it does not coerce malformed fractional or boolean input into validity.
+This is a failure record, not a claim that the corrected revision has passed yet.
