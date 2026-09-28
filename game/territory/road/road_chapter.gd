@@ -2,6 +2,8 @@ extends "res://territory/gujranwala_chapter.gd"
 ## Same home entry. The extra route is optional; the original supply contract remains usable.
 const RoadState := preload("res://territory/road/road_state.gd")
 const Road := preload("res://territory/road/road_rules.gd")
+const Setting := preload("res://territory/settlement/gujranwala_setting.gd")
+var setting: Node3D
 const Narration := preload("res://narrative/narration_track.gd")
 var narration := Narration.new()
 var _road_action := ""
@@ -18,6 +20,11 @@ func _init() -> void:
 
 func _ready() -> void:
 	super._ready()
+	setting=Setting.new()
+	setting.name="GujranwalaSetting"
+	add_child(setting)
+	setting.build(self)
+	_navigation.built=false
 	_build_narrator_panel()
 	if int(model.progress().tick)>0: narration.rebase(_narration_events())
 	else: narration.observe(_narration_events())
@@ -68,6 +75,10 @@ func _build_narrator_panel() -> void:
 	_narrator_panel.hide()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_O:
+		_open_research()
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_N:
 		_open_narration()
 		get_viewport().set_input_as_handled()
@@ -132,6 +143,10 @@ func _open_road_dialog() -> void:
 	_show_dialog("A ROAD AND A CLAIM",body,actions)
 
 func _menu_action(action: String) -> void:
+	if action=="setting_haze":
+		setting.set_haze(not setting.haze_enabled)
+		_open_research()
+		return
 	if action=="narrator_toggle":
 		narration.set_enabled(not narration.enabled)
 		_open_narration()
@@ -206,7 +221,7 @@ func _apply() -> void:
 func _refresh() -> void:
 	super._refresh()
 	if not is_instance_valid(_hud): return
-	_hud.text+="\nN: narrator captions / session transcript"
+	_hud.text+="\nN: narrator captions · O: Gujranwala research / atmosphere"
 	if model.has_road() and model.road().completed_tick<0:
 		var phase: String=Road.phase(model.road())
 		var instructions: Dictionary={
@@ -268,3 +283,6 @@ func _load(path: String="") -> void:
 func _restore_checkpoint() -> void:
 	super._restore_checkpoint()
 	if not _paused: narration.rebase(_narration_events())
+
+func _open_research() -> void:
+	_show_dialog("SETTING NOTEBOOK",setting.notes(),[["Clear the haze" if setting.haze_enabled else "Restore the haze","setting_haze"],["Return","resume"]])

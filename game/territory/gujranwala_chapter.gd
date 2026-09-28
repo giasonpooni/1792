@@ -31,7 +31,7 @@ func _build_world() -> void:
 	merchant.add_collision_exception_with(horse)
 	# Cosmetic pack cargo; the physical agent remains a single bounded capsule.
 	var pack:=MeshInstance3D.new()
-	var pack_mesh:=BoxMesh3D.new()
+	var pack_mesh:=BoxMesh.new()
 	pack_mesh.size=Vector3(0.6,0.7,0.6)
 	pack.mesh=pack_mesh
 	pack.position=Vector3(0,1,0.4)
