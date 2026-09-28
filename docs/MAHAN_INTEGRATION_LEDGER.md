@@ -177,3 +177,34 @@ Identity notes (fence):
 - No auto knowledge handoff APIs; grafted Mahan nodes refused by childhood/Lahore allowlists.
 - `HERO_ID` remains `ranjit_singh`; Lahore `Riding.validate` still rejects `mahan_singh`.
 - `world_state.schema.json` and `home_territory.tscn` digests unchanged.
+
+
+## Full `tools/run_checks.py` wall-clock (this beat)
+
+Proven on tip `92be95dd2f68765a900ff221e5af2f440f5eb923` with Godot **4.5.1.stable** (`/workspace/godot451/Godot_v4.5.1-stable_linux.x86_64`), `python3 tools/run_checks.py --godot …`, exit **0**. No Mahan-side hook fixes required; childhood/Lahore architecture untouched.
+
+| Suite | Result |
+| --- | --- |
+| structure (`check_project`) | **9 OK** |
+| import | OK |
+| command-story | **202** passed, 0 failed |
+| houses | **272** passed, 0 failed |
+| riding | **177** passed, 0 failed |
+| companions | **229** passed, 0 failed |
+| character-names | **56** passed, 0 failed |
+| childhood | **110** passed, 0 failed |
+| aftermath | **164** passed, 0 failed |
+| mahan | **197** passed, 0 failed |
+| mahan-cavalry | **44** passed, 0 failed |
+| mahan-logistics | **75** passed, 0 failed |
+| mahan-politics | **89** passed, 0 failed |
+| mahan-orders | **101** passed, 0 failed |
+| mahan-history | **95** passed, 0 failed |
+| mahan-fence | **119** passed, 0 failed |
+| **Total runtime asserts** | **1930** passed, 0 failed (+ 9 structural) |
+
+Residual after full suite:
+
+- No authored Gujranwala ridge→settlement encounter scene yet (march graph + markers exist; playable beat stub still open).
+- No accession / Buddh handoff cutter (fence proves absence; future opt-in only).
+- Concurrent-agent PLACEHOLDER risk on core files remains procedural — prefer `push_files` for large restores.
