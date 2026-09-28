@@ -24,7 +24,7 @@ No Python, .NET, Bevy, NET service or scientific provider is required to play.
 
 | Menu entry | Current gameplay |
 | --- | --- |
-| **1792 · Buddh Singh · Home territory** | Childhood training, oral accounts, an ambush, a protection agreement and inquiry, then Gujranwala supplies/production, a disputed-road caravan, and Shah Muhammad captions. |
+| **1792 · Buddh Singh · Home territory** | Childhood training, oral accounts, an ambush, a protection agreement and inquiry, then Gujranwala supplies/production, carried provisions for the bazaar, a disputed-road caravan, and Shah Muhammad captions. |
 | **Lahore · Command story** | Separate fictional 1801 sandbox: assign a patrol, play or delegate its captain, investigate and receive a delayed report. |
 | **Lahore · Houses and rivals** | The same command loop with a house dispute, a rideable horse, visible companions, follow/hold orders and physical return. |
 
@@ -99,6 +99,22 @@ a bounded flat-lane profile.
 [Home territory and economic rules](docs/GUJRANWALA.md) ·
 [Coupled campaign direction](docs/COUPLED_CAMPAIGN.md)
 
+## Pack provisions for the bazaar
+
+The same Gujranwala home now connects its walk-in store to a bounded provisions
+buyer. Hear an offer at the market, pack four actual food portions inside the
+household store, then carry them to market for six household coins or put them
+back. A visible sack caps walking/running and prevents mounting while loaded.
+The next-watch food reserve is protected by default; explicitly spending it can
+halt construction or leave guards unprovisioned at the next upkeep settlement.
+
+Buyer demand is one lot per supply watch and a finite 96-coin purse. Packed terms
+remain valid in transit; new unpacked offers must be heard again each watch.
+Earlier contracts, the disputed crossing, Shah Muhammad and the tutorial remain.
+F5/F9 use the bazaar save slot; J/F1 includes explicit previous-save imports.
+This is authored gameplay informed by limited, late comparative research—not a
+calibrated historical market or completed city. See [Store and bazaar](docs/GUJRANWALA_BAZAAR.md).
+
 ## Gujranwala now has a usable household setting
 
 The starting cell now contains a **walk-in store chamber**, a protected well,
@@ -162,9 +178,9 @@ Menus pause both motion and the scenario clock. The peripheral option changes
 presentation, not knowledge or health. It is not a medical visual-field model,
 and no progressive eye-loss or alcohol mechanic is attached to the child.
 
-The new home profile uses **`user://1792-shah-road-v1.json`** and a separate
-checkpoint sidecar. J/F1 explicitly imports the previous Gujranwala supply slot
-without overwriting it. Old childhood/aftermath saves can be read by the new loader
+The current home profile uses **`user://1792-bazaar-v1.json`** and a separate
+checkpoint sidecar. J/F1 explicitly imports the previous narrator/road and
+Gujranwala supply slots without overwriting them. Old childhood/aftermath saves can be read by the new loader
 without inventing an allowance or completed contracts. Older checkpoints replace
 the whole later session, including economic progress.
 
@@ -244,7 +260,7 @@ python tools/run_checks.py --godot /path/to/godot
 ```
 
 The runner executes every inherited suite plus the home-territory, disputed-road,
-narrator and researched-setting checks.
+narrator, researched-setting and bazaar checks.
 CI also retains source snapshots, logs and software-rendered captures.
 A successful numerical or scene test is not human playtesting, a physical-GPU
 benchmark, or proof that the historical model is accurate.
