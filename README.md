@@ -170,3 +170,18 @@ plans, licensed game assets or voice recordings were imported for this update.
 
 [LICENSE](LICENSE) · [Licensing scope](docs/LICENSING.md) ·
 [Asset rules](docs/ASSET_LICENSING.md) · [Third-party notices](THIRD_PARTY_NOTICES.md)
+
+## Continue and recover a saved chapter
+
+The title now offers **Continue saved home chapter** and **Saved home chapter /
+recovery**. Continue validates the selected file and the actual scene's standing
+room before entering, then waits for Resume. The original Home entry still starts
+a new session and never overwrites a save just by entering.
+
+In the home journal, **Saved chapter / recovery** can load the primary or explicitly
+recover the previous manual snapshot. F5 / Save chapter preserves a different,
+valid primary as one previous generation before replacement. Corrupt primary
+saves require an explicit, reviewed replacement; loading alone never rewrites a
+file. No world-save format, clock or controller-preference migration is introduced.
+
+[Save recovery rules, failure boundaries and qualification](docs/SAVE_RECOVERY.md)

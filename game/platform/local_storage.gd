@@ -35,3 +35,11 @@ func read_bytes(path: String, limit: int) -> Dictionary:
 	file.close()
 	if bytes.size()!=length or status not in [OK,ERR_FILE_EOF]: return {"error":"Save read failed."}
 	return {"error":"","bytes":bytes}
+
+func path_status(path: String) -> String:
+	# Optional local inspection seam; does not expand the cg.save-transport.v1 contract.
+	var dir:=DirAccess.open(path.get_base_dir())
+	if dir==null: return "unavailable"
+	var leaf:=path.get_file()
+	if dir.is_link(leaf) or dir.dir_exists(leaf): return "unavailable"
+	return "file" if dir.file_exists(leaf) else "missing"

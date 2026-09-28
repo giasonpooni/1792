@@ -424,6 +424,9 @@ func _resume() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	_refresh()
 
+func _save_manual() -> String:
+	return model.save_to(save_path)
+
 func _physics_process(delta: float) -> void:
 	if _retry_requested:
 		_retry_requested = false
@@ -450,7 +453,7 @@ func _physics_process(delta: float) -> void:
 		return
 	if _save_requested:
 		_save_requested = false
-		var error := model.save_to(save_path)
+		var error := _save_manual()
 		_message = "Chapter saved." if error.is_empty() else error
 		if _paused: _resume()
 	if _paused: return

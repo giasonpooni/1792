@@ -1,8 +1,12 @@
 # Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 extends "res://territory/researched_chapter.gd"
 ## Situated input/presentation adapter. Existing state, physics, pause and save machinery persist.
+const SaveRecovery := preload("res://platform/save_recovery.gd")
 const MemoryState := preload("res://narrative/oral_memory/memory_state.gd")
 const Memory := preload("res://narrative/oral_memory/memory_rules.gd")
+var _save_page := ""
+var _save_choice: Dictionary={}
+var _save_command: Dictionary={}
 var _oral_action := ""
 var _oral_import_requested := false
 var _oral_props: Array[Node3D]=[]
@@ -46,6 +50,11 @@ func _build_world() -> void:
 		_oral_props.append(label)
 
 func _unhandled_input(event: InputEvent) -> void:
+	if not _save_page.is_empty() and event.is_action_pressed("ui_cancel"):
+		if _save_page=="browser": _resume()
+		else: _open_saved_chapter()
+		get_viewport().set_input_as_handled()
+		return
 	# The active consumer routes semantic actions; earlier chapter implementations remain intact.
 	if event.is_action_pressed("open_accounts") and (not _paused or event is InputEventKey):
 		_open_accounts()
@@ -65,8 +74,21 @@ func _clear_pending_actions() -> void:
 	super._clear_pending_actions()
 	_oral_action=""
 	_oral_import_requested=false
+	_save_page=""
+	_save_choice={}
+	_save_command={}
 
 func _menu_action(action: String) -> void:
+	if is_instance_valid(controls) and not controls.focused: return
+	if action=="saved_chapter":
+		_open_saved_chapter()
+		return
+	if action.begins_with("saved_select:"):
+		_confirm_saved_action(action.trim_prefix("saved_select:"))
+		return
+	if action=="saved_confirm":
+		_save_command=_save_choice.duplicate(true)
+		return
 	if action.begins_with("oral:"):
 		_oral_action=action.trim_prefix("oral:")
 		return
@@ -79,6 +101,12 @@ func _menu_action(action: String) -> void:
 	super._menu_action(action)
 
 func _physics_process(delta: float) -> void:
+	if not _save_command.is_empty():
+		var command:=_save_command.duplicate(true)
+		_save_command={}
+		if not controls.focused: return
+		_execute_saved_action(command)
+		return
 	if _oral_import_requested:
 		_oral_import_requested=false
 		_load(Territory.TERRITORY_SAVE)
@@ -175,6 +203,7 @@ func _open_oral_memory() -> void:
 
 func _open_journal() -> void:
 	super._open_journal()
+	_append_oral_button("Saved chapter / recovery","saved_chapter")
 	_append_oral_button("Remembered stories [F7]","oral_view")
 	_append_oral_button("Import previous integrated Gujranwala save · replace current session","oral_import")
 
@@ -188,6 +217,7 @@ func _refresh() -> void:
 
 func _load(path: String="") -> void:
 	var staged:=MemoryState.new()
+	staged.platform_services=model.platform_services
 	var error:=staged.load_from(save_path if path.is_empty() else path)
 	if error.is_empty(): error=_candidate_error(staged)
 	if error.is_empty(): error=model.restore(staged.snapshot())
@@ -195,3 +225,60 @@ func _load(path: String="") -> void:
 	_message="The complete chapter, including received accounts, was restored." if error.is_empty() else error
 	_clear_pending_actions()
 	_resume()
+
+func _resume() -> void:
+	_save_page="";_save_choice={};_save_command={}
+	super._resume()
+
+func _save_manual() -> String:
+	return SaveRecovery.save(model,save_path)
+
+func _open_saved_chapter(note: String="") -> void:
+	var primary:=SaveRecovery.inspect(model,save_path)
+	var previous:=SaveRecovery.inspect(model,save_path+SaveRecovery.PREVIOUS_SUFFIX)
+	var text:=note+"\n\n" if not note.is_empty() else ""
+	text+=SaveRecovery.description(primary,"Primary manual save")+"\n\n"+SaveRecovery.description(previous,"Previous manual save")
+	text+="\n\nRecovery replaces the entire current chapter, including later memories, money and water progress. It does not copy anything back to disk. Controller settings stay unchanged."
+	var actions: Array=[]
+	if primary.status=="valid": actions.append(["Load primary — replace current progress","saved_select:primary"])
+	if previous.status=="valid": actions.append(["Recover previous — replace current progress","saved_select:previous"])
+	if primary.status=="invalid": actions.append(["Replace invalid primary with this chapter...","saved_select:replace"])
+	actions.append(["Return","resume"])
+	_show_dialog("SAVED CHAPTER / RECOVERY",text,actions)
+	_save_page="browser"
+
+func _confirm_saved_action(kind: String) -> void:
+	if kind not in ["primary","previous","replace"]: return
+	var path:=save_path+SaveRecovery.PREVIOUS_SUFFIX if kind=="previous" else save_path
+	var view:=SaveRecovery.inspect(model,path)
+	if (kind=="replace" and view.status!="invalid") or (kind!="replace" and view.status!="valid"):
+		_open_saved_chapter("That slot changed or is unavailable. Nothing was changed.")
+		return
+	var choice: Dictionary={"kind":kind,"path":path,"digest":view.digest,"world_digest":SaveRecovery.world_digest(model)}
+	var text:=SaveRecovery.description(view,"Selected save")
+	text+="\n\nReplace the invalid primary file with your CURRENT chapter? The previous file stays untouched." if kind=="replace" else "\n\nReplace the entire CURRENT chapter with this saved one? Files remain untouched. Later progress will be discarded, not merged."
+	_show_dialog("CONFIRM SAVED CHAPTER ACTION",text,[["Confirm replacement" if kind=="replace" else "Confirm load","saved_confirm"],["Cancel","saved_chapter"]])
+	_save_page="confirm";_save_choice=choice
+
+func _execute_saved_action(command: Dictionary) -> void:
+	var error: String=""
+	if command.world_digest!=SaveRecovery.world_digest(model):
+		error="Current progress changed during confirmation. Nothing was changed."
+	elif command.kind=="replace":
+		error=SaveRecovery.save(model,save_path,{"primary_digest":command.digest,"world_digest":command.world_digest})
+	else:
+		var selected:=SaveRecovery.read_selected(model,command.path,command.digest)
+		error=selected.error
+		if error.is_empty():
+			var staged:=MemoryState.new()
+			staged.platform_services=model.platform_services
+			error=staged.restore(selected.snapshot)
+			if error.is_empty(): error=_candidate_error(staged)
+			if error.is_empty(): error=model.restore(staged.snapshot())
+			if error.is_empty(): _apply()
+	if not error.is_empty():
+		_open_saved_chapter(error)
+		return
+	_show_dialog("SAVED CHAPTER UPDATED" if command.kind=="replace" else "SAVED CHAPTER RESTORED",
+		"The primary file was explicitly replaced; previous save retained." if command.kind=="replace" else "The complete selected chapter was restored. No save file was overwritten. Resume when ready.",
+		[["Resume","resume"],["Saved chapter / recovery","saved_chapter"]])

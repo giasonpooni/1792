@@ -1,6 +1,7 @@
 # Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 extends RefCounted
 ## Opt-in packaged boot check, no test fixtures, no player's save slot, no store requests.
+const Recovery := preload("res://platform/save_recovery.gd")
 const State := preload("res://narrative/oral_memory/memory_state.gd")
 const Launch := preload("res://childhood/home_launch.gd")
 const Memory := preload("res://narrative/oral_memory/memory_rules.gd")
@@ -30,6 +31,31 @@ static func run(menu: Node) -> void:
 	if not error.is_empty(): errors.append(error)
 	if not OS.has_feature("editor") and ResourceLoader.exists("res://tests/test_oral_memory.gd"): errors.append("Development tests leaked into packaged content.")
 	if state.platform_services.entitlement().status!="not_checked": errors.append("Local provider claimed a store entitlement.")
+	# The exported process also executes the same recovery policy used by F5/the UI.
+	var before:=FileAccess.get_file_as_bytes(SAVE)
+	state.advance()
+	error=Recovery.save(state,SAVE)
+	if not error.is_empty(): errors.append(error)
+	if FileAccess.get_file_as_bytes(SAVE+Recovery.PREVIOUS_SUFFIX)!=before: errors.append("Exported previous save did not retain the old primary.")
+	error=state.platform_services.storage.write_bytes(SAVE,"{interrupted".to_utf8_buffer(),state.LIMIT)
+	if not error.is_empty(): errors.append(error)
+	if Recovery.save(state,SAVE).is_empty(): errors.append("Exported save silently replaced invalid primary.")
+	var previous:=Recovery.inspect(state,SAVE+Recovery.PREVIOUS_SUFFIX)
+	var recovered:=Recovery.read_selected(state,previous.path,previous.digest)
+	if not recovered.error.is_empty(): errors.append(recovered.error)
+	else:
+		error=state.restore(recovered.snapshot)
+		if not error.is_empty(): errors.append(error)
+	var invalid:=Recovery.inspect(state,SAVE)
+	error=Recovery.save(state,SAVE,{"primary_digest":invalid.digest,"world_digest":Recovery.world_digest(state)})
+	if not error.is_empty(): errors.append(error)
+	if FileAccess.get_file_as_bytes(SAVE+Recovery.PREVIOUS_SUFFIX)!=before: errors.append("Exported repair modified the previous save.")
+	# Dispose of the original probe world before preparing a frozen title-Continue candidate.
+	home.queue_free()
+	for _i in range(3): await tree.physics_frame
+	error=await Launch.enter_saved(tree,SAVE,Recovery.inspect(state,SAVE).digest,SAVE,state.platform_services,func(): return true)
+	if not error.is_empty(): errors.append(error)
+	elif not tree.current_scene.get_node("ChildhoodChapter")._paused: errors.append("Exported Continue resumed without user choice.")
 	var notices:=FileAccess.open("user://platform-engine-notices.json",FileAccess.WRITE)
 	if notices==null: errors.append("Cannot retain runtime licence notices.")
 	else:
@@ -38,9 +64,9 @@ static func run(menu: Node) -> void:
 		notices.close()
 	print("PLATFORM_BOOT_RECORD: "+JSON.stringify({"schema":"cg.packaged-boot-observation.v1","os":OS.get_name(),
 		"engine":Engine.get_version_info().string,"exported":not OS.has_feature("editor"),"provider_id":state.platform_services.IMPLEMENTATION_ID,
-		"content_sha256":Memory.content_digest(),"errors":errors,"physical_controller_test":false,"console_certification":false}))
+		"content_sha256":Memory.content_digest(),"manual_save_policy":Recovery.POLICY_ID,"recovery_and_continue_probe":true,"errors":errors,"physical_controller_test":false,"console_certification":false}))
 	DirAccess.remove_absolute(SAVE)
-	home.queue_free()
+	DirAccess.remove_absolute(SAVE+Recovery.PREVIOUS_SUFFIX)
 	await tree.process_frame
 	print("PLATFORM_BOOT_SMOKE: "+("pass" if errors.is_empty() else "fail"))
 	tree.quit(0 if errors.is_empty() else 1)
