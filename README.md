@@ -2,7 +2,8 @@
 
 **Grow from a young heir in the Sukerchakia heartland into a commander and state builder — without leaving the world behind.**
 
-1792 is an early historical open-world game project centered on Ranjit Singh. The long-term
+1792 is an early historical open-world game project centered on **Buddh Singh**, the character
+known publicly as **Ranjit Singh** after accession in our campaign. The long-term
 experience combines horseback travel and personal relationships, close-range exploration and
 infiltration, contested local territory, and larger military campaigns. House and clan rivalries,
 estate claims, patronage and personal obligations drive the political world, rather than
@@ -10,6 +11,21 @@ sorting its people into religious enemy teams.
 
 **This is not a finished game.** The repository contains small Godot prototypes that we can build,
 play, test and improve one at a time. There are no finished historical environments or character assets yet.
+
+## The protagonist's name
+
+**Buddh Singh** is the player-facing name. Before accession, characters address him as
+Buddh Singh; afterwards they use **Ranjit Singh**, or **Maharaja Ranjit Singh** in formal
+court dialogue. The 1792 home nameplate and the current Lahore HUD use Buddh Singh;
+the fictional Lahore envoy uses the post-accession court address. Other characters retain
+their own names. This changes presentation, not identity: saved `ranjit_singh` references,
+orders, relationships, horses and companions remain bound to the same person.
+
+The timing is an **authored campaign convention**, not a claim that the historical
+renaming happened at accession. The name tradition places the change by his father
+in childhood. The present Lahore development scenes explicitly use the later address;
+there is no accession mission or automatic calendar-driven name change yet.
+See [Naming policy](docs/CHARACTER_NAMES.md).
 
 ## Run it
 
@@ -33,7 +49,7 @@ Houses and rivals extends the existing command implementation rather than duplic
 Walk to the courtyard table and press **E**. Assign the four-rider patrol, interact with the table again,
 and choose **Play as the captain**. Follow the road to the village, press E to gather information,
 then continue to the outpost. Organize a patrol or withdraw. The result changes local security and
-the captain's relationship with Lahore, and a delayed report returns to Ranjit.
+the captain's relationship with Lahore, and a delayed report returns to Buddh Singh.
 
 You can also delegate the same order or take control partway through. Switching does not reset
 its allocation, progress, character positions or world clock. A completed story cannot repeatedly award resources.
@@ -49,8 +65,8 @@ a walk. **S** or **Space** brakes; releasing W also slows to a stop. The mouse o
 Stop on clear ground and press **F** to dismount. A wall, blocked landing or airborne horse prevents
 dismounting. The horse has acceleration, speed-dependent turning and world collision; it does not strafe.
 
-Both Ranjit and the player-controlled captain can use the same horse. **The horse stays where it
-is left.** Dismount before handing control to the captain or back to Ranjit. Delegated patrols still
+Both Buddh Singh and the player-controlled captain can use the same horse. **The horse stays where it
+is left.** Dismount before handing control to the captain or back to Buddh Singh. Delegated patrols still
 travel on foot; the horse does not follow them, appear at their destination, or create extra riders.
 At the village/outpost, dismount and use **E** for the original encounters and house consequences.
 Without mustering, the original abstract patrol still returns the viewpoint on resolution.
@@ -99,7 +115,7 @@ Only **Sada Kaur's fictional estate petition** has an interactive conflict in th
 At the table, hear the envoy and choose a commission. Recognizing a local revenue claim enables
 a cooperative patrol. Asserting Lahore's authority creates rivalry and military presence without
 settling local legitimacy. Deferring permits observation and withdrawal, not securing the road.
-Ranjit can reconcile the disputed commission before the captain resolves it.
+Buddh Singh can reconcile the disputed commission before the captain resolves it.
 
 The same manual/delegated patrol rules apply. Political results reach the journal with the existing
 messenger report, not before. Neither military presence nor an agreement automatically annexes land.
@@ -128,7 +144,7 @@ The main story starts from a small familiar home territory. Travel, local knowle
 relationships and contested roads should matter before large armies or administration enter play.
 Greater power adds responsibilities without removing the ability to walk or ride through the world.
 
-Later, Lahore becomes a command hub. Ranjit remains the main character, while smaller playable
+Later, Lahore becomes a command hub. Buddh Singh remains the main character, while smaller playable
 stories follow subordinate commanders. Their decisions affect the same campaign world instead
 of becoming disconnected missions. Documented commanders and expeditions will be added after
 their dates, command relationships and sources have been checked. The proposed Tahal Singh
@@ -162,7 +178,7 @@ python tools/run_checks.py --godot /path/to/godot
 
 The structural checks run without Godot. Runtime checks require the engine and must not be
 reported as passed when it is absent. The runner executes the original command suite, the house/reporting
-suite, riding rules and companion round-trip physics checks. CI also captures software-rendered screenshots. Inspect actual CI results;
+suite, riding rules, companion round-trip physics and character-name checks. CI also captures software-rendered screenshots. Inspect actual CI results;
 [the earlier evidence note](docs/VALIDATION.md) covers the original command slice, not an automatic
 pass for new code. New results are recorded against their tested commit in the pull request.
 

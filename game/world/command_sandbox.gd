@@ -1,6 +1,10 @@
 extends Node3D
 ## Greybox scene. Domain state owns actors, allocation, outcomes and reports.
 
+const Names := preload("res://characters/character_names.gd")
+# The existing Lahore sandbox is explicitly post-accession, not inferred from its toy calendar.
+const NAME_PHASE := Names.AFTER_ACCESSION
+
 const Campaign := preload("res://campaign/command_state.gd")
 const PlayerScene := preload("res://player/player.tscn")
 const SAVE_PATH := "user://1792-command-story-v1.json"
@@ -131,6 +135,13 @@ func _apply_actor(force: bool = false) -> void:
 		_standins[key].visible = key != id
 		_standins[key].position = campaign.actor_position(key)
 
+func _active_player_name() -> String:
+	var id: String = campaign.actor_id()
+	return Names.player_name(id, campaign.snapshot().actors[id].name)
+
+func _public_protagonist_name(formal: bool = false) -> String:
+	return Names.address(NAME_PHASE, formal)
+
 func _refresh_hud() -> void:
 	var s: Dictionary = campaign.snapshot()
 	var resources: Dictionary = s.resources
@@ -144,7 +155,7 @@ func _refresh_hud() -> void:
 	elif s.order.status == "completed":
 		mission = "Story complete. The result persists; replay cannot duplicate its rewards."
 	_hud.text = "1792 · LAHORE COMMAND SANDBOX (fictional, 1801)\n%s  |  Order: %s / %s  |  Minute: %d\nAvailable: %d riders · %d supplies · %d coins\n%s\n\n%s\nWASD / Shift / Mouse · E interact · F5 save · F9 load · F1 menu" % [
-		s.actors[campaign.actor_id()].name, s.order.status, s.order.mode,
+		_active_player_name(), s.order.status, s.order.mode,
 		int(s.campaign_tick), int(resources.riders), int(resources.supplies), int(resources.treasury), mission, _notice]
 	var reports: Array = campaign.received_reports()
 	_journal.text = "LAHORE · RECEIVED REPORTS\n\nNo new report received."

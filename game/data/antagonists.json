@@ -22,7 +22,7 @@
       "id": "raj_kaur", "name": "Raj Kaur / Mai Malwain", "narrative_role": "antagonist", "playable": false,
       "primary_group": "sukerchakia_house", "organization_ids": ["sukerchakia_misl"], "scenario_presence": "earlier_chapter",
       "conflict_domains": ["regency", "household_authority", "inheritance"],
-      "biography": "Campaign portrayal: the household authority the young Ranjit must confront before he can govern in his own name. She has retainers, obligations and a claim to direct the inheritance; she is not a combat enemy by default. Her decisions can restrict access to men, money and trusted messengers. The rupture of the regency is a family struggle for command, not a conflict between religions.",
+      "biography": "Campaign portrayal: the household authority the young Buddh Singh must confront before he can govern in his own name. She has retainers, obligations and a claim to direct the inheritance; she is not a combat enemy by default. Her decisions can restrict access to men, money and trusted messengers. The rupture of the regency is a family struggle for command, not a conflict between religions.",
       "objective": "Preserve control of the household and the regency's appointments.",
       "leverage": "Retainers, treasury access and authority over the young heir.",
       "source_refs": ["user_dossier", "raj_kaur_page", "campaign_direction"],

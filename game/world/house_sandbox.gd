@@ -226,6 +226,7 @@ func _open_estate() -> void:
 	var s: Dictionary = campaign.snapshot()
 	var options: Array = []
 	var body := "FICTIONAL 1801 DEVELOPMENT ENCOUNTER\n\nAn envoy asks that the road patrol recognize the Kanhaiya household's local revenue claim. Protection of a road is not ownership of its villages.\n\n"
+	body += "Envoy: \"" + _public_protagonist_name(true) + " — the household asks that its local claim be recognized.\"\n\n"
 	body += "Sada Kaur: " + p.relations.sada_kaur.stance.replace("_", " ") + "\nCommission: " + (p.decision.replace("_", " ") if p.decision != "" else "not settled")
 	var can_negotiate: bool = campaign.actor_id() == Campaign.RANJIT and campaign.near_site("lahore_darbar") and s.order.status not in ["reporting", "completed"]
 	if can_negotiate:
@@ -240,7 +241,7 @@ func _open_estate() -> void:
 				if p.decision in ["assert_authority", "defer"]:
 					options.append(["Reconcile: recognize the claim before the patrol resolves", "petition", "reconcile"])
 	else:
-		body += "\n\nNegotiation requires Ranjit at the table, before this patrol resolves."
+		body += "\n\nNegotiation requires " + Names.PLAYER_NAME + " at the table, before this patrol resolves."
 	body += "\n\n" + _notice
 	options.append(["Back to biographies", "houses", ""])
 	options.append(["Close and continue patrol", "close", ""])
@@ -272,7 +273,7 @@ func _refresh_hud() -> void:
 	if is_instance_valid(horse):
 		var h: Dictionary = campaign.horse_state()
 		if campaign.is_mounted():
-			_hud.text = "1792 · HOUSES AND RIVALS · Riding prototype\n%s · Horse %.1f m/s\nW forward · A/D steer · Shift canter · Ctrl walk\nS / Space brake · F dismount when stopped · E speak on foot\nH houses · F5 save · F9 load · F1 menu\n\n%s" % [campaign.snapshot().actors[campaign.actor_id()].name, h.speed, _notice]
+			_hud.text = "1792 · HOUSES AND RIVALS · Riding prototype\n%s · Horse %.1f m/s\nW forward · A/D steer · Shift canter · Ctrl walk\nS / Space brake · F dismount when stopped · E speak on foot\nH houses · F5 save · F9 load · F1 menu\n\n%s" % [_active_player_name(), h.speed, _notice]
 		else:
 			_hud.text += "\nF near the household horse: mount · Horse stays where it is left."
 		_horse_label.position = RidingRules.position(h) + Vector3.UP * 3.6
@@ -293,7 +294,7 @@ func _refresh_hud() -> void:
 			task = "Everyone returned. Await the written report."
 		elif state.order.status == "completed":
 			task = "Patrol complete. The report and consequences are in the journal."
-		_hud.text = "1792 · COMPANION PATROL\n%s · %s · %d troopers / %s\nAvailable: %d riders · %d supplies · %d coins\n\n%s\nE interact · F horse · G patrol orders · H houses · F5/F9 save/load\n\n%s" % [state.actors[campaign.actor_id()].name, party.phase, party.members.size(), party.instruction, state.resources.riders, state.resources.supplies, state.resources.treasury, task, _notice]
+		_hud.text = "1792 · COMPANION PATROL\n%s · %s · %d troopers / %s\nAvailable: %d riders · %d supplies · %d coins\n\n%s\nE interact · F horse · G patrol orders · H houses · F5/F9 save/load\n\n%s" % [_active_player_name(), party.phase, party.members.size(), party.instruction, state.resources.riders, state.resources.supplies, state.resources.treasury, task, _notice]
 		if party.return_tick >= 0 and not campaign.received_reports().is_empty():
 			_journal.text += "\n\nPATROL RETURN\nField decision: minute %d\nCourtyard check-in: minute %d\nAll %d troopers returned." % [party.decision_tick, party.return_tick, party.members.size()]
 	else:
@@ -429,7 +430,7 @@ func _open_patrol() -> void:
 				options.append(["Check patrol in at the courtyard", "finish_patrol", ""])
 			else:
 				options.append(["Withdraw: begin return without securing the road", "resolve", "withdraw"])
-			options.append(["Return to Ranjit's viewpoint / delegate captain", "return_to_darbar", ""])
+			options.append(["Return to " + Names.PLAYER_NAME + "'s viewpoint / delegate captain", "return_to_darbar", ""])
 		else:
 			body += "Take the captain's viewpoint at the command table to give field orders. Delegation uses physical movement; held troopers keep their hold instruction."
 	body += "\n\n" + _notice

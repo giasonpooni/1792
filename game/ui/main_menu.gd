@@ -1,5 +1,7 @@
 extends Control
 
+const Names := preload("res://characters/character_names.gd")
+
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	var background := ColorRect.new()
@@ -20,7 +22,7 @@ func _ready() -> void:
 	subtitle.text = "Build outward from home.\nEarly development prototypes — not a finished historical reconstruction."
 	subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	panel.add_child(subtitle)
-	_add_button(panel, "1792 · Home territory (original movement prototype)", "res://world/home_territory.tscn")
+	_add_button(panel, "1792 · " + Names.PLAYER_NAME + " · Home territory", "res://world/home_territory.tscn")
 	_add_button(panel, "Lahore · Command story (separate 1801 sandbox)", "res://world/command_sandbox.tscn")
 	_add_button(panel, "Lahore · Houses and rivals (riding / companions / house politics)", "res://world/house_sandbox.tscn")
 	var note := Label.new()
