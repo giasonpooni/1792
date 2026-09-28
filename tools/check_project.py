@@ -81,6 +81,7 @@ class ProjectChecks(unittest.TestCase):
         self.assertEqual(root_events, game_events)
         self.assertEqual(root_events, [
             "mahan_gujranwala_home_ground.json",
+            "mahan_gujranwala_ridge_settlement_approach.json",
             "mahan_late_campaign_illness.json",
             "mahan_singh_death_fixed.json",
         ])
@@ -109,6 +110,10 @@ class ProjectChecks(unittest.TestCase):
         self.assertIn("gujranwala_fort_road", illness["location"].get("related_place_ids", []))
         home = json.loads((ROOT / "data/history/mahan_gujranwala_home_ground.json").read_text())
         self.assertEqual(home["location"]["place_id"], "gujranwala_settlement")
+        approach = json.loads((ROOT / "data/history/mahan_gujranwala_ridge_settlement_approach.json").read_text())
+        self.assertEqual(approach["location"]["place_id"], "gujranwala_fort_road")
+        self.assertIn("gujranwala_settlement", approach["location"].get("related_place_ids", []))
+        self.assertIn("no_alternate_history_win", approach["historical_outcome"].get("invariants", []))
         for name in root_events:
             root_bytes = (ROOT / "data/history" / name).read_bytes()
             game_bytes = (GAME / "mahan/data" / name).read_bytes()
