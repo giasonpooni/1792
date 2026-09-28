@@ -29,9 +29,10 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 
 | Path | Change |
 | --- | --- |
-| `game/mahan/mahan_state.gd` | Opt-in `enable_riding()`; mount/dismount/`record_ride` for rider `mahan_singh`; reuses `riding_rules` VERSION/HORSE_ID/distances without rewriting Lahore `Riding.validate`; `household_id: sukerchakia` graph object; dismount gates on dispatch/decide/march/endpoint |
-| `game/mahan/mahan_chapter.gd` | Spawns `horse.tscn` adapter; **F** mount/dismount; mounted physics step; HUD mount status; ride greybox toward authored nodes |
-| `game/tests/test_mahan.gd` | Cavalry opt-in, mount gates, short ride, Lahore validate still rejects `mahan_singh`, save/load + ontology refusal |
+| `game/mahan/mahan_cavalry_state.gd` | Mahan-only adapter: opt-in `enable_riding()`; mount/dismount/`record_ride` for rider `mahan_singh`; reuses `riding_rules` VERSION/HORSE_ID/distances without rewriting Lahore `Riding.validate`; `household_id: sukerchakia` graph object; dismount gates |
+| `game/mahan/mahan_cavalry_chapter.gd` | Chapter adapter spawns `horse.tscn`; **F** mount/dismount; mounted physics step; HUD mount status; ride greybox toward authored nodes |
+| `game/mahan/mahan_launch.gd` | Composes `mahan_cavalry_chapter.gd` instead of base chapter |
+| `game/tests/test_mahan_cavalry.gd` | 44 cavalry checks: opt-in, mount gates, short ride, Lahore validate still rejects `mahan_singh`, save/load + ontology refusal |
 | `docs/MAHAN_INTERLUDE.md` | Cavalry loop + ontology fence |
 | `docs/MAHAN_INTEGRATION_LEDGER.md` | This cavalry note |
 
@@ -40,7 +41,7 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 | Path | Change |
 | --- | --- |
 | `game/ui/main_menu.gd` | Fourth entry launching Mahan via `MahanLaunch.enter` |
-| `tools/run_checks.py` | Registers `test_mahan.gd` after aftermath; prior suites remain invoked |
+| `tools/run_checks.py` | Registers base `test_mahan.gd`, then `test_mahan_cavalry.gd`; prior suites remain invoked |
 | `tools/check_project.py` | Menu assertion still requires home + command entries; also requires Mahan launch path |
 
 ## Deliberately left alone
