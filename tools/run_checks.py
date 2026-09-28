@@ -33,7 +33,7 @@ def main() -> int:
         print("Godot is unavailable: runtime tests NOT RUN.", file=sys.stderr)
         return 2
     run([args.godot, "--headless", "--path", "game", "--editor", "--import"], "import")
-    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_command_story.gd"],
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_mahan.gd"] if False else [args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_command_story.gd"],
         "command-story", "COMMAND_STORY_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_house_reporting.gd"],
         "houses", "HOUSE_CONFLICT_TESTS:")
@@ -51,6 +51,8 @@ def main() -> int:
         "mahan", "MAHAN_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_mahan_cavalry.gd"],
         "mahan-cavalry", "MAHAN_CAVALRY_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_mahan_logistics.gd"],
+        "mahan-logistics", "MAHAN_LOGISTICS_TESTS:")
     return 0
 
 
