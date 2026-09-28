@@ -5,6 +5,8 @@ const HouseCampaign := preload("res://campaign/house_command_state.gd")
 const HorseScene := preload("res://mounts/horse.tscn")
 const RidingRules := preload("res://mounts/riding_rules.gd")
 const RIDING_SAVE := "user://1792-riding-v1.json"
+# Injectable scene storage target: regression scenes must never write a player save.
+var riding_save_path := RIDING_SAVE
 const HOUSE_SAVE := "user://1792-house-conflict-v1.json"
 var _scroll: ScrollContainer
 var _field_sign: Label3D
@@ -155,13 +157,13 @@ func _perform(action: String, argument: String = "") -> void:
 			return
 		"save":
 			campaign.record_position(avatar.global_position)
-			var error: String = campaign.save_to(RIDING_SAVE)
+			var error: String = campaign.save_to(riding_save_path)
 			_notice = _message(error, "Riding, patrol and house decisions saved together.")
 			_close_panel()
 			_refresh_hud()
 			return
 		"load", "import_house", "import_command":
-			_pending_load = RIDING_SAVE if action == "load" else HOUSE_SAVE if action == "import_house" else SAVE_PATH
+			_pending_load = riding_save_path if action == "load" else HOUSE_SAVE if action == "import_house" else SAVE_PATH
 			return
 	super._perform(action, argument)
 

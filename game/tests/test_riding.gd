@@ -207,6 +207,8 @@ func drive_to(scene, target: Vector3, budget: int = 800) -> void:
 
 func _test_physics() -> void:
 	var scene = Scene.instantiate()
+	scene.riding_save_path = SAVE + ".scene"
+	check(scene.riding_save_path != scene.RIDING_SAVE, "scene tests never write the player save slot")
 	root.add_child(scene)
 	await frames(5)
 	# Only setup fixtures reposition the avatar. The round trip below uses engine input.
@@ -260,7 +262,7 @@ func _test_physics() -> void:
 	check(not scene.campaign.is_mounted(), "physical round trip ends dismounted at home")
 	ok(scene.campaign.validate(scene.campaign.snapshot()), "round-trip campaign remains valid")
 	# An invalid file must not replace either simulation or presentation.
-	var file := FileAccess.open(scene.RIDING_SAVE, FileAccess.WRITE)
+	var file := FileAccess.open(scene.riding_save_path, FileAccess.WRITE)
 	file.store_string("{broken")
 	file.close()
 	var before: Dictionary = scene.campaign.snapshot()
@@ -270,7 +272,7 @@ func _test_physics() -> void:
 	check(scene.horse.position == location, "malformed load keeps visible horse")
 	check(scene.campaign.horse_state() == before.riding.horse, "malformed load keeps authoritative horse")
 	check(scene._notice.contains("Malformed"), "failed load gives visible reason")
-	DirAccess.remove_absolute(ProjectSettings.globalize_path(scene.RIDING_SAVE))
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(scene.riding_save_path))
 	inputs(false)
 	scene.queue_free()
 	await process_frame
@@ -288,6 +290,8 @@ func put_horse(scene, at: Vector3, mounted: bool = true, grounded: bool = true) 
 
 func _test_geometry() -> void:
 	var scene = Scene.instantiate()
+	scene.riding_save_path = SAVE + ".scene"
+	check(scene.riding_save_path != scene.RIDING_SAVE, "scene tests never write the player save slot")
 	root.add_child(scene)
 	await frames(3)
 	put_horse(scene, Vector3(30, 0.04, 0))
@@ -334,7 +338,7 @@ func _test_geometry() -> void:
 	bad.player.position = bad.riding.horse.position.duplicate()
 	bad.actors.ranjit_singh.position = bad.player.position.duplicate()
 	ok(scene.campaign.validate(bad), "spatially impossible fixture is structurally well formed")
-	var file := FileAccess.open(scene.RIDING_SAVE, FileAccess.WRITE)
+	var file := FileAccess.open(scene.riding_save_path, FileAccess.WRITE)
 	file.store_string(JSON.stringify(bad, "", true, true))
 	file.close()
 	var original: Dictionary = scene.campaign.horse_state()
@@ -342,7 +346,7 @@ func _test_geometry() -> void:
 	await frames(1)
 	check(scene.campaign.horse_state() == original, "intersecting loaded horse never replaces live state")
 	check(scene._notice.contains("intersects scenery"), "spatial load refusal is visible")
-	DirAccess.remove_absolute(ProjectSettings.globalize_path(scene.RIDING_SAVE))
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(scene.riding_save_path))
 	inputs(false)
 	scene.queue_free()
 	await process_frame
