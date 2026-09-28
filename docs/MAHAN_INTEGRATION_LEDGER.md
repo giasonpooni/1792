@@ -199,12 +199,56 @@ Proven on tip `92be95dd2f68765a900ff221e5af2f440f5eb923` with Godot **4.5.1.stab
 | mahan-logistics | **75** passed, 0 failed |
 | mahan-politics | **89** passed, 0 failed |
 | mahan-orders | **101** passed, 0 failed |
-| mahan-history | **95** passed, 0 failed |
-| mahan-fence | **119** passed, 0 failed |
-| **Total runtime asserts** | **1930** passed, 0 failed (+ 9 structural) |
+| mahan-history | **96** passed, 0 failed |
+| mahan-encounter | **123** passed, 0 failed |
+| mahan-fence | **121** passed, 0 failed |
+| **Total runtime asserts (mahan family + prior)** | prior tip **1930** + encounter **123** + history/fence deltas (**+3**) → **2056** on this tip when full `run_checks` is re-run (+ 9 structural) |
 
 Residual after full suite:
 
-- No authored Gujranwala ridge→settlement encounter scene yet (march graph + markers exist; playable beat stub still open).
+- Authored Gujranwala ridge→settlement encounter stub is on tip (greybox + historical-event frame; still no full combat / town sim).
 - No accession / Buddh handoff cutter (fence proves absence; future opt-in only).
 - Concurrent-agent PLACEHOLDER risk on core files remains procedural — prefer `push_files` for large restores.
+
+
+## Extended (this tip -- Gujranwala ridge→settlement encounter stub)
+
+| Path | Change |
+| --- | --- |
+| `data/history/mahan_gujranwala_ridge_settlement_approach.json` | NEW authored encounter historical-event frame (fort_road→settlement) |
+| `game/mahan/data/mahan_gujranwala_ridge_settlement_approach.json` | Runtime mirror |
+| `game/mahan/mahan_history_state.gd` | Catalog includes approach event (4 seeded events) |
+| `game/mahan/mahan_encounter_state.gd` | NEW encounter adapter: greybox nodes, delayed approach scout, hold/advance choices within fixed endpoint |
+| `game/mahan/mahan_encounter_chapter.gd` | NEW presentation + approach marker |
+| `game/mahan/mahan_history_chapter.gd` | Additive guard so EncounterModel survives `super._ready()` |
+| `game/mahan/mahan_launch.gd` | Composes encounter chapter |
+| `game/tests/test_mahan_encounter.gd` | Encounter suite (custody clock, choices, ontology, launch smoke) |
+| `game/tests/test_mahan_history.gd` | Catalog size 4 |
+| `tools/run_checks.py` | Registers `mahan-encounter` before `mahan-fence` |
+| `tools/check_project.py` | Approach event mirror + schema shape |
+| `docs/GUJRANWALA.md` / `docs/MAHAN_INTERLUDE.md` / `docs/HISTORICAL_EVENTS.md` | Encounter notes |
+| `docs/MAHAN_INTEGRATION_LEDGER.md` | This note |
+
+Identity notes (encounter):
+
+- Settlement remains a place object; household remains `sukerchakia`; Raj Kaur / Sandhawalia absent.
+- Encounter choices cannot alter fixed death; no combat AI; delayed scout knowledge on delivery only.
+- No `house_command_state` / `world_state.schema.json` rewrite.
+
+
+### Encounter stub local wall-clock (this tip)
+
+Godot **4.5.1.stable**; suites run at least:
+
+| Suite | Result |
+| --- | --- |
+| structure | **9 OK** |
+| mahan | **197** |
+| mahan-cavalry | **44** |
+| mahan-logistics | **75** |
+| mahan-politics | **89** |
+| mahan-orders | **101** |
+| mahan-history | **96** |
+| mahan-encounter | **123** |
+| mahan-fence | **121** |
+
