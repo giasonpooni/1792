@@ -4,6 +4,7 @@ const Rules := preload("res://patrol/companion_rules.gd")
 var limbs: Array[Node3D] = []
 var stride := 0.0
 var entity_id := ""
+var move_speed := Rules.SPEED # Per-agent cap; existing patrols retain their original pace.
 var caption: Label3D
 
 func _ready() -> void:
@@ -47,7 +48,7 @@ func apply(record: Dictionary) -> void:
 func step(delta: float, waypoint: Vector3, moving: bool) -> Dictionary:
 	var direction := waypoint - global_position
 	direction.y = 0
-	var speed := minf(Rules.SPEED, direction.length() / delta) if moving and direction.length() > 0.2 else 0.0
+	var speed := minf(move_speed, direction.length() / delta) if moving and direction.length() > 0.2 else 0.0
 	direction = direction.normalized()
 	velocity.x = direction.x * speed
 	velocity.z = direction.z * speed

@@ -1,283 +1,228 @@
 # 1792
 
-**Grow from a young heir in the Sukerchakia heartland into a commander and state builder — without leaving the world behind.**
+**Build outward from home.**
 
-1792 is an early historical open-world game project centered on **Buddh Singh**, the character
-known publicly as **Ranjit Singh** after accession in our campaign. The long-term
-experience combines horseback travel and personal relationships, close-range exploration and
-infiltration, contested local territory, and larger military campaigns. House and clan rivalries,
-estate claims, patronage and personal obligations drive the political world, rather than
-sorting its people into religious enemy teams.
+A historical open-world game in development, following **Buddh Singh** from the
+Sukerchakia home territory toward command and state-building. Travel, personal
+relationships, incomplete information and competing household obligations matter
+before large armies or empire management.
 
-**This is not a finished game.** The repository contains small Godot prototypes that we can build,
-play, test and improve one at a time. There are no finished historical environments or character assets yet.
+The player knows himself as Buddh. In the authored later campaign, other
+characters address him as **Ranjit Singh**, formally **Maharaja Ranjit Singh**.
+The timing of that public-name switch is a narrative convention, not a finding
+that the historical childhood renaming occurred at accession. Internal
+`ranjit_singh` references remain stable. [Naming policy](docs/CHARACTER_NAMES.md).
 
-## Play the childhood opening
+**Early playable greybox, not a finished historical reconstruction.** There are
+no production character models, finished cities, full combat system, or complete
+childhood-to-Lahore campaign.
 
-The existing **1792 · Buddh Singh · Home territory** menu entry now opens a short
-playable childhood chapter on the retained home scene:
+## Start playing
 
-**Find your bearings → hear a message you cannot read → ride → guard and counter →
-track quarry → survive an ambush → negotiate protection → investigate and report back.**
+Import **`game/project.godot`** into standard **Godot 4.5.1** and press **F5**.
+No Python, .NET, Bevy, NET service or scientific provider is required to play.
 
-WASD and mouse introduce movement and looking. E acquires the courier's sealed
-message, then hears the courier and steward separately. F starts the riding lesson
-on the same horse controller as the Lahore prototype. Q guards a telegraphed
-practice blow; left-click counters. C enables a quiet approach on the hunting trail.
-Those inputs remain usable in the return-path encounter. This is tracking and a
-bounded guard/counter/escape prototype, not a complete hunting or melee system.
-
-**Buddh's inner identity, reliance on remembered speech and incomplete knowledge
-are central.** The journal retains who said what and when; receiving a report does
-not confirm it. A survival outcome does not reveal a mastermind. An optional quiet
-reflection beneath the courtyard tree introduces faith as personal grounding,
-not a combat or hidden-knowledge bonus. These are authored portrayals.
-
-J/F1 opens the journal and pauses; F5/F9 uses the separate childhood-aftermath save.
-The menu can import the earlier childhood slot without overwriting it. F4 disables
-or enables the mild peripheral visual framing without changing gameplay state.
-The chosen historical account describes eye loss in early childhood, not an
-established progressive-blindness schedule. The shader is subjective presentation,
-not a medical model or half-screen blackout. Keyboard/mouse is the tested input;
-controller mapping is not implemented yet.
-
-The three exercise gates and compressed hunting trail are fictional, as are the
-speakers, trainer and anonymous attacker. Three unguarded hits end the attempt;
-press **R** or use the recovery menu to restore the latest checkpoint. The chapter
-captures a checkpoint after the quarry lesson and on returning home on foot. Manual
-F5 saves remain separate. Restoring replaces the whole saved state, including knowledge
-and damage: later accounts do not follow Buddh back into an earlier attempt.
-This chapter does not yet transition into the Lahore campaign, whose systems remain intact.
-
-### After the ambush: protection and independence
-
-Returning alive now opens conversations with the courier, steward and **Raj Kaur**.
-Hear the two return accounts, then approach her at the back of the courtyard and press E.
-Her offer has two playable outcomes: **take the household guard**, or **insist on going alone**.
-
-The guard is a visible, dismounted companion reusing the existing patrol movement and
-collision code. **G** switches follow/hold within 10 metres and clear sight. He does not
-teleport after a fast horse. If you accept him, he must actually reach the bend with you
-and return to Raj Kaur before the inquiry can close. Going alone provides no guard and
-records strained independence. These are authored household consequences, not a morality score.
-
-Revisit the bend, face the disturbed ground and press **E**, then return and give your
-account aloud. You have found a trace, not identified a conspirator. The agreement,
-guard pose, attributed accounts and report survive save/load in the same chapter state.
-This is a fictional extension of the chosen narrative direction, not a newly verified
-historical incident. [Aftermath, checkpoint controls and limits](docs/AFTERMATH.md).
-
-[Childhood controls and scope](docs/CHILDHOOD.md) ·
-[Narrative perspective](docs/NARRATIVE_PERSPECTIVE.md) ·
-[Selected historical accounts](docs/HISTORICAL_SOURCES.md) ·
-[Inspirational aspects](docs/INSPIRATIONS.md)
-
-## The protagonist's name
-
-**Buddh Singh** is the player-facing name. Before accession, characters address him as
-Buddh Singh; afterwards they use **Ranjit Singh**, or **Maharaja Ranjit Singh** in formal
-court dialogue. The 1792 home nameplate and the current Lahore HUD use Buddh Singh;
-the fictional Lahore envoy uses the post-accession court address. Other characters retain
-their own names. This changes presentation, not identity: saved `ranjit_singh` references,
-orders, relationships, horses and companions remain bound to the same person.
-
-The timing is an **authored campaign convention**, not a claim that the historical
-renaming happened at accession. The name tradition places the change by his father
-in childhood. The present Lahore development scenes explicitly use the later address;
-there is no accession mission or automatic calendar-driven name change yet.
-See [Naming policy](docs/CHARACTER_NAMES.md).
-
-## Run it
-
-Import **`game/project.godot`** into the standard Godot editor and press **F5**.
-The reference test target is **Godot 4.5.1**; no Python, Rust or external service is needed to play.
-
-The opening menu offers three development entries:
-
-| Prototype | What is there |
+| Menu entry | Current gameplay |
 | --- | --- |
-| **1792 · Home territory** | A childhood tutorial composed onto the original scene: oral accounts, riding, guard/counter practice, tracking, a return-path ambush, household protection choices and a physical return inquiry. |
-| **Lahore · Command story** | A separate, fictional 1801 sandbox: assign a patrol, play its captain or delegate, visit two locations, make a decision and receive a delayed report. |
-| **Lahore · Houses and rivals** | Ride the household horse, negotiate an estate petition, muster a small companion patrol, give follow/hold orders, visit the outpost and return together. Six antagonist biographies remain in the codex. |
+| **1792 · Buddh Singh · Home territory** | Childhood training, oral accounts, an ambush, a protection agreement and inquiry, then a small Gujranwala supply/production loop. |
+| **Lahore · Command story** | Separate fictional 1801 sandbox: assign a patrol, play or delegate its captain, investigate and receive a delayed report. |
+| **Lahore · Houses and rivals** | The same command loop with a house dispute, a rideable horse, visible companions, follow/hold orders and physical return. |
 
-The Lahore sandboxes do **not** replace the childhood opening or assert that their invented missions
-actually happened. Their captain, envoys and compressed geography are placeholders, not reconstructions.
-Houses and rivals extends the existing command implementation rather than duplicating its simulation.
+The Lahore scenes are development sandboxes, not chronological shortcuts that
+complete the childhood story. Their captain, envoy, missions and geography are
+fictional placeholders.
 
-## First command story
+## The home chapter
 
-Walk to the courtyard table and press **E**. Assign the four-rider patrol, interact with the table again,
-and choose **Play as the captain**. Follow the road to the village, press E to gather information,
-then continue to the outpost. Organize a patrol or withdraw. The result changes local security and
-the captain's relationship with Lahore, and a delayed report returns to Buddh Singh.
+**Learn the yard → hear a letter read aloud → ride → guard and counter →
+track quarry → survive the return-path ambush → investigate → report home.**
 
-You can also delegate the same order or take control partway through. Switching does not reset
-its allocation, progress, character positions or world clock. A completed story cannot repeatedly award resources.
+The tutorial teaches movement through ordinary childhood activities. Tracking
+currently means examining traces, approaching quietly and observing stationary
+quarry—not projectile hunting or harvesting.
 
-## Ride the first route
+After the attack, hear the courier and steward, then approach Raj Kaur. Accept
+a household guard and bring him to the bend and back, or undertake the inquiry
+alone and accept a strained household relationship. The trace does not identify
+a culprit. Neither choice establishes that a named household organized the attack.
 
-Choose **Lahore · Houses and rivals**. There is one household horse beside the hitching rail
-on the right of the courtyard. Walk close and press **F** to mount. Ride through the open end
-of the courtyard and follow the dirt road to the village and outpost, or turn around and ride home.
+Checkpoints before the ambush and before the aftermath allow retrying an attempt.
+**R** restores the last checkpoint, including its earlier memories and decisions.
+Later information is not merged into an earlier attempt.
 
-**W** moves forward, **A/D** steer the horse, **Shift** requests a canter, and **Ctrl** requests
-a walk. **S** or **Space** brakes; releasing W also slows to a stop. The mouse orbits independently.
-Stop on clear ground and press **F** to dismount. A wall, blocked landing or airborne horse prevents
-dismounting. The horse has acceleration, speed-dependent turning and world collision; it does not strafe.
+[Childhood walkthrough](docs/CHILDHOOD.md) ·
+[Aftermath and checkpoints](docs/AFTERMATH.md) ·
+[Perspective](docs/NARRATIVE_PERSPECTIVE.md)
 
-Both Buddh Singh and the player-controlled captain can use the same horse. **The horse stays where it
-is left.** Dismount before handing control to the captain or back to Buddh Singh. Delegated patrols still
-travel on foot; the horse does not follow them, appear at their destination, or create extra riders.
-At the village/outpost, dismount and use **E** for the original encounters and house consequences.
-Without mustering, the original abstract patrol still returns the viewpoint on resolution.
-A **mustered physical patrol** instead keeps you as captain for the return journey; check everyone in
-at the courtyard before the report is delivered.
+## Gujranwala: earn, provision, build and meet obligations
 
-**F5/F9** save/load horse position, facing, speed and rider together with the current patrol and house
-decisions and mustered companions. This version uses a separate companion-patrol save slot.
-**F1** offers explicit imports of earlier riding, house-conflict and command-story saves; it never
-invents already-deployed companions or overwrites those older slots.
-The horse and rider are procedural blockout shapes, with a simple leg swing—not finished models or animation.
-See [Riding](docs/RIDING.md) for rules, checks and the next gaps.
+After completing the household inquiry, speak to the quartermaster near the
+middle of the yard. He releases a **limited household operating allowance**, not
+unrestricted imperial funds. Your personal purse and household coffers remain
+separate balances.
 
-## Lead a small patrol
+Carry four food portions to the west-side market, then escort a physical
+returning carrier to the home store. Leave through the courtyard's open front
+and take the western lane. Stay within nine metres of the carrier: it stops
+when you leave it behind and never teleports to catch up.
 
-In **Houses and rivals**, assign a package at the command table, then press **G** and choose
-**Muster allocated companions** before departure. Scouts provide the captain plus one trooper;
-the four-person patrol provides the captain plus three. Mustering consumes no additional riders,
-coins or supplies. The companions are currently **dismounted soldiers**, not mounted cavalry.
+Use the market to buy supplies or a personal satchel. At home, hire workers or
+garrison guards, commission a mill, storehouse or palisade, and attend the
+household meeting. **B** presents the quartermaster's oral accounts and forecast.
 
-Take the captain's viewpoint. **G** opens **Follow / regroup** and **Hold position**. Troopers
-walk around static obstacles and remain where you leave them on Hold. Regroup within 30 metres;
-there is no teleport catch-up when the captain canters away on the household horse. You can also
-delegate: the captain and companions then move physically along the same road.
+| Choice | Coupled consequence |
+| --- | --- |
+| Hire workers | More labor, but additional food and wages every supply watch. |
+| Hire guards | Visible garrison posts and provisioned readiness, but recurring upkeep. They are not combat escorts. |
+| Start construction | Coins, timber and tools are committed; workers build **instead of** processing grain. |
+| Build a mill | Higher processing rate, still limited by grain, labor and storage. |
+| Build storage | More capacity, after materials and labor-work are supplied. |
+| Run short of food or wages | Production/construction can stop and guard readiness falls. |
+| Run short of fodder | The existing horse loses its faster gaits until a later provisioned watch. |
+| Miss the meeting | A one-time household-standing penalty. |
+| Buy a satchel | Personal funds are spent; the delivery earns a small handling premium, not duplicated cargo. |
 
-Visit the village, then the outpost. Securing it requires the captain and **at least two troopers
-physically present**, plus a commission that allows securing the road. Choosing an outcome commits
-the field decision, but **does not yet settle the mission or release its resources**. Return with
-all companions to the courtyard, walk around the command table, dismount if riding, press **E**,
-and choose **Check patrol in**. The report is compiled at check-in and delivered four game minutes
-later; only then are the original riders released. Delegation can complete this return too.
+A supply watch is **7,200 existing physics ticks / 120 seconds of play**, not a
+historical day. Resting at home advances the same clock and settles the same
+obligations; resting is blocked while the return caravan is active.
 
-The outpost decision is still a menu encounter, not combat. The physical patrol uses the same
-house/territory consequence rules as the older abstract patrol. Neither annexes land. Earlier
-saves retain the earlier loop; muster is opt-in before departure, not a fourth demo or a new game.
-See [Companion patrol](docs/COMPANIONS.md) for save, movement and scope details.
+Prices, recipes, capacities, social deltas and wages are **authored game units**.
+The two finite contracts pay once. There is no infinite mission-money loop.
+The palisade changes the visible structure; siege defense is not simulated yet.
 
-## Houses, rivals and biographies
+The home landscape is a seeded **56 × 56 metre compressed test container**:
+retained tutorial/escort lanes, shallow field relief, a market and production
+yard, with farmland scenery beyond the boundary. It is not surveyed Gujranwala,
+a historical Misl border or streamed Punjab. Current group navigation remains
+a bounded flat-lane profile.
 
-In **Houses and rivals**, press **H** for the antagonist codex, or access it through the command
-table. Raj Kaur, Sada Kaur, Mehtab Kaur, Datar Kaur, Moran and Jind Kaur are NPCs, not selectable
-protagonists. Each profile has an authored objective, source note and chapter presence. An antagonist
-can be a useful patron or ally while opposing a particular decision; not every profile starts hostile.
+[Home territory and economic rules](docs/GUJRANWALA.md) ·
+[Coupled campaign direction](docs/COUPLED_CAMPAIGN.md)
 
-Only **Sada Kaur's fictional estate petition** has an interactive conflict in this first slice.
-At the table, hear the envoy and choose a commission. Recognizing a local revenue claim enables
-a cooperative patrol. Asserting Lahore's authority creates rivalry and military presence without
-settling local legitimacy. Deferring permits observation and withdrawal, not securing the road.
-Buddh Singh can reconcile the disputed commission before the captain resolves it.
-
-The same manual/delegated patrol rules apply. Political results reach the journal with the existing
-messenger report, not before. Neither military presence nor an agreement automatically annexes land.
-The codex intentionally includes earlier/later story profiles; this is a development roster, not six
-finished character campaigns. See [Houses and rivals](docs/HOUSE_CONFLICT.md) for scope and contracts.
+## Controls and saves
 
 | Control | Action |
 | --- | --- |
-| WASD / Shift | Walk / run |
-| Mouse | Orbit the third-person camera |
-| F | Mount / dismount in Houses and rivals |
-| E | Interact or open the captain's field menu |
-| G | Muster and companion orders in Houses and rivals |
-| H | Antagonist codex in the Houses and rivals entry |
-| F5 / F9 | Save / load the current sandbox (separate save slots for each entry) |
-| F1 | Return-menu controls |
-| Escape / click world | Release / recapture the mouse |
+| WASD / Shift / mouse | Walk, run and look |
+| F | Mount / dismount near the horse |
+| W / A / D while mounted | Forward / steer |
+| Shift / Ctrl while mounted | Canter / walk |
+| S / Space while mounted | Brake |
+| E | Speak, inspect or interact |
+| Q / left click in childhood | Guard / counter |
+| C in childhood | Quiet approach |
+| B in home territory | Oral supply accounts |
+| G | Household guard or patrol follow/hold, where available |
+| J / F1 | Childhood journal / pause |
+| H in Houses and rivals | Antagonist codex |
+| F4 in childhood | Optional peripheral framing |
+| F5 / F9 | Save / load current profile |
+| R in childhood | Restore checkpoint |
 
-Decision menus pause the sandbox. The first slices have a simple delegated policy, not general commander AI.
-The Lahore encounter is still a choice interface; **its combat, mounted companions and autonomous faction plots are not implemented yet**. The childhood entry has a separate bounded practice/escape encounter, not a general combat system.
-See [Command stories](docs/COMMAND_STORIES.md) for the original walkthrough, persistence rules and limitations.
+Menus pause both motion and the scenario clock. The peripheral option changes
+presentation, not knowledge or health. It is not a medical visual-field model,
+and no progressive eye-loss or alcohol mechanic is attached to the child.
 
-## Where the game is going
+The new home profile uses **`user://1792-gujranwala-v1.json`** and a separate
+checkpoint sidecar. Old childhood/aftermath saves can be read by the new loader
+without inventing an allowance or completed contracts. Older checkpoints replace
+the whole later session, including economic progress.
 
-The main story starts from a small familiar home territory. Travel, local knowledge, companions,
-relationships and contested roads should matter before large armies or administration enter play.
-Greater power adds responsibilities without removing the ability to walk or ride through the world.
+Lahore profiles retain their separate slots and import controls. Invalid loads
+are staged and rejected before replacing the running session. Windows save
+replacement and hardened duplicate-key parsing remain unqualified.
 
-Later, Lahore becomes a command hub. Buddh Singh remains the main character, while smaller playable
-stories follow subordinate commanders. Their decisions affect the same campaign world instead
-of becoming disconnected missions. Documented commanders and expeditions will be added after
-their dates, command relationships and sources have been checked. The proposed Tahal Singh
-Chhachhi line is not yet substituted for the fictional captain.
+## Lahore patrols and house conflict
 
-The design references are the embodied world of *Red Dead*, personal traversal and infiltration
-from *Assassin's Creed*, local territorial struggle from *Saints Row 2*, and campaign command
-from *Shogun: Total War*. These are inspirations, not implemented feature claims or affiliations.
+At the command table, choose a scouting or patrol allocation, then play the
+captain or delegate. Switching preserves the same order, resources and positions.
 
-## Required Mahan Singh interlude before Lahore
+In **Houses and rivals**, Sada Kaur's fictional estate petition determines whether
+the patrol recognizes a local claim, asserts disputed authority or observes only.
+Protection of a road does not automatically annex its villages.
 
-The planned 1797–1798 lead-up pauses Buddh's forward story for a mandatory playable
-Mahan Singh retrospective. **Mahan's death is fixed**; ordinary mission failures
-are retryable, not alternative historical endings. A reprise of Buddh's beginning
-then reconnects with the suspended pre-Lahore story. It does not reset the save or
-carry items and private knowledge from the father's viewpoint into the son's.
+Press **G** after assigning a package to muster companions before departure.
+The allocation includes the captain: scouts add one visible trooper; the larger
+patrol adds three. They travel on foot. Follow/regroup and Hold do not teleport
+them behind a cantering horse.
 
-The sequencing, gate, preservation and single-use return contract is implemented
-and tested. The actual father missions, reprise scenes, late-campaign routing and
-Lahore transition are not yet playable. This does not trigger immediately after
-the existing childhood chapter. See [Mahan interlude](docs/MAHAN_INTERLUDE.md).
+Securing the outpost requires the captain and at least two troopers present, as
+well as an appropriate commission. Return with everyone and check in on foot.
+Resources remain reserved until check-in and the delayed report releases the
+original riders once. Without mustering, the earlier abstract patrol remains.
 
-## Keep the technology behind the game
+[Commands](docs/COMMAND_STORIES.md) · [House dispute](docs/HOUSE_CONFLICT.md) ·
+[Riding](docs/RIDING.md) · [Companions](docs/COMPANIONS.md)
 
-**Godot** owns gameplay and the current world state. **Blender** is the intended asset-authoring
-pipeline. **Bevy** is reserved for simulation workloads that justify a separate runtime.
-**Notations Engineering Terminal (NET)** can later provide external experiments, inspection,
-replay tooling and validation. None of those future integrations is required to start these prototypes.
+## People, perspective and the fixed past
 
-The command slice extends the existing `world-state.v1` record with a `command-story.v1` profile.
-The house slice adds a versioned `house-conflict.v1` substate to that same authority; the original
-command code and world schema remain unchanged. Orders, controlled characters, antagonist NPCs,
-groups, source notes and reports have separate identities. Manual and delegated execution share
-consequence rules. The optional `riding.v1` record belongs to the same campaign state; Godot physics
-submits mounted poses through that authority. The optional `companions.v1` profile holds allocated trooper IDs, positions, orders and return progress
-inside that same state. House, clan, misl and religious institution are not synonyms.
+Raj Kaur, Sada Kaur, Mehtab Kaur, Datar Kaur, Moran and Jind Kaur are **NPC
+antagonist biographies**, not alternative protagonists. Antagonist means competing
+objectives; a useful ally or patron need not become a permanently hostile enemy.
+Their source notes and chapter presence remain explicit. Only the existing
+Raj Kaur aftermath and Sada Kaur petition have interactive conflicts so far.
 
-## Develop and test
+The political frame is **houses, clans, estates, patronage, promises and command**,
+not religious enemy teams. A surname is not a universal allegiance.
+Personal faith and remembered speech are part of Buddh's perspective. Obtaining
+a letter does not reveal its contents; hearing two versions does not prove either.
+
+Before the eventual Lahore campaign, the planned Mahan retrospective has a fixed
+ending: **Mahan dies; Buddh succeeds; the story revisits Buddh's beginning and
+returns to the suspended present**. The sequencing/preservation contract is
+implemented. Father missions, reprise scenes, the 1797–1798 world and its actual
+scene router are **not yet playable**. No retrospective loot or private knowledge
+is transferred into Buddh's present. [Interlude contract](docs/MAHAN_INTERLUDE.md).
+
+## Architecture and scope
+
+Godot owns the current active world and gameplay. Blender is the intended asset
+authoring environment. Bevy and Notations Engineering Terminal remain optional
+future simulation/development integrations, not required dependencies.
+
+The optional home-economy record extends the existing `world-state.v1` childhood
+authority; it does not create a competing save, clock or treasury. Its ordered
+receipts reproduce the numerical ledger. Actor IDs, horse ownership, reports,
+observations and execution state remain distinct. Legacy gameplay defaults remain
+unchanged when the new economy is inactive.
+
+The long-term campaign connects earned income, raids, contracted service,
+equipment, ammunition, repairs, food, fodder, transport, infrastructure, meetings,
+intelligence and adult court/health/delegation systems. Those are development
+targets, not capabilities implied by this prototype.
+
+Our design muses include *Prince of Persia*, *Red Dead*, *Saints Row 2*,
+*Elder Scrolls*, *GTA*, *Victoria 2*, *Assassin's Creed*, *The Witcher*, *Far Cry*,
+*Splinter Cell* and *Shogun/Total War*. They are aspect-level inspirations, not
+affiliations or borrowed proprietary assets. [Design references](docs/INSPIRATIONS.md).
+
+## Develop and verify
 
 ```sh
 python tools/check_project.py
 python tools/run_checks.py --godot /path/to/godot
 ```
 
-The structural checks run without Godot. Runtime checks require the engine and must not be
-reported as passed when it is absent. The runner executes the original command suite, the house/reporting
-suite, riding rules, companion round-trip physics, character-name checks, the childhood/aftermath gameplay suites, and the fixed-history interlude contract tests. CI also captures software-rendered screenshots. Inspect actual CI results;
-[the earlier evidence note](docs/VALIDATION.md) covers the original command slice, not an automatic
-pass for new code. New results are recorded against their tested commit in the pull request.
+The runner executes every inherited suite plus the home-territory checks.
+CI also retains source snapshots, logs and software-rendered captures.
+A successful numerical or scene test is not human playtesting, a physical-GPU
+benchmark, or proof that the historical model is accurate.
 
 ```text
- game/          Godot project, gameplay, sandbox data and engine tests
- data/          Original historical-start fixture
- schemas/       Existing interchange contract
- docs/          Design, historical method and implementation notes
- tools/         Structural and engine test runners
+game/       Godot gameplay, scenario state, procedural cell, assets and tests
+data/       Original historical-start fixture
+schemas/    Retained interchange contract
+docs/       Walkthroughs, narrative/source policy and engineering boundaries
+tools/      Structural and engine checks
 ```
 
-## History and scope
+Latif's *History of the Panjab* (1891) is the selected **biased narrative account**.
+Documented history, attributed accounts, reconstruction, gameplay abstraction and
+fictional connective material remain distinct. Authoring an antagonist does not
+verify every allegation about a real person's private motives.
 
-**Syad Muhammad Latif's _History of the Panjab_ (1891)** is the selected **biased
-narrative account**, not an omniscient or “unbiased” authority. Selected OCR passages
-and metadata were consulted for childhood illness, education and the hunting-return
-ambush. Other nominated court, Punjabi literary, colonial and modern scholarly
-accounts remain a reading programme with explicit consultation limits; see
-[Historical sources](docs/HISTORICAL_SOURCES.md). The game's inner dialogue is original.
+[Historical sources](docs/HISTORICAL_SOURCES.md) ·
+[Historical method](docs/HISTORICAL_METHOD.md) ·
+[Game design](docs/GAME_DESIGN.md)
 
-
-Separate documented history, attributed historical accounts, reconstruction, gameplay abstraction
-and invented connective material. Antagonist characterization is the game's authored portrayal,
-not certification of every allegation about a historical person's private motives. The supplied Raj
-Kaur account remains referenced in her biography; no death scene is implemented in this slice.
-The prototype's quantities and outcomes are game rules, not measured historical facts.
-See [Historical method](docs/HISTORICAL_METHOD.md) and [Game design](docs/GAME_DESIGN.md).
-
-**Build outward from home.** Make one small journey and its consequences work before building all Punjab.
+**Make one small journey and its obligations work before building all Punjab.**

@@ -9,6 +9,7 @@ const ACCELERATION := 4.5
 const BRAKING := 9.0
 const GRAVITY := 22.0
 var speed := 0.0
+var gait_speed_limit := Rules.MAX_SPEED # Optional supplied-condition cap; original default preserved.
 var _rider: Node3D
 var _legs: Array[Node3D] = []
 var _stride := 0.0
@@ -37,7 +38,7 @@ func apply_record(record: Dictionary) -> void:
 	_rider.visible = record.rider_id != ""
 
 func step(delta: float, throttle: float, steering: float, canter: bool, walk: bool, brake: bool) -> Dictionary:
-	var maximum := Rules.MAX_SPEED if canter else WALK if walk else TROT
+	var maximum := minf(gait_speed_limit, Rules.MAX_SPEED if canter else WALK if walk else TROT)
 	var target := maximum * clampf(throttle, 0.0, 1.0) if not brake else 0.0
 	speed = move_toward(speed, target, (ACCELERATION if target > speed else BRAKING) * delta)
 	# No sideways strafe or instantaneous high-speed turn. Low-speed pivot is allowed.

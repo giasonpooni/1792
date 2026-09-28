@@ -72,6 +72,11 @@ jobs:
             --script res://tests/render_aftermath.gd 2>&1 | tee test-results/aftermath-render.log
           ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/aftermath-render.log
           grep -q 'AFTERMATH_RENDER: 5 captures; 0 failures' test-results/aftermath-render.log
+          timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_gujranwala.gd 2>&1 | tee test-results/gujranwala-render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/gujranwala-render.log
+          grep -q 'GUJRANWALA_RENDER: 6 captures; 0 failures' test-results/gujranwala-render.log
           mkdir -p test-results/screenshots
           cp "$HOME/.local/share/godot/app_userdata/1792/"command-*.png test-results/screenshots/
           cp "$HOME/.local/share/godot/app_userdata/1792/"house-*.png test-results/screenshots/
@@ -80,6 +85,7 @@ jobs:
           cp "$HOME/.local/share/godot/app_userdata/1792/"names-*.png test-results/screenshots/
           cp "$HOME/.local/share/godot/app_userdata/1792/"childhood-*.png test-results/screenshots/
           cp "$HOME/.local/share/godot/app_userdata/1792/"aftermath-*.png test-results/screenshots/
+          cp "$HOME/.local/share/godot/app_userdata/1792/"gujranwala-*.png test-results/screenshots/
       - name: Retain test evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
