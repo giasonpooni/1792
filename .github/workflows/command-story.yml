@@ -27,7 +27,7 @@ jobs:
           echo "02ec53d1cc7dbb9cc6355393c61b9ab43d1244751a124f10248a4802830788cd  $RUNNER_TEMP/godot.zip" | sha256sum --check
           unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
           chmod +x "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
-      - name: Structural, import, command, house, riding, companion and naming suites
+      - name: Structural, import, command, house, riding, companion, naming and childhood suites
         run: python3 tools/run_checks.py --godot "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
       - name: Software-rendered scene smoke
         shell: bash
@@ -62,12 +62,18 @@ jobs:
             --script res://tests/render_character_names.gd 2>&1 | tee test-results/character-names-render.log
           ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/character-names-render.log
           grep -q 'CHARACTER_NAMES_RENDER: 3 captures; 0 failures' test-results/character-names-render.log
+          timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_childhood.gd 2>&1 | tee test-results/childhood-render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/childhood-render.log
+          grep -q 'CHILDHOOD_RENDER: 4 captures; 0 failures' test-results/childhood-render.log
           mkdir -p test-results/screenshots
           cp "$HOME/.local/share/godot/app_userdata/1792/"command-*.png test-results/screenshots/
           cp "$HOME/.local/share/godot/app_userdata/1792/"house-*.png test-results/screenshots/
           cp "$HOME/.local/share/godot/app_userdata/1792/"riding-*.png test-results/screenshots/
           cp "$HOME/.local/share/godot/app_userdata/1792/"companions-*.png test-results/screenshots/
           cp "$HOME/.local/share/godot/app_userdata/1792/"names-*.png test-results/screenshots/
+          cp "$HOME/.local/share/godot/app_userdata/1792/"childhood-*.png test-results/screenshots/
       - name: Retain test evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -83,6 +89,7 @@ jobs:
           include-hidden-files: true
           path: |
             game/**/*.gd
+            game/**/*.gdshader
             game/**/*.tscn
             game/**/*.json
             game/project.godot

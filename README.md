@@ -12,6 +12,45 @@ sorting its people into religious enemy teams.
 **This is not a finished game.** The repository contains small Godot prototypes that we can build,
 play, test and improve one at a time. There are no finished historical environments or character assets yet.
 
+## Play the childhood opening
+
+The existing **1792 · Buddh Singh · Home territory** menu entry now opens a short
+playable childhood chapter on the retained home scene:
+
+**Find your bearings → hear a message you cannot read → ride → guard and counter →
+track quarry → survive an ambush on the return path.**
+
+WASD and mouse introduce movement and looking. E acquires the courier's sealed
+message, then hears the courier and steward separately. F starts the riding lesson
+on the same horse controller as the Lahore prototype. Q guards a telegraphed
+practice blow; left-click counters. C enables a quiet approach on the hunting trail.
+Those inputs remain usable in the return-path encounter. This is tracking and a
+bounded guard/counter/escape prototype, not a complete hunting or melee system.
+
+**Buddh's inner identity, reliance on remembered speech and incomplete knowledge
+are central.** The journal retains who said what and when; receiving a report does
+not confirm it. A survival outcome does not reveal a mastermind. An optional quiet
+reflection beneath the courtyard tree introduces faith as personal grounding,
+not a combat or hidden-knowledge bonus. These are authored portrayals.
+
+J/F1 opens the journal and pauses; F5/F9 uses a separate childhood save. F4 disables
+or enables the mild peripheral visual framing without changing gameplay state.
+The chosen historical account describes eye loss in early childhood, not an
+established progressive-blindness schedule. The shader is subjective presentation,
+not a medical model or half-screen blackout. Keyboard/mouse is the tested input;
+controller mapping is not implemented yet.
+
+The three exercise gates and compressed hunting trail are fictional, as are the
+speakers, trainer and anonymous attacker. Three unguarded hits end the attempt;
+load a manual save or return to the menu to restart. **Save before the return bend**
+until automatic checkpoints are implemented. This chapter does not yet transition
+into the Lahore campaign, whose existing systems remain intact.
+
+[Childhood controls and scope](docs/CHILDHOOD.md) ·
+[Narrative perspective](docs/NARRATIVE_PERSPECTIVE.md) ·
+[Selected historical accounts](docs/HISTORICAL_SOURCES.md) ·
+[Inspirational aspects](docs/INSPIRATIONS.md)
+
 ## The protagonist's name
 
 **Buddh Singh** is the player-facing name. Before accession, characters address him as
@@ -36,7 +75,7 @@ The opening menu offers three development entries:
 
 | Prototype | What is there |
 | --- | --- |
-| **1792 · Home territory** | The original home-territory ground, marker and movement scene, retained as the starting point. |
+| **1792 · Home territory** | A childhood tutorial composed onto the original scene: oral accounts, riding, guard/counter practice, tracking and a return-path ambush. |
 | **Lahore · Command story** | A separate, fictional 1801 sandbox: assign a patrol, play its captain or delegate, visit two locations, make a decision and receive a delayed report. |
 | **Lahore · Houses and rivals** | Ride the household horse, negotiate an estate petition, muster a small companion patrol, give follow/hold orders, visit the outpost and return together. Six antagonist biographies remain in the codex. |
 
@@ -135,7 +174,7 @@ finished character campaigns. See [Houses and rivals](docs/HOUSE_CONFLICT.md) fo
 | Escape / click world | Release / recapture the mouse |
 
 Decision menus pause the sandbox. The first slices have a simple delegated policy, not general commander AI.
-The encounter is a choice interface; **combat, mounted companions and autonomous faction plots are not implemented yet**.
+The Lahore encounter is still a choice interface; **its combat, mounted companions and autonomous faction plots are not implemented yet**. The childhood entry has a separate bounded practice/escape encounter, not a general combat system.
 See [Command stories](docs/COMMAND_STORIES.md) for the original walkthrough, persistence rules and limitations.
 
 ## Where the game is going
@@ -178,7 +217,7 @@ python tools/run_checks.py --godot /path/to/godot
 
 The structural checks run without Godot. Runtime checks require the engine and must not be
 reported as passed when it is absent. The runner executes the original command suite, the house/reporting
-suite, riding rules, companion round-trip physics and character-name checks. CI also captures software-rendered screenshots. Inspect actual CI results;
+suite, riding rules, companion round-trip physics, character-name checks and the childhood input-driven tutorial/encounter suite. CI also captures software-rendered screenshots. Inspect actual CI results;
 [the earlier evidence note](docs/VALIDATION.md) covers the original command slice, not an automatic
 pass for new code. New results are recorded against their tested commit in the pull request.
 
@@ -191,6 +230,14 @@ pass for new code. New results are recorded against their tested commit in the p
 ```
 
 ## History and scope
+
+**Syad Muhammad Latif's _History of the Panjab_ (1891)** is the selected **biased
+narrative account**, not an omniscient or “unbiased” authority. Selected OCR passages
+and metadata were consulted for childhood illness, education and the hunting-return
+ambush. Other nominated court, Punjabi literary, colonial and modern scholarly
+accounts remain a reading programme with explicit consultation limits; see
+[Historical sources](docs/HISTORICAL_SOURCES.md). The game's inner dialogue is original.
+
 
 Separate documented history, attributed historical accounts, reconstruction, gameplay abstraction
 and invented connective material. Antagonist characterization is the game's authored portrayal,

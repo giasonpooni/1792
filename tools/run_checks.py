@@ -43,6 +43,8 @@ def main() -> int:
         "companions", "COMPANION_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_character_names.gd"],
         "character-names", "CHARACTER_NAMES_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_childhood.gd"],
+        "childhood", "CHILDHOOD_TESTS:")
     return 0
 
 

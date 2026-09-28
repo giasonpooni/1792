@@ -1,5 +1,6 @@
 extends Control
 
+const HomeLaunch := preload("res://childhood/home_launch.gd")
 const Names := preload("res://characters/character_names.gd")
 
 func _ready() -> void:
@@ -33,5 +34,9 @@ func _add_button(parent: Node, text: String, scene: String) -> void:
 	var button := Button.new()
 	button.text = text
 	button.custom_minimum_size.y = 48
-	button.pressed.connect(func(): get_tree().change_scene_to_file(scene))
+	button.pressed.connect(func():
+		if scene == "res://world/home_territory.tscn":
+			HomeLaunch.enter.call_deferred(get_tree())
+		else:
+			get_tree().change_scene_to_file(scene))
 	parent.add_child(button)
