@@ -3,6 +3,7 @@ extends "res://campaign/command_state.gd"
 ## Deliberately bounded: one fictional estate petition, not a general social simulator.
 
 const Riding := preload("res://mounts/riding_rules.gd")
+const Companions := preload("res://patrol/companion_rules.gd")
 
 const ROSTER_PATH := "res://data/antagonists.json"
 const HOUSE_VERSION := "house-conflict.v1"
@@ -26,6 +27,8 @@ func house_state() -> Dictionary:
 	return _state.house_conflict.duplicate(true)
 
 func petition(action: String) -> String:
+	if has_companions() and _state.companions.pending_outcome != "":
+		return "The field decision is committed. Return the patrol before revising its terms."
 	if is_mounted():
 		return "Dismount before negotiating at the table."
 	if actor_id() != RANJIT or not near_site("lahore_darbar"):
@@ -41,6 +44,11 @@ func petition(action: String) -> String:
 	return error
 
 func _resolve(choice: String) -> String:
+	if has_companions():
+		return _begin_patrol_return(choice)
+	return _commit_patrol_outcome(choice)
+
+func _commit_patrol_outcome(choice: String) -> String:
 	if is_mounted() and actor_id() == CAPTAIN:
 		return "Dismount before resolving the patrol."
 	var next: Dictionary = _state.house_conflict.duplicate(true)
@@ -75,6 +83,12 @@ func validate(candidate: Variant) -> String:
 		var riding_error := Riding.validate(candidate.riding, candidate)
 		if not riding_error.is_empty():
 			return riding_error
+	if candidate.has("companions"):
+		if not candidate.has("house_conflict"):
+			return "Companions require the house-command profile."
+		var companion_error := Companions.validate(candidate.companions, candidate)
+		if not companion_error.is_empty():
+			return companion_error
 	# Explicit additive import of a legacy command-story save; the caller installs
 	# an empty extension only AFTER the complete legacy state has passed validation.
 	if not candidate.has("house_conflict"):
@@ -137,6 +151,8 @@ func restore(candidate: Variant) -> String:
 		next.riding = Riding.initial()
 	if next.has("riding"):
 		Riding.normalize(next.riding)
+	if next.has("companions"):
+		Companions.normalize(next.companions)
 	_state = next
 	return ""
 
@@ -326,13 +342,161 @@ func record_position(position: Vector3) -> void:
 		super.record_position(position)
 
 func play_commander() -> String:
-	return "Dismount before taking the captain's viewpoint." if is_mounted() else super.play_commander()
+	var error: String = "Dismount before taking the captain's viewpoint." if is_mounted() else super.play_commander()
+	if error.is_empty() and has_companions() and _state.companions.phase == "mustered":
+		_state.companions.phase = "outbound"
+	return error
 
 func return_to_darbar() -> String:
 	return "Dismount before delegating the captain." if is_mounted() else super.return_to_darbar()
 
 func visit(site_id: String) -> String:
+	if has_companions() and _state.companions.phase == "returning":
+		return "Field decision recorded. Return to the courtyard now."
 	return "Dismount before speaking at this location." if is_mounted() else super.visit(site_id)
 
 func resolve(choice: String) -> String:
 	return "Dismount before resolving the patrol." if is_mounted() else super.resolve(choice)
+
+
+# The physical patrol is opt-in at the existing table, after allocation and before
+# departure. Older saves and the earlier abstract patrol keep their exact rules.
+func has_companions() -> bool:
+	return _state.has("companions")
+
+func companion_state() -> Dictionary:
+	return _state.companions.duplicate(true) if has_companions() else {}
+
+func muster_patrol() -> String:
+	if is_mounted() or actor_id() != RANJIT or not near_site("lahore_darbar"):
+		return "Muster as Ranjit, on foot at the command table."
+	if _state.order.status != "assigned" or has_companions():
+		return "Assign a patrol, then muster its companions once before departure."
+	_state.companions = Companions.initial(_state.order, actor_position(CAPTAIN))
+	_event("patrol_mustered", RANJIT)
+	return ""
+
+func cancel() -> String:
+	var error: String = super.cancel()
+	if error.is_empty():
+		_state.erase("companions")
+	return error
+
+func delegate() -> String:
+	if is_mounted():
+		return "Dismount before delegating."
+	var error: String = super.delegate()
+	if error.is_empty() and has_companions():
+		_state.companions.phase = "outbound"
+	return error
+
+func command_companions(instruction: String) -> String:
+	if not has_companions() or _state.order.status != "active" or actor_id() != CAPTAIN:
+		return "Take the active captain's viewpoint to command companions."
+	if instruction not in ["follow", "hold"]:
+		return "Unknown companion order."
+	if _state.companions.instruction == instruction:
+		return "The patrol already has that instruction."
+	for member in _state.companions.members:
+		if Companions.horizontal(Companions.point(member.position), actor_position(CAPTAIN)) > Companions.CALL_RADIUS:
+			return "A trooper is out of calling range. Ride or walk closer before regrouping."
+	_state.companions.instruction = instruction
+	_event("companions_" + instruction, CAPTAIN)
+	return ""
+
+func assembled_at(point: Vector3, radius: float = Companions.ASSEMBLY_RADIUS) -> int:
+	var count := 0
+	if has_companions():
+		for member in _state.companions.members:
+			if Companions.horizontal(Companions.point(member.position), point) <= radius and absf(member.position[1] - point.y) < 0.8:
+				count += 1
+	return count
+
+func _begin_patrol_return(choice: String) -> String:
+	if _state.order.status != "active" or _state.companions.phase != "outbound" or (is_mounted() and actor_id() == CAPTAIN):
+		return "No uncommitted dismounted patrol is available."
+	if choice not in ["secure", "withdraw"]:
+		return "Unknown patrol decision."
+	if choice == "secure":
+		if _state.order.visited != ["village", "outpost"] or _state.order.allocation.riders < 3:
+			return "Observe both sites with the four-person patrol before securing the road."
+		var p: Array = place("outpost").position
+		if Companions.horizontal(actor_position(CAPTAIN), Companions.point(p)) > 4.0 or assembled_at(Companions.point(p)) < 2:
+			return "Regroup at the outpost: the captain and at least two troopers must be present."
+		var politics: Dictionary = _state.house_conflict
+		if politics.phase != "dormant" and politics.decision not in ["respect_claim", "assert_authority", "reconcile"]:
+			return "Observation-only commission. Settle it in Lahore or withdraw."
+	_state.companions.phase = "returning"
+	_state.companions.pending_outcome = choice
+	_state.companions.decision_tick = _state.campaign_tick
+	# A hold order is not silently discarded. Recall the group before returning.
+	_event("patrol_return_requested:" + choice, CAPTAIN)
+	return ""
+
+func finish_patrol() -> String:
+	if not has_companions() or _state.companions.phase != "returning" or _state.order.status != "active":
+		return "There is no returning physical patrol."
+	if is_mounted() and actor_id() == CAPTAIN:
+		return "Dismount before checking the patrol in."
+	if Companions.horizontal(actor_position(CAPTAIN), Companions.HOME) > 3.5 or assembled_at(Companions.HOME) != _state.companions.members.size():
+		return "Bring the captain and every companion back to the courtyard first."
+	var error := _commit_patrol_outcome(_state.companions.pending_outcome)
+	if error.is_empty():
+		_state.companions.phase = "reporting"
+		_state.companions.return_tick = _state.campaign_tick
+		for member in _state.companions.members:
+			member.velocity = [0.0, 0.0, 0.0]
+	return error
+
+func patrol_destination() -> Vector3:
+	if has_companions() and _state.companions.phase == "returning":
+		return Companions.HOME
+	var site_id := "village" if _state.order.visited.is_empty() else "outpost"
+	return Companions.point(place(site_id).position)
+
+func _delegate_tick() -> void:
+	if not has_companions():
+		super._delegate_tick()
+		return
+	# Physical adapters move the captain and troopers. No second position step
+	# occurs in the abstract policy; headless callers without physics simply wait.
+	if _state.companions.phase == "returning":
+		finish_patrol()
+		return
+	if _state.order.visited.size() == 2:
+		_resolve("secure" if _state.order.allocation.riders >= 3 else "withdraw")
+		return
+	if Companions.horizontal(actor_position(CAPTAIN), patrol_destination()) <= 1.2:
+		_visit("village" if _state.order.visited.is_empty() else "outpost")
+
+func advance(ticks: int = 1) -> void:
+	super.advance(ticks)
+	if has_companions() and _state.order.status == "completed":
+		_state.companions.phase = "completed"
+
+func record_patrol_motion(id: String, motion: Dictionary, delta: float) -> String:
+	if not has_companions() or _state.order.status != "active" or not is_finite(delta) or delta <= 0.0 or delta > 0.25:
+		return "No valid companion physics step."
+	if not Companions.valid_member(motion, id):
+		return "Invalid patrol motion."
+	var previous := Vector3.ZERO
+	var member_index := -1
+	if id == CAPTAIN:
+		if _state.order.mode != "delegated":
+			return "Manual captain position belongs to the player controller."
+		previous = actor_position(CAPTAIN)
+	else:
+		for i in range(_state.companions.members.size()):
+			if _state.companions.members[i].id == id:
+				member_index = i
+		if member_index < 0:
+			return "Unknown allocated companion."
+		previous = Companions.point(_state.companions.members[member_index].position)
+	var next := Companions.point(motion.position)
+	if Companions.horizontal(previous, next) > Companions.SPEED * delta + 0.03 or absf(previous.y - next.y) > 50.0 * delta + 0.03:
+		return "Patrol motion exceeds the physical movement envelope."
+	if member_index < 0:
+		_state.actors[CAPTAIN].position = motion.position.duplicate()
+	else:
+		_state.companions.members[member_index] = motion.duplicate(true)
+	return ""

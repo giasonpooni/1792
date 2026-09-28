@@ -3,10 +3,15 @@ extends "res://world/command_sandbox.gd"
 
 const HouseCampaign := preload("res://campaign/house_command_state.gd")
 const HorseScene := preload("res://mounts/horse.tscn")
+const PatrolDirector := preload("res://patrol/patrol_director.gd")
+const CompanionRules := preload("res://patrol/companion_rules.gd")
 const RidingRules := preload("res://mounts/riding_rules.gd")
 const RIDING_SAVE := "user://1792-riding-v1.json"
 # Injectable scene storage target: regression scenes must never write a player save.
-var riding_save_path := RIDING_SAVE
+const COMPANION_SAVE := "user://1792-companions-v1.json"
+var riding_save_path := COMPANION_SAVE
+var patrol: Node3D
+var _muster_requested := false
 const HOUSE_SAVE := "user://1792-house-conflict-v1.json"
 var _scroll: ScrollContainer
 var _field_sign: Label3D
@@ -22,6 +27,10 @@ func _init() -> void:
 
 func _ready() -> void:
 	super._ready()
+	patrol = PatrolDirector.new()
+	add_child(patrol)
+	patrol.setup(avatar, horse)
+	patrol.sync(campaign, true)
 	get_viewport().size_changed.connect(_layout_house_ui)
 	_layout_house_ui()
 	avatar.get_node("CameraPivot/SpringArm3D").add_excluded_object(horse.get_rid())
@@ -94,7 +103,8 @@ func _layout_house_ui() -> void:
 func _open_panel(title: String, description: String, actions: Array) -> void:
 	if title == "Paused":
 		actions = actions.duplicate(true)
-		actions.insert(2, ["Load riding save", "load", ""])
+		actions.insert(2, ["Load current patrol save", "load", ""])
+		actions.append(["Import earlier riding save", "import_riding", ""])
 		actions.insert(3, ["Import earlier house-conflict save", "import_house", ""])
 		actions.insert(4, ["Import original command-story save", "import_command", ""])
 	super._open_panel(title, description, actions)
@@ -113,6 +123,10 @@ func _close_panel() -> void:
 	_journal.show()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_G:
+		_open_patrol()
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F:
 		if not _modal.visible:
 			_mount_requested = true # Spatial queries run in physics time, not input dispatch.
@@ -125,6 +139,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	super._unhandled_input(event)
 
 func _interact() -> void:
+	if campaign.has_companions() and campaign.companion_state().phase == "returning" and campaign.actor_id() == Campaign.CAPTAIN:
+		if campaign.is_mounted():
+			_notice = "Return to the courtyard with every trooper, then dismount to check in."
+		else:
+			_open_patrol()
+		return
 	if campaign.is_mounted():
 		_notice = "Stop and press F to dismount before speaking or issuing orders."
 		return
@@ -136,9 +156,26 @@ func _interact() -> void:
 		button.custom_minimum_size.y = 44
 		button.pressed.connect(_open_houses)
 		_choices.add_child(button)
+		var party_button := Button.new()
+		party_button.name = "PatrolCompanionsButton"
+		party_button.text = "Muster / companion orders [G]"
+		party_button.custom_minimum_size.y = 44
+		party_button.pressed.connect(_open_patrol)
+		_choices.add_child(party_button)
 
 func _perform(action: String, argument: String = "") -> void:
 	match action:
+		"muster":
+			_muster_requested = true
+			_close_panel()
+			return
+		"companion_order", "finish_patrol":
+			var error: String = campaign.command_companions(argument) if action == "companion_order" else campaign.finish_patrol()
+			_notice = _message(error, "Patrol order acknowledged." if action == "companion_order" else "Patrol checked in; the report is being delivered.")
+			_close_panel()
+			_apply_actor()
+			_refresh_hud()
+			return
 		"houses":
 			_open_houses()
 			return
@@ -162,8 +199,8 @@ func _perform(action: String, argument: String = "") -> void:
 			_close_panel()
 			_refresh_hud()
 			return
-		"load", "import_house", "import_command":
-			_pending_load = riding_save_path if action == "load" else HOUSE_SAVE if action == "import_house" else SAVE_PATH
+		"load", "import_house", "import_command", "import_riding":
+			_pending_load = riding_save_path if action == "load" else RIDING_SAVE if action == "import_riding" else HOUSE_SAVE if action == "import_house" else SAVE_PATH
 			return
 	super._perform(action, argument)
 
@@ -241,6 +278,27 @@ func _refresh_hud() -> void:
 		_horse_label.position = RidingRules.position(h) + Vector3.UP * 3.6
 		_horse_label.text = "Household horse [F]\nPrototype mount" if not campaign.is_mounted() else ""
 
+		_horse_label.visible = not campaign.has_companions()
+	if campaign.has_companions():
+		var party: Dictionary = campaign.companion_state()
+		var state: Dictionary = campaign.snapshot()
+		var task := "E at the table: play the captain or delegate this patrol."
+		if state.order.status == "active" and campaign.actor_id() == Campaign.CAPTAIN:
+			task = "Village, then outpost. Regroup two troopers there before securing."
+			if party.phase == "returning":
+				task = "Return with every trooper. Dismount and check in at the courtyard [E]."
+		elif state.order.status == "active":
+			task = "Patrol deployed. Take the captain's viewpoint at the table [E]."
+		elif state.order.status == "reporting":
+			task = "Everyone returned. Await the written report."
+		elif state.order.status == "completed":
+			task = "Patrol complete. The report and consequences are in the journal."
+		_hud.text = "1792 · COMPANION PATROL\n%s · %s · %d troopers / %s\nAvailable: %d riders · %d supplies · %d coins\n\n%s\nE interact · F horse · G patrol orders · H houses · F5/F9 save/load\n\n%s" % [state.actors[campaign.actor_id()].name, party.phase, party.members.size(), party.instruction, state.resources.riders, state.resources.supplies, state.resources.treasury, task, _notice]
+		if party.return_tick >= 0 and not campaign.received_reports().is_empty():
+			_journal.text += "\n\nPATROL RETURN\nField decision: minute %d\nCourtyard check-in: minute %d\nAll %d troopers returned." % [party.decision_tick, party.return_tick, party.members.size()]
+	else:
+		_hud.text += "\nG: muster companions after assigning a patrol."
+
 
 func _physics_process(delta: float) -> void:
 	if not _pending_load.is_empty():
@@ -251,6 +309,15 @@ func _physics_process(delta: float) -> void:
 	if _modal.visible:
 		_mount_requested = false
 		return
+	if _muster_requested:
+		_muster_requested = false
+		var candidate: Dictionary = campaign.snapshot()
+		if candidate.order.status == "assigned" and not candidate.has("companions"):
+			candidate.companions = CompanionRules.initial(candidate.order, campaign.actor_position(Campaign.CAPTAIN))
+			_notice = _message(campaign.muster_patrol(), "Companions mustered from the existing allocation. Take the captain's viewpoint or delegate.") if patrol.snapshot_fits(candidate) else "Muster positions are obstructed. Clear the courtyard first."
+		else:
+			_notice = "Assign a patrol and muster it once before departure."
+		patrol.sync(campaign, true)
 	if _mount_requested:
 		_mount_requested = false
 		_toggle_mount()
@@ -267,6 +334,10 @@ func _physics_process(delta: float) -> void:
 		avatar.global_position = campaign.actor_position(campaign.actor_id())
 	else:
 		campaign.record_position(avatar.global_position)
+	if is_instance_valid(patrol):
+		var patrol_error: String = patrol.step(campaign, delta)
+		if not patrol_error.is_empty():
+			_notice = patrol_error
 	_clock_accumulator += delta
 	while _clock_accumulator >= 0.5:
 		_clock_accumulator -= 0.5
@@ -288,6 +359,12 @@ func _apply_actor(force: bool = false) -> void:
 	avatar.get_node("MeshInstance3D").visible = not mounted
 	avatar.get_node("CameraPivot").position.y = 2.5 if mounted else 1.4
 	avatar.get_node("CameraPivot/SpringArm3D").spring_length = 6.8 if mounted else 5.5
+	if is_instance_valid(patrol):
+		patrol.sync(campaign, force)
+		if campaign.has_companions():
+			_standins[Campaign.CAPTAIN].hide()
+			if not mounted:
+				avatar.get_node("CameraPivot/SpringArm3D").spring_length = 7.5
 
 func _toggle_mount() -> void:
 	if _modal.visible:
@@ -318,12 +395,43 @@ func _load_riding(path: String) -> void:
 	var error: String = staged.load_from(path)
 	if error.is_empty() and not horse.record_fits_world(staged.horse_state(), avatar):
 		error = "Saved horse pose intersects scenery or lacks ground; current session unchanged."
+	if error.is_empty() and not patrol.snapshot_fits(staged.snapshot()):
+		error = "Saved companion or captain pose intersects scenery or lacks ground; current session unchanged."
 	if error.is_empty():
 		error = campaign.restore(staged.snapshot())
 	if error.is_empty():
 		_apply_actor(true)
 		_mount_requested = false
+		_muster_requested = false
 		_clock_accumulator = 0.0
 	_notice = _message(error, "Loaded. Horse, rider, patrol and house decisions restored.")
 	_close_panel()
 	_refresh_hud()
+
+
+func _open_patrol() -> void:
+	var s: Dictionary = campaign.snapshot()
+	var options: Array = []
+	var body := "DISMOUNTED COMPANION PATROL\n\nThe allocation includes its captain: scouts muster one companion; the four-person patrol musters three. These are fictional troop stand-ins, not new historical characters or extra resources.\n\n"
+	if not campaign.has_companions():
+		body += "Assign a package at the table, then muster its companions before departure. Older abstract patrols remain available by simply leaving without mustering."
+		if campaign.actor_id() == Campaign.RANJIT and campaign.near_site("lahore_darbar") and s.order.status == "assigned":
+			options.append(["Muster allocated companions (no extra cost)", "muster", ""])
+	else:
+		var party: Dictionary = campaign.companion_state()
+		body += "Phase: %s\nInstruction: %s\nTroopers: %d\n\n" % [party.phase, party.instruction, party.members.size()]
+		if campaign.actor_id() == Campaign.CAPTAIN and s.order.status == "active":
+			body += "Follow regroups the troopers; Hold leaves them where they stand. Orders require the group within 30 metres. Troopers travel on foot and cannot keep up with a cantering horse. No teleport catch-up.\n\n"
+			options.append(["Follow / regroup", "companion_order", "follow"])
+			options.append(["Hold position", "companion_order", "hold"])
+			if party.phase == "returning":
+				body += "Field decision committed: " + party.pending_outcome + ". Return to the courtyard with every trooper; check in on foot. Resources stay reserved until return and report delivery."
+				options.append(["Check patrol in at the courtyard", "finish_patrol", ""])
+			else:
+				options.append(["Withdraw: begin return without securing the road", "resolve", "withdraw"])
+			options.append(["Return to Ranjit's viewpoint / delegate captain", "return_to_darbar", ""])
+		else:
+			body += "Take the captain's viewpoint at the command table to give field orders. Delegation uses physical movement; held troopers keep their hold instruction."
+	body += "\n\n" + _notice
+	options.append(["Close", "close", ""])
+	_open_panel("1792 · Patrol companions", body, options)

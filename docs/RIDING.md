@@ -38,9 +38,9 @@ cross-platform deterministic-physics guarantee.
 
 Dismount first before a character handover, field observation, outcome or court interaction.
 The horse remains parked on dismount and cannot be driven by a delegated captain. Delegated
-patrols still move by the original on-foot route policy. A report cannot teleport a parked
-horse to Lahore. As before, resolving a patrol returns the viewpoint to Ranjit immediately;
-report arrival is delayed, and returning rider/horse entities are not simulated.
+without mustered companions keep the original abstract on-foot policy. Mustered patrols use
+physical captain/companion movement and return; see [Companions](COMPANIONS.md). A report cannot
+teleport a parked horse to Lahore. Without muster, the older immediate viewpoint return remains.
 
 ## Spatial checks
 
@@ -62,8 +62,9 @@ their existing snapshots. Both original command saves and prior house-conflict s
 without rewriting their orders, resources, reports or political history; a parked horse is
 added. Existing `world-state.v1` and original command implementation are unchanged.
 
-F5/F9 use `user://1792-riding-v1.json`; the older slots are never overwritten. F1 has explicit
-import actions for `1792-house-conflict-v1.json` and `1792-command-story-v1.json`.
+The current integrated scene uses `user://1792-companions-v1.json`; the earlier riding slot
+`1792-riding-v1.json` remains importable through F1 alongside house/command slots. None of the
+older slots is overwritten.
 A staged load checks domain state and horse/world collision before installing the snapshot.
 Malformed/unsupported records, invalid rider identity, nonfinite motion, out-of-bounds poses,
 parked horses with speed, mismatched actor/horse locations, and blocked loaded poses are
@@ -91,6 +92,6 @@ The reference engine is Godot 4.5.1, matching the existing project. API referenc
 - https://docs.godotengine.org/en/4.5/classes/class_physicsbody3d.html
 
 Next gaps: mouse/keyboard feel on Windows, small-window/controller input, proper horse/rider
-rigs, uneven ground and navigation, companion patrol entities, physical return travel, and
-actual encounter combat. No historical biographies, clan relations or source claims are
+rigs, uneven ground, mounted companions and actual encounter combat. The bounded flat-world
+dismounted companion patrol and its physical return are covered by `COMPANIONS.md`. No historical biographies, clan relations or source claims are
 changed by this riding slice. Tahal Singh Chhachhi has not replaced the fictional captain.

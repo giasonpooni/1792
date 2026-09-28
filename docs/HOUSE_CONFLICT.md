@@ -109,3 +109,8 @@ capture the actual codex, decision interface and reported consequences.
 Actual pass counts and CI run identities are recorded in the PR after execution.
 No horse, combat, autonomous six-character plotting, full clan registry, empire map
 or historical-source certification is claimed by this slice.
+
+## Companion-patrol extension
+
+The integrated scene can now muster a physical patrol and return it to court; see
+[Companions](COMPANIONS.md). The original un-mustered command scenario remains unchanged.

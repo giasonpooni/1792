@@ -22,7 +22,7 @@ The opening menu offers three development entries:
 | --- | --- |
 | **1792 · Home territory** | The original home-territory ground, marker and movement scene, retained as the starting point. |
 | **Lahore · Command story** | A separate, fictional 1801 sandbox: assign a patrol, play its captain or delegate, visit two locations, make a decision and receive a delayed report. |
-| **Lahore · Houses and rivals** | A rideable, persistent household horse on the same route, six non-playable antagonist biographies and one interactive estate petition. Negotiate, assert authority, defer or reconcile; the patrol carries the consequences. |
+| **Lahore · Houses and rivals** | Ride the household horse, negotiate an estate petition, muster a small companion patrol, give follow/hold orders, visit the outpost and return together. Six antagonist biographies remain in the codex. |
 
 The Lahore sandboxes do **not** replace the childhood opening or assert that their invented missions
 actually happened. Their captain, envoys and compressed geography are placeholders, not reconstructions.
@@ -53,14 +53,40 @@ Both Ranjit and the player-controlled captain can use the same horse. **The hors
 is left.** Dismount before handing control to the captain or back to Ranjit. Delegated patrols still
 travel on foot; the horse does not follow them, appear at their destination, or create extra riders.
 At the village/outpost, dismount and use **E** for the original encounters and house consequences.
-Completing the patrol still returns the viewpoint to Ranjit with the original delayed report;
-physical troop-return journeys are not simulated yet.
+Without mustering, the original abstract patrol still returns the viewpoint on resolution.
+A **mustered physical patrol** instead keeps you as captain for the return journey; check everyone in
+at the courtyard before the report is delivered.
 
 **F5/F9** save/load horse position, facing, speed and rider together with the current patrol and house
-decisions. This version uses a separate riding save slot. **F1** offers explicit imports of earlier
-house-conflict or original command-story saves, preserving their state and adding a parked horse.
+decisions and mustered companions. This version uses a separate companion-patrol save slot.
+**F1** offers explicit imports of earlier riding, house-conflict and command-story saves; it never
+invents already-deployed companions or overwrites those older slots.
 The horse and rider are procedural blockout shapes, with a simple leg swing—not finished models or animation.
 See [Riding](docs/RIDING.md) for rules, checks and the next gaps.
+
+## Lead a small patrol
+
+In **Houses and rivals**, assign a package at the command table, then press **G** and choose
+**Muster allocated companions** before departure. Scouts provide the captain plus one trooper;
+the four-person patrol provides the captain plus three. Mustering consumes no additional riders,
+coins or supplies. The companions are currently **dismounted soldiers**, not mounted cavalry.
+
+Take the captain's viewpoint. **G** opens **Follow / regroup** and **Hold position**. Troopers
+walk around static obstacles and remain where you leave them on Hold. Regroup within 30 metres;
+there is no teleport catch-up when the captain canters away on the household horse. You can also
+delegate: the captain and companions then move physically along the same road.
+
+Visit the village, then the outpost. Securing it requires the captain and **at least two troopers
+physically present**, plus a commission that allows securing the road. Choosing an outcome commits
+the field decision, but **does not yet settle the mission or release its resources**. Return with
+all companions to the courtyard, walk around the command table, dismount if riding, press **E**,
+and choose **Check patrol in**. The report is compiled at check-in and delivered four game minutes
+later; only then are the original riders released. Delegation can complete this return too.
+
+The outpost decision is still a menu encounter, not combat. The physical patrol uses the same
+house/territory consequence rules as the older abstract patrol. Neither annexes land. Earlier
+saves retain the earlier loop; muster is opt-in before departure, not a fourth demo or a new game.
+See [Companion patrol](docs/COMPANIONS.md) for save, movement and scope details.
 
 ## Houses, rivals and biographies
 
@@ -86,13 +112,14 @@ finished character campaigns. See [Houses and rivals](docs/HOUSE_CONFLICT.md) fo
 | Mouse | Orbit the third-person camera |
 | F | Mount / dismount in Houses and rivals |
 | E | Interact or open the captain's field menu |
+| G | Muster and companion orders in Houses and rivals |
 | H | Antagonist codex in the Houses and rivals entry |
 | F5 / F9 | Save / load the current sandbox (separate save slots for each entry) |
 | F1 | Return-menu controls |
 | Escape / click world | Release / recapture the mouse |
 
 Decision menus pause the sandbox. The first slices have a simple delegated policy, not general commander AI.
-The encounter is a choice interface; **combat and marching companion troops are not implemented yet**.
+The encounter is a choice interface; **combat, mounted companions and autonomous faction plots are not implemented yet**.
 See [Command stories](docs/COMMAND_STORIES.md) for the original walkthrough, persistence rules and limitations.
 
 ## Where the game is going
@@ -123,7 +150,8 @@ The house slice adds a versioned `house-conflict.v1` substate to that same autho
 command code and world schema remain unchanged. Orders, controlled characters, antagonist NPCs,
 groups, source notes and reports have separate identities. Manual and delegated execution share
 consequence rules. The optional `riding.v1` record belongs to the same campaign state; Godot physics
-submits mounted poses through that authority. House, clan, misl and religious institution are not synonyms.
+submits mounted poses through that authority. The optional `companions.v1` profile holds allocated trooper IDs, positions, orders and return progress
+inside that same state. House, clan, misl and religious institution are not synonyms.
 
 ## Develop and test
 
@@ -134,7 +162,7 @@ python tools/run_checks.py --godot /path/to/godot
 
 The structural checks run without Godot. Runtime checks require the engine and must not be
 reported as passed when it is absent. The runner executes the original command suite, the house/reporting
-suite and riding rules plus actual input-driven physics checks. CI also captures software-rendered screenshots. Inspect actual CI results;
+suite, riding rules and companion round-trip physics checks. CI also captures software-rendered screenshots. Inspect actual CI results;
 [the earlier evidence note](docs/VALIDATION.md) covers the original command slice, not an automatic
 pass for new code. New results are recorded against their tested commit in the pull request.
 
