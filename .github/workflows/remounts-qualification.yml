@@ -43,6 +43,18 @@ jobs:
           mkdir -p test-results/remounts-screenshots
           cp "$HOME/.local/share/godot/app_userdata/1792/"remounts-*.png test-results/remounts-screenshots/
           cp "$HOME/.local/share/godot/app_userdata/1792/remounts-trace.json" test-results/
+      - name: Render research-informed Gujranwala fabric
+        shell: bash
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          set -euo pipefail
+          timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --path game --rendering-method gl_compatibility --audio-driver Dummy --script res://tests/render_gujranwala_fabric.gd 2>&1 | tee test-results/fabric-render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/fabric-render.log
+          grep -q 'GUJRANWALA_FABRIC_RENDER: 5 captures; 0 failures' test-results/fabric-render.log
+          mkdir -p test-results/fabric-screenshots
+          cp "$HOME/.local/share/godot/app_userdata/1792/"fabric-*.png test-results/fabric-screenshots/
+          cp "$HOME/.local/share/godot/app_userdata/1792/gujranwala-fabric-manifest.json" test-results/
       - name: Bind retained source and runtime
         if: always()
         shell: bash

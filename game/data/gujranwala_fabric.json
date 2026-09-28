@@ -1,0 +1,85 @@
+{
+  "schema": "gujranwala-fabric.v1",
+  "year": 1792,
+  "sources": [
+    {
+      "id": "arslan-haveli",
+      "title": "Sana Arslan, Unveiling the Haveli of Maharaja Ranjit Singh",
+      "url": "https://alqamarjournal.com/alqamar/article/view/1481",
+      "locator": "PDF printed pp. 74-78, figures 2, 4-6; pp. 87-92 distinguish restoration proposals. Issue says April-June 2024; landing page publication date is 2025-06-15.",
+      "scope": "Modern architectural observation and cited earlier drawings, not a 1792 measured survey. Relevant pages and figures inspected 2026-09-28."
+    },
+    {
+      "id": "ukpha-courtyard",
+      "title": "UKPHA, Maharaja Ranjit Singh's Birthplace in Gujranwala",
+      "url": "https://www.flickr.com/photos/35729318@N00/3993139067/",
+      "locator": "Photograph taken 2004-03-16, uploaded 2009-10-08; central courtyard and surrounding arches.",
+      "scope": "Modern visual reference only. All rights reserved; no photograph is shipped or used as a texture."
+    },
+    {
+      "id": "district-geography",
+      "title": "District Gujranwala, Geography",
+      "url": "https://gujranwala.punjab.gov.pk/geography",
+      "locator": "Opening regional description; consulted 2026-09-28.",
+      "scope": "Present-day regional context only. Administrative boundaries and distances are not imported into the historical map."
+    }
+  ],
+  "claims": [
+    {
+      "id": "fabric-materials",
+      "source_ids": ["arslan-haveli"],
+      "observation": "The study describes red brick, plaster and wood in the surviving facade.",
+      "limit": "Surviving fabric does not establish the precise 1792 finish, brick size or repair state."
+    },
+    {
+      "id": "fabric-courts",
+      "source_ids": ["arslan-haveli", "ukpha-courtyard"],
+      "observation": "The architectural study and modern photograph show courts, arches and attached columns.",
+      "limit": "The playable home is not that building's measured plan. Its movement routes remain the existing authored ones."
+    },
+    {
+      "id": "fabric-region",
+      "source_ids": ["district-geography"],
+      "observation": "The district description places Gujranwala in relation to the Chenab and neighbouring districts.",
+      "limit": "This reference supplies regional context, not the positions of 1792 streets, waterways or buildings."
+    }
+  ],
+  "elements": [
+    {
+      "id": "compound-skin",
+      "title": "Brick and plaster compound walls",
+      "claim_ids": ["fabric-materials"],
+      "choice": "Analytic masonry material on existing collision geometry. Brick dimensions, colors and wear are art-direction parameters.",
+      "exact_1792": false
+    },
+    {
+      "id": "blind-bays",
+      "title": "Courtyard panels and shallow arches",
+      "claim_ids": ["fabric-courts"],
+      "choice": "Ten attached blind bays, timber screens and cornices. These are solid-backed panels, not walk-through doors. Existing entrance routes are unchanged.",
+      "exact_1792": false
+    },
+    {
+      "id": "working-details",
+      "title": "Stable beams and market vessels",
+      "claim_ids": ["fabric-materials"],
+      "choice": "Original timber-beam and pottery meshes on existing roofs/counter. No new craft recipe or supply quantity is inferred.",
+      "exact_1792": false
+    },
+    {
+      "id": "settlement-backdrop",
+      "title": "Low settlement silhouette",
+      "claim_ids": ["fabric-region", "fabric-materials"],
+      "choice": "Sixteen authored houses outside the existing test boundary. Visual backdrop, not additional traversable streets or historic property locations.",
+      "exact_1792": false
+    }
+  ],
+  "excluded": [
+    "modern street grid and railway",
+    "precise historical monument replicas without a dated reconstruction",
+    "tourism-restoration mosaics or fountains treated as original fabric",
+    "rumoured tunnels treated as verified routes",
+    "fantasy or franchise artifacts",
+    "expanded playable bounds without a separate collision/save migration"
+  ]
+}

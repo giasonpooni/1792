@@ -4,6 +4,8 @@ extends "res://territory/gujranwala_chapter.gd"
 const RemountState := preload("res://remounts/remount_state.gd")
 const RemountRules := preload("res://remounts/remount_rules.gd")
 const Yard := preload("res://remounts/remount_yard.gd")
+const Fabric := preload("res://architecture/gujranwala_fabric.gd")
+var fabric: Node3D
 var yard: Node3D
 var runner: CharacterBody3D
 var responder: CharacterBody3D
@@ -24,6 +26,16 @@ func _build_world() -> void:
 		a.add_collision_exception_with(avatar);a.add_collision_exception_with(horse)
 	_sync_remounts(true)
 	_navigation.built=false
+	fabric=Fabric.new();fabric.name="GujranwalaFabric";add_child(fabric)
+	var fabric_error: String=fabric.build(self)
+	if not fabric_error.is_empty(): push_error(fabric_error)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_F2:
+		_show_dialog("GUJRANWALA · RECONSTRUCTION NOTES",fabric.inspection_text(),[["Return","resume"]])
+		get_viewport().set_input_as_handled()
+		return
+	super._unhandled_input(event)
 
 func _clear_pending_actions() -> void:
 	super._clear_pending_actions()
