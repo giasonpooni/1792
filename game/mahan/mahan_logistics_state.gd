@@ -3,7 +3,7 @@ extends "res://mahan/mahan_cavalry_state.gd"
 ## Does not rewrite base provisions stub accounting, house/command authorities, or economy UI.
 const WAIT_INTERVAL := 60
 const WAIT_COST := 1
-const FORAGE_YIELDS := {"camp": 2, "ford": 1, "ridge": 1}
+const FORAGE_YIELDS := {"camp": 2, "ford": 1, "ridge": 1, "gujranwala_fort_road": 1, "gujranwala_camp": 2, "gujranwala_settlement": 1}
 
 func _init() -> void:
 	super._init()
