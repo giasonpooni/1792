@@ -1,0 +1,15 @@
+{
+  "schema": "1792.water-research.v1",
+  "accessed": "2026-09-28",
+  "runtime_model": "household-water-round.v1",
+  "sources": [
+    {"id":"chetan_singh_1985_water","title":"Well-irrigation methods in medieval Panjab: The Persian wheel reconsidered","author":"Chetan Singh","year":1985,"url":"https://journals.sagepub.com/doi/10.1177/001946468502200104","locator":"Publisher metadata and publicly visible notes 2, 15, 22, 33, 38","access_scope":"Metadata and notes only; access-restricted article body not obtained","supports":"Regional comparative water-lifting context and caution about modern groundwater levels","does_not_support":"Exact 1792 household well, yield, safe water, labour rate or vessel design"},
+    {"id":"doam_birthplace_revisited","title":"Ranjit Singh Birthplace","author":"Department of Archaeology and Museums, Government of Pakistan","url":"https://doam.gov.pk/public/sites/10111","locator":"Relative Chronology; Description; Title of Publication","access_scope":"Institutional inventory entry based on Asian Historical Architecture","supports":"Surviving courtyard/reception vocabulary and the entry's inferred open-space setting","does_not_support":"One construction date for all fabric or an exact 1792 water-supply layout"}
+  ],
+  "claims": [
+    {"id":"regional_water_methods","classification":"comparative_context","source_ids":["chetan_singh_1985_water"],"runtime_effect":"No measured rate is imported"},
+    {"id":"surviving_fabric_not_timestamp","classification":"source_limit","source_ids":["doam_birthplace_revisited"],"runtime_effect":"Existing un-georeferenced layout is retained"},
+    {"id":"household_water_round","classification":"game_authored","source_ids":[],"runtime_effect":"Six assigned units, three per load, 180 ticks per draw; no repeat payout or recurring consumption"}
+  ],
+  "geometry_binding": {"layout_id":"gujranwala-fabric.v1","existing_feature_id":"household_well","new_vessel":"Authored non-colliding household receptacle; not a historical cistern reconstruction"}
+}

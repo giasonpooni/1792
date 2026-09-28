@@ -56,6 +56,8 @@ def main() -> int:
         "reconstruction", "RECONSTRUCTION_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_political_exposure.gd"],
         "political-exposure", "POLITICAL_EXPOSURE:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_water_round.gd"],
+        "water-round", "WATER_ROUND_TESTS:")
     return 0
 
 

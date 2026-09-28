@@ -82,6 +82,11 @@ jobs:
             --script res://tests/render_reconstruction.gd 2>&1 | tee test-results/reconstruction-render.log
           ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/reconstruction-render.log
           grep -q 'RECONSTRUCTION_RENDER: 4 captures; 0 failures' test-results/reconstruction-render.log
+          timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_water_round.gd 2>&1 | tee test-results/water-round-render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/water-round-render.log
+          grep -q 'WATER_ROUND_RENDER: 5 captures; 0 failures' test-results/water-round-render.log
           mkdir -p test-results/screenshots
           cp "$HOME/.local/share/godot/app_userdata/1792/"command-*.png test-results/screenshots/
           cp "$HOME/.local/share/godot/app_userdata/1792/"house-*.png test-results/screenshots/
@@ -93,6 +98,8 @@ jobs:
           cp "$HOME/.local/share/godot/app_userdata/1792/"gujranwala-*.png test-results/screenshots/
           cp "$HOME/.local/share/godot/app_userdata/1792/"reconstruction-*.png test-results/screenshots/
           cp "$HOME/.local/share/godot/app_userdata/1792/gujranwala-reconstruction-audit.json" test-results/
+          cp "$HOME/.local/share/godot/app_userdata/1792/"water-round-*.png test-results/screenshots/
+          cp "$HOME/.local/share/godot/app_userdata/1792/water-round-audit.json" test-results/
       - name: Retain test evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
