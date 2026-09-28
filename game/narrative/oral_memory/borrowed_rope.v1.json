@@ -1,0 +1,54 @@
+{
+  "schema": "1792.oral-memory-content.v1",
+  "episode_id": "borrowed_rope",
+  "title": "The borrowed rope",
+  "historical_class": "authored_fiction",
+  "authoring_note": "Original Cartesian Graphics prototype fiction inspired by the acts of hearing, remembering, interpreting and retelling. This is not an attested sakhi, historical testimony, sacred text, or a claim that living sakhi traditions are extinct. English development copy; no historical quotation or translation.",
+  "tellings": {
+    "quartermaster_account": {
+      "speaker_id": "household_quartermaster",
+      "speaker": "Quartermaster",
+      "site": "quartermaster",
+      "channel": "remembered_testimony",
+      "root_id": "quartermaster_recollection",
+      "lineage": ["Quartermaster"],
+      "claim": "permission_given",
+      "text": "I lent the spare lead-rope to a yard helper when the mare shied. It came back before evening. What I remember is someone keeping hold when letting go would have been easier."
+    },
+    "trader_account": {
+      "speaker_id": "market_trader",
+      "speaker": "Market trader",
+      "site": "market",
+      "channel": "attributed_hearsay",
+      "root_id": "unidentified_traveller_account",
+      "lineage": ["Unnamed traveller, as reported by trader", "Market trader"],
+      "claim": "permission_not_given",
+      "text": "A traveller told me the helper took the household rope without asking. By the time the story reached my stall, the borrowed rope had become a stolen one. I saw neither the taking nor the return."
+    },
+    "well_echo": {
+      "speaker_id": "well_neighbour",
+      "speaker": "Neighbour near the well",
+      "site": "listener",
+      "channel": "attributed_hearsay",
+      "root_id": "unidentified_traveller_account",
+      "lineage": ["Unnamed traveller, as reported by trader", "Market trader", "Neighbour near the well"],
+      "claim": "permission_not_given",
+      "text": "The trader spoke of a helper taking a rope. That is where I heard it; I was not in the yard. Another voice repeating the tale does not make another witness."
+    },
+    "quartermaster_reflection": {
+      "speaker_id": "household_quartermaster",
+      "speaker": "Quartermaster, on remembering again",
+      "site": "quartermaster",
+      "channel": "remembered_testimony",
+      "root_id": "quartermaster_recollection",
+      "lineage": ["Quartermaster"],
+      "claim": "permission_given",
+      "text": "Now I remember the helper asking whether returning it would be enough. I said yes. Perhaps that is why I remember a loan. The traveller may remember a different moment. I can tell you what I said, not what every other person saw."
+    }
+  },
+  "trace": {
+    "id": "rope_trace",
+    "site": "trace",
+    "text": "A frayed length of rope hangs beside a repaired loop. You can see wear and a repair. Neither tells you who used it, when it was returned, or whether permission was given."
+  }
+}

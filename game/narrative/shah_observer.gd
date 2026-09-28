@@ -4,6 +4,9 @@ extends RefCounted
 ## Original English development copy, NOT historical verse or a Punjabi translation.
 const VOICE := "Shah Muhammad · original development narration"
 const LINES := {
+	"oral_first":"A rope can return to its peg while its story continues down the road.",
+	"oral_compare":"Two voices did not leave the same shape in memory. The difference, too, had to be carried.",
+	"oral_retell":"He passed on what he had heard, and named the mouths from which it came. The next telling would have a witness to its telling, not to the old event.",
 	"home":"Before the distant roads, there was this courtyard: familiar voices, a horse, and the work of returning home.",
 	"allowance":"The coins were entrusted, not given away. A household continued only while someone counted what it consumed.",
 	"market":"One small journey had joined the store to the market. The way home still had to be travelled.",
@@ -16,12 +19,27 @@ var text := ""
 
 static func key_for(snapshot: Dictionary) -> String:
 	if snapshot.get("player",{}).get("character_id")!="ranjit_singh" or not snapshot.has("childhood"): return ""
+	var base_key: String="home"
+	var base_tick: int=-1
 	if snapshot.has("misl"):
 		var ledger: Dictionary=snapshot.misl.ledger
-		if ledger.caravan=="complete": return "return"
-		if ledger.delivery=="delivered": return "market"
-		return "allowance"
-	return "home"
+		base_key="return" if ledger.caravan=="complete" else "market" if ledger.delivery=="delivered" else "allowance"
+		base_tick=int(snapshot.misl.origin_tick)
+		for receipt in snapshot.misl.events:
+			if (base_key=="return" and receipt.kind=="checkin") or (base_key=="market" and receipt.kind=="deliver"):
+				base_tick=int(receipt.tick)
+	if snapshot.has("oral_memory"):
+		var kinds: Array=[]
+		var oral_tick: int=-1
+		for event in snapshot.oral_memory.events:
+			kinds.append(event.kind)
+			if event.kind in ["hear","compare","retell"]: oral_tick=int(event.tick)
+		# A finished oral episode must not suppress later inherited supply/return cues.
+		if oral_tick>=base_tick:
+			if "retell" in kinds: return "oral_retell"
+			if "compare" in kinds: return "oral_compare"
+			if "hear" in kinds: return "oral_first"
+	return base_key
 
 func observe(snapshot: Dictionary) -> String:
 	var key:=key_for(snapshot)
