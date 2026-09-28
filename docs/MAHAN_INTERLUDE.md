@@ -1,4 +1,4 @@
-# Mahan Singh interlude (recon delay + column march + cavalry + logistics + politics)
+# Mahan Singh interlude (recon delay + column march + cavalry + logistics + politics + orders)
 
 ## Playable loop intent
 
@@ -7,7 +7,8 @@ id `mahan_singh`) with delayed scout custody, authored column movement on greybo
 nodes, **opt-in cavalry** that reuses the existing riding library, and a
 **small logistics** module (forage / wait consumption / stockout), and a
 **bounded clan/subordinate politics** slice (retainer counsel, delayed household rumor,
-march-willingness pressure). It remains a modular campaign extension parallel to
+march-willingness pressure), and **subordinate column orders** (scout / hold rear /
+pursue-contact stub). It remains a modular campaign extension parallel to
 childhood -> aftermath, not a rewrite of those chapters and not a merge into the Lahore
 sandboxes.
 
@@ -18,7 +19,7 @@ sandboxes.
 | Dispatch | On foot at the **camp table**, press **E**. Dispatch a scout detachment to the **ford** or **ridge** (costs 1 provision). Optional: **forage** at the column node when packs have room. |
 | Delay clock | Walk, wait, or ride. Pending custody shows on the HUD. **Player knowledge updates only when the report arrives** (`arrives_at`); undelivered text stays out of the journal. |
 | Column order | After >=1 delivered report, press **E** at the table (dismounted). Optional: **consult subordinates** (hold vs advance counsel) and/or **request household word** (delayed clan-house rumor). Choose **advance the horse column** or **hold for corroboration**. **Stockout** blocks advance; advancing against active retainer hold-pressure **strains** disposition. Optional: dispatch a second scout or forage before ordering. |
-| March | If advancing: walk or **ride** to an adjacent authored node (**camp -> ford -> ridge**), **dismount**, and press **E** to commit the march (costs 2 provisions + time). **Strained** disposition blocks march until **acknowledge clan-house pressure**. **Forage** once per node. Wait time drains provisions. Stockout blocks further marches. Hold keeps the column at camp. |
+| March | If advancing: walk or **ride** to an adjacent authored node (**camp -> ford -> ridge**), **dismount**, and press **E** to commit the march (costs 2 provisions + time). Optional: **issue subordinate orders** (scout flank / hold rear / pursue contact stub). **Strained** disposition blocks march and offensive sub-orders until disposition steadies; **hold rear** remains available. **Forage** once per node. Wait time drains provisions. Stockout blocks further marches. Hold keeps the column at camp. |
 | Fixed endpoint frame | Press **E** with the column (or at the table) and **acknowledge** that Mahan's historical death is fixed campaign history. |
 
 WASD moves (or mounts: W forward, A/D steer, Shift canter, Ctrl walk, S/Space brake);
@@ -49,7 +50,6 @@ recon/march/cavalry beat only.
 - Dispatch (-1) and march (-2) costs from the prior tip still apply and compose with forage/wait in the logistics adapter.
 - Implemented as `mahan_logistics_*.gd` on top of the cavalry adapter -- does **not** rewrite `house_command_state`, `command_state`, or a taxation UI.
 
-
 ## Clan / subordinate politics (bounded)
 
 - Subordinates are **separate Person actors** inside `mahan.politics` (camp retainer,
@@ -64,9 +64,25 @@ recon/march/cavalry beat only.
   `aligned`. Advancing against active `prefer_hold` **strains** disposition and blocks
   **march willingness** until the player **acknowledges clan-house pressure** (or the
   delivered rumor softens stance to `counsel_noted`).
-- Raj Kaur / Phulkian / Sandhawalia research dumps are **out of this slice** — no
+- Raj Kaur / Phulkian / Sandhawalia research dumps are **out of this slice** -- no
   antagonist roster rewrite, no `house_command_state` rewrite.
 - Implemented as `mahan_politics_*.gd` on top of the logistics adapter.
+
+## Subordinate orders / pursuit stub (bounded)
+
+- After **advance the horse column**, issue column sub-orders to politics subordinates:
+  - **scout** -> horse jemadar (flank scout assignment)
+  - **hold rear** -> camp retainer (rear-guard assignment)
+  - **pursue contact** -> horse jemadar (schedules a timed outcome report)
+- **Disposition gates:** `scout` and `pursue_contact` require disposition `steady` or
+  `aligned`. While disposition is `strained`, offensive sub-orders are refused; **hold
+  rear** remains available.
+- **Pursuit stub:** uses scout-shaped delayed custody (`observed_at` / `arrives_at` /
+  `delivered`); journal text appears **only on delivery**. This is **not** combat AI
+  and does **not** rewrite `patrol_director` or `house_command_state`.
+- One active order per subordinate; subordinates stay inside `mahan.politics` /
+  `mahan.orders` relations -- not top-level `actors`, not Faction tags.
+- Implemented as `mahan_orders_*.gd` on top of the politics adapter.
 
 ## Ontology fence
 
@@ -104,6 +120,7 @@ Mahan observations, scout reports, map knowledge and command decisions live only
 - There is **no** silent cross-chapter knowledge merge in this slice.
 - **Delayed custody:** undelivered scout reports are not journal knowledge and do not
   unlock `known_nodes` until `delivered` flips on the delay clock.
+- Undelivered pursuit custody likewise stays out of the journal until delivery.
 
 Buddh remains the player-facing early identity elsewhere; public Ranjit/Maharaja
 presentation in Lahore is unchanged. The stable childhood/Lahore key remains
@@ -135,8 +152,9 @@ In scope for the interlude family: command, movement, clan/house politics,
 reconnaissance, delayed information, cavalry, logistics and subordinate-command
 decisions. This slice delivers the profile skeleton, delayed scout custody, authored
 column nodes (camp/ford/ridge), **cavalry opt-in via riding_rules**, a **logistics**
-forage/wait/stockout module, a **bounded clan/subordinate politics** slice, and the
-fixed endpoint frame. Broad religious-conflict framing is a non-goal.
+forage/wait/stockout module, a **bounded clan/subordinate politics** slice, a
+**subordinate orders / pursuit stub** slice, and the fixed endpoint frame. Broad
+religious-conflict framing is a non-goal.
 
 ## Non-goals (this PR)
 
@@ -154,12 +172,13 @@ fixed endpoint frame. Broad religious-conflict framing is a non-goal.
 - Rewriting `house_command_state.gd` or `antagonists.json` roster gates
 - Full social sim, Sandhawalia research dump into game, or Raj Kaur in this Mahan slice
 - Rewriting `house_command_state.gd` clan politics (pattern mirrored in Mahan-only adapter)
+- Full combat sandbox or rewriting `patrol_director` (pursuit is delayed-custody stub only)
 
 ## Architecture
 
-- Profile authority: `game/mahan/mahan_state.gd` (`mahan.v1`) plus Mahan-only `mahan_cavalry_state.gd`, `mahan_logistics_state.gd`, and `mahan_politics_state.gd` adapters
+- Profile authority: `game/mahan/mahan_state.gd` (`mahan.v1`) plus Mahan-only `mahan_cavalry_state.gd`, `mahan_logistics_state.gd`, `mahan_politics_state.gd`, and `mahan_orders_state.gd` adapters
 - Launch composition: `game/mahan/mahan_launch.gd` onto `game/world/mahan_camp.tscn`
-- Chapter presentation: base `mahan_chapter.gd` -> `mahan_cavalry_chapter.gd` -> `mahan_logistics_chapter.gd` -> `mahan_politics_chapter.gd`
+- Chapter presentation: base `mahan_chapter.gd` -> `mahan_cavalry_chapter.gd` -> `mahan_logistics_chapter.gd` -> `mahan_politics_chapter.gd` -> `mahan_orders_chapter.gd`
 - Reuses existing player controller, `riding_rules` / `horse` adapter and save/load
   pattern; does **not** replace childhood checkpoint, companion or Lahore command
   machinery
