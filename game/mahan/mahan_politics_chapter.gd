@@ -3,7 +3,9 @@ extends "res://mahan/mahan_logistics_chapter.gd"
 const PoliticsModel := preload("res://mahan/mahan_politics_state.gd")
 
 func _ready() -> void:
-	campaign = PoliticsModel.new()
+	# Allow orders (or other) adapters to install their model before super._ready().
+	if not campaign.has_method("consult_subordinates"):
+		campaign = PoliticsModel.new()
 	campaign.enable_riding()
 	super._ready()
 	_notice = "E at the table for scouts, subordinate counsel, or household word. F to mount. Forage when packs have room."
