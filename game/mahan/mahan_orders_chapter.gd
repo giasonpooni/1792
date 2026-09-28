@@ -3,7 +3,9 @@ extends "res://mahan/mahan_politics_chapter.gd"
 const OrdersModel := preload("res://mahan/mahan_orders_state.gd")
 
 func _ready() -> void:
-	campaign = OrdersModel.new()
+	# Allow history (or other) adapters to install their model before super._ready().
+	if campaign == null or not campaign.has_method("observe_historical_event"):
+		campaign = OrdersModel.new()
 	campaign.enable_riding()
 	super._ready()
 	_notice = "E at the table for scouts, counsel, household word, or subordinate orders. F to mount. Forage when packs have room."
