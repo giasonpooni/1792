@@ -15,6 +15,9 @@ func _build_world() -> void:
 	super._build_world()
 	var peg:=_box(Vector3(0.8,0.12,0.55),Memory.SITES.trace+Vector3.UP*0.7,Color("806247"))
 	_oral_props.append(peg.get_parent())
+	for x in [-0.3,0.3]:
+		var support:=_box(Vector3(0.1,0.65,0.35),Memory.SITES.trace+Vector3(x,0.325,0),Color("806247"))
+		_oral_props.append(support.get_parent())
 	for i in range(3):
 		var coil:=MeshInstance3D.new()
 		var mesh:=TorusMesh.new()
@@ -23,7 +26,7 @@ func _build_world() -> void:
 		mesh.rings=16
 		mesh.ring_segments=8
 		coil.mesh=mesh
-		coil.position=Memory.SITES.trace+Vector3(0,0.81+i*0.055,0)
+		coil.position=Memory.SITES.trace+Vector3(0,0.78+i*0.045,0)
 		var material:=StandardMaterial3D.new()
 		material.albedo_color=Color("ad9365")
 		material.roughness=1.0

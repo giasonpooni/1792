@@ -248,7 +248,11 @@ func _journey() -> void:
 		"history_verified":false,"human_playtest":false,"passed":passed,"failed":failed}
 	var file:=FileAccess.open("user://oral-memory-audit.json",FileAccess.WRITE)
 	check(file!=null,"retain conformance evidence")
-	if file!=null: file.store_string(JSON.stringify(audit,"\t"));file.close()
+	if file!=null:
+		audit.passed=passed
+		audit.failed=failed
+		file.store_string(JSON.stringify(audit,"\t"))
+		file.close()
 	DirAccess.remove_absolute(scene.save_path)
 	home.queue_free();await frames()
 func _run() -> void:
