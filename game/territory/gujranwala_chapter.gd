@@ -31,7 +31,7 @@ func _build_world() -> void:
 	merchant.add_collision_exception_with(horse)
 	# Cosmetic pack cargo; the physical agent remains a single bounded capsule.
 	var pack:=MeshInstance3D.new()
-	var pack_mesh:=BoxMesh.new()
+	var pack_mesh:=BoxMesh3D.new()
 	pack_mesh.size=Vector3(0.6,0.7,0.6)
 	pack.mesh=pack_mesh
 	pack.position=Vector3(0,1,0.4)
@@ -104,6 +104,11 @@ func _physics_process(delta: float) -> void:
 		return
 	super._physics_process(delta)
 	if _paused or not model.has_economy(): return
+	_step_merchant(delta)
+	_sync_economy()
+	_refresh()
+
+func _step_merchant(delta: float) -> void:
 	var m: Dictionary=model.economy()
 	if m.ledger.caravan=="active":
 		var moving: bool=Model.distance(model.position(),merchant.global_position)<=9 and Model.distance(merchant.global_position,Rules.QUARTERMASTER)>2.2
@@ -114,9 +119,6 @@ func _physics_process(delta: float) -> void:
 		if not error.is_empty():
 			merchant.apply(m.merchant)
 			_message=error
-	_sync_economy()
-	_refresh()
-
 func _sync_economy(reset: bool=false) -> void:
 	if not is_instance_valid(merchant): return
 	var enabled: bool=model.has_economy()

@@ -1,0 +1,28 @@
+name: Retain pending road source for local qualification
+on:
+  push:
+    branches: [feat/shah-caravan-road-v1]
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pending-road-source
+          retention-days: 3
+          include-hidden-files: true
+          path: |
+            game/
+            data/
+            schemas/
+            tools/
+            docs/
+            README.md
+            .github/workflows/
+            .gitignore

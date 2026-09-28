@@ -1,0 +1,18 @@
+{
+  "schema": "1792.narration-catalog.v1",
+  "narrator_id": "shah_muhammad",
+  "display_name": "Shah Muhammad",
+  "text_status": "original_english_game_draft_not_historical_quotation",
+  "audio_status": "not_recorded",
+  "scope": "player_facing_retrospective_not_character_knowledge",
+  "cues": [
+    {"id": "home_open", "text": "Before the titles, there was a boy and a courtyard. He knew its horses better than its promises."},
+    {"id": "ambush_return", "text": "He came home alive. The names behind the attack did not come home with him."},
+    {"id": "allowance", "text": "The coins in his purse were not the wealth of the household. Behind its walls were mouths that would need feeding again."},
+    {"id": "road_assignment", "text": "A load had a price. The road, he would discover, had terms of its own."},
+    {"id": "claim_recognized", "text": "He gained passage by acknowledging another household's claim. The road was open; the claim was not forgotten."},
+    {"id": "reply_received", "text": "The answer came through another man's voice. It offered passage today, not certainty about tomorrow."},
+    {"id": "bypass_chosen", "text": "He left the claim unsettled and chose the longer ground. Distance, too, had its cost."},
+    {"id": "caravan_return", "text": "The load was home. Only now could a promised supply become food in the store."}
+  ]
+}
