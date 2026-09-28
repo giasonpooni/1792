@@ -18,12 +18,15 @@ func anchor(year: int = 1797) -> Dictionary: return {"chapter_id":Interlude.GATE
 func present(year: int = 1797) -> Dictionary:
 	return {"schema_version":"world-state.v1","profile":"pre_lahore_test_fixture",
 		"game_time":{"year":year,"day":200,"hour":16.5},
-		"player":{"character_id":"ranjit_singh","position":[12.25,0.14,-8.0]},
+		"player":{"character_id":"ranjit_singh","position":[12.25,0.14,-8.0],"known_places":["gujranwala"]},
+		"places":[{"id":"gujranwala"}],
 		"inventory":[{"id":"present_horse","condition":0.8}],"treasury":37,
 		"beliefs":[{"source":"courier","claim":"a report, not certainty"}],
-		"relationships":{"raj_kaur":"authored_rivalry"},"territory":{"lahore_taken":false}}
+		"relationships":[{"source":"raj_kaur","target":"ranjit_singh","stance":"authored_rivalry"}],"territory":{"lahore_taken":false}}
 func provider(value: Dictionary) -> String:
 	if value.get("profile") != "pre_lahore_test_fixture": return "Wrong test fixture."
+	if not value.get("places") is Array or not value.get("relationships") is Array: return "Missing world collections."
+	if not value.get("player") is Dictionary or not value.player.get("known_places") is Array: return "Missing known-place record."
 	if not value.get("territory") is Dictionary or value.territory.get("lahore_taken") != false: return "Lahore is already taken."
 	return ""
 func _run() -> void:
