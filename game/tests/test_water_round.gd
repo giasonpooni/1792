@@ -32,6 +32,13 @@ func fresh() -> State:
 	ok(s.begin_water_round(),"assign water round")
 	return s
 func _domain() -> void:
+	var bound:=Water.initial()
+	var before_bound:=bound.duplicate(true)
+	check(not Water.apply(bound,"draw",Water.MAX_TICK-Water.DRAW_TICKS+1,WELL_STAND).is_empty(),"draw cannot overrun the existing clock ceiling")
+	check(bound==before_bound,"clock-ceiling refusal is atomic")
+	ok(Water.apply(bound,"draw",Water.MAX_TICK-Water.DRAW_TICKS,WELL_STAND),"last completable draw admitted")
+	ok(Water.apply(bound,"filled",Water.MAX_TICK,WELL_STAND),"completion at final existing tick")
+	check(bound.carried==3 and bound.remaining==3,"clock-boundary transfer conserved")
 	var s:=State.new()
 	reject(s,s.begin_water_round,"no water task before inquiry/allowance")
 	ok(s.restore(Fixture.complete()),"legacy completed inquiry accepted")
@@ -160,6 +167,8 @@ func _journey() -> void:
 	check(scene.model.has_water_round(),"UI assigns task through existing authority")
 	check(State.distance(scene.fabric.get_node("household_well").global_position,Water.WELL)<0.01,"task binds existing well geometry")
 	check(Water.STORE==Rules.QUARTERMASTER,"task reuses existing household endpoint")
+	check(not scene.water_view.carried_shell.mesh.cap_top,"carried vessel does not conceal its water")
+	check(not scene.water_view.tank_shell.mesh.cap_top,"household vessel does not conceal its water")
 	for trip in range(2):
 		await walk(scene,Vector3(2,0.14,-10))
 		await walk(scene,Vector3(26,0.14,-10))

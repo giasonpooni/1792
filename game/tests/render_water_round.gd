@@ -15,12 +15,21 @@ func ok(error: String) -> void:
 	if not error.is_empty(): failed+=1;push_error(error)
 func check(value: bool,label: String) -> void:
 	if not value: failed+=1;push_error(label)
-func capture(name: String) -> void:
+func capture(name: String, camera: Camera3D=null, water_surface: MeshInstance3D=null) -> void:
 	await process_frame
 	await RenderingServer.frame_post_draw
 	var image:=root.get_texture().get_image()
 	count+=1
 	if image.is_empty() or image.save_png("user://water-round-"+name+".png")!=OK: failed+=1
+	if camera!=null and water_surface!=null and not image.is_empty():
+		# A visible node flag did not detect the original closed-cap occlusion.
+		# Sample the actual rendered surface centre, not a synthetic reference image.
+		var point: Vector2=camera.unproject_position(water_surface.global_position+Vector3.UP*0.02)
+		if not Rect2(Vector2.ZERO,Vector2(image.get_size())).has_point(point):
+			check(false,name+": water surface outside capture")
+		else:
+			var pixel:=image.get_pixel(int(point.x),int(point.y))
+			check(pixel.g>pixel.r*1.1 and pixel.b>pixel.r*1.1,name+": water is visually occluded, pixel="+str(pixel))
 func _run() -> void:
 	root.size=Vector2i(1280,720)
 	var home:=Launch.make_world()
@@ -47,7 +56,7 @@ func _run() -> void:
 	await capture("drawing")
 	await frames(185)
 	check(scene.model.water_round().ledger.carried==3,"render fixture holds water")
-	await capture("carrying")
+	await capture("carrying",camera,scene.water_view.carried_water)
 	ok(Pose.pose(scene.model,Water.STORE-Vector3(0,0,1)))
 	scene._apply()
 	ok(scene.model.water_action("deposit"))
@@ -57,15 +66,17 @@ func _run() -> void:
 	ok(Pose.pose(scene.model,Water.STORE-Vector3(0,0,1)))
 	scene._apply()
 	ok(scene.model.water_action("deposit"))
-	camera.position=Vector3(12,6,12)
-	camera.look_at(Vector3(3,1,5))
+	camera.position=Vector3(11,5,-3)
+	camera.look_at(Vector3(5,0.7,5))
 	await frames()
 	check(scene.water_view.tank_water.visible,"rendered household vessel is provisioned")
-	await capture("complete")
+	await capture("complete",camera,scene.water_view.tank_water)
 	root.size=Vector2i(800,600)
 	scene._open_accounts()
 	await frames()
 	check(scene._paused,"small window account view pauses")
+	scene._journal_scroll.scroll_vertical=10000
+	await frames()
 	await capture("small-window")
 	home.queue_free()
 	await frames()

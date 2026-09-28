@@ -5,19 +5,24 @@ const Rules := preload("res://territory/water_round_rules.gd")
 var bucket: Node3D
 var carried: Node3D
 var tank_water: MeshInstance3D
+var tank_shell: MeshInstance3D
+var carried_water: MeshInstance3D
+var carried_shell: MeshInstance3D
 var well_label: Label3D
 
-func _cylinder(parent: Node3D, at: Vector3, radius: float, height: float, color: Color) -> MeshInstance3D:
+func _cylinder(parent: Node3D, at: Vector3, radius: float, height: float, color: Color, open_top: bool=false) -> MeshInstance3D:
 	var mesh:=MeshInstance3D.new()
 	var shape:=CylinderMesh.new()
 	shape.top_radius=radius
 	shape.bottom_radius=radius*0.85
 	shape.height=height
+	shape.cap_top=not open_top
 	mesh.mesh=shape
 	mesh.position=at
 	var m:=StandardMaterial3D.new()
 	m.albedo_color=color
 	m.roughness=0.85
+	if open_top: m.cull_mode=BaseMaterial3D.CULL_DISABLED
 	mesh.material_override=m
 	parent.add_child(mesh)
 	return mesh
@@ -26,24 +31,24 @@ func build(avatar: Node3D) -> void:
 	bucket=Node3D.new()
 	bucket.position=Rules.WELL+Vector3(0,0.6,0)
 	add_child(bucket)
-	_cylinder(bucket,Vector3.ZERO,0.28,0.5,Color("886b48"))
+	_cylinder(bucket,Vector3.ZERO,0.28,0.5,Color("886b48"),true)
 	carried=Node3D.new()
 	carried.name="OpenWaterCarrier"
 	avatar.add_child(carried)
 	carried.position=Vector3(0.65,0.65,0)
-	_cylinder(carried,Vector3.ZERO,0.23,0.5,Color("977347"))
-	_cylinder(carried,Vector3(0,0.23,0),0.21,0.025,Color("65908e"))
+	carried_shell=_cylinder(carried,Vector3.ZERO,0.23,0.5,Color("977347"),true)
+	carried_water=_cylinder(carried,Vector3(0,0.23,0),0.21,0.025,Color("65908e"))
 	carried.hide()
 	# Cosmetic household receptacle, not an added route obstacle or surveyed tank.
-	var at:=Vector3(6,0.14,8.5)
-	_cylinder(self,at+Vector3.UP*0.45,0.7,0.9,Color("ad8563"))
+	var at:=Vector3(6.5,0.14,4)
+	tank_shell=_cylinder(self,at+Vector3.UP*0.45,0.7,0.9,Color("ad8563"),true)
 	tank_water=_cylinder(self,at+Vector3.UP*0.88,0.59,0.025,Color("65908e"))
 	tank_water.hide()
 	well_label=Label3D.new()
 	well_label.position=Rules.WELL+Vector3.UP*3.2
 	well_label.billboard=BaseMaterial3D.BILLBOARD_ENABLED
-	well_label.font_size=22
-	well_label.pixel_size=0.003
+	well_label.font_size=32
+	well_label.pixel_size=0.007
 	add_child(well_label)
 
 func sample(w: Dictionary, tick: int) -> void:

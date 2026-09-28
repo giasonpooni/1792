@@ -8,6 +8,7 @@ const STORE := Vector3(3,0.14,5)
 const TOTAL := 6
 const LOAD := 3
 const DRAW_TICKS := 180
+const MAX_TICK := 10000000 # Existing childhood authority ceiling; never invent a later tick.
 const MAX_EVENTS := 128
 const CARRY_SPEED := 3.0
 const Economy := preload("res://territory/misl_rules.gd")
@@ -23,6 +24,7 @@ static func apply(s: Dictionary, kind: String, tick: int, p: Vector3) -> String:
 	# Admission runs on a detached candidate. The caller commits only a successful result.
 	match kind:
 		"draw":
+			if tick>MAX_TICK-DRAW_TICKS: return "Insufficient time remains in this bounded scenario to finish a draw."
 			if s.phase!="ready" or s.remaining<LOAD: return "No empty carrier or unfinished allocation."
 			if not near_site(p,WELL): return "Stand beside the well on foot."
 			s.phase="drawing"
