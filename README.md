@@ -146,6 +146,12 @@ Notations Engineering Terminal can later connect as an external development and 
 
 NET does **not** own the game loop.
 
+## Shared four-language architecture
+
+All Cartesian Graphics games, including this title, will use the **C++ - Rust - Python - Julia** architecture: C++ for qualified native kernels, Rust for runtime systems, Python/NET for orchestration and retained experiments, and Julia for reference mathematics and numerical providers. Godot remains the playable application; Blender remains the authoring environment.
+
+The [shared architecture baseline](docs/SHARED_GAME_ARCHITECTURE.md) defines single-writer state ownership, existing NET/`ciw`/SCR integration, native boundaries, development/shipping profiles and qualification requirements. This is a development commitment, not a claim that all four language integrations already run in this checkout. Existing gameplay, specialist providers and licences are preserved; no frame must pass through all four languages.
+
 ## Repository layout
 
 ```text
