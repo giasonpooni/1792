@@ -1,7 +1,7 @@
 extends RefCounted
 ## Compose the Mahan interlude onto its own camp scene without touching childhood/Lahore bytes.
 const Camp := preload("res://world/mahan_camp.tscn")
-const Chapter := preload("res://mahan/mahan_chapter.gd")
+const Chapter := preload("res://mahan/mahan_cavalry_chapter.gd")
 
 static func make_world() -> Node3D:
 	var camp: Node3D = Camp.instantiate()
