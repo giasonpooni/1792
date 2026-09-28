@@ -18,7 +18,7 @@ The existing **1792 · Buddh Singh · Home territory** menu entry now opens a sh
 playable childhood chapter on the retained home scene:
 
 **Find your bearings → hear a message you cannot read → ride → guard and counter →
-track quarry → survive an ambush on the return path.**
+track quarry → survive an ambush → negotiate protection → investigate and report back.**
 
 WASD and mouse introduce movement and looking. E acquires the courier's sealed
 message, then hears the courier and steward separately. F starts the riding lesson
@@ -33,7 +33,8 @@ not confirm it. A survival outcome does not reveal a mastermind. An optional qui
 reflection beneath the courtyard tree introduces faith as personal grounding,
 not a combat or hidden-knowledge bonus. These are authored portrayals.
 
-J/F1 opens the journal and pauses; F5/F9 uses a separate childhood save. F4 disables
+J/F1 opens the journal and pauses; F5/F9 uses the separate childhood-aftermath save.
+The menu can import the earlier childhood slot without overwriting it. F4 disables
 or enables the mild peripheral visual framing without changing gameplay state.
 The chosen historical account describes eye loss in early childhood, not an
 established progressive-blindness schedule. The shader is subjective presentation,
@@ -42,9 +43,29 @@ controller mapping is not implemented yet.
 
 The three exercise gates and compressed hunting trail are fictional, as are the
 speakers, trainer and anonymous attacker. Three unguarded hits end the attempt;
-load a manual save or return to the menu to restart. **Save before the return bend**
-until automatic checkpoints are implemented. This chapter does not yet transition
-into the Lahore campaign, whose existing systems remain intact.
+press **R** or use the recovery menu to restore the latest checkpoint. The chapter
+captures a checkpoint after the quarry lesson and on returning home on foot. Manual
+F5 saves remain separate. Restoring replaces the whole saved state, including knowledge
+and damage: later accounts do not follow Buddh back into an earlier attempt.
+This chapter does not yet transition into the Lahore campaign, whose systems remain intact.
+
+### After the ambush: protection and independence
+
+Returning alive now opens conversations with the courier, steward and **Raj Kaur**.
+Hear the two return accounts, then approach her at the back of the courtyard and press E.
+Her offer has two playable outcomes: **take the household guard**, or **insist on going alone**.
+
+The guard is a visible, dismounted companion reusing the existing patrol movement and
+collision code. **G** switches follow/hold within 10 metres and clear sight. He does not
+teleport after a fast horse. If you accept him, he must actually reach the bend with you
+and return to Raj Kaur before the inquiry can close. Going alone provides no guard and
+records strained independence. These are authored household consequences, not a morality score.
+
+Revisit the bend, face the disturbed ground and press **E**, then return and give your
+account aloud. You have found a trace, not identified a conspirator. The agreement,
+guard pose, attributed accounts and report survive save/load in the same chapter state.
+This is a fictional extension of the chosen narrative direction, not a newly verified
+historical incident. [Aftermath, checkpoint controls and limits](docs/AFTERMATH.md).
 
 [Childhood controls and scope](docs/CHILDHOOD.md) ·
 [Narrative perspective](docs/NARRATIVE_PERSPECTIVE.md) ·
@@ -75,7 +96,7 @@ The opening menu offers three development entries:
 
 | Prototype | What is there |
 | --- | --- |
-| **1792 · Home territory** | A childhood tutorial composed onto the original scene: oral accounts, riding, guard/counter practice, tracking and a return-path ambush. |
+| **1792 · Home territory** | A childhood tutorial composed onto the original scene: oral accounts, riding, guard/counter practice, tracking, a return-path ambush, household protection choices and a physical return inquiry. |
 | **Lahore · Command story** | A separate, fictional 1801 sandbox: assign a patrol, play its captain or delegate, visit two locations, make a decision and receive a delayed report. |
 | **Lahore · Houses and rivals** | Ride the household horse, negotiate an estate petition, muster a small companion patrol, give follow/hold orders, visit the outpost and return together. Six antagonist biographies remain in the codex. |
 

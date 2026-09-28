@@ -5,8 +5,12 @@ const Model := preload("res://childhood/childhood_state.gd")
 const Horse := preload("res://mounts/horse.tscn")
 const Names := preload("res://characters/character_names.gd")
 const Riding := preload("res://mounts/riding_rules.gd")
-var model := Model.new()
-var save_path := Model.SAVE_PATH # tests inject a different path
+const Story := preload("res://childhood/aftermath_state.gd")
+const Checkpoint := preload("res://childhood/checkpoint_store.gd")
+const EscortAgent := preload("res://patrol/patrol_agent.gd")
+const Navigation := preload("res://patrol/patrol_navigator.gd")
+var model := Story.new()
+var save_path := Story.AFTER_SAVE # checkpoints derive from this path; tests stay isolated
 var avatar: CharacterBody3D
 var horse: CharacterBody3D
 var attacker: CharacterBody3D
@@ -26,6 +30,16 @@ var _strike_requested := false
 var _load_requested := false
 var _save_requested := false
 var _subjective := true
+var escort: CharacterBody3D
+var _navigation := Navigation.new()
+var _mother: MeshInstance3D
+var _clue: MeshInstance3D
+var _actions: VBoxContainer
+var _retry_requested := false
+var _legacy_load_requested := false
+var _escort_order_requested := ""
+var _after_action := ""
+var _checkpoint_note := "No checkpoint yet. F5 keeps a separate manual save."
 var _message := "Buddh · I know the yard, the horse, and the voices. I do not yet know what lies beyond them."
 
 func _ready() -> void:
@@ -37,7 +51,9 @@ func _ready() -> void:
 	add_child(horse)
 	_build_world()
 	_build_ui()
+	_navigation.bind(get_world_3d(),[avatar.get_rid(),horse.get_rid(),attacker.get_rid(),escort.get_rid()])
 	_apply()
+	if FileAccess.file_exists(checkpoint_path()): _checkpoint_note = "A checkpoint file is available. R validates and restores it."
 	avatar.get_node("CameraPivot/SpringArm3D").add_excluded_object(horse.get_rid())
 	_refresh()
 
@@ -124,6 +140,22 @@ func _build_world() -> void:
 	_marker.font_size = 18
 	_marker.pixel_size = 0.003
 	add_child(_marker)
+	_mother = _box(Vector3(0.58,1.65,0.5),Story.MOTHER+Vector3.UP*0.825,Color("886a86"))
+	var mother_label := Label3D.new()
+	mother_label.text = "Raj Kaur [E]"
+	mother_label.position = Vector3(0,1.35,0)
+	mother_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	mother_label.font_size = 20
+	mother_label.pixel_size = 0.0015
+	mother_label.fixed_size = true
+	_mother.add_child(mother_label)
+	_clue = _box(Vector3(0.7,0.02,0.55),Story.CLUE,Color("504b39"))
+	escort = EscortAgent.new()
+	escort.entity_id = "fictional_household_guard"
+	add_child(escort)
+	escort.caption.text = "Household guard"
+	escort.add_collision_exception_with(avatar)
+	escort.add_collision_exception_with(horse)
 
 func _build_ui() -> void:
 	var visual_layer := CanvasLayer.new()
@@ -186,17 +218,17 @@ func _build_ui() -> void:
 	scroll.custom_minimum_size = Vector2(280,140)
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	box.add_child(scroll)
+	var content := VBoxContainer.new()
+	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(content)
 	_panel_text = Label.new()
 	_panel_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_panel_text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_panel_text.add_theme_font_size_override("font_size",17)
-	scroll.add_child(_panel_text)
-	for spec in [["Resume", "resume"],["Save chapter", "save"],["Load chapter", "load"],["Main menu (unsaved changes lost)", "menu"]]:
-		var button := Button.new()
-		button.text = spec[0]
-		button.custom_minimum_size.y = 38
-		button.pressed.connect(_menu_action.bind(spec[1]))
-		box.add_child(button)
+	content.add_child(_panel_text)
+	_actions = VBoxContainer.new()
+	_actions.add_theme_constant_override("separation",8)
+	content.add_child(_actions)
 	_panel.hide()
 	get_viewport().size_changed.connect(_layout)
 	_layout()
@@ -205,7 +237,7 @@ func _layout() -> void:
 	var size := get_viewport().get_visible_rect().size
 	_panel.size = Vector2(minf(640,size.x-32),minf(540,size.y-32))
 	_panel.position = (size-_panel.size)*0.5
-	_journal_scroll.custom_minimum_size = Vector2(maxf(220,_panel.size.x-40),maxf(110,_panel.size.y-196))
+	_journal_scroll.custom_minimum_size = Vector2(maxf(220,_panel.size.x-40),maxf(110,_panel.size.y-32))
 	_panel_text.custom_minimum_size.x = maxf(200,_panel.size.x-64)
 	# Wrap text independently of the visual impairment treatment.
 
@@ -220,6 +252,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		KEY_F: _mount_requested = not _paused
 		KEY_F5: _save_requested = true
 		KEY_F9: _load_requested = true
+		KEY_R: _retry_requested = true
+		KEY_G:
+			if _paused: return
+			var instruction: String = model.aftermath().escort.instruction
+			_escort_order_requested = "follow" if instruction == "hold" else "hold"
 		KEY_J, KEY_F1: _open_journal()
 		KEY_ESCAPE:
 			if _paused: _resume()
@@ -235,9 +272,13 @@ func _menu_action(action: String) -> void:
 		"resume": _resume()
 		"save": _save_requested = true
 		"load": _load_requested = true
+		"retry": _retry_requested = true
+		"import": _legacy_load_requested = true
 		"menu": get_tree().change_scene_to_file("res://ui/main_menu.tscn")
+		_: _after_action = action
 
 func _open_journal() -> void:
+	_clear_pending_actions()
 	_paused = true
 	avatar.input_enabled = false
 	avatar.set_physics_process(false)
@@ -247,7 +288,11 @@ func _open_journal() -> void:
 		text += "[%s · %s · %.1fs]\n%s\n\n" % [memory.channel,memory.source_id,memory.received_tick/60.0,memory.text]
 	if model.journal().is_empty(): text += "No reports have reached me.\n\n"
 	text += "An account is not its confirmation. The readable text here represents remembered speech and experience, not Buddh reading a document.\n\nSOURCE PROFILE: Latif's History of the Panjab (1891), selected passages; the lessons, dialogue, map and escape outcome are authored. Eye loss is already present; F4 changes only subjective framing. There is no historically established progressive-blindness schedule here."
+	text += "\n\n" + _checkpoint_note + "\nRestoring a checkpoint replaces this whole chapter state, including memories and decisions."
 	_panel_text.text = text
+	_set_actions([["Resume","resume"],["Save chapter","save"],["Load chapter","load"],
+		["Restore last checkpoint [R] — replaces current progress","retry"],
+		["Import previous childhood save","import"],["Main menu (unsaved changes lost)","menu"]])
 	_panel.show()
 	_hud.hide()
 	_caption.hide()
@@ -255,8 +300,8 @@ func _open_journal() -> void:
 
 func _resume() -> void:
 	_paused = false
-	avatar.input_enabled = true
-	avatar.set_physics_process(not model.mounted())
+	avatar.input_enabled = model.stage() != "caught"
+	avatar.set_physics_process(not model.mounted() and model.stage() != "caught")
 	_panel.hide()
 	_hud.show()
 	_caption.show()
@@ -264,6 +309,25 @@ func _resume() -> void:
 	_refresh()
 
 func _physics_process(delta: float) -> void:
+	if _retry_requested:
+		_retry_requested = false
+		_restore_checkpoint()
+		return
+	if _legacy_load_requested:
+		_legacy_load_requested = false
+		_load(Model.SAVE_PATH)
+		return
+	if not _after_action.is_empty():
+		var action := _after_action
+		_after_action = ""
+		_run_after_action(action)
+		return
+	if not _escort_order_requested.is_empty():
+		var instruction := _escort_order_requested
+		_escort_order_requested = ""
+		_message = model.order_escort(instruction) if _escort_audible() else "Move within sight and calling distance of the guard."
+		if _message.is_empty(): _message = "Guard · " + ("I will follow." if instruction == "follow" else "I will hold here.")
+		_refresh()
 	if _load_requested:
 		_load_requested = false
 		_load()
@@ -275,10 +339,9 @@ func _physics_process(delta: float) -> void:
 		if _paused: _resume()
 	if _paused: return
 	if model.stage() == "caught":
-		_message = "Caught in this attempt. J: load your last chapter save or return to the menu."
-		avatar.input_enabled = false
-		avatar.set_physics_process(false)
-		_refresh()
+		_message = "This attempt ended. Restore the last checkpoint [R], or load a manual save."
+		_show_dialog("ATTEMPT ENDED",_message+"\n\n"+_checkpoint_note,
+			[["Restore checkpoint [R]","retry"],["Load manual save","load"],["Journal","journal"],["Main menu","menu"]])
 		return
 	if _mount_requested:
 		_mount_requested = false
@@ -299,6 +362,7 @@ func _physics_process(delta: float) -> void:
 		_interact()
 	_step_practice()
 	_step_ambush(delta)
+	_step_escort(delta)
 	_strike_requested = false
 	guard_visual.visible = not model.mounted() and Input.is_key_pressed(KEY_Q)
 	_refresh()
@@ -307,6 +371,7 @@ func _interact() -> void:
 	if model.mounted():
 		_message = "Stop and dismount to speak or examine something."
 		return
+	if model.stage() == "escaped" and _interact_aftermath(): return
 	var error := ""
 	if model.near("reflection"):
 		error = model.reflect()
@@ -326,6 +391,7 @@ func _interact() -> void:
 		elif model.near("quarry",6.0) and _seen(Model.SITES.quarry+Vector3.UP*0.8,7.0):
 			error = model.observe_quarry(Input.is_key_pressed(KEY_C))
 			_message = "Buddh · The quarry is here. Time to return; I remember the bend."
+			if error.is_empty(): _capture_checkpoint("return_trail")
 		else: error = "Look toward the nearby trace, then examine it [E]."
 	else: _message = "Read the current lesson above. Move, look, and practise in the world."
 	if not error.is_empty(): _message = error
@@ -398,7 +464,8 @@ func _step_ambush(delta: float) -> void:
 		_message = "Buddh · I have an opening. Return home."
 	if model.near("home",5.0):
 		model.reach_home()
-		_message = "Buddh · I survived. I still do not know who sent him. [J: remembered accounts]"
+		_message = "Buddh · I survived. I need to hear the household's answers. [E: speak / J: memories]"
+		if not model.mounted(): _capture_checkpoint("courtyard_return")
 
 func _toggle_mount() -> void:
 	var error := ""
@@ -411,12 +478,19 @@ func _toggle_mount() -> void:
 		_apply()
 		_message = "Mounted: W forward; A/D steer; Shift canter; S/Space brake." if model.mounted() else "Dismounted. The horse stays here."
 	else: _message = error
+	if error.is_empty() and not model.mounted() and model.stage() == "escaped" and model.near("home",5.0) and model.aftermath().memories.is_empty():
+		_capture_checkpoint("courtyard_return")
 
 func _apply() -> void:
 	avatar.global_position = model.position()
 	avatar.velocity = Vector3.ZERO
 	horse.apply_record(model.horse_record())
 	attacker.global_position = Model.point(model.progress().ambush.position)
+	attacker.visible = model.stage() in ["active","caught"]
+	attacker.collision_layer = 1 if attacker.visible else 0
+	attacker.collision_mask = 1 if attacker.visible else 0
+	escort.apply(_escort_record())
+	_sync_aftermath_visuals()
 	var riding := model.mounted()
 	avatar.set_physics_process(not riding and not _paused)
 	avatar.collision_layer = 0 if riding else 1
@@ -440,20 +514,23 @@ func _fits(p: Vector3) -> bool:
 	var hit := space.intersect_ray(ray)
 	return not hit.is_empty() and hit.normal.y > 0.8
 
-func _load() -> void:
-	var staged := Model.new()
-	var error := staged.load_from(save_path)
-	if error.is_empty() and (not horse.record_fits_world(staged.horse_record(),avatar) or (not staged.mounted() and not _fits(staged.position()))):
-		error = "Saved position has no clear standing room. Session unchanged."
-	if error.is_empty() and not _fits(Model.point(staged.progress().ambush.position)):
-		error = "Saved encounter position is obstructed. Session unchanged."
-	if error.is_empty():
-		error = model.restore(staged.snapshot())
-		_apply()
-	_message = "Chapter loaded; heard accounts and lesson progress retained." if error.is_empty() else error
-	_interact_requested = false
-	_mount_requested = false
-	_strike_requested = false
+func _candidate_error(staged: Story) -> String:
+	if not horse.record_fits_world(staged.horse_record(),avatar) or (not staged.mounted() and not _fits(staged.position())):
+		return "Saved position has no clear standing room. Session unchanged."
+	if not _fits(Model.point(staged.progress().ambush.position)):
+		return "Saved encounter position is obstructed. Session unchanged."
+	if not _navigation.fits(staged.aftermath().escort):
+		return "Saved guard position is obstructed. Session unchanged."
+	return ""
+
+func _load(path: String = "") -> void:
+	var staged := Story.new()
+	var error := staged.load_from(save_path if path.is_empty() else path)
+	if error.is_empty(): error = _candidate_error(staged)
+	if error.is_empty(): error = model.restore(staged.snapshot())
+	if error.is_empty(): _apply()
+	_message = "Chapter loaded; accounts, agreements and poses retained." if error.is_empty() else error
+	_clear_pending_actions()
 	_resume()
 
 func _refresh() -> void:
@@ -479,10 +556,188 @@ func _refresh() -> void:
 			instructions = "Return by the marked bend. Your training is over; keep looking and listening."
 			target = Model.SITES.bend
 		"active": instructions = "Ambush. Reach the courtyard alive. Make distance, or face the attacker and guard [Q] / counter [click]."
-		"caught": instructions = "Attempt ended. J / F1: load a save or return to the menu."
-		"escaped": instructions = "CHAPTER PROTOTYPE COMPLETE · You returned alive. No mastermind or faction is revealed. J: memories."
-	_hud.text = "1792 · BUDDH SINGH · HOME CHAPTER\n%s\n\n%s\n\nWASD move · Mouse look · F horse · E examine/speak · Q guard · C quiet approach\nF4 peripheral framing: %s · J journal · F5/F9 save/load · F1 menu" % [lesson.to_upper(),instructions,"subjective" if _subjective else "clear"]
+		"caught": instructions = "Attempt ended. R restores the last checkpoint; J opens manual saves."
+		"escaped":
+			var after: Dictionary = model.aftermath()
+			match model.aftermath_phase():
+				"accounts":
+					instructions = "Hear the steward and courier after the attack, then speak to Raj Kaur [E]."
+					target = Model.SITES.steward if "return_steward" not in after.heard else Model.SITES.courier if "return_courier" not in after.heard else Story.MOTHER
+				"choice":
+					instructions = "Answer Raj Kaur's protection offer [E]. Company has obligations; independence has costs."
+					target = Story.MOTHER
+				"inspect":
+					instructions = "Revisit the bend on foot. Face the disturbed ground and examine [E]."
+					target = Story.CLUE
+				"return":
+					instructions = "Bring the observed account back to Raj Kaur [E]. Return with the guard if you accepted one."
+					target = Story.MOTHER
+				"complete": instructions = "INQUIRY COMPLETE · You reported a trace, not a culprit. Explore or review the journal."
+			instructions += "\n" + model.household_disposition()
+			if after.escort.active: instructions += " · Guard: " + after.escort.instruction + " [G toggles, within 10 m]"
+
+	_hud.text = "1792 · BUDDH SINGH · HOME CHAPTER\n%s\n\n%s\n\nWASD move · Mouse look · F horse · E examine/speak · Q guard · C quiet approach\nF4 peripheral framing: %s · J journal · F5/F9 save/load · R checkpoint · F1 menu" % [("HOUSEHOLD / " + model.aftermath_phase().to_upper()) if lesson == "escaped" else lesson.to_upper(),instructions,"subjective" if _subjective else "clear"]
 	_caption.text = "  " + _message + "  "
 	_marker.position = target+Vector3.UP*2.1
 	_marker.text = "Practice waypoint" if lesson in ["orientation","riding","sparring","tracking"] else "Speaker" if lesson=="letter" else "Return"
-	_marker.visible = lesson not in ["orientation","escaped","caught"]
+	_marker.visible = lesson not in ["orientation","caught"] and model.aftermath_phase() != "complete"
+	_sync_aftermath_visuals()
+
+func _set_actions(specs: Array) -> void:
+	for node in _actions.get_children():
+		_actions.remove_child(node)
+		node.queue_free()
+	for spec in specs:
+		var button := Button.new()
+		button.text = spec[0]
+		button.custom_minimum_size.y = 42
+		button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		button.pressed.connect(_menu_action.bind(spec[1]))
+		_actions.add_child(button)
+	_layout()
+	_journal_scroll.scroll_vertical = 0
+
+func _clear_pending_actions() -> void:
+	_interact_requested = false
+	_mount_requested = false
+	_strike_requested = false
+	_escort_order_requested = ""
+	_after_action = ""
+	_load_requested = false
+	_save_requested = false
+	_retry_requested = false
+	_legacy_load_requested = false
+
+func _show_dialog(title: String, body: String, actions: Array) -> void:
+	_clear_pending_actions()
+	_paused = true
+	avatar.input_enabled = false
+	avatar.set_physics_process(false)
+	avatar.velocity = Vector3.ZERO
+	_panel_text.text = title + "\n\n" + body
+	_set_actions(actions)
+	_panel.show()
+	_hud.hide()
+	_caption.hide()
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	if _actions.get_child_count() > 0: _actions.get_child(0).grab_focus()
+
+func _interact_aftermath() -> bool:
+	var a: Dictionary = model.aftermath()
+	if Model.distance(model.position(),Story.MOTHER) <= 3.0:
+		if not _seen(Story.MOTHER+Vector3.UP,4.0):
+			_message = "Turn toward Raj Kaur before speaking."
+			return true
+		if model.aftermath_phase() == "return":
+			_show_dialog("RAJ KAUR · THE ACCOUNT YOU BRING BACK", "You can report the hoof marks you observed. That does not identify the riders or prove who ordered the attack.",
+				[["Give the observed account aloud","report"],["Not yet","resume"]])
+		elif not a.offer_heard:
+			var error := model.hear_offer()
+			if not error.is_empty(): _message = error
+			else: _protection_dialog()
+		elif model.aftermath_phase() == "choice": _protection_dialog()
+		else:
+			_message = "Raj Kaur · Bring me what you saw, Buddh. A suspicion is not a name." if model.aftermath_phase() != "complete" else "Buddh · I have given my account. The agreement remains; the unanswered questions remain too."
+		return true
+	for speaker in ["steward","courier"]:
+		if model.near(speaker):
+			if not _seen(Model.SITES[speaker]+Vector3.UP*1.5,4.0):
+				# Existing solid speaker bodies end the ray. Target just in front of the body.
+				var offset: Vector3 = (avatar.global_position-Model.SITES[speaker]).normalized()*0.55
+				if not _seen(Model.SITES[speaker]+Vector3.UP*1.35+offset,4.0):
+					_message = "Turn toward the speaker and move into clear sight."
+					return true
+			var error := model.hear_return(speaker)
+			if not error.is_empty(): _message = error
+			else:
+				_show_dialog(speaker.to_upper()+" · AFTER YOUR RETURN",Story.AFTER_ACCOUNTS["return_"+speaker].text+
+					"\n\nRemembered testimony, not independent confirmation of a culprit.",[["Remember the account and continue","resume"]])
+			return true
+	if model.aftermath_phase() == "inspect" and Model.distance(model.position(),Story.CLUE) <= 3.0:
+		if not _seen(Story.CLUE+Vector3.UP*0.05,4.0): _message = "Face the disturbed ground; a camera view alone is not an observation."
+		else:
+			var error := model.inspect_bend()
+			_message = Story.AFTER_ACCOUNTS.bend_trace.text if error.is_empty() else error
+		return true
+	return false
+
+func _protection_dialog() -> void:
+	_show_dialog("RAJ KAUR · PROTECTION AND ITS PRICE",Story.AFTER_ACCOUNTS.protection_offer.text+
+		"\n\nAUTHORED ENCOUNTER\nTake a guard: company on the route, but the household's witness must be present for inspection and return.\nGo alone: no guard, and strained relations with the household. Neither choice reveals a conspirator.",
+		[["Accept the household guard — examine the bend together","household_escort"],
+		["Insist on an independent inquiry — go alone","independent_inquiry"],["Consider the offer","resume"]])
+
+func _run_after_action(action: String) -> void:
+	if action == "journal":
+		_open_journal()
+		return
+	var error := "Unknown dialogue action."
+	if action == "report": error = model.report_home()
+	elif action in ["household_escort","independent_inquiry"]:
+		if action == "household_escort" and not _navigation.fits(model.aftermath().escort):
+			error = "The guard's standing position is obstructed; agreement unchanged."
+		else: error = model.decide_protection(action)
+	_message = error if not error.is_empty() else Story.AFTER_ACCOUNTS.oral_return.text if action == "report" else Story.AFTER_ACCOUNTS[action].text
+	if error.is_empty():
+		escort.apply(_escort_record())
+		_resume()
+	else:
+		_show_dialog("THE AGREEMENT IS NOT COMPLETE",error,[["Return to the world","resume"]])
+	_refresh()
+
+func _escort_record() -> Dictionary:
+	var e: Dictionary = model.aftermath().escort
+	return {"id":e.id,"position":e.position,"yaw":e.yaw,"velocity":e.velocity}
+
+func _sync_aftermath_visuals() -> void:
+	if not is_instance_valid(escort): return
+	var a: Dictionary = model.aftermath()
+	escort.visible = a.decision == "household_escort"
+	escort.collision_layer = 2 if escort.visible else 0
+	_mother.get_parent().visible = model.stage() == "escaped"
+	_clue.get_parent().visible = model.aftermath_phase() in ["inspect","return","complete"]
+
+func _step_escort(delta: float) -> void:
+	var a: Dictionary = model.aftermath()
+	if not a.escort.active: return
+	var target := model.position()+Vector3(-1.4,0,2.2)
+	var moving: bool = a.escort.instruction == "follow" and Model.distance(escort.global_position,target) > 0.65
+	var waypoint := _navigation.waypoint(escort.global_position,target) if moving else escort.global_position
+	var motion: Dictionary = escort.step(delta,waypoint,moving)
+	var error := model.record_escort(motion,delta)
+	if not error.is_empty():
+		escort.apply(_escort_record())
+		_message = error
+
+func _escort_audible() -> bool:
+	if _paused or not model.aftermath().escort.active: return false
+	var from := avatar.global_position+Vector3.UP*1.35
+	var to := escort.global_position+Vector3.UP*1.35
+	var query := PhysicsRayQueryParameters3D.create(from,to,1,[avatar.get_rid(),horse.get_rid(),attacker.get_rid(),escort.get_rid()])
+	return get_world_3d().direct_space_state.intersect_ray(query).is_empty()
+
+func checkpoint_path() -> String:
+	return save_path + ".checkpoint.json"
+
+func _capture_checkpoint(reason: String) -> void:
+	var error := _candidate_error(model)
+	if error.is_empty(): error = Checkpoint.write(checkpoint_path(),model.snapshot(),avatar.pivot.rotation,reason)
+	_checkpoint_note = "Checkpoint saved: " + ("before the return-path ambush" if reason == "return_trail" else "back in the courtyard") + ". R restores it." if error.is_empty() else "Checkpoint not saved: " + error
+	_message += "\n" + _checkpoint_note
+
+func _restore_checkpoint() -> void:
+	var result := Checkpoint.read(checkpoint_path())
+	var error: String = result.error
+	var staged := Story.new()
+	if error.is_empty(): error = staged.restore(result.envelope.snapshot)
+	if error.is_empty(): error = _candidate_error(staged)
+	if error.is_empty(): error = model.restore(staged.snapshot())
+	if not error.is_empty():
+		_show_dialog("CHECKPOINT NOT RESTORED",error+"\nYour current chapter is unchanged.",
+			[["Return","resume"],["Load manual save","load"],["Main menu","menu"]])
+		return
+	_apply()
+	avatar.pivot.rotation = Vector3(result.envelope.camera[0],result.envelope.camera[1],0)
+	_clear_pending_actions()
+	_message = "Checkpoint restored. Future memories, decisions and damage from the discarded attempt have not been carried back."
+	_resume()

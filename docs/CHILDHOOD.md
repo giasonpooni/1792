@@ -14,7 +14,7 @@ This is a small, compressed, **authored source-informed prototype**, not a dated
 | Guard and counter | Approach and face the trainer. Hold Q through two visibly telegraphed blows, then left-click during recovery. There is no damage in practice. |
 | Hunting trail | Look toward and examine three tracks in order with E. Approach the stationary quarry while holding C, then E to observe it. Tracking/stalking are implemented; shooting, killing, harvesting and animal AI are not. |
 | Return-path ambush | Return through the marked bend. An unnamed attacker approaches and telegraphs strikes. Make distance and reach the courtyard, or face the attacker, Q guard, then left-click during stagger to create an escape opening. Riding remains available. |
-| Aftermath | Returning records survival, not proof of who commissioned the attack. Three unguarded hits end this attempt; J/F1 lets the player load or return to the menu and restart. No automatic checkpoint exists: F5 before the bend is useful. |
+| Aftermath | Returning records survival, not proof of who commissioned the attack. Hear the two return accounts, negotiate with Raj Kaur, inspect the bend with or without a guard, and report back. R restores a separately retained checkpoint after a failed attempt. See [Aftermath](AFTERMATH.md). |
 
 The courtyard tree offers an optional E reflection. It is original inner dialogue, not scripture, a historical quotation, a magical reveal or a farmable combat bonus. It is not a required tutorial gate.
 
@@ -38,13 +38,13 @@ Simulation ticks assume the project's 60 Hz physics. Menus stop both actor movem
 
 ## Persistence
 
-F5/F9 uses `user://1792-childhood-v1.json`, not any earlier command/riding/companion slot. Temporary-file replacement follows the existing save pattern. The bounded validator rejects nonfinite coordinates, nonintegral progress, unknown fields, causal lesson skips, rewritten testimony, invented firsthand memory, future receipt times and mismatched identity/clock/horse state. Discrete tick fields are normalized after validated JSON parsing; positional floating-point representation is not claimed bit-identical across engines.
+The composed chapter now uses `user://1792-childhood-aftermath-v1.json`. Its pause menu explicitly imports the former `user://1792-childhood-v1.json` without overwriting it. Checkpoints use the active save path plus `.checkpoint.json`, not the manual slot. `aftermath_state.gd` extends the unchanged childhood authority with one optional subrecord in the same `_state`; no second clock runs. Temporary-file replacement follows the existing save pattern. The bounded validator rejects nonfinite coordinates, nonintegral progress, unknown fields, causal lesson skips, rewritten testimony, invented firsthand memory, future receipt times and mismatched identity/clock/horse state. Discrete tick fields are normalized after validated JSON parsing; positional floating-point representation is not claimed bit-identical across engines.
 
 Loading stages a candidate separately, then checks standing room/ground for the player and assailant and the existing horse hull against current collision geometry. An invalid load leaves the live authority and positions intact. This is an integrity boundary, not authentication or a security sandbox: same-process code can construct a valid alternative history, and the save is not signed. Godot's ordinary JSON parser is used; duplicate-key rejection is not claimed. Windows replacement behavior remains unverified.
 
 ## Verification and limits
 
-`tools/run_checks.py` runs the existing suites plus `test_childhood.gd`. The new test exercises an actual menu signal and scene handoff, an input-driven whole lesson/escape journey, separate guard/counter fixtures, attributed memory and save round-trips, a wall-obstructed view, invalid spatial load, pause and the visual toggle. There is no progress/position injection after departure in the whole journey; camera steering is supplied by the test driver. Domain and encounter setup fixtures are marked separately.
+`tools/run_checks.py` runs every existing suite, including `test_childhood.gd`, followed by `test_aftermath.gd`. The latter extends this journey with branch, guard and checkpoint tests. The new test exercises an actual menu signal and scene handoff, an input-driven whole lesson/escape journey, separate guard/counter fixtures, attributed memory and save round-trips, a wall-obstructed view, invalid spatial load, pause and the visual toggle. There is no progress/position injection after departure in the whole journey; camera steering is supplied by the test driver. Domain and encounter setup fixtures are marked separately.
 
 `render_childhood.gd` supplies four visual fixtures: home, unopened meaning of a message, received accounts and the ambush. Those fixtures do not prove manual playtesting. New tests inject `user://childhood-regression-only.json`; they do not write player saves.
 
