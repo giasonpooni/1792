@@ -8,12 +8,14 @@ const HISTORY_DELAY_DEFAULT := 90
 const AUTHORED_EVENT_PATHS := {
 	"mahan_singh_death_fixed": "res://mahan/data/mahan_singh_death_fixed.json",
 	"mahan_late_campaign_illness": "res://mahan/data/mahan_late_campaign_illness.json",
-	"mahan_gujranwala_home_ground": "res://mahan/data/mahan_gujranwala_home_ground.json"
+	"mahan_gujranwala_home_ground": "res://mahan/data/mahan_gujranwala_home_ground.json",
+	"mahan_gujranwala_ridge_settlement_approach": "res://mahan/data/mahan_gujranwala_ridge_settlement_approach.json"
 }
 const AUTHORED_EVENT_IDS := [
 	"mahan_singh_death_fixed",
 	"mahan_late_campaign_illness",
-	"mahan_gujranwala_home_ground"
+	"mahan_gujranwala_home_ground",
+	"mahan_gujranwala_ridge_settlement_approach"
 ]
 const AUTHORED_LOCATION_PATHS := {
 	"gujranwala_settlement": "res://mahan/data/locations/gujranwala_settlement.json",
@@ -201,8 +203,6 @@ func observe_historical_event(event_id: String) -> String:
 	return ""
 
 func request_historical_report(event_id: String) -> String:
-	## Schedules delayed custody along an authored report route when not a direct observer
-	## (or when the player prefers courier delivery even if observer).
 	if not _catalog.has(event_id):
 		return "Unknown historical event."
 	if is_mounted():
@@ -245,7 +245,6 @@ func acknowledge_fixed_endpoint() -> String:
 	var err := super.acknowledge_fixed_endpoint()
 	if not err.is_empty():
 		return err
-	## Campaign-frame knowledge grant for the fixed-death stub (not a live observation).
 	var death_id := "mahan_singh_death_fixed"
 	if _catalog.has(death_id) and player_may_know(death_id):
 		var hist := _ensure_history()
@@ -345,7 +344,6 @@ func _validate_history_ledger(value: Dictionary, hist: Dictionary) -> String:
 		if typeof(row.player_knowledge) != TYPE_BOOL or typeof(row.observed) != TYPE_BOOL:
 			return "History knowledge flags must be boolean."
 		if row.player_knowledge:
-			## Fence: knowledge requires observer, delivered report, or campaign-frame route.
 			if not _catalog.has(event_id):
 				return "player_knowledge set for missing catalog event."
 			var allowed := false
@@ -355,7 +353,6 @@ func _validate_history_ledger(value: Dictionary, hist: Dictionary) -> String:
 				allowed = true
 			if _has_campaign_frame_route(event_id) and value.mahan.get("endpoint_acknowledged", false):
 				allowed = true
-			## Direct observer who observed, even without endpoint.
 			if is_direct_observer(event_id) and row.observed:
 				allowed = true
 			if not allowed:
