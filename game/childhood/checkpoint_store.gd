@@ -1,10 +1,11 @@
 extends RefCounted
 ## A detached save envelope, never a running world or an authority for game facts.
+## An optional caller-declared validator extends the same store; it is not read from a save.
 const Model := preload("res://childhood/aftermath_state.gd")
 const LIMIT := 196608
 const SCHEMA := "1792.chapter-checkpoint.v1"
 
-static func validate(value: Variant) -> String:
+static func validate(value: Variant, authority: Script = Model) -> String:
 	if not value is Dictionary or value.size() != 4 or value.get("schema") != SCHEMA:
 		return "Malformed checkpoint envelope."
 	if value.get("reason") not in ["return_trail","courtyard_return"]: return "Unsupported checkpoint reason."
@@ -13,8 +14,8 @@ static func validate(value: Variant) -> String:
 	for number in camera:
 		if not Model.Riding.finite_number(number): return "Nonfinite checkpoint camera."
 	if camera[0] < -0.9 or camera[0] > 0.5 or absf(camera[1]) > PI + 1e-6: return "Checkpoint camera outside limits."
-	var staged := Model.new()
-	var error := staged.restore(value.get("snapshot"))
+	var staged = authority.new()
+	var error: String = staged.restore(value.get("snapshot"))
 	if not error.is_empty(): return error
 	if staged.mounted(): return "Checkpoint must be on foot."
 	if value.reason == "return_trail" and (staged.stage() != "ready" or not staged.near("quarry",6.0)): return "Return-trail checkpoint is not before the encounter."
@@ -22,10 +23,10 @@ static func validate(value: Variant) -> String:
 		return "Courtyard checkpoint is not before the aftermath."
 	return ""
 
-static func write(path: String, snapshot: Dictionary, view: Vector3, reason: String) -> String:
+static func write(path: String, snapshot: Dictionary, view: Vector3, reason: String, authority: Script = Model) -> String:
 	var envelope := {"schema":SCHEMA, "reason":reason, "snapshot":snapshot.duplicate(true),
 		"camera":[clampf(view.x,-0.9,0.5),wrapf(view.y,-PI,PI)]}
-	var error := validate(envelope)
+	var error := validate(envelope,authority)
 	if not error.is_empty(): return error
 	var text := JSON.stringify(envelope,"",true,true)
 	if text.to_utf8_buffer().size() > LIMIT: return "Checkpoint exceeds size budget."
@@ -39,7 +40,7 @@ static func write(path: String, snapshot: Dictionary, view: Vector3, reason: Str
 	status = DirAccess.rename_absolute(ProjectSettings.globalize_path(path + ".tmp"),ProjectSettings.globalize_path(path))
 	return "" if status == OK else "Checkpoint replacement failed."
 
-static func read(path: String) -> Dictionary:
+static func read(path: String, authority: Script = Model) -> Dictionary:
 	var file := FileAccess.open(path,FileAccess.READ)
 	if file == null: return {"error":"No checkpoint saved yet. Continue the lesson or load a manual save."}
 	if file.get_length() > LIMIT:
@@ -49,6 +50,6 @@ static func read(path: String) -> Dictionary:
 	file.close()
 	var parser := JSON.new()
 	if parser.parse(text) != OK: return {"error":"Malformed checkpoint JSON."}
-	var error := validate(parser.data)
+	var error := validate(parser.data,authority)
 	if not error.is_empty(): return {"error":error}
 	return {"error":"", "envelope":parser.data.duplicate(true)}

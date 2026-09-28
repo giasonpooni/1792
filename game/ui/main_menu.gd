@@ -11,9 +11,9 @@ func _ready() -> void:
 	add_child(background)
 	var panel := VBoxContainer.new()
 	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	panel.position = Vector2(-330, -220)
-	panel.size = Vector2(660, 440)
-	panel.add_theme_constant_override("separation", 18)
+	panel.position = Vector2(-330, -260)
+	panel.size = Vector2(660, 520)
+	panel.add_theme_constant_override("separation", 14)
 	add_child(panel)
 	var title := Label.new()
 	title.text = "1792"
@@ -24,6 +24,7 @@ func _ready() -> void:
 	subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	panel.add_child(subtitle)
 	_add_button(panel, "1792 · " + Names.PLAYER_NAME + " · Home territory", "res://world/home_territory.tscn")
+	_add_button(panel, "Living politics + one-eye vision (extended home chapter)", "res://world/political_home.tscn")
 	_add_button(panel, "Lahore · Command story (separate 1801 sandbox)", "res://world/command_sandbox.tscn")
 	_add_button(panel, "Lahore · Houses and rivals (riding / companions / house politics)", "res://world/house_sandbox.tscn")
 	var note := Label.new()

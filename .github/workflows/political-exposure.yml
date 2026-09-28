@@ -1,0 +1,58 @@
+name: Political exposure and perception
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: political-exposure-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  political:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Install pinned Godot 4.5.1
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/godot" test-results
+          curl --fail --location --retry 3 --max-time 180 'https://github.com/godotengine/godot-builds/releases/download/4.5.1-stable/Godot_v4.5.1-stable_linux.x86_64.zip' -o "$RUNNER_TEMP/godot.zip"
+          echo "02ec53d1cc7dbb9cc6355393c61b9ab43d1244751a124f10248a4802830788cd  $RUNNER_TEMP/godot.zip" | sha256sum --check
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
+      - name: Import, reducer campaign and integrated scene tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          GODOT="$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
+          timeout 90 "$GODOT" --headless --path game --editor --import --quit 2>&1 | tee test-results/political-import.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/political-import.log
+          timeout 180 "$GODOT" --headless --path game --script res://tests/test_political_exposure.gd 2>&1 | tee test-results/political-tests.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/political-tests.log
+          grep -E 'POLITICAL_EXPOSURE: [0-9]+ assertions; 0 failures' test-results/political-tests.log
+          cp "$HOME/.local/share/godot/app_userdata/1792/political-1000.jsonl" test-results/
+      - name: Software-rendered perception and journal fixtures
+        shell: bash
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install --yes --no-install-recommends xvfb xauth libgl1-mesa-dri
+          timeout 180 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --path game --rendering-method gl_compatibility --audio-driver Dummy --script res://tests/render_political_vision.gd 2>&1 | tee test-results/political-render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/political-render.log
+          grep -q 'POLITICAL_RENDER: 6 captures; 0 failures' test-results/political-render.log
+          mkdir -p test-results/screenshots
+          cp "$HOME/.local/share/godot/app_userdata/1792/"political-*.png test-results/screenshots/
+      - name: Retain verification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: political-exposure-evidence
+          path: test-results/
+          retention-days: 14
