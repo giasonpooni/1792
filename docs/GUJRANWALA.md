@@ -1,4 +1,4 @@
-# Gujranwala — Sukerchakia home-ground notes (Mahan interlude)
+# Gujranwala - Sukerchakia home-ground notes (Mahan interlude)
 
 Short research / framing notes for the **Mahan Singh** field-command slice.
 Gujranwala is treated as a **Settlement / place object**, not a Person, Dynasty,
@@ -56,15 +56,15 @@ Godot at `game/mahan/data/locations/`):
 Authored nodes in `mahan_state.gd` (positions stay inside the existing ±28 greybox):
 
 ```
-gujranwala_settlement — gujranwala_camp — gujranwala_fort_road — camp — ford — ridge
+gujranwala_settlement - gujranwala_camp - gujranwala_fort_road - camp - ford - ridge
 ```
 
 - `camp` starts known; Gujranwala nodes enter **`known_nodes` only on delivered scout custody** (same epistemic fence as ford/ridge).
-- Scout / march speech is **authored fiction (class D / C)** informed by home-ground framing — **not** primary quotations.
+- Scout / march speech is **authored fiction (class D / C)** informed by home-ground framing - **not** primary quotations.
 - Does **not** open a town sim, siege map, or childhood/Lahore authority rewrite.
 
 
-## Authored encounter stub (ridge→settlement)
+## Authored encounter stub (ridge->settlement)
 
 Playable greybox beat on the existing march path
 (`gujranwala_fort_road` / `gujranwala_camp` / `gujranwala_settlement`):
@@ -73,12 +73,30 @@ Playable greybox beat on the existing march path
 | --- | --- |
 | Historical-event frame | `mahan_gujranwala_ridge_settlement_approach` (`authored_fiction`, class D/B) |
 | Greybox marker | Approach encounter marker between fort road and camp |
-| Delayed scout custody | `dispatch_approach_scout` → delay clock → journal on delivery only |
+| Delayed scout custody | `dispatch_approach_scout` -> delay clock -> journal on delivery only |
 | Player choices | `hold_observe` or `advance_under_custody` (requires delivered scout) |
 | Endpoint fence | Choices do **not** alter Mahan's fixed death; no alternate-history win; no combat AI |
 
 Adapter: `mahan_encounter_state.gd` / `mahan_encounter_chapter.gd` (extends history).
 Ontology unchanged: settlement is a place; household remains `sukerchakia`.
+
+
+
+## Settlement observation greybox (this tip)
+
+Playable beat when the column is at `gujranwala_settlement` **or** after the
+encounter choice `advance_under_custody`:
+
+| Piece | Role |
+| --- | --- |
+| Greybox markers | `walls` / `gate` / `well` / `house` near the settlement node |
+| Examine | Direct attributed memories (`source_id` / `channel` / `received_tick`) - **sealed facts ≠ omniscience** |
+| Optional local rumor | `request_local_settlement_rumor` -> delay custody -> journal + `player_knowledge` only on delivery |
+| Endpoint fence | No combat AI; no town economy sim; fixed death unchanged; place ≠ person |
+
+Adapter: `mahan_settlement_state.gd` / `mahan_settlement_chapter.gd` (extends encounter).
+Ontology unchanged: settlement is a place; household remains `sukerchakia`; Raj Kaur /
+Sandhawalia absent; no religious framing.
 
 ## What this is not
 
@@ -93,7 +111,7 @@ Public encyclopedic / secondary pages used for orientation (no edition-page prim
 anchors claimed here):
 
 - Wikipedia: *Gujranwala* (geography; Sikh-period capital motifs; Rechna Doab).
-- Wikipedia / secondary summaries of Sukerchakia–Chattha conflict and Mahan Singh
+- Wikipedia / secondary summaries of Sukerchakia-Chattha conflict and Mahan Singh
   career motifs (Rasulnagar/Ramnagar, Chenab tract).
 - Common secondary Sikh-misl narratives naming Garhi Mahan Singh and HQ at Gujranwala.
 
