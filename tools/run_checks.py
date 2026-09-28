@@ -61,6 +61,8 @@ def main() -> int:
         "mahan-history", "MAHAN_HISTORY_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_mahan_encounter.gd"],
         "mahan-encounter", "MAHAN_ENCOUNTER_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_mahan_settlement.gd"],
+        "mahan-settlement", "MAHAN_SETTLEMENT_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_mahan_fence.gd"],
         "mahan-fence", "MAHAN_FENCE_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_mahan_handoff.gd"],
