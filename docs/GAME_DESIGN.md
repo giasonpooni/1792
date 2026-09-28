@@ -2,77 +2,38 @@
 
 ## Player fantasy
 
-The player begins as a young Ranjit Singh inside a small, familiar home territory.
+The player begins as young Ranjit Singh inside Gujranwala and the Sukerchakia home territory. The fantasy is not “rule an empire”; it is **grow into someone capable of creating one**.
 
-The fantasy is not "rule an empire."
+## First vertical slice: Gujranwala
 
-It is:
+The slice must prove that home is spatially memorable before the world expands. The player should be able to walk from the household through irregular settlement lanes, pass a small market/workshop cluster, reach cultivated/open ground and find outbound roads whose destinations are only partly known.
 
-**grow into someone capable of creating one.**
+The town is not a strategy node. It is a physical place with household space, work, food, water, roads, visitors, rumor and political exposure.
 
-## Pillars
+### Design invariants
 
-### 1. Embodied world
+1. **Embodied world.** Travel happens physically whenever practical.
+2. **Partial knowledge.** Geographic, political and military knowledge have provenance and age.
+3. **Relationships before armies.** Trust, kinship, obligation and reputation precede command abstractions.
+4. **Persistent world.** Important people and places retain state outside immediate view.
+5. **Dangerous movement.** Terrain, numbers, surprise, negotiation and withdrawal matter.
+6. **Growing abstraction.** Later command systems do not delete character-scale play.
+7. **Historical layers.** A later building or road plan never appears in 1792 merely because it survives today.
 
-Travel happens physically whenever practical.
+## Gujranwala implementation rule
 
-Roads, rivers, settlements, terrain, weather, horses, camps, and distance should become memorable.
+Build from evidence outward:
 
-### 2. Partial knowledge
+```text
+documented anchor
+      ↓
+bounded reconstruction
+      ↓
+playable spatial hypothesis
+      ↓
+test in Godot
+      ↓
+revise when stronger evidence arrives
+```
 
-The player never receives omniscient political information by default.
-
-Knowledge has provenance and age.
-
-A settlement can be:
-
-- known geographically;
-- politically uncertain;
-- militarily uncertain;
-- recently observed;
-- known only through rumor.
-
-### 3. Relationships before armies
-
-Early progression comes through people:
-
-- trust;
-- respect;
-- loyalty;
-- kinship;
-- obligation;
-- reputation.
-
-Command capacity should emerge from relationships rather than arbitrary level gates.
-
-### 4. Persistent world
-
-Important NPCs and settlements have state outside the player's immediate vicinity.
-
-Persistence should be introduced incrementally, beginning with a small set of named characters and locations.
-
-### 5. Dangerous movement
-
-Combat is not the default solution.
-
-Movement, terrain, companions, numbers, surprise, negotiation, withdrawal, and preparation matter.
-
-### 6. Growing abstraction
-
-The player starts at character scale.
-
-Later systems add command and administration without removing the embodied game.
-
-## First vertical slice
-
-A small home-region slice should prove:
-
-1. walking feels acceptable;
-2. riding feels good;
-3. leaving and returning home feels meaningful;
-4. at least one road connects recognizable places;
-5. one NPC remembers an interaction;
-6. one encounter changes world state;
-7. save/load reproduces that change.
-
-Everything else can wait.
+The current town geometry is a hypothesis under test. See `GUJRANWALA_1792.md`.

@@ -3,26 +3,72 @@
   "game_time": {
     "year": 1792,
     "day": 1,
-    "hour": 7.0
+    "hour": 7
   },
   "player": {
     "character_id": "ranjit_singh",
-    "position": [0.0, 0.0, 0.0],
-    "known_places": ["sukerchakia_home"]
+    "position": [
+      0,
+      0,
+      18
+    ],
+    "known_places": [
+      "gujranwala_home_compound",
+      "gujranwala_bazaar",
+      "gujranwala_fields"
+    ]
   },
   "places": [
     {
-      "id": "sukerchakia_home",
-      "name": "Sukerchakia Home Territory",
+      "id": "gujranwala_home_compound",
+      "name": "Sukerchakia Household, Gujranwala",
       "knowledge": "known",
-      "disposition": "friendly"
+      "disposition": "friendly",
+      "evidence_class": "B",
+      "note": "Courtyard-house type anchored to surviving birthplace haveli; exact 1792 geometry reconstructed."
     },
     {
-      "id": "nearby_settlement_01",
-      "name": "Nearby Settlement",
-      "knowledge": "rumored",
-      "disposition": "uncertain"
+      "id": "gujranwala_bazaar",
+      "name": "Gujranwala Bazaar",
+      "knowledge": "known",
+      "disposition": "friendly",
+      "evidence_class": "B",
+      "note": "Exact 1792 placement and shop layout reconstructed."
+    },
+    {
+      "id": "gujranwala_fields",
+      "name": "Cultivated Edge",
+      "knowledge": "known",
+      "disposition": "friendly",
+      "evidence_class": "B"
+    },
+    {
+      "id": "north_road",
+      "name": "North Road",
+      "knowledge": "partial",
+      "disposition": "uncertain",
+      "evidence_class": "C"
+    },
+    {
+      "id": "west_road",
+      "name": "West Road",
+      "knowledge": "partial",
+      "disposition": "uncertain",
+      "evidence_class": "C"
+    },
+    {
+      "id": "east_road",
+      "name": "East Road",
+      "knowledge": "partial",
+      "disposition": "uncertain",
+      "evidence_class": "C"
     }
   ],
-  "relationships": []
+  "relationships": [],
+  "reconstruction": {
+    "place": "Gujranwala",
+    "year": 1792,
+    "status": "research-backed greybox",
+    "source_register": "data/history/gujranwala_sources.v1.json"
+  }
 }

@@ -1,181 +1,58 @@
 # 1792
 
-**1792** is a historical open-world game project about the early life and rise of Buddh Singh.
+**1792** is a historical open-world game about the early life and rise of **Ranjit Singh**, beginning in **Gujranwala in 1792**.
 
-The game begins in **1792**, when Buddh Singh is still a child and the Sikh Empire does not yet exist. The player starts inside the Sukerchakia Misl's home territory with a horse, a household, a small network of trusted people, and only partial knowledge of the wider Punjab.
+The first playable world is being built outward from the Sukerchakia home territory rather than from a strategy map. Gujranwala is the initial vertical slice: household space, a compact settlement, bazaar activity, roads into cultivated country, and incomplete knowledge beyond familiar places.
 
-The long-term design target is an embodied open world: ride, explore, hunt, talk, train, escort, trade, gather intelligence, build relationships, lead small groups, and gradually grow into military and political command.
+> **Current build:** researched Gujranwala greybox. Geometry is a reconstruction for play, not a surveyed 1792 town plan.
 
-This repository is intentionally being built **slowly, as a playable game**. Systems are added when they improve the player experience or make the simulated world more coherent.
+## Why Gujranwala first
 
-## Core premise
+Gujranwala was the Sukerchakia political center before Lahore. Historical scholarship describes it as a small settlement that expanded after Charat Singh established his capital there. The surviving Ranjit Singh birthplace haveli provides an architectural anchor: a brick-and-plaster residence organized around multiple courtyards. Pakistan's Department of Archaeology and Museums also notes that it likely had substantially more greenery and open space around it in the late eighteenth century than today.
 
-The world should not initially feel like a strategy map.
+The prototype therefore **does not back-project later nineteenth-century Gujranwala** into 1792. It does not treat the later street grid, Mahan Singh's later-built samadhi, or Ranjit Singh's Sheranwala baradari as features already present at game start.
 
-At the start:
-
-- the player controls Buddh Singh directly;
-- the Sukerchakia heartland is the only reliably friendly territory;
-- nearby settlements have varying relationships and incomplete information;
-- roads, rivers, horses, weather, distance, and local knowledge matter;
-- companions are people with trust and loyalty, not disposable unit slots;
-- political power grows from relationships, reputation, logistics, and control of physical places.
-
-As Buddh Singh grows older, the game expands in abstraction without abandoning third-person play:
-
-```text
-person
-  ↓
-rider
-  ↓
-small warband
-  ↓
-local commander
-  ↓
-campaign leader
-  ↓
-state builder
-```
-
-The player should still be able to mount a horse and ride through the same world even after gaining command responsibilities.
+See `docs/GUJRANWALA_1792.md` and `data/history/gujranwala_sources.v1.json`.
 
 ## First playable target
 
-The first milestone is deliberately small:
+```text
+home compound → settlement lanes / bazaar → cultivated edge
+              → outbound roads → uncertain country → return home
+```
 
-**A rideable Sukerchakia home-territory prototype.**
-
-It should contain:
-
-- one home compound / misl headquarters;
-- one controllable player character;
-- one rideable horse;
-- one nearby settlement;
-- one road network;
-- one patrol route;
-- one neighboring uncertain or hostile area;
-- a day/night clock;
-- persistent NPC state;
-- a minimal relationship system;
-- a minimal world-intelligence system;
-- save/load;
-- one small encounter that can be solved by movement, conversation, avoidance, or combat.
-
-The success criterion is simple:
-
-> It should be enjoyable to leave home on horseback, travel through the countryside, encounter people, and return.
+The current Godot greybox supplies a multi-courtyard household type, compact irregular settlement, bazaar/workshop markers, cultivated plots, wells/trees/open ground, route exits, player traversal, orbit camera, and an exploration HUD. Reconstructed features are explicitly labelled.
 
 ## Architecture
 
-1792 uses a layered architecture, but the game remains the authority for player experience.
+Godot owns the playable world. Blender owns future authored assets. Bevy is reserved for simulation workloads that justify it. Notations Engineering Terminal may later run experiments, replay and validation; it does not own the game loop.
 
-```text
-                   1792
-                    │
-             GAMEPLAY AUTHORITY
-                  Godot
-                    │
-       player / horse / UI / scenes
-                    │
-        ┌───────────┴───────────┐
-        │                       │
- world-state seam         content pipeline
-        │                       │
-   future Bevy                Blender
- simulation runtime       models / terrain
-        │
-        └───────────┬───────────┘
-                    │
-             optional NET seam
-      replay / experiments / validation
+## Run
+
+Target: Godot 4.x compatibility renderer.
+
+```bash
+git clone https://github.com/giasonpooni/1792.git
+cd 1792
+godot --path game --editor
 ```
 
-### Godot
+Controls: **WASD** move, **Shift** sprint, **right mouse drag** orbit camera, **Esc** release mouse.
 
-Godot owns the current playable application:
+## Historical method
 
-- third-person movement;
-- scene composition;
-- camera;
-- interaction;
-- horse gameplay;
-- dialogue;
-- UI;
-- encounters;
-- local world presentation.
-
-### Bevy
-
-Bevy is reserved for simulation workloads that actually justify it:
-
-- large persistent populations;
-- asynchronous settlement simulation;
-- faction-state evolution;
-- campaign logistics;
-- high-entity-count ECS workloads;
-- deterministic/headless world stepping.
-
-It should plug into the game through a versioned world-state boundary rather than duplicating gameplay logic.
-
-### Blender
-
-Blender is the content-authoring environment for:
-
-- terrain;
-- buildings;
-- props;
-- characters;
-- horses;
-- weapons;
-- animation;
-- environmental reconstruction.
-
-### NET
-
-Notations Engineering Terminal can later connect as an external development and scientific-analysis layer for:
-
-- simulation runs;
-- campaign replay;
-- parameter sweeps;
-- historical-data inspection;
-- provenance;
-- validation;
-- comparison between runs.
-
-NET does **not** own the game loop.
+Features are classed **A documented**, **B reconstructed**, **C gameplay abstraction**, or **D fictional connective material**. A surviving building is evidence for architectural vocabulary, not automatic proof that every surviving element existed in exactly that form in 1792. Later monuments can be comparative evidence but are not silently inserted into the start-year town.
 
 ## Repository layout
 
 ```text
-1792/
-├─ game/                  Godot project
-├─ data/                  versioned world/game data
-├─ docs/                  design and historical notes
-├─ schemas/               stable interchange contracts
-└─ tools/                 import/build/validation utilities
+game/          Godot playable application
+data/world/    canonical starting world records
+data/history/  source and reconstruction records
+docs/          design and historical research
+schemas/       interchange contracts
 ```
 
-## Historical approach
+## Licensing
 
-1792 should distinguish between:
-
-1. **documented history**;
-2. **reasonable reconstruction**;
-3. **gameplay abstraction**;
-4. **fictional connective material**.
-
-Historical claims should eventually carry source notes in the project data or documentation. Where evidence is uncertain, the game should represent uncertainty rather than quietly presenting invention as fact.
-
-## Design rule
-
-Do not build Punjab all at once.
-
-Build outward from home.
-
-Every expansion should preserve the same question:
-
-> Does this make riding through, understanding, and acting within the world more compelling?
-
-## Status
-
-Early foundation. The repository currently contains the first project scaffold and design contracts.
+Copyright © 2026 Cartesian Graphics. All rights reserved for original protected material except where a separate licence explicitly applies. Historical facts, public-domain material and third-party works remain outside that claim. See `LICENSE`.
