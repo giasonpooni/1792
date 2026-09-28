@@ -1,0 +1,27 @@
+name: Reference engine for offline development
+on:
+  push:
+    branches: [feat/riding-patrol-v1]
+    paths: [.github/workflows/reference-engine.yml]
+permissions:
+  contents: read
+jobs:
+  engine:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Fetch and verify the existing reference engine
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/reference-engine"
+          cd "$RUNNER_TEMP/reference-engine"
+          curl --fail --location --retry 3 --max-time 180 \
+            'https://github.com/godotengine/godot-builds/releases/download/4.5.1-stable/Godot_v4.5.1-stable_linux.x86_64.zip' -o godot.zip
+          echo '02ec53d1cc7dbb9cc6355393c61b9ab43d1244751a124f10248a4802830788cd  godot.zip' > SHA256SUMS
+          sha256sum --check SHA256SUMS
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: godot-reference-4.5.1
+          path: ${{ runner.temp }}/reference-engine/
+          retention-days: 3
