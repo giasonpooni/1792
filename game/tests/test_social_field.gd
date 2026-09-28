@@ -133,7 +133,7 @@ func _run() -> void:
 	check(Pose.pose(m,Campaign.OUTPOSTS.bhangi+Vector3.BACK*2).is_empty(),"site-bound raid fixture")
 	check(m.order_political("raid","bhangi").is_empty(),"world authority accepts raid")
 	for _i in range(120): m.advance()
-	var pending := wire(m.snapshot())
+	var pending: Dictionary = wire(m.snapshot())
 	var restored := Campaign.new()
 	check(restored.restore(pending).is_empty(),"save with pending receipts restores")
 	for _i in range(600):
