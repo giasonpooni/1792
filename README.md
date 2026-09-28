@@ -37,7 +37,7 @@ geometry to source claims, uncertainty classes and an exact content digest.
 Later or disputed monuments cannot silently appear at the 1792 start date.
 The notebook is a developer reference, not information granted to Buddh.
 
-**Shah Muhammad** is the retrospective narrator. Four milestone cues currently
+**Shah Muhammad** is the retrospective narrator. Seven milestone cues currently
 use original English development text—not historical verse, translations or a
 recorded voice. They observe the existing state without altering resources,
 knowledge or save history. Punjabi authoring and voice production remain future work.
@@ -60,6 +60,23 @@ recurring consumption and water-dependent production are not implemented.
 
 [Water-round walkthrough and research](docs/GUJRANWALA_WATER_ROUND.md)
 
+## New story loop: hear, explore and retell
+
+After the household inquiry, listen to the quartermaster and market trader tell
+**The borrowed rope** differently. Inspect the rope beside the stable, compare the
+accounts in **F7**, return for a further recollection, and retell what you heard to
+the neighbour by the well. Their next response remembers what you actually told them.
+
+This original fictional episode tests **sakhi-inspired oral transmission**, not a
+historically authenticated sakhi. Repeated hearsay retains its source; physical
+traces do not magically settle permission or motive. The reward is discovery and a
+new conversation, not XP or an official verdict. No allowance is required.
+
+F5/F9 now use the distinct `1792-oral-memory-v1.json` slot. **J** can explicitly
+import the previous integrated Gujranwala save without overwriting that old file.
+
+[Oral-memory walkthrough, source lineage and tests](docs/ORAL_MEMORY.md)
+
 ## Other retained modes
 
 The menu also retains the separate Lahore command story, houses-and-rivals patrol
@@ -76,6 +93,7 @@ scenarios, not completed transitions in the childhood-to-Lahore biography.
 | Q / left click / C | Childhood guard / counter / quiet approach |
 | G / J / F1 | Follow or hold where available / journal / pause |
 | F2 | Paused reconstruction notebook in the home chapter |
+| F7 | Remembered stories and comparison of received accounts |
 | F5 / F9 / R | Save / load / restore childhood checkpoint |
 
 The detailed guide covers mounted gaits, alternate modes and optional framing.
@@ -97,7 +115,9 @@ simulation/experiment providers, not competing game loops.
 ```sh
 python tools/check_project.py
 python tools/check_reconstruction.py
+python tools/check_oral_memory.py
 python tools/run_checks.py --godot /path/to/godot
+/path/to/godot --headless --fixed-fps 60 --path game --script res://tests/test_oral_memory.gd
 ```
 
 The runner retains every inherited gameplay suite and adds reconstruction,
