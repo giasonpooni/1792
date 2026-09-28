@@ -8,7 +8,9 @@ var _horse_label: Label3D
 var _mount_requested := false
 
 func _ready() -> void:
-	campaign = CavalryModel.new()
+	# Allow logistics (or other) adapters to install their model before super._ready().
+	if not campaign.has_method("enable_riding"):
+		campaign = CavalryModel.new()
 	campaign.enable_riding()
 	super._ready()
 	horse = HorseScene.instantiate()
@@ -78,7 +80,7 @@ func _toggle_mount() -> void:
 	else:
 		campaign.record_position(avatar.global_position, 1.0 / 60.0)
 		error = campaign.mount_horse() if horse.clear_mount_path(avatar) else "A wall blocks the way to the horse."
-	_notice = error if not error.is_empty() else ("Mounted. W forward · A/D steer · Shift canter · S/Space brake." if campaign.is_mounted() else "Dismounted. The field horse stays here.")
+	_notice = error if not error.is_empty() else ("Mounted. W forward | A/D steer | Shift canter | S/Space brake." if campaign.is_mounted() else "Dismounted. The field horse stays here.")
 	if error.is_empty():
 		_apply_mount(true)
 
@@ -102,7 +104,7 @@ func _refresh() -> void:
 	if not is_instance_valid(_hud) or not is_instance_valid(_horse_label):
 		return
 	var h: Dictionary = campaign.horse_state()
-	var mount := "mounted · %.1f m/s" % float(h.speed) if campaign.is_mounted() else "horse parked"
-	_hud.text += "\nCavalry: %s · F mount/dismount · Household graph: %s" % [mount, CavalryModel.HOUSEHOLD_ID]
+	var mount := "mounted | %.1f m/s" % float(h.speed) if campaign.is_mounted() else "horse parked"
+	_hud.text += "\nCavalry: %s | F mount/dismount | Household graph: %s" % [mount, CavalryModel.HOUSEHOLD_ID]
 	_horse_label.position = RidingRules.position(h) + Vector3.UP * 3.6
 	_horse_label.text = "" if campaign.is_mounted() else "Field horse [F]"
