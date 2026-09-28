@@ -211,7 +211,7 @@ static func _coalitions(r: Dictionary) -> void:
 				var shared := minf(float(r.pairs[a+":"+target].grievance),float(r.pairs[b+":"+target].grievance))
 				var friction := 0.1+0.3*maxf(float(r.pairs[a+":"+b].grievance),float(r.pairs[b+":"+a].grievance))
 				var score := shared-friction
-				var id := a+":"+b+":"+target
+				var id: String = a+":"+b+":"+str(target)
 				var threshold := 0.22 if r.coalitions.has(id) else 0.44
 				if score >= threshold and r.factions[a].resources >= 5.0 and r.factions[b].resources >= 5.0:
 					keep[id] = r.coalitions[id] if r.coalitions.has(id) else {"members":[a,b],"target":target,"formed_tick":int(r.tick)}

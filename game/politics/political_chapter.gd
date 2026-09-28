@@ -41,9 +41,15 @@ func _sync_eye_camera() -> void:
 	var arm: SpringArm3D = avatar.get_node("CameraPivot/SpringArm3D")
 	var camera: Camera3D = arm.get_node("Camera3D")
 	arm.spring_length = 0.0 if _eye_level else 6.8 if model.mounted() else 5.5
-	camera.position.x = float(campaign.perception().healthy_eye_offset) if _eye_level else 0.0
+	# SpringArm owns its child's translation: put the eye offset on the arm itself.
+	arm.position.x = float(campaign.perception().healthy_eye_offset) if _eye_level else 0.0
+	camera.position.x = 0.0
 	camera.near = 0.05 if _eye_level else 0.1
 	avatar.get_node("MeshInstance3D").visible = not _eye_level and not model.mounted()
+
+func _eye_origin() -> Vector3:
+	# The inherited pivot already owns walking/riding eye height.
+	return avatar.pivot.global_position+avatar.pivot.global_basis.x*float(campaign.perception().healthy_eye_offset)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
@@ -77,7 +83,7 @@ func _sample_observers() -> void:
 	var noticed: Array = []
 	for observer in samples:
 		var at: Vector3 = observer.at
-		var destination := avatar.global_position+Vector3.UP*1.2
+		var destination: Vector3 = avatar.pivot.global_position-Vector3.UP*0.2
 		var offset: Vector3 = destination-at
 		var facing: Vector3 = observer.forward
 		var in_cone := Vector2(facing.x,facing.z).normalized().dot(Vector2(offset.x,offset.z).normalized()) >= cos(deg_to_rad(65.0))
@@ -85,15 +91,13 @@ func _sample_observers() -> void:
 		var ray := PhysicsRayQueryParameters3D.create(at,destination,1,[avatar.get_rid(),horse.get_rid(),escort.get_rid(),attacker.get_rid()])
 		if not get_world_3d().direct_space_state.intersect_ray(ray).is_empty(): continue
 		var signature := clampf(0.35+(0.25 if model.mounted() else 0.0)+(0.25 if avatar.velocity.length() > 5.0 else 0.0)+0.15*(1.0-offset.length()/22.0),0.1,1.0)
-		# Rate-limited by the authority. A failed submission never changes the ledger.
 		campaign.record_gaze(observer.id,true,signature)
 		if _seen(at,24.0): noticed.append(Campaign.Registry.PEOPLE[observer.id].name)
 	_attention_cue = "A watchful glance: "+", ".join(noticed) if not noticed.is_empty() else "No watchful glance has been observed. This is not proof of privacy."
 
 func _seen(at: Vector3, reach: float) -> bool:
-	var p := campaign.perception()
-	var eye := avatar.global_position+Vector3.UP*1.35+avatar.pivot.global_basis.x*float(p.healthy_eye_offset)
-	var offset := at-eye
+	var eye: Vector3 = _eye_origin()
+	var offset: Vector3 = at-eye
 	var forward: Vector3 = -avatar.pivot.global_basis.z
 	var angle := Campaign.Vision.bearing(forward,offset)
 	var ray := PhysicsRayQueryParameters3D.create(eye,at,1,[avatar.get_rid(),horse.get_rid(),attacker.get_rid()])
