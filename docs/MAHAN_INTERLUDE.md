@@ -120,9 +120,9 @@ and the fixed endpoint frame. Broad religious-conflict framing is a non-goal.
 
 ## Architecture
 
-- Profile authority: `game/mahan/mahan_state.gd` (`mahan.v1`)
+- Profile authority: `game/mahan/mahan_state.gd` (`mahan.v1`) plus Mahan-only `mahan_cavalry_state.gd` riding adapter
 - Launch composition: `game/mahan/mahan_launch.gd` onto `game/world/mahan_camp.tscn`
-- Chapter presentation: `game/mahan/mahan_chapter.gd` (opts into riding + horse adapter)
+- Chapter presentation: base `game/mahan/mahan_chapter.gd` plus `mahan_cavalry_chapter.gd` (opts into horse adapter)
 - Reuses existing player controller, `riding_rules` / `horse` adapter and save/load
   pattern; does **not** replace childhood checkpoint, companion or Lahore command
   machinery
