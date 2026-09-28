@@ -1,21 +1,22 @@
-# Mahan Singh interlude (recon delay + column march + cavalry)
+# Mahan Singh interlude (recon delay + column march + cavalry + logistics)
 
 ## Playable loop intent
 
 This slice deepens the **separate playable profile** for **Mahan Singh** (stable actor
 id `mahan_singh`) with delayed scout custody, authored column movement on greybox
-nodes, and **opt-in cavalry** that reuses the existing riding library. It remains a
-modular campaign extension parallel to childhood → aftermath, not a rewrite of those
+nodes, **opt-in cavalry** that reuses the existing riding library, and a
+**small logistics** module (forage / wait consumption / stockout). It remains a
+modular campaign extension parallel to childhood -> aftermath, not a rewrite of those
 chapters and not a merge into the Lahore sandboxes.
 
 | Step | Actual interaction |
 | --- | --- |
-| Enter | Main menu → **1790 · Mahan Singh · Field camp (interlude)** |
+| Enter | Main menu -> **1790 / Mahan Singh / Field camp (interlude)** |
 | Mount | Near the **field horse**, press **F** to mount (or dismount when stopped). Only this chapter opts into riding. |
-| Dispatch | On foot at the **camp table**, press **E**. Dispatch a scout detachment to the **ford** or **ridge** (costs 1 provision stub). |
+| Dispatch | On foot at the **camp table**, press **E**. Dispatch a scout detachment to the **ford** or **ridge** (costs 1 provision). Optional: **forage** at the column node when packs have room. |
 | Delay clock | Walk, wait, or ride. Pending custody shows on the HUD. **Player knowledge updates only when the report arrives** (`arrives_at`); undelivered text stays out of the journal. |
-| Column order | After ≥1 delivered report, press **E** at the table (dismounted). Choose **advance the horse column** or **hold for corroboration**. Optional: dispatch a second scout before ordering. |
-| March | If advancing: walk or **ride** to an adjacent authored node (**camp → ford → ridge**), **dismount**, and press **E** to commit the march (costs 2 provisions + time). Hold keeps the column at camp. |
+| Column order | After >=1 delivered report, press **E** at the table (dismounted). Choose **advance the horse column** or **hold for corroboration**. **Stockout** (provisions below march cost) blocks advance and forces hold/forage. Optional: dispatch a second scout or forage before ordering. |
+| March | If advancing: walk or **ride** to an adjacent authored node (**camp -> ford -> ridge**), **dismount**, and press **E** to commit the march (costs 2 provisions + time). **Forage** once per node. Wait time drains provisions. Stockout blocks further marches. Hold keeps the column at camp. |
 | Fixed endpoint frame | Press **E** with the column (or at the table) and **acknowledge** that Mahan's historical death is fixed campaign history. |
 
 WASD moves (or mounts: W forward, A/D steer, Shift canter, Ctrl walk, S/Space brake);
@@ -34,15 +35,24 @@ recon/march/cavalry beat only.
 - Riding is **opt-in** via `enable_riding()` from the Mahan chapter only. Domain-only
   consumers retain snapshots without a horse key.
 - Table / march / endpoint actions require a dismount (same pattern as house sandbox).
-- Short mounted travel is physical greybox riding between camp markers — not a new
+- Short mounted travel is physical greybox riding between camp markers -- not a new
   expedition map and not a rewrite of column `march_to` logistics.
+
+## Logistics (provisions / forage)
+
+- Field packs are a **small logistics ledger**, not an economy UI: start 10 / max 12.
+- **Forage** once per authored node while standing with the column (`camp` +2, `ford`/`ridge` +1). Full yield only; refuse when packs cannot take it.
+- **Wait consumption:** every 60 ticks drains 1 provision while stock remains; stockout stops further drain.
+- **Stockout** (provisions < march cost 2) blocks **advance** and **march**; **hold**, forage, dispatch (if affordable), and the fixed endpoint remain available.
+- Dispatch (-1) and march (-2) costs from the prior tip still apply and compose with forage/wait in the logistics adapter.
+- Implemented as `mahan_logistics_*.gd` on top of the cavalry adapter -- does **not** rewrite `house_command_state`, `command_state`, or a taxation UI.
 
 ## Ontology fence
 
-`Person ≠ Dynasty ≠ Household ≠ Faction ≠ Alignment`.
+`Person != Dynasty != Household != Faction != Alignment`.
 
 - **Person:** actor `mahan_singh`
-- **Household graph object:** `sukerchakia` (`mahan.household_id`) — field authority
+- **Household graph object:** `sukerchakia` (`mahan.household_id`) -- field authority
   for this interlude; not a Dynasty, Faction, or Alignment label
 - Place id `sukarchakia_field_camp` remains the camp place string (existing spelling)
 - This slice does **not** collapse Raj Kaur into Sandhawalia, or Person into Household
@@ -92,7 +102,7 @@ character knowledge distinct (see [HISTORICAL_SOURCES.md](HISTORICAL_SOURCES.md)
 
 Scout detachments append reports shaped like Lahore command custody
 (`observed_at`, `arrives_at = observed_at + REPORT_DELAY`, `delivered`) and deliver
-inside `advance()` — the same *pattern* as `command_state.received_reports()`, without
+inside `advance()` -- the same *pattern* as `command_state.received_reports()`, without
 rewriting `command_state.gd` or sharing mutable authority. Mahan keeps its own
 `REPORT_DELAY` (tick-scale for the interlude clock) and its own save envelope.
 
@@ -101,15 +111,16 @@ rewriting `command_state.gd` or sharing mutable authority. Mahan keeps its own
 In scope for the interlude family: command, movement, clan/house politics,
 reconnaissance, delayed information, cavalry, logistics and subordinate-command
 decisions. This slice delivers the profile skeleton, delayed scout custody, authored
-column nodes (camp/ford/ridge), a provisions stub, **cavalry opt-in via riding_rules**,
-and the fixed endpoint frame. Broad religious-conflict framing is a non-goal.
+column nodes (camp/ford/ridge), **cavalry opt-in via riding_rules**, a **logistics**
+forage/wait/stockout module, and the fixed endpoint frame. Broad religious-conflict framing is a non-goal.
 
 ## Non-goals (this PR)
 
 - Full expedition map, navmesh campaign or Sodhra reconstruction
 - Alternate history / player-alterable survival of Mahan
-- Automatic childhood → Mahan → Lahore handoff or accession scene
+- Automatic childhood -> Mahan -> Lahore handoff or accession scene
 - Combat redesign, schema bump, or rewriting Latif/childhood content
+- Full economy sim / taxation UI
 - Merging existing draft PRs or merging this branch to `main`
 - Silent injection of Mahan memories into childhood/Lahore journals
 - Touching `schemas/world_state.schema.json`, `data/world/1792_start.json`,
@@ -120,9 +131,9 @@ and the fixed endpoint frame. Broad religious-conflict framing is a non-goal.
 
 ## Architecture
 
-- Profile authority: `game/mahan/mahan_state.gd` (`mahan.v1`) plus Mahan-only `mahan_cavalry_state.gd` riding adapter
+- Profile authority: `game/mahan/mahan_state.gd` (`mahan.v1`) plus Mahan-only `mahan_cavalry_state.gd` and `mahan_logistics_state.gd` adapters
 - Launch composition: `game/mahan/mahan_launch.gd` onto `game/world/mahan_camp.tscn`
-- Chapter presentation: base `game/mahan/mahan_chapter.gd` plus `mahan_cavalry_chapter.gd` (opts into horse adapter)
+- Chapter presentation: base `mahan_chapter.gd` -> `mahan_cavalry_chapter.gd` -> `mahan_logistics_chapter.gd`
 - Reuses existing player controller, `riding_rules` / `horse` adapter and save/load
   pattern; does **not** replace childhood checkpoint, companion or Lahore command
   machinery
