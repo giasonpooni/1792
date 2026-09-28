@@ -158,3 +158,22 @@ Extended in place on draft PR #9 (`feat/mahan-interlude-v1`).
 - Historical-event actors keep Person ≠ Household ≠ Faction; Raj Kaur absent; `player_knowledge` refused unless observer / delivered report / campaign-frame endpoint ack.
 - Gujranwala settlement is a place object (`gujranwala_settlement`); household remains `sukerchakia`; not a faction tag.
 - Gujranwala march nodes enter `known_nodes` only on delivered scout custody; no silent childhood/Lahore knowledge handoff.
+
+
+## Extended (this tip -- integration fence audit)
+
+| Path | Change |
+| --- | --- |
+| `docs/MAHAN_FENCE_AUDIT.md` | NEW pass/fail/gap table for Mahan vs childhood vs Lahore fences |
+| `game/tests/test_mahan_fence.gd` | Cross-profile save/knowledge/identity/ontology/menu fence suite |
+| `tools/run_checks.py` | Registers `test_mahan_fence.gd` after history |
+| `game/mahan/data/locations/gujranwala_settlement.json` | Mirror-synced to `data/history/locations/…` (`connects` includes `gujranwala_camp`) so check_project identity holds |
+| `game/mahan/mahan_orders_chapter.gd` | **orders additive guard restored**: keep pre-installed HistoryModel (`observe_historical_event`) across `super._ready()` |
+| `docs/MAHAN_INTEGRATION_LEDGER.md` | This fence note |
+
+Identity notes (fence):
+
+- Bidirectional save refuse covers childhood, aftermath, Lahore command, and house slots.
+- No auto knowledge handoff APIs; grafted Mahan nodes refused by childhood/Lahore allowlists.
+- `HERO_ID` remains `ranjit_singh`; Lahore `Riding.validate` still rejects `mahan_singh`.
+- `world_state.schema.json` and `home_territory.tscn` digests unchanged.
