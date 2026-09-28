@@ -1,0 +1,2 @@
+# Preserve source/content digests on Windows and Linux checkouts.
+* text=auto eol=lf
