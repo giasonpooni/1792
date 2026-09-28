@@ -118,7 +118,7 @@ Mahan observations, scout reports, map knowledge and command decisions live only
 - Childhood and Lahore save slots **must not** load a Mahan envelope, and a Mahan load
   **must refuse** childhood/Lahore/aftermath profiles.
 - There is **no** silent cross-chapter knowledge merge in this slice.
-- Explicit Mahan→Buddh transfer is a **refuse-by-default** cutter only
+- Explicit Mahan->Buddh transfer is a **refuse-by-default** cutter only
   ([MAHAN_HANDOFF.md](MAHAN_HANDOFF.md)): controller opt-in + allowlisted report IDs;
   journal texts never copy wholesale; childhood save-slot writes are future / refused
   in the stub; no menu auto-transition.
@@ -161,20 +161,34 @@ forage/wait/stockout module, a **bounded clan/subordinate politics** slice, a
 religious-conflict framing is a non-goal.
 
 
-## Gujranwala ridge→settlement encounter stub
+## Gujranwala ridge->settlement encounter stub
 
 Authored playable beat on the Gujranwala march path (fort road / camp / settlement):
 
 - Greybox approach marker + historical-event frame `mahan_gujranwala_ridge_settlement_approach`
 - Delayed approach-scout custody (knowledge on delivery only)
-- Choices: hold/observe, or advance under delivered custody — both keep the **fixed historical endpoint**
+- Choices: hold/observe, or advance under delivered custody - both keep the **fixed historical endpoint**
 - No combat AI, no town sim, no alternate-history survival win, no `house_command_state` rewrite
+
+
+
+## Gujranwala settlement observation greybox
+
+When the column stands at `gujranwala_settlement` (or after encounter
+`advance_under_custody`):
+
+- Examine greybox **walls / gate / well / house** markers
+- Each examine writes an attributed journal memory (`source_id` / `channel` /
+  `received_tick`); sealed observations explicitly refuse street-survey omniscience
+- Optional delayed **local hearth-word** rumor via custody - `player_knowledge`
+  stays false until delivery
+- No combat AI, no town economy sim, no alternate-history win, no childhood/Lahore rewrite
 
 ## Non-goals (this PR)
 
 - Full expedition map, navmesh campaign or Sodhra reconstruction
 - Alternate history / player-alterable survival of Mahan
-- Automatic childhood -> Mahan -> Lahore handoff or accession scene (opt-in cutter exists; default deny — see MAHAN_HANDOFF.md)
+- Automatic childhood -> Mahan -> Lahore handoff or accession scene (opt-in cutter exists; default deny - see MAHAN_HANDOFF.md)
 - Combat redesign, schema bump, or rewriting Latif/childhood content
 - Full economy sim / taxation UI
 - Merging existing draft PRs or merging this branch to `main`
@@ -190,9 +204,9 @@ Authored playable beat on the Gujranwala march path (fort road / camp / settleme
 
 ## Architecture
 
-- Profile authority: `game/mahan/mahan_state.gd` (`mahan.v1`) plus Mahan-only `mahan_cavalry_state.gd`, `mahan_logistics_state.gd`, `mahan_politics_state.gd`, and `mahan_orders_state.gd` adapters
+- Profile authority: `game/mahan/mahan_state.gd` (`mahan.v1`) plus Mahan-only adapters through `mahan_settlement_state.gd`
 - Launch composition: `game/mahan/mahan_launch.gd` onto `game/world/mahan_camp.tscn`
-- Chapter presentation: base `mahan_chapter.gd` -> `mahan_cavalry_chapter.gd` -> `mahan_logistics_chapter.gd` -> `mahan_politics_chapter.gd` -> `mahan_orders_chapter.gd` -> `mahan_history_chapter.gd` -> `mahan_encounter_chapter.gd`
+- Chapter presentation: base `mahan_chapter.gd` -> `mahan_cavalry_chapter.gd` -> `mahan_logistics_chapter.gd` -> `mahan_politics_chapter.gd` -> `mahan_orders_chapter.gd` -> `mahan_history_chapter.gd` -> `mahan_encounter_chapter.gd` -> `mahan_settlement_chapter.gd`
 - Reuses existing player controller, `riding_rules` / `horse` adapter and save/load
   pattern; does **not** replace childhood checkpoint, companion or Lahore command
   machinery
