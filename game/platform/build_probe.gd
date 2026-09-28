@@ -1,6 +1,8 @@
 # Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 extends RefCounted
 ## Opt-in packaged boot check, no test fixtures, no player's save slot, no store requests.
+const Reading := preload("res://platform/reading_profile.gd")
+const READING_PATH := "user://1792-reading-probe-test-only.json"
 const Recovery := preload("res://platform/save_recovery.gd")
 const State := preload("res://narrative/oral_memory/memory_state.gd")
 const Launch := preload("res://childhood/home_launch.gd")
@@ -56,6 +58,24 @@ static func run(menu: Node) -> void:
 	error=await Launch.enter_saved(tree,SAVE,Recovery.inspect(state,SAVE).digest,SAVE,state.platform_services,func(): return true)
 	if not error.is_empty(): errors.append(error)
 	elif not tree.current_scene.get_node("ChildhoodChapter")._paused: errors.append("Exported Continue resumed without user choice.")
+	# Probe the shipped reading provider and actual enlarged modal without player files.
+	var old_reading:=Reading.snapshot()
+	var large:=old_reading.duplicate(true)
+	large.text_percent=200;large.high_contrast=true;large.narrator_captions=false
+	error=Reading.set_preferences(large,READING_PATH,state.platform_services.storage)
+	if not error.is_empty(): errors.append(error)
+	error=Reading.load_preferences(READING_PATH,state.platform_services.storage)
+	if not error.is_empty() or Reading.snapshot()!=large: errors.append("Exported reading preferences failed to reload.")
+	if error.is_empty() and tree.current_scene.has_node("ChildhoodChapter"):
+		var active=tree.current_scene.get_node("ChildhoodChapter")
+		var world: Dictionary=active.model.snapshot()
+		active._open_reading_settings()
+		for _i in range(3): await tree.process_frame
+		if active._panel_text.get_theme_font_size("font_size")!=34: errors.append("Exported modal did not apply 200 percent text.")
+		if active.model.snapshot()!=world: errors.append("Reading presentation mutated exported chapter.")
+	error=Reading.set_preferences(old_reading,READING_PATH,state.platform_services.storage)
+	if not error.is_empty(): errors.append(error)
+	DirAccess.remove_absolute(READING_PATH)
 	var notices:=FileAccess.open("user://platform-engine-notices.json",FileAccess.WRITE)
 	if notices==null: errors.append("Cannot retain runtime licence notices.")
 	else:
@@ -64,7 +84,7 @@ static func run(menu: Node) -> void:
 		notices.close()
 	print("PLATFORM_BOOT_RECORD: "+JSON.stringify({"schema":"cg.packaged-boot-observation.v1","os":OS.get_name(),
 		"engine":Engine.get_version_info().string,"exported":not OS.has_feature("editor"),"provider_id":state.platform_services.IMPLEMENTATION_ID,
-		"content_sha256":Memory.content_digest(),"manual_save_policy":Recovery.POLICY_ID,"recovery_and_continue_probe":true,"errors":errors,"physical_controller_test":false,"console_certification":false}))
+		"content_sha256":Memory.content_digest(),"manual_save_policy":Recovery.POLICY_ID,"recovery_and_continue_probe":true,"reading_profile":Reading.SCHEMA,"reading_probe":true,"errors":errors,"physical_controller_test":false,"console_certification":false}))
 	DirAccess.remove_absolute(SAVE)
 	DirAccess.remove_absolute(SAVE+Recovery.PREVIOUS_SUFFIX)
 	await tree.process_frame

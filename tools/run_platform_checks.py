@@ -24,7 +24,8 @@ def main() -> None:
     for script, name, marker in (("test_oral_memory.gd", "oral-memory", "ORAL_MEMORY_TESTS:"),
                                   ("test_platform.gd", "platform", "PLATFORM_TESTS:"),
                                   ("test_controller_remapping.gd", "controller-remapping", "CONTROLLER_REMAPPING_TESTS:"),
-                                  ("test_save_recovery.gd", "save-recovery", "SAVE_RECOVERY_TESTS:")):
+                                  ("test_save_recovery.gd", "save-recovery", "SAVE_RECOVERY_TESTS:"),
+                                  ("test_reading_accessibility.gd", "reading-accessibility", "READING_ACCESSIBILITY_TESTS:")):
         run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/" + script], name, marker)
 
 

@@ -102,6 +102,20 @@ changed/missing/extra files and non-preview recipes; it is not a signature check
 
 [Controller controls, Windows builds and platform qualification](docs/PLATFORM_FOUNDATION.md)
 
+## Reading on a controller
+
+**Text and reading settings** are available at the title and in the home journal.
+Choose **100–200% menu/dialogue text**, stronger menu contrast, and optional
+Shah Muhammad development captions. Right stick or mouse wheel scrolls long text;
+D-pad selects buttons. **Read current messages** provides a larger paused view of
+the displayed task and message without granting new knowledge.
+
+Preferences save separately from story progress and controller assignments. Live
+HUD/world labels retain their current size; this is not a screen-reader or console
+accessibility-certification claim.
+
+[Reading settings, boundaries and validation](docs/READING_ACCESSIBILITY.md)
+
 ## Other retained modes
 
 The menu also retains the separate Lahore command story, houses-and-rivals patrol

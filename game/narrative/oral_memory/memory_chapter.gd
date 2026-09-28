@@ -1,6 +1,11 @@
 # Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 extends "res://territory/researched_chapter.gd"
 ## Situated input/presentation adapter. Existing state, physics, pause and save machinery persist.
+const Reading := preload("res://platform/reading_profile.gd")
+const ReadingUI := preload("res://platform/reading_ui.gd")
+var reading_settings_path:=Reading.PATH
+var _reading_page:=""
+var _displayed_messages: Dictionary={}
 const SaveRecovery := preload("res://platform/save_recovery.gd")
 const MemoryState := preload("res://narrative/oral_memory/memory_state.gd")
 const Memory := preload("res://narrative/oral_memory/memory_rules.gd")
@@ -14,6 +19,24 @@ var _oral_props: Array[Node3D]=[]
 func _init() -> void:
 	model=MemoryState.new()
 	save_path=MemoryState.ORAL_SAVE
+
+func _ready() -> void:
+	Reading.install(reading_settings_path)
+	super._ready()
+	ReadingUI.apply(_panel)
+
+func _focus_actions() -> void:
+	if is_instance_valid(_panel): ReadingUI.apply(_panel)
+	super._focus_actions()
+	if is_instance_valid(_panel) and _panel.visible: ReadingUI.reveal_focus_after_layout(_panel,_journal_scroll)
+
+func _apply() -> void:
+	super._apply()
+	# A load/checkpoint never carries a later presentation snapshot into earlier play.
+	_displayed_messages={}
+	if is_instance_valid(_narrator_label):
+		_narrator_label.text=""
+		_narrator_label.hide()
 
 func _build_world() -> void:
 	super._build_world()
@@ -50,6 +73,11 @@ func _build_world() -> void:
 		_oral_props.append(label)
 
 func _unhandled_input(event: InputEvent) -> void:
+	if is_instance_valid(controls) and not controls.focused: return
+	if not _reading_page.is_empty() and event.is_action_pressed("ui_cancel"):
+		_open_journal()
+		get_viewport().set_input_as_handled()
+		return
 	if not _save_page.is_empty() and event.is_action_pressed("ui_cancel"):
 		if _save_page=="browser": _resume()
 		else: _open_saved_chapter()
@@ -72,6 +100,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _clear_pending_actions() -> void:
 	super._clear_pending_actions()
+	_reading_page=""
 	_oral_action=""
 	_oral_import_requested=false
 	_save_page=""
@@ -80,6 +109,21 @@ func _clear_pending_actions() -> void:
 
 func _menu_action(action: String) -> void:
 	if is_instance_valid(controls) and not controls.focused: return
+	if action=="reading_settings":
+		_open_reading_settings(Reading.warning)
+		return
+	if action=="reading_messages":
+		_open_displayed_messages()
+		return
+	if action=="reading_back":
+		_open_journal()
+		return
+	if action.begins_with("reading_"):
+		var candidate:=Reading.proposal(action)
+		if candidate.is_empty(): return
+		var error:=Reading.set_preferences(candidate,reading_settings_path,model.platform_services.storage)
+		_open_reading_settings("Saved." if error.is_empty() else "Not saved: "+error)
+		return
 	if action=="saved_chapter":
 		_open_saved_chapter()
 		return
@@ -203,9 +247,29 @@ func _open_oral_memory() -> void:
 
 func _open_journal() -> void:
 	super._open_journal()
+	_append_oral_button("Text and reading settings","reading_settings")
+	_append_oral_button("Read current messages","reading_messages")
 	_append_oral_button("Saved chapter / recovery","saved_chapter")
 	_append_oral_button("Remembered stories [F7]","oral_view")
 	_append_oral_button("Import previous integrated Gujranwala save · replace current session","oral_import")
+
+func _open_controller_settings() -> void:
+	super._open_controller_settings()
+	_append_oral_button("Text and reading settings","reading_settings")
+
+func _open_reading_settings(note: String="") -> void:
+	_show_dialog("TEXT AND READING",Reading.description(note),Reading.actions("reading_back"))
+	_reading_page="settings"
+
+func _open_displayed_messages() -> void:
+	var text: String="No gameplay messages have been displayed in this chapter yet."
+	if not _displayed_messages.is_empty():
+		text="CURRENT TASK AND CONTROLS\n"+str(_displayed_messages.hud)+"\n\nCURRENT ON-SCREEN MESSAGE\n"+str(_displayed_messages.message)
+		if Reading.snapshot().narrator_captions and not str(_displayed_messages.narrator).is_empty():
+			text+="\n\nRETROSPECTIVE NARRATION\n"+str(_displayed_messages.narrator)
+	text+="\n\nA paused view of the last displayed messages, not additional testimony or a historical record. No new knowledge is granted."
+	_show_dialog("READ CURRENT MESSAGES",text,[["Text and reading settings","reading_settings"],["Back to journal","reading_back"],["Resume","resume"]])
+	_reading_page="messages"
 
 func _refresh() -> void:
 	super._refresh()
@@ -214,6 +278,11 @@ func _refresh() -> void:
 		_hud.text=InputProfile.controller_text(_hud.text)
 	for prop in _oral_props:
 		prop.visible=model.aftermath_phase()=="complete"
+	if is_instance_valid(_narrator_label) and not Reading.snapshot().narrator_captions:
+		_narrator_label.hide()
+	if not _paused and is_instance_valid(_hud) and is_instance_valid(_caption):
+		_displayed_messages={"hud":_hud.text,"message":_caption.text,
+			"narrator":_narrator_label.text if is_instance_valid(_narrator_label) and _narrator_label.visible else ""}
 
 func _load(path: String="") -> void:
 	var staged:=MemoryState.new()
@@ -227,6 +296,7 @@ func _load(path: String="") -> void:
 	_resume()
 
 func _resume() -> void:
+	_reading_page=""
 	_save_page="";_save_choice={};_save_command={}
 	super._resume()
 

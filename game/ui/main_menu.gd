@@ -1,5 +1,9 @@
 extends Control
 
+const Reading := preload("res://platform/reading_profile.gd")
+const ReadingUI := preload("res://platform/reading_ui.gd")
+var reading_settings_path:=Reading.PATH
+var _reading_box: VBoxContainer
 const HomeLaunch := preload("res://childhood/home_launch.gd")
 const Shell := preload("res://platform/controller_shell.gd")
 const Probe := preload("res://platform/build_probe.gd")
@@ -19,6 +23,7 @@ var controls: Node
 const Names := preload("res://characters/character_names.gd")
 
 func _ready() -> void:
+	Reading.install(reading_settings_path)
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	controls=Shell.new()
 	add_child(controls)
@@ -74,11 +79,23 @@ func _ready() -> void:
 	note.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	note.text+="\nXbox-style controller: D-pad selects · A confirms · Left stick moves · Right stick looks\nHome: X interacts · Menu opens journal/save/settings · View opens stories\nLocal PC build — no store sign-in, cloud save or Xbox console integration."
 	panel.add_child(note)
+	var reading_button:=Button.new()
+	reading_button.text="Text and reading settings"
+	reading_button.custom_minimum_size.y=48
+	reading_button.pressed.connect(func():
+		if not _continue_busy and controls.focused: _open_reading(Reading.warning))
+	panel.add_child(reading_button)
 	_normal_children=panel.get_children()
 	_saved_box=VBoxContainer.new()
 	_saved_box.add_theme_constant_override("separation",14)
 	_saved_box.hide()
 	panel.add_child(_saved_box)
+	_reading_box=VBoxContainer.new()
+	_reading_box.add_theme_constant_override("separation",14)
+	_reading_box.hide()
+	panel.add_child(_reading_box)
+	ReadingUI.apply(panel)
+	Shell.focus_buttons(panel,scroll)
 	if "--platform-smoke" in OS.get_cmdline_user_args(): Probe.run.call_deferred(self)
 
 func _add_button(parent: Node, text: String, scene: String) -> void:
@@ -98,6 +115,11 @@ func _input(event: InputEvent) -> void:
 	if _continue_busy: get_viewport().set_input_as_handled()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if not controls.focused: return
+	if is_instance_valid(_reading_box) and _reading_box.visible and event.is_action_pressed("ui_cancel"):
+		_close_reading()
+		get_viewport().set_input_as_handled()
+		return
 	if is_instance_valid(_saved_box) and _saved_box.visible and event.is_action_pressed("ui_cancel"):
 		if not _saved_choice.is_empty(): _open_saved()
 		else: _close_saved()
@@ -107,8 +129,10 @@ func _saved_interrupted(reason: String) -> void:
 	_continue_epoch+=1
 	_saved_choice={}
 	if is_instance_valid(_saved_box) and _saved_box.visible: _open_saved(reason)
+	if is_instance_valid(_reading_box) and _reading_box.visible: _open_reading(reason)
 
 func _saved_content(body: String) -> void:
+	_reading_box.hide()
 	_saved_choice={}
 	for child in _normal_children: child.hide()
 	for child in _saved_box.get_children():
@@ -130,7 +154,9 @@ func _saved_button(text: String, callback: Callable) -> void:
 	_saved_box.add_child(button)
 
 func _focus_saved() -> void:
+	ReadingUI.apply(_saved_box)
 	Shell.focus_buttons(_saved_box,_scroll)
+	ReadingUI.reveal_focus_after_layout(_saved_box,_scroll)
 
 func _open_saved(note: String="") -> void:
 	var primary:=Recovery.inspect(save_reader,home_save_path)
@@ -168,3 +194,42 @@ func _continue_selected(view: Dictionary) -> void:
 	if error.is_empty(): return
 	_continue_busy=false
 	if is_inside_tree(): _open_saved(error)
+
+func _open_reading(note: String="") -> void:
+	_saved_choice={}
+	_saved_box.hide()
+	for child in _normal_children: child.hide()
+	for child in _reading_box.get_children():
+		_reading_box.remove_child(child);child.queue_free()
+	_reading_box.show()
+	var label:=Label.new()
+	label.text="TEXT AND READING\n\n"+Reading.description(note)
+	label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	label.add_theme_font_size_override("font_size",20)
+	_reading_box.add_child(label)
+	for spec in Reading.actions("reading_back"):
+		var button:=Button.new()
+		button.text=spec[0];button.custom_minimum_size.y=48
+		button.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+		button.pressed.connect(_reading_action.bind(spec[1]))
+		_reading_box.add_child(button)
+	ReadingUI.apply(_reading_box)
+	Shell.focus_buttons(_reading_box,_scroll)
+	ReadingUI.reveal_focus_after_layout(_reading_box,_scroll)
+
+func _reading_action(action: String) -> void:
+	if _continue_busy or not controls.focused: return
+	if action=="reading_back":
+		_close_reading()
+		return
+	var candidate:=Reading.proposal(action)
+	if candidate.is_empty(): return
+	var error:=Reading.set_preferences(candidate,reading_settings_path,save_reader.platform_services.storage)
+	ReadingUI.apply(_title_column)
+	_open_reading("Saved." if error.is_empty() else "Not saved: "+error)
+
+func _close_reading() -> void:
+	_reading_box.hide()
+	for child in _normal_children: child.show()
+	ReadingUI.apply(_title_column)
+	Shell.focus_buttons(_title_column,_scroll)
