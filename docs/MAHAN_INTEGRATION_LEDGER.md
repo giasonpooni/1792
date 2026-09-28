@@ -215,3 +215,9 @@ Godot **4.5.1.stable**; structure + mahan family:
 | mahan-settlement | **139** (new) |
 | mahan-fence | **121** |
 | mahan-handoff | **101** |
+
+## Extended (this tip -- Gujranwala garhi landmark observation)
+
+See **[MAHAN_GARHI_NOTE.md](MAHAN_GARHI_NOTE.md)** for path table, identity notes, and suite counts (ledger size split).
+
+`mahan_garhi_*` on settlement: examine rampart/gatehouse/bastion; delayed report; fort_road/settlement unlock; no combat/siege; fence+handoff green.
