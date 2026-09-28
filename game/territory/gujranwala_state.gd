@@ -17,6 +17,11 @@ func begin_allowance() -> String:
 		"origin_tick":int(_state.childhood.tick),"events":[],"ledger":Economy.initial(),"merchant":Economy.blank_merchant()}
 	return ""
 
+func mount() -> String:
+	if has_economy() and int(_state.misl.get("trade",{}).get("carried",0))>0:
+		return "Deliver or return the packed provisions before mounting."
+	return super.mount()
+
 func advance() -> void:
 	super.advance()
 	if not has_economy(): return
@@ -25,6 +30,7 @@ func advance() -> void:
 		_post("watch","")
 
 func operate(kind: String, arg: String = "") -> String:
+	if kind.begins_with("bazaar_"): return "Bazaar operations require the local trade authority."
 	if not has_economy(): return "Hear the quartermaster's allowance first."
 	if mounted(): return "Dismount to speak and settle a transaction."
 	var place := Economy.MARKET if kind in ["buy","satchel","deliver","accept_escort"] else Economy.QUARTERMASTER
@@ -37,10 +43,12 @@ func _post(kind: String,arg: String) -> String:
 	var m: Dictionary = _state.misl
 	if m.events.size()>=Economy.MAX_EVENTS: return "This prototype's retained-receipt limit is reached. Start a new scenario."
 	var candidate: Dictionary = m.ledger.duplicate(true)
-	var error := Economy.apply(candidate,kind,arg)
+	var trade: Dictionary=m.get("trade",{}).duplicate(true)
+	var error := Economy.apply_transaction(candidate,trade,kind,arg)
 	if not error.is_empty(): return error
 	m.events.append({"seq":m.events.size()+1,"tick":int(_state.childhood.tick),"kind":kind,"arg":arg})
 	m.ledger = candidate
+	if not trade.is_empty(): m.trade=trade
 	if kind=="checkin": m.merchant.velocity=[0.0,0.0,0.0]
 	return ""
 
@@ -75,6 +83,7 @@ func validate(value: Variant) -> String:
 	if not value.has("aftermath") or value.aftermath.reported_tick<0: return "Economy before the completed household inquiry."
 	error=Economy.validate(value.misl,int(value.childhood.tick))
 	if not error.is_empty(): return error
+	if value.misl.get("trade",{}).get("carried",0)>0 and value.riding.horse.rider_id!="": return "Packed provisions cannot be mounted."
 	if value.misl.origin_tick<value.aftermath.reported_tick: return "Allowance predates the household report."
 	return ""
 
@@ -87,5 +96,7 @@ func restore(value: Variant) -> String:
 		for e in _state.misl.events:
 			e.seq=int(e.seq)
 			e.tick=int(e.tick)
-		_state.misl.ledger=Economy.replay(_state.misl.events)
+		var replayed:=Economy.replay_full(_state.misl.events)
+		_state.misl.ledger=replayed.ledger
+		if not replayed.trade.is_empty(): _state.misl.trade=replayed.trade
 	return ""

@@ -55,6 +55,8 @@ def main() -> int:
         "shah-road", "SHAH_ROAD_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_gujranwala_setting.gd"],
         "gujranwala-setting", "GUJRANWALA_SETTING_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_bazaar.gd"],
+        "bazaar", "BAZAAR_TESTS:")
     return 0
 
 

@@ -46,15 +46,71 @@
       "consultation": "Selected Gujranwala passages read; the cited original Cave-Browne account was not independently inspected",
       "supports": "This account assigns Nalwa's Gujranwala jagir and town development to the period around 1815-1837.",
       "does_not_support": "Backdating his later urban development into Buddh's childhood."
+    },
+    {
+      "id": "gazetteer_1883_84_commerce",
+      "title": "Punjab Government, Gazetteer of the Gujranwala District 1883-4 (published 1884)",
+      "url": "https://archive.org/details/gazetteer-gujranwala-1883",
+      "text_url": "https://archive.org/stream/gazetteer-gujranwala-1883/GazetteerGujranwala1883_djvu.txt",
+      "locator": "Printed pp.60-62: trade and measures; pp.83-84: Gujranwala town. Archive OCR lines 5456-5598 and 7486-7567.",
+      "perspective": "Late colonial administrative compilation, roughly nine decades after the game opening; not a contemporary 1792 plan or impartial account.",
+      "consultation": "Archive metadata, preface and selected OCR passages read. No primary page images or numeric measurement tables inspected; damaged OCR conversions are not used.",
+      "supports": "The later account describes markets in country produce and Gujranwala collecting food grains from surrounding villages, with pottery and metal-vessel trades. It discusses distinct measures for different goods.",
+      "does_not_support": "Exact 1792 stalls, city size, street alignments, weights, prices, buyers, yields or throughput. The same text includes railway-era change; no such infrastructure is backdated into childhood."
     }
   ],
   "features": [
-    {"id": "earthen_enclosure", "basis": "source_supported_function_authored_geometry", "source_ids": ["latif_1891_fort"], "scope": "Earth-toned enclosure and household military/storage role; original test-wall dimensions retained."},
-    {"id": "walk_in_store", "basis": "source_supported_function_authored_geometry", "source_ids": ["latif_1891_fort"], "scope": "A small usable store chamber. Its position, U-shaped walls, open doorway, roof, sacks and timber details are authored."},
-    {"id": "courtyard_well", "basis": "regional_analogy_authored_placement", "source_ids": ["district_village_origins"], "scope": "A protected well as a water landmark. It is not a located historical well and has no water-production simulation."},
-    {"id": "trough_and_market", "basis": "authored_connective_material", "source_ids": [], "scope": "Stable trough, market props and supply sacks support existing play; no specific 1792 inventory is asserted."},
-    {"id": "settlement_silhouette", "basis": "authored_connective_material", "source_ids": [], "scope": "Seeded low dwellings outside the playable cell suggest a settlement. They are not streamed, habitable or a surveyed street map."},
-    {"id": "earthen_shader_and_haze", "basis": "authored_presentation", "source_ids": [], "scope": "Procedural rough color variation, courses and a fixed warm haze. No physically measured material or historical weather claim."}
+    {
+      "id": "earthen_enclosure",
+      "basis": "source_supported_function_authored_geometry",
+      "source_ids": [
+        "latif_1891_fort"
+      ],
+      "scope": "Earth-toned enclosure and household military/storage role; original test-wall dimensions retained."
+    },
+    {
+      "id": "walk_in_store",
+      "basis": "source_supported_function_authored_geometry",
+      "source_ids": [
+        "latif_1891_fort"
+      ],
+      "scope": "A small usable store chamber. Its position, U-shaped walls, open doorway, roof, sacks and timber details are authored."
+    },
+    {
+      "id": "courtyard_well",
+      "basis": "regional_analogy_authored_placement",
+      "source_ids": [
+        "district_village_origins"
+      ],
+      "scope": "A protected well as a water landmark. It is not a located historical well and has no water-production simulation."
+    },
+    {
+      "id": "trough_and_market",
+      "basis": "authored_connective_material",
+      "source_ids": [],
+      "scope": "Stable trough, market props and supply sacks support existing play; no specific 1792 inventory is asserted."
+    },
+    {
+      "id": "settlement_silhouette",
+      "basis": "authored_connective_material",
+      "source_ids": [],
+      "scope": "Seeded low dwellings outside the playable cell suggest a settlement. They are not streamed, habitable or a surveyed street map."
+    },
+    {
+      "id": "earthen_shader_and_haze",
+      "basis": "authored_presentation",
+      "source_ids": [],
+      "scope": "Procedural rough color variation, courses and a fixed warm haze. No physically measured material or historical weather claim."
+    },
+    {
+      "id": "provisions_buyer_and_packing",
+      "basis": "later_comparative_context_authored_gameplay",
+      "source_ids": [
+        "latif_1891_fort",
+        "gazetteer_1883_84_commerce"
+      ],
+      "scope": "Use the existing household store and western market for physically carried provisions. Buyer, balance prop, station, four-unit lot, six-coin price, 96-coin budget, per-watch demand and speed cap are authored, not historical measurement or a copied 1880s bazaar."
+    }
   ],
   "excluded_from_childhood_build": [
     "Nalwa's later New Town is not used as the 1792 street layout.",

@@ -18,6 +18,7 @@ const PROJECTS := {
 	"palisade":{"cost":36,"timber":6,"tools":1,"work":6},
 	"storehouse":{"cost":20,"timber":4,"tools":1,"work":4},
 	"mill":{"cost":28,"timber":4,"tools":1,"work":4}}
+const Bazaar := preload("res://territory/bazaar/bazaar_rules.gd")
 const Base := preload("res://childhood/childhood_state.gd")
 
 static func initial() -> Dictionary:
@@ -176,12 +177,14 @@ static func blank_merchant() -> Dictionary:
 		"yaw":0.0,"velocity":[0.0,0.0,0.0]}
 
 static func validate(value: Variant, tick: int) -> String:
-	if not value is Dictionary or value.size()!=7: return "Malformed home economy."
+	if not value is Dictionary or value.size() not in [7,8]: return "Malformed home economy."
+	if value.size()==8 and not value.has("trade"): return "Unknown home-economy extension."
 	for key in ["schema","cell_id","seed","origin_tick","events","ledger","merchant"]:
 		if not value.has(key): return "Missing home-economy field."
 	if value.schema != VERSION or value.cell_id != CELL_ID or value.seed != SEED: return "Unsupported economy or generated cell identity."
 	if not whole(value.origin_tick,0,tick) or not value.events is Array or value.events.size()>MAX_EVENTS: return "Invalid economy origin or event budget."
 	var replay := initial()
+	var trade: Dictionary={}
 	var prior: int = int(value.origin_tick)
 	var seq := 0
 	for e in value.events:
@@ -194,7 +197,7 @@ static func validate(value: Variant, tick: int) -> String:
 		if e.kind == "watch":
 			if e.tick != next_watch: return "Upkeep occurred on the wrong tick."
 		elif e.tick >= next_watch: return "Missing due upkeep before transaction."
-		var error := apply(replay,e.kind,e.arg)
+		var error := apply_transaction(replay,trade,e.kind,e.arg)
 		if not error.is_empty(): return "Invalid retained economic action: "+error
 		prior = int(e.tick)
 		seq += 1
@@ -202,6 +205,9 @@ static func validate(value: Variant, tick: int) -> String:
 		return "A due watch has not settled."
 	# JSON normalizes integral storage, but booleans, strings, extra keys remain invalid.
 	if not _equal(replay,value.ledger): return "Ledger disagrees with retained receipts."
+	if trade.is_empty():
+		if value.has("trade"): return "Trade record has no admitted offer."
+	elif not value.has("trade") or not _equal(trade,value.trade): return "Trade record disagrees with economic receipts."
 	var m: Variant = value.merchant
 	if not m is Dictionary or m.size()!=4 or m.get("id") != CARAVAN_ID: return "Invalid caravan identity."
 	if not m.has("position") or not Base.valid_point(m.position) or not m.has("velocity") or not valid_velocity(m.velocity): return "Invalid caravan coordinates."
@@ -234,10 +240,21 @@ static func _equal(a: Variant,b: Variant) -> bool:
 	if typeof(a) in [TYPE_INT,TYPE_FLOAT]: return finite_number(b) and a==b
 	return typeof(a)==typeof(b) and a==b
 
+static func apply_transaction(s: Dictionary,trade: Dictionary,kind: String,arg: String) -> String:
+	# Single transition dispatch used by live actions and retained receipt replay.
+	if kind.begins_with("bazaar_"): return Bazaar.apply(s,trade,kind,arg)
+	if kind=="accept_delivery" and int(trade.get("carried",0))>0:
+		return "Return or sell the packed bazaar lot before taking the delivery assignment."
+	return apply(s,kind,arg)
+
+static func replay_full(events: Array) -> Dictionary:
+	var s:=initial()
+	var trade: Dictionary={}
+	for e in events: apply_transaction(s,trade,e.kind,e.arg)
+	return {"ledger":s,"trade":trade}
+
 static func replay(events: Array) -> Dictionary:
-	var s := initial()
-	for e in events: apply(s,e.kind,e.arg)
-	return s
+	return replay_full(events).ledger
 
 static func forecast(s: Dictionary) -> Dictionary:
 	var candidate: Dictionary=s.duplicate(true)
