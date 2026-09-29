@@ -2,69 +2,45 @@
 
 **Build outward from home.**
 
-A Cartesian Graphics historical open-world game following **Buddh Singh** from
-Gujranwala and the Sukerchakia home territory toward wider command. Travel,
-relationships, provisions and incomplete knowledge matter before empire management.
-The stable character ID remains `ranjit_singh`; the childhood display name and
-later public names follow the [naming policy](docs/CHARACTER_NAMES.md).
+A Cartesian Graphics historical open-world game following **Buddh Singh** from Gujranwala and the Sukerchakia home territory toward wider command. Travel, relationships, provisions and incomplete knowledge matter before empire management. The stable character ID remains `ranjit_singh`; display names follow the [naming policy](docs/CHARACTER_NAMES.md).
 
-**Playable greybox in development, not a finished city or historical survey.**
+**Playable greybox in development—not a finished city, released game or historical survey.**
+
+[Play](#play) · [Walkthrough](docs/PLAYABLE_GUIDE.md) · [Creative direction](#scope-and-development-order) · [Research and production](#coupled-engineering-experiment) · [Development reference](DEVELOPMENT_REFERENCE.md) · [Rights](#rights)
+
+## Cartesian Graphics and Notation Systems
+
+**Cartesian Graphics — Private Creative, Simulation and Commercial IP Programme.** 1792 is its primary creative project and remains a product in its own right.
+
+The proposed institutional direction places Cartesian Graphics as the private ownership/commercialization layer above a **Notation Systems public-interest scientific instrumentation commons**. This is conceptual governance—not a claim that a legal parent/subsidiary relationship, nonprofit entity or IP transfer has already been completed.
+
+[Notations Systems Terminal](https://github.com/giasonpooni/Notations-Systems-Terminal) supplies shared scientific instrumentation. Cartesian can dogfood that commons while this game retains its worlds, assets, narrative, live state, clock, saves, creative direction and release approval.
+
+Godot owns live game state and the clock. Shared primitives do not turn simulated events into physical observations or authorize industrial evidence admission.
 
 ## Play
 
-Import `game/project.godot` in standard **Godot 4.5.1** and press **F5**.
-No .NET SDK, Python service, Bevy process or NET server is required to play.
-Choose **1792 · Buddh Singh · Home territory** for the integrated home chapter.
+Import `game/project.godot` in standard **Godot 4.5.1** and press **F5**. No .NET SDK, Python service, Bevy process or NET server is required to play. Choose **1792 · Buddh Singh · Home territory** for the integrated home chapter.
 
-Learn the yard, hear a letter read, ride, train, follow traces, survive an authored
-ambush, investigate and report home. After the inquiry, administer a limited
-household allowance: carry provisions to market, physically escort a carrier home,
-hire workers or guards, build infrastructure, and meet food, fodder and wage costs.
-Your personal purse and the household coffers are separate. Contracts pay once.
+Learn the yard, hear a letter read, ride, train, follow traces, survive an authored ambush, investigate and report home. The household allowance introduces provisions, escort, workers, guards, infrastructure and recurring costs. Personal purse and household coffers remain separate; contracts pay once.
 
-[Full walkthrough, rules and save behavior](docs/PLAYABLE_GUIDE.md) ·
-[Household economy](docs/GUJRANWALA.md)
+[Full walkthrough and save behavior](docs/PLAYABLE_GUIDE.md) · [Household economy](docs/GUJRANWALA.md)
 
 ## Gujranwala now has an evidence-bound setting
 
-The existing missions run within a compressed **56 × 56 metre** test area. The
-new reconstruction layer adds a verandah arcade, open forecourt, courtyard
-frontages, a collision-tested well, market props, field strips and ambient figures.
-Peripheral buildings are scenery, not a secretly enlarged playable city.
+The current missions use a compressed **56 × 56 metre** test area, with courtyard, well, market props, field strips and ambient figures. Peripheral buildings are scenery, not a completed city. **F2** opens a paused reconstruction notebook linking geometry to source claims and uncertainty; it is a developer reference, not knowledge granted to the character.
 
-**F2** opens a paused reconstruction notebook. Feature records bind original
-geometry to source claims, uncertainty classes and an exact content digest.
-Later or disputed monuments cannot silently appear at the 1792 start date.
-The notebook is a developer reference, not information granted to Buddh.
-
-**Shah Muhammad** is the retrospective narrator. Four milestone cues currently
-use original English development text—not historical verse, translations or a
-recorded voice. They observe the existing state without altering resources,
-knowledge or save history. Punjabi authoring and voice production remain future work.
-
-[Reconstruction and historical sources](docs/GUJRANWALA_1792.md) ·
-[Integration receipt](docs/GUJRANWALA_INTEGRATION.md)
+Shah Muhammad's retrospective narrator cues currently use original English development text, not historical verse, translations or recorded voice. [Reconstruction and sources](docs/GUJRANWALA_1792.md) · [Integration receipt](docs/GUJRANWALA_INTEGRATION.md).
 
 ## New playable task: Water for the Household
 
-After accepting the household allowance, ask the quartermaster for the optional
-water round. Leave through the courtyard's open front, take the east lane to the
-well, face it and press **E**. Draw a load, carry it back on foot, and deposit it
-with the quartermaster. Two trips complete the six-unit assignment. Drawing takes
-180 existing physics ticks; leaving cancels without consuming water. A full open
-carrier slows movement and prevents mounting until deposited.
+After accepting the allowance, ask the quartermaster for the water round. Draw at the well, carry the load on foot and deposit it at home. Two trips complete the six-unit assignment. Drawing uses 180 existing physics ticks; leaving cancels it. A full open carrier slows movement and prevents mounting.
 
-The task, pending draw and transfers use the existing save and clock. Its six
-units are not litres or a measured well yield. It grants no repeat cash reward;
-recurring consumption and water-dependent production are not implemented.
-
-[Water-round walkthrough and research](docs/GUJRANWALA_WATER_ROUND.md)
+The task uses the existing save and clock. Its units are not measured litres or well yield; it adds no repeat cash reward, recurring water consumption or water-dependent production. [Water-round guide](docs/GUJRANWALA_WATER_ROUND.md).
 
 ## Other retained modes
 
-The menu also retains the separate Lahore command story, houses-and-rivals patrol
-sandbox, and the political-exposure/perception experiment. These are development
-scenarios, not completed transitions in the childhood-to-Lahore biography.
+The separate Lahore command story, houses-and-rivals patrol sandbox and exposure/perception experiment remain development scenarios, not completed biographical transitions.
 
 ## Controls
 
@@ -78,19 +54,31 @@ scenarios, not completed transitions in the childhood-to-Lahore biography.
 | F2 | Paused reconstruction notebook in the home chapter |
 | F5 / F9 / R | Save / load / restore childhood checkpoint |
 
-The detailed guide covers mounted gaits, alternate modes and optional framing.
-Loading and checkpoints retain their existing validation and rollback semantics.
+## Scope and development order
+
+Build the rich Gujranwala childhood/adolescence campaign through the prelude to Lahore first; then complete Lahore and the remaining Ranjit Singh narrative. Historical-character DLC follows the completed main narrative. Hero of the Two Worlds remains secondary; Geronimo remains on hold.
+
+Plan the full geographic envelope from the beginning. Evidence-supported 1:1 terrain and location fidelity are reconstruction targets, not claims about the compressed playable cell. Visual beauty, movement, interaction and narrative are joint priorities. Historical claims, attributed oral tradition, conflicting accounts, reconstruction choices and original fiction remain distinguishable.
 
 ## Architecture
 
-Godot owns the active game, state and clock. Blender is the intended asset-authoring
-path. The shared **C++–Rust–Python–Julia** architecture remains documented for
-bounded provider workloads; this update does not pretend all four runtimes have
-been integrated. Bevy and Notations Engineering Terminal remain optional external
-simulation/experiment providers, not competing game loops.
+Blender is the intended asset-authoring path. Python, Julia, Rust and C++ are complementary implementation tools for bounded external workloads, not four compulsory live game runtimes. Godot retains the game loop; Bevy and NET are optional external providers.
 
-[Shared game architecture](docs/SHARED_GAME_ARCHITECTURE.md) ·
-[Campaign direction](docs/COUPLED_CAMPAIGN.md)
+[Shared game architecture](docs/SHARED_GAME_ARCHITECTURE.md) · [Campaign direction](docs/COUPLED_CAMPAIGN.md)
+
+## Expertise amplification and transfer
+
+The production goal is to help a small human-led team turn research and creative direction into coherent playable increments. Preserve source accounts, annotations, variants and rejected attempts. A machine-generated candidate is neither historical authentication nor editorial approval.
+
+## Coupled engineering experiment
+
+The game is also a demanding **synthetic-world testbed** for public instrumentation. Unlike physical systems, the engine can expose selected ground truth, letting experiments deliberately compare true simulated state, partial observation and estimated state.
+
+That makes 1792 useful for state estimation, delayed information, partial observability, mapping, agents and rendering—but successful game-world results remain simulation evidence until separately validated for physical use.
+
+**Notations Game Foundry remains a workload on NET**, not a second engine or a claim of autonomous game production. Measure end-to-end human effort, setup, model/provider cost, build time, memory, regressions and artistic/playtesting acceptance.
+
+[Shared research programme](https://github.com/giasonpooni/Notations-Systems-Terminal/blob/docs/coupled-game-foundry-scope-20260929/RESEARCH_PROGRAMME.md).
 
 ## Develop and verify
 
@@ -100,27 +88,13 @@ python tools/check_reconstruction.py
 python tools/run_checks.py --godot /path/to/godot
 ```
 
-The runner retains every inherited gameplay suite and adds reconstruction,
-narration-isolation and political/perception tests. GitHub Actions uses pinned
-Godot 4.5.1, retains logs and exact source, and produces software-rendered captures.
-A test suite passing is not human playtesting or verification of historical truth.
+Existing gameplay, reconstruction and state-boundary checks remain unchanged. This documentation update does not rerun the suites, change the Godot pin, qualify repository-wide CI or publish a playable release.
 
-```text
-game/       Game, state authority, original meshes, source-bound layout and tests
-data/       Design fixtures and historical source index
-schemas/    Retained world-state contract
-docs/       Player guide, research, design, architecture and rights
-tools/      Offline and native verification runner
-archive/    Earlier disconnected layout study, not an active world
-```
+The full previous overview is preserved byte-for-byte as [DEVELOPMENT_REFERENCE.md](DEVELOPMENT_REFERENCE.md).
 
 ## Rights
 
 **Copyright (c) 2026 Cartesian Graphics. All rights reserved.**
-Original protected game code and content are proprietary unless explicitly
-licensed otherwise. Engine and third-party rights remain separate. No claim is
-made over historical facts or public-domain material. No archival photos, copied
-plans, licensed game assets or voice recordings were imported for this update.
+Original protected game code and content are proprietary unless explicitly licensed otherwise. Engine and third-party rights remain separate. No claim is made over historical facts or public-domain material.
 
-[LICENSE](LICENSE) · [Licensing scope](docs/LICENSING.md) ·
-[Asset rules](docs/ASSET_LICENSING.md) · [Third-party notices](THIRD_PARTY_NOTICES.md)
+The proposed institutional inversion does not itself transfer any existing right, asset or repository. [LICENSE](LICENSE) · [Licensing scope](docs/LICENSING.md) · [Asset rules](docs/ASSET_LICENSING.md) · [Third-party notices](THIRD_PARTY_NOTICES.md)
