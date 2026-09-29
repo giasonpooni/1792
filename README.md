@@ -1,5 +1,9 @@
 # 1792
 
+<!-- foundry-delivery-v1 -->
+**Foundry integration on this branch:** [game-owned adapter, terminal connection, and complete retained delivery](docs/FOUNDRY.md). The adapter is a development workload, not a required game service.
+<!-- /foundry-delivery-v1 -->
+
 **Build outward from home.**
 
 A Cartesian Graphics historical open-world game following **Buddh Singh** from
