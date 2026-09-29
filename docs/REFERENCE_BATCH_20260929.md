@@ -76,3 +76,11 @@ The [Sikh Museum Initiative collection intake](SMI_COLLECTION_INTAKE.md) adds
 twelve object-level research leads with model IDs, attributed dates/accessions,
 access limits and unresolved reuse rights. It is not an acquired model pack or
 a new runtime provider. Ranjit's uncovered-face/plain-cloth direction remains.
+
+## Map and facade continuation
+
+[The map/architecture and environment-pack intake](MAP_ARCHITECTURE_INTAKE.md)
+records distinct map dates/claims, the facade kit references and read-only checks
+of the supplied Arab Village and Grassy Field archives. Asset permission, missing
+dependencies and game suitability are separate. No map boundary, source mesh or
+new historical scene is admitted by the intake.
