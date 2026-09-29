@@ -1,0 +1,62 @@
+name: Native Steam runtime qualification
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: steam-native-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  native-windows:
+    runs-on: windows-2022
+    timeout-minutes: 15
+    env:
+      PYTHONUTF8: '1'
+      PYTHONIOENCODING: utf-8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Inspect pinned upstream archives without installing or redistributing
+        shell: python
+        run: |
+          import hashlib, json, os, pathlib, shutil, tarfile, urllib.request
+          work = pathlib.Path(os.environ['RUNNER_TEMP']) / 'native-steam-reference'
+          work.mkdir()
+          out = pathlib.Path('native-evidence'); out.mkdir()
+          refs = {
+            'win64-g451-s162-gs4161.tar.xz': 'a0d7483433824f8ab72e16e45cadb6e44b4b697fe5b598a0c90b9973a41e0999',
+            'godotsteam-g451-s162-gs4161-templates.tar.xz': '315e04cc1bbeef6d8f1f5537197fd39beedb2cf4384ba73b6d44190a4cc9673f'
+          }
+          inventories = []
+          for name, expected in refs.items():
+              path = work / name
+              url = 'https://github.com/GodotSteam/GodotSteam/releases/download/v4.16.1/' + name
+              with urllib.request.urlopen(url, timeout=180) as response, path.open('wb') as target:
+                  shutil.copyfileobj(response, target)
+              with path.open('rb') as source:
+                  digest = hashlib.file_digest(source, 'sha256').hexdigest()
+              if digest != expected: raise RuntimeError('Native archive hash mismatch')
+              members = []
+              with tarfile.open(path, 'r:xz') as archive:
+                  for member in archive:
+                      row = {'name': member.name, 'bytes': member.size, 'regular': member.isfile()}
+                      if member.isfile():
+                          with archive.extractfile(member) as source:
+                              row['sha256'] = hashlib.file_digest(source, 'sha256').hexdigest()
+                      members.append(row)
+              inventories.append({'archive': name, 'sha256': digest, 'members': members})
+          (out / 'inventory.json').write_text(json.dumps(inventories, indent=2), encoding='utf-8')
+          print(json.dumps(inventories, indent=2))
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: native-steam-evidence
+          path: native-evidence/
+          retention-days: 14
