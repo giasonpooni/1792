@@ -2,7 +2,7 @@ name: Courtyard Blender source export
 on:
   push:
     branches: [feat/courtyard-authored-v1-20260929]
-    paths: [tools/art/build_courtyard.py, .github/workflows/courtyard-assets.yml]
+    paths: [tools/art/build_courtyard.py, tools/art/acquire_surface_study.py, .github/workflows/courtyard-assets.yml]
 permissions:
   contents: read
 jobs:
@@ -19,7 +19,7 @@ jobs:
       - name: Install and identify Blender
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends blender python3-numpy
+          sudo apt-get install -y --no-install-recommends blender python3-numpy python3-pil
           blender --version
       - name: Execute original authored asset recipe
         env:
@@ -31,7 +31,9 @@ jobs:
           test -f export-evidence/assets/build.json
           git rev-parse HEAD > export-evidence/source-commit.txt
           sha256sum tools/art/build_courtyard.py > export-evidence/generator.sha256
-          dpkg-query -W blender python3-numpy > export-evidence/blender-package.txt
+          dpkg-query -W blender python3-numpy python3-pil > export-evidence/blender-package.txt
+      - name: Explicit CC0 surface study intake
+        run: /usr/bin/python3 tools/art/acquire_surface_study.py --output export-evidence/surfaces
       - name: Retain immutable Git blobs only (no branch or release changes)
         env:
           GH_TOKEN: ${{ github.token }}
@@ -42,6 +44,8 @@ jobs:
           report=json.loads((root/'build.json').read_text())
           assert report['generator_sha256']==hashlib.sha256(pathlib.Path('tools/art/build_courtyard.py').read_bytes()).hexdigest()
           files=['courtyard_bay.glb','childhood_costume.glb','build.json']
+          files += ['../surfaces/'+asset+'_'+kind+'_1k.png' for asset in ('dirt','plastered_wall') for kind in ('diff','disp','rough')]
+          files += ['../surfaces/sources.json']
           assert [a['file'] for a in report['assets']]==files[:2]
           records={}
           for name in files:
