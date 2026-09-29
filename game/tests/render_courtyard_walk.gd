@@ -24,7 +24,7 @@ func restore_observation(o: Dictionary) -> bool:
 	c._apply();error=c.avatar.restore_motion(o.avatar_motion)
 	if not error.is_empty(): check(false,"motor replay: "+error);return false
 	c._paused=false;c.avatar.input_enabled=false;c.avatar.set_physics_process(false)
-	c._message=o.message;c._refresh()
+	c._message=o.message;c._panel.hide();c._refresh()
 	camera.global_transform=Transform3D(Basis(Base.point(o.camera_basis[0]),Base.point(o.camera_basis[1]),Base.point(o.camera_basis[2])),Base.point(o.camera_position))
 	camera.fov=o.camera_fov
 	return true
@@ -69,7 +69,7 @@ func run() -> void:
 		if int(o.tick)<=previous_tick: check(false,"nonchronological input trace");break
 		previous_tick=int(o.tick)
 		if not restore_observation(o): break
-		var before: Dictionary=c.model.snapshot();await frames(1)
+		var before: Dictionary=c.model.snapshot();await frames(4 if motions.is_empty() else 1)
 		var path:=output.path_join("walk-frames/%04d.png"%motions.size());var image:=root.get_texture().get_image()
 		check(image.save_png(path)==OK,"motion frame");check(c.model.snapshot()==before,"motion replay freezes source state")
 		var r:=metadata(path);r.input_observation_index=motions.size();motions.append(r)

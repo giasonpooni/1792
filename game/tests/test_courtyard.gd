@@ -75,6 +75,7 @@ func run() -> void:
 	check(d.hud.words.text==c._message and d.hud.narrator.text==c._narrator_label.text,"existing speech and narration retained")
 	d.hud.compact=false;d.hud.sample();check(not d.hud.visible and c._hud.visible,"classic HUD restored")
 	d.hud.compact=true;c._refresh();c.open_art_study();state=c.model.snapshot()
+	check(not d.hud.visible,"modal immediately suppresses compact HUD")
 	check(c.model.save_to(c.save_path).is_empty(),"whole-run save")
 	var saved:=FileAccess.get_file_as_string(c.save_path)
 	c._menu_action("art:camera");c._menu_action("art:refinement");c._menu_action("art:evening")

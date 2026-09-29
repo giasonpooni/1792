@@ -29,10 +29,14 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func open_art_study() -> void:
 	if not is_instance_valid(art) or art.manifest.is_empty() or (_paused and not _art_open): return
-	super._show_dialog("HOME · VISUAL DEVELOPMENT STUDY",
+	_show_dialog("HOME · VISUAL DEVELOPMENT STUDY",
 		"The same childhood scene and saved world. Lighting presets do not advance the calendar.\n\nBlender-authored bay and fitted garment study, with attributed CC0 surface samples. Horse and supporting figures remain proxies. No survey or authenticated costume is claimed.\n\nPresentation: %s · light: %s\nCloth samples the existing chapter clock and freezes here.\nContent SHA-256: %s" % ["study" if art.enabled else "retained greybox",art.preset,art.digest],
 		[["HUD: compact / original","art:hud"],["Walking camera: close / original","art:camera"],["Authored kit / earlier study","art:refinement"],["Compare: study / retained greybox","art:toggle"],["Daylight","art:daylight"],["Golden hour","art:golden_hour"],["Evening","art:evening"],["Return to childhood","resume"]])
 	_art_open=true
+
+func _show_dialog(title: String, body: String, actions: Array) -> void:
+	super._show_dialog(title,body,actions)
+	if is_instance_valid(art) and is_instance_valid(art.detail) and is_instance_valid(art.detail.hud): art.detail.hud.sample()
 
 func _menu_action(action: String) -> void:
 	if action.begins_with("art:"):
