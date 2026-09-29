@@ -41,8 +41,17 @@ func _run() -> void:
 	if not request is Dictionary or request.size() != 4 or request.get("schema") != "ciw.foundry-water-request.v1":
 		require_ok("Unsupported request contract.")
 		return
-	if not request.get("nonce") is String or not request.get("source_lock_id") is String or not (request.get("trips") is float or request.get("trips") is int) or request.trips not in [1,2]:
-		require_ok("Invalid request fields.")
+	if typeof(request.get("nonce")) != TYPE_STRING or typeof(request.get("source_lock_id")) != TYPE_STRING:
+		require_ok("Invalid request identity fields.")
+		return
+	# JSON transport numbers can be floats; reject non-numbers before conversion.
+	var raw_trips: Variant = request.get("trips")
+	if typeof(raw_trips) != TYPE_FLOAT and typeof(raw_trips) != TYPE_INT:
+		require_ok("Trip count must be numeric.")
+		return
+	var numeric_trips := float(raw_trips)
+	if numeric_trips != 1.0 and numeric_trips != 2.0:
+		require_ok("Trip count must be exactly one or two.")
 		return
 	var model := State.new()
 	if not require_ok(model.restore(Fixture.complete())): return
