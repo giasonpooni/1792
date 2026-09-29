@@ -285,3 +285,17 @@ verify every allegation about a real person's private motives.
 [Game design](docs/GAME_DESIGN.md)
 
 **Make one small journey and its obligations work before building all Punjab.**
+
+## Accepted Foundry bench in the playable workshop (this branch)
+
+The west-gate smith now uses the exact accepted Blender workbench produced by NET
+PR #73. The same Home territory commission, player motor, economy and save slot
+remain; collection checks a visible, unobstructed tabletop and correct elevation.
+A game-owned conservative collision box is qualified with loaded walking circuits,
+four-side collision, blocked pickup and safe/refused saves. No NET or Blender runtime
+is required to play, and the parallel gameplay branches are not silently merged.
+
+[Play, provenance, collision scope and retained gameplay checks](docs/ACCEPTED_WORKBENCH_INTEGRATION.md).
+Run `python tools/run_bench_checks.py --godot /path/to/godot` for the unchanged inherited
+suite plus the new integration. This remains an original technical blockout, not final
+historical art or a release.

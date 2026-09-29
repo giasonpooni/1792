@@ -36,13 +36,16 @@ func _menu_action(action: String) -> void:
 
 func _access(action: String) -> bool:
 	var at: Vector3=Craft.SITE if action in ["start","collect"] else Rules.QUARTERMASTER
-	return not model.mounted() and Model.distance(model.position(),at)<=3 and _seen(at+Vector3.UP*1.35,4.5)
+	if model.mounted() or absf(model.position().y-at.y)>0.35: return false
+	if Model.distance(model.position(),at)>3 or not _seen(at+Vector3.UP*1.35,4.5): return false
+	# Rechecked when the queued action executes, not merely when dialogue opens.
+	return action!="collect" or workshop_world.bench.can_collect(avatar)
 
 func _physics_process(delta: float) -> void:
 	if not _workshop_action.is_empty():
 		var action:=_workshop_action;_workshop_action=""
 		if action=="import_town": _load(Town.TOWN_SAVE);return
-		var error: String=model.workshop_action(action) if _access(action) else "The speaker is no longer nearby and visible. No transaction occurred."
+		var error: String=model.workshop_action(action) if _access(action) else "The speaker or collection point is no longer nearby and visible. No transaction occurred."
 		_message=error if not error.is_empty() else Craft.WORDS.get(action,"Order updated.")
 		avatar.velocity=Vector3.ZERO
 		_resume();_sync_workshop();return
