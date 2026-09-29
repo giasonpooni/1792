@@ -7,6 +7,7 @@ const Sound := preload("res://youth/performance/bazaar_sound.gd")
 const MarketStage := preload("res://youth/performance/bazaar_market_stage.gd")
 const Ambience := preload("res://youth/performance/bazaar_ambience.gd")
 const Rules := preload("res://youth/brawl_rules.gd")
+const Choreo := preload("res://youth/performance/bazaar_choreography.gd")
 var chapter: Node3D
 var figures: Array[Node3D]=[]
 var sounds: Array[AudioStreamPlayer3D]=[]
@@ -104,7 +105,8 @@ func sample(allow_edges: bool=true) -> void:
 			event_cursor=b.events.size();origin=int(b.origin_tick)
 		elif not enabled: event_cursor=b.events.size()
 	active=enabled and phase not in ["none","reported","caught"]
-	if is_instance_valid(market_stage): market_stage.sample(tick,active)
+	var contact_beat: Dictionary=Choreo.contact_pose(b.get("events",[]),tick) if not b.is_empty() else {}
+	if is_instance_valid(market_stage): market_stage.sample(tick,active,contact_beat)
 	if is_instance_valid(ambience):
 		var near_market: bool=chapter.avatar.global_position.distance_to(preload("res://youth/brawl_rules.gd").RING)<15
 		if sound_enabled and near_market and not chapter._paused:
@@ -117,6 +119,9 @@ func sample(allow_edges: bool=true) -> void:
 		if active: chapter.youths[i].caption.hide()
 		if not shown: continue
 		var action:="idle";var amount:=0.0
+		if i>=3 and not b.is_empty():
+			var friend: Dictionary=Choreo.friend_pose(b.get("events",[]),tick,i)
+			if not friend.is_empty(): action=friend.action;amount=friend.amount
 		if i<3 and not b.is_empty():
 			var cycle:=Rules.attack_phase(tick,int(b.ledger.start_tick),i)
 			if b.ledger.down[i]: action="down";amount=1.0
