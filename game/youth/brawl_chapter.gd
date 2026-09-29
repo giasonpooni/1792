@@ -5,6 +5,7 @@ const YouthState := preload("res://youth/brawl_state.gd")
 const Brawl := preload("res://youth/brawl_rules.gd")
 const Dialogue := preload("res://youth/performance/bazaar_script.gd")
 const Catalogue := preload("res://youth/catalogue.gd")
+const Blocking := preload("res://youth/performance/bazaar_companion_blocking.gd")
 var youths: Array[CharacterBody3D]=[]
 var youth_rigs: Array[Node3D]=[]
 var _youth_action := ""
@@ -135,7 +136,7 @@ func _step_youth(delta: float,strike: bool) -> void:
 	for i in range(5):
 		var actor: CharacterBody3D=youths[i]
 		var contact:=_contact(actor)
-		var target: Vector3=model.position()+Vector3(-1.1 if i==3 else 1.1,0,1.6) if i>=3 else model.position()
+		var target: Vector3=Blocking.target(model.position(),phase,i) if i>=3 else model.position()
 		var active: bool=true if i>=3 else phase=="fighting" and not s.ledger.down[i] and tick>s.ledger.stun_until[i] and Brawl.attack_phase(tick,int(s.ledger.start_tick),i)<80
 		var moving: bool=active and contact and Model.distance(actor.global_position,target)>(0.65 if i>=3 else 2.0)
 		var waypoint: Vector3=_navigation.waypoint(actor.global_position,target) if moving else actor.global_position
