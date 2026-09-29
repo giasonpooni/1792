@@ -108,6 +108,9 @@ func _clear_pending_actions() -> void:
 	_save_command={}
 
 func _menu_action(action: String) -> void:
+	if action.begins_with("hardware:"):
+		if is_instance_valid(controls) and controls.focused: _hardware_action(action.trim_prefix("hardware:"))
+		return
 	if is_instance_valid(controls) and not controls.focused: return
 	if action=="reading_settings":
 		_open_reading_settings(Reading.warning)
@@ -121,7 +124,9 @@ func _menu_action(action: String) -> void:
 	if action.begins_with("reading_"):
 		var candidate:=Reading.proposal(action)
 		if candidate.is_empty(): return
-		var error:=Reading.set_preferences(candidate,reading_settings_path,model.platform_services.storage)
+		var reading_io: RefCounted=model.platform_services.storage
+		if model.platform_services.has_method("reading_storage"): reading_io=model.platform_services.reading_storage()
+		var error:=Reading.set_preferences(candidate,reading_settings_path,reading_io)
 		_open_reading_settings("Saved." if error.is_empty() else "Not saved: "+error)
 		return
 	if action=="saved_chapter":
@@ -247,6 +252,8 @@ func _open_oral_memory() -> void:
 
 func _open_journal() -> void:
 	super._open_journal()
+	var host:=get_tree().root.get_node_or_null("PlatformRuntime")
+	if host!=null and host.recorder!=null: _append_oral_button("Local hardware test session","hardware:open")
 	_append_oral_button("Text and reading settings","reading_settings")
 	_append_oral_button("Read current messages","reading_messages")
 	_append_oral_button("Saved chapter / recovery","saved_chapter")
@@ -352,3 +359,42 @@ func _execute_saved_action(command: Dictionary) -> void:
 	_show_dialog("SAVED CHAPTER UPDATED" if command.kind=="replace" else "SAVED CHAPTER RESTORED",
 		"The primary file was explicitly replaced; previous save retained." if command.kind=="replace" else "The complete selected chapter was restored. No save file was overwritten. Resume when ready.",
 		[["Resume","resume"],["Saved chapter / recovery","saved_chapter"]])
+
+func _hardware_action(action: String) -> void:
+	var host:=get_tree().root.get_node_or_null("PlatformRuntime")
+	if host==null or host.recorder==null: return
+	var recorder: Node=host.recorder
+	var message: String=""
+	if action=="export": message=recorder.write_report()
+	elif action=="capture": message=await recorder.capture_view()
+	elif action.begins_with("check|"):
+		var id:=action.trim_prefix("check|")
+		if not recorder.CHECKS.has(id): return
+		_show_dialog("OPERATOR SELF-REPORT",recorder.CHECKS[id]+"\nRecord only what you tested yourself. This is not a certification.",
+			[["Observed pass","hardware:record|"+id+"|pass"],["Observed failure","hardware:record|"+id+"|fail"],
+			["Not tested","hardware:record|"+id+"|not_tested"],["Cancel","hardware:open"]])
+		return
+	elif action.begins_with("record|"):
+		var parts:=action.split("|")
+		if parts.size()!=3: return
+		message=recorder.record_operator(parts[1],parts[2])
+	# An interrupted asynchronous screenshot must not reopen a modal over the pause notice.
+	if not is_instance_valid(controls) or not controls.focused: return
+	var actions: Array=[]
+	for id in recorder.CHECKS: actions.append(["Review: "+id,"hardware:check|"+id])
+	actions.append(["Export local report","hardware:export"])
+	actions.append(["Capture current game view","hardware:capture"])
+	actions.append(["Return","resume"])
+	_show_dialog("LOCAL HARDWARE TEST SESSION",recorder.text()+"\n"+message,actions)
+
+func _capture_checkpoint(reason: String) -> void:
+	if model.platform_services.identity().provider_id=="cg.steam-client.v1":
+		_checkpoint_note="Steam profile: use a manual save. Legacy shared checkpoints are not read or written in this opt-in profile."
+		return
+	super._capture_checkpoint(reason)
+
+func _restore_checkpoint() -> void:
+	if model.platform_services.identity().provider_id=="cg.steam-client.v1":
+		_show_dialog("CHECKPOINT PROFILE", "Legacy shared checkpoints are disabled in the opt-in Steam profile. Use your app/user-scoped manual save.",[["Return","resume"]])
+		return
+	super._restore_checkpoint()

@@ -11,8 +11,12 @@ static func make_world() -> Node3D:
 	return home
 
 static func enter(tree: SceneTree) -> void:
+	var runtime:=tree.root.get_node_or_null("PlatformRuntime")
+	if runtime!=null and not runtime.can_enter(): return
 	var previous := tree.current_scene
 	var world := make_world()
+	if runtime!=null and runtime.steam_requested:
+		world.get_node("ChildhoodChapter").model.platform_services=runtime.provider
 	if previous != null:
 		tree.root.remove_child(previous)
 		previous.queue_free()

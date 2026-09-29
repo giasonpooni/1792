@@ -19,13 +19,15 @@ def main() -> None:
     finally:
         sys.argv = old_argv
     for script, name in (("check_oral_memory.py", "oral-content"), ("check_platform.py", "platform-contracts"),
-                          ("check_package_verification.py", "package-conformance")):
+                          ("check_package_verification.py", "package-conformance"),
+                          ("check_store_integration.py", "store-staging-contracts")):
         run([sys.executable, "tools/" + script], name)
     for script, name, marker in (("test_oral_memory.gd", "oral-memory", "ORAL_MEMORY_TESTS:"),
                                   ("test_platform.gd", "platform", "PLATFORM_TESTS:"),
                                   ("test_controller_remapping.gd", "controller-remapping", "CONTROLLER_REMAPPING_TESTS:"),
                                   ("test_save_recovery.gd", "save-recovery", "SAVE_RECOVERY_TESTS:"),
-                                  ("test_reading_accessibility.gd", "reading-accessibility", "READING_ACCESSIBILITY_TESTS:")):
+                                  ("test_reading_accessibility.gd", "reading-accessibility", "READING_ACCESSIBILITY_TESTS:"),
+                                  ("test_store_integration.gd", "store-integration", "STORE_INTEGRATION_TESTS:")):
         run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/" + script], name, marker)
 
 

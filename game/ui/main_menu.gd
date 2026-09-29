@@ -1,5 +1,9 @@
 extends Control
 
+const PlatformRuntime := preload("res://platform/platform_runtime.gd")
+var platform_runtime: Node
+var _hardware_box: VBoxContainer
+
 const Reading := preload("res://platform/reading_profile.gd")
 const ReadingUI := preload("res://platform/reading_ui.gd")
 var reading_settings_path:=Reading.PATH
@@ -23,6 +27,16 @@ var controls: Node
 const Names := preload("res://characters/character_names.gd")
 
 func _ready() -> void:
+	var args:=OS.get_cmdline_user_args()
+	var requested:=false
+	for arg in args:
+		if arg.begins_with("--steam-app-id") or arg=="--hardware-session": requested=true
+	if requested and get_tree().root.get_node_or_null("PlatformRuntime")==null:
+		_finish_platform_boot.call_deferred()
+		return
+	platform_runtime=PlatformRuntime.ensure(get_tree(),OS.get_cmdline_user_args())
+	if platform_runtime!=null and platform_runtime.steam_requested and platform_runtime.can_enter():
+		save_reader.platform_services=platform_runtime.provider
 	Reading.install(reading_settings_path)
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	controls=Shell.new()
@@ -59,7 +73,7 @@ func _ready() -> void:
 	_add_button(panel, "Living politics + one-eye vision (extended home chapter)", "res://world/political_home.tscn")
 	_add_button(panel, "Lahore · Command story (separate 1801 sandbox)", "res://world/command_sandbox.tscn")
 	_add_button(panel, "Lahore · Houses and rivals (riding / companions / house politics)", "res://world/house_sandbox.tscn")
-	var primary:=Recovery.inspect(save_reader,home_save_path)
+	var primary:=Recovery.inspect(save_reader,home_save_path) if platform_runtime==null or platform_runtime.can_enter() else {"status":"unavailable"}
 	var continue_button:=Button.new()
 	continue_button.text="Continue saved home chapter"
 	continue_button.custom_minimum_size.y=48
@@ -85,7 +99,21 @@ func _ready() -> void:
 	reading_button.pressed.connect(func():
 		if not _continue_busy and controls.focused: _open_reading(Reading.warning))
 	panel.add_child(reading_button)
+	if platform_runtime!=null:
+		var platform_note:=Label.new()
+		platform_note.text=platform_runtime.status_text()
+		platform_note.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+		panel.add_child(platform_note)
+		if platform_runtime.recorder!=null:
+			var hardware_button:=Button.new()
+			hardware_button.text="Local hardware test session"
+			hardware_button.custom_minimum_size.y=48
+			hardware_button.pressed.connect(_open_hardware)
+			panel.add_child(hardware_button)
 	_normal_children=panel.get_children()
+	_hardware_box=VBoxContainer.new()
+	_hardware_box.hide()
+	panel.add_child(_hardware_box)
 	_saved_box=VBoxContainer.new()
 	_saved_box.add_theme_constant_override("separation",14)
 	_saved_box.hide()
@@ -97,14 +125,20 @@ func _ready() -> void:
 	ReadingUI.apply(panel)
 	Shell.focus_buttons(panel,scroll)
 	if "--platform-smoke" in OS.get_cmdline_user_args(): Probe.run.call_deferred(self)
+	elif "--platform-integration-smoke" in OS.get_cmdline_user_args():
+		preload("res://platform/store_probe.gd").run.call_deferred(self)
 
 func _add_button(parent: Node, text: String, scene: String) -> void:
 	var button := Button.new()
 	button.text = text
+	if platform_runtime!=null and platform_runtime.steam_requested and scene!="res://world/home_territory.tscn":
+		button.disabled=true
+		button.text+=" (store profile not adapted)"
 	button.custom_minimum_size.y = 48
 	button.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	button.pressed.connect(func():
 		if _continue_busy or not controls.focused: return
+		if platform_runtime!=null and platform_runtime.steam_requested and scene!="res://world/home_territory.tscn": return
 		if scene == "res://world/home_territory.tscn":
 			HomeLaunch.enter.call_deferred(get_tree())
 		else:
@@ -112,10 +146,14 @@ func _add_button(parent: Node, text: String, scene: String) -> void:
 	parent.add_child(button)
 
 func _input(event: InputEvent) -> void:
-	if _continue_busy: get_viewport().set_input_as_handled()
+	if _continue_busy or not is_instance_valid(controls): get_viewport().set_input_as_handled()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not controls.focused: return
+	if not is_instance_valid(controls) or not controls.focused: return
+	if is_instance_valid(_hardware_box) and _hardware_box.visible and event.is_action_pressed("ui_cancel"):
+		_close_hardware()
+		get_viewport().set_input_as_handled()
+		return
 	if is_instance_valid(_reading_box) and _reading_box.visible and event.is_action_pressed("ui_cancel"):
 		_close_reading()
 		get_viewport().set_input_as_handled()
@@ -159,7 +197,7 @@ func _focus_saved() -> void:
 	ReadingUI.reveal_focus_after_layout(_saved_box,_scroll)
 
 func _open_saved(note: String="") -> void:
-	var primary:=Recovery.inspect(save_reader,home_save_path)
+	var primary:=Recovery.inspect(save_reader,home_save_path) if platform_runtime==null or platform_runtime.can_enter() else {"status":"unavailable"}
 	var previous:=Recovery.inspect(save_reader,home_save_path+Recovery.PREVIOUS_SUFFIX)
 	var body:=note+"\n\n" if not note.is_empty() else ""
 	body+=Recovery.description(primary,"Primary manual save")+"\n\n"+Recovery.description(previous,"Previous manual save")
@@ -224,7 +262,9 @@ func _reading_action(action: String) -> void:
 		return
 	var candidate:=Reading.proposal(action)
 	if candidate.is_empty(): return
-	var error:=Reading.set_preferences(candidate,reading_settings_path,save_reader.platform_services.storage)
+	var reading_io: RefCounted=save_reader.platform_services.storage
+	if save_reader.platform_services.has_method("reading_storage"): reading_io=save_reader.platform_services.reading_storage()
+	var error:=Reading.set_preferences(candidate,reading_settings_path,reading_io)
 	ReadingUI.apply(_title_column)
 	_open_reading("Saved." if error.is_empty() else "Not saved: "+error)
 
@@ -233,3 +273,36 @@ func _close_reading() -> void:
 	for child in _normal_children: child.show()
 	ReadingUI.apply(_title_column)
 	Shell.focus_buttons(_title_column,_scroll)
+
+func _open_hardware(message: String="") -> void:
+	if platform_runtime==null or platform_runtime.recorder==null or not controls.focused or _continue_busy: return
+	for child in _normal_children: child.hide()
+	_saved_box.hide();_reading_box.hide()
+	for child in _hardware_box.get_children():
+		_hardware_box.remove_child(child);child.queue_free()
+	_hardware_box.show()
+	var text:=Label.new()
+	text.text=platform_runtime.recorder.text()+"\n"+message
+	text.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	_hardware_box.add_child(text)
+	_hardware_button("Export local report",func(): _open_hardware(platform_runtime.recorder.write_report()))
+	_hardware_button("Capture current game view",func(): _open_hardware(await platform_runtime.recorder.capture_view()))
+	_hardware_button("Return",_close_hardware)
+	ReadingUI.apply(_hardware_box);Shell.focus_buttons(_hardware_box,_scroll)
+	ReadingUI.reveal_focus_after_layout(_hardware_box,_scroll)
+
+func _hardware_button(text: String, action: Callable) -> void:
+	var button:=Button.new();button.text=text;button.custom_minimum_size.y=48
+	button.pressed.connect(func():
+		if controls.focused and not _continue_busy: action.call())
+	_hardware_box.add_child(button)
+
+func _close_hardware() -> void:
+	_hardware_box.hide()
+	for child in _normal_children: child.show()
+	Shell.focus_buttons(_title_column,_scroll)
+
+func _finish_platform_boot() -> void:
+	# The root is busy during main-scene _ready. Attach the process owner only after setup.
+	PlatformRuntime.ensure(get_tree(),OS.get_cmdline_user_args())
+	_ready()

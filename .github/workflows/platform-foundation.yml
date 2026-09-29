@@ -91,6 +91,17 @@ jobs:
             --script res://tests/render_reading_accessibility.gd 2>&1 | tee test-results/reading-accessibility-render.log
           ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/reading-accessibility-render.log
           grep -q 'READING_ACCESSIBILITY_RENDER: 4 captures; 0 failures' test-results/reading-accessibility-render.log
+      - name: Render local hardware and store-session fixtures
+        if: runner.os == 'Linux'
+        shell: bash
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          set -euo pipefail
+          timeout 120 xvfb-run -a "$GODOT" --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_store_integration.gd 2>&1 | tee test-results/store-integration-render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/store-integration-render.log
+          grep -q 'STORE_INTEGRATION_RENDER: 3 captures; 0 failures' test-results/store-integration-render.log
       - name: Actual Windows export, packaged boot and local staging
         if: runner.os == 'Windows'
         shell: bash

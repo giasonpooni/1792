@@ -5,6 +5,8 @@ const Profile := preload("res://platform/input_profile.gd")
 signal interrupted(reason: String)
 signal device_changed
 var focused:=true
+var _window_focused:=true
+var _platform_blocked:=false
 var last_device:=-1
 var using_gamepad:=false
 var scroll_target: ScrollContainer
@@ -13,6 +15,10 @@ var _scroll_fraction:=0.0
 func _ready() -> void:
 	Profile.install()
 	Input.joy_connection_changed.connect(_connection_changed)
+	var runtime:=get_tree().root.get_node_or_null("PlatformRuntime")
+	if runtime!=null:
+		runtime.gate_changed.connect(set_platform_gate)
+		set_platform_gate(runtime.blocked,runtime.reason)
 
 func _input(event: InputEvent) -> void:
 	if not focused:
@@ -33,12 +39,21 @@ func _notification(what: int) -> void:
 	elif what in [NOTIFICATION_APPLICATION_FOCUS_IN,NOTIFICATION_APPLICATION_RESUMED]: set_focus(true)
 
 func set_focus(value: bool) -> void:
-	if focused==value: return
-	focused=value
-	if not value:
+	_window_focused=value
+	_recompute_focus("Application focus lost. Resume deliberately when ready.")
+
+func set_platform_gate(blocked: bool, reason: String) -> void:
+	_platform_blocked=blocked
+	_recompute_focus(reason)
+
+func _recompute_focus(reason: String) -> void:
+	var allowed:=_window_focused and not _platform_blocked
+	if focused==allowed: return
+	focused=allowed
+	if not focused:
 		Profile.release_gameplay()
-		interrupted.emit("Application focus lost. Resume deliberately when ready.")
-	# Returning focus never resumes a world or replays a queued operation.
+		interrupted.emit(reason)
+	# Closing an overlay cannot override OS focus loss or resume the world.
 
 func _connection_changed(device: int, connected: bool) -> void:
 	if connected or device!=last_device: return

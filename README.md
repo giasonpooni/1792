@@ -138,6 +138,27 @@ scenarios, not completed transitions in the childhood-to-Lahore biography.
 The detailed guide covers mounted gaits, alternate modes and optional framing.
 Loading and checkpoints retain their existing validation and rollback semantics.
 
+## Native store boundary and real-machine test sessions
+
+The Windows build now has an **opt-in local hardware session**. Launch
+`content/1792.exe -- --hardware-session`, then use **Local hardware test session** at
+title or in the Home journal to export renderer/input observations and explicit
+operator checklist results. No data is uploaded; automated runs cannot claim a
+human hardware pass.
+
+An optional **GodotSteam bridge** now handles client identity, overlay pause and
+app/user-scoped local manual saves. The normal Windows package does **not** include
+the native Steam dependency. Missing/changed sessions fail explicitly; no cloud,
+achievement or server-authentication result is invented.
+
+`tools/microsoft_pc.py` stages a verified local Windows payload with a supplied
+Partner Center identity and original logo assets, then can invoke a checksum-pinned
+installed MakePkg for local PC packaging **only with `--execute`**. It never uploads,
+installs, signs, or labels a Windows package as an Xbox port.
+
+[Integration and hardware-test guide](docs/STORE_AND_HARDWARE_INTEGRATION.md) ·
+[Private Xbox/signing handoff](docs/XBOX_PORT_HANDOFF.md)
+
 ## Architecture
 
 Godot owns the active game, state and clock. Blender is the intended asset-authoring
