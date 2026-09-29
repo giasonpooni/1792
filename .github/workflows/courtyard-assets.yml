@@ -19,9 +19,11 @@ jobs:
       - name: Install and identify Blender
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends blender
+          sudo apt-get install -y --no-install-recommends blender python3-numpy
           blender --version
       - name: Execute original authored asset recipe
+        env:
+          PYTHONPATH: /usr/lib/python3/dist-packages
         run: |
           mkdir -p export-evidence
           set -o pipefail
@@ -29,7 +31,7 @@ jobs:
           test -f export-evidence/assets/build.json
           git rev-parse HEAD > export-evidence/source-commit.txt
           sha256sum tools/art/build_courtyard.py > export-evidence/generator.sha256
-          dpkg-query -W blender > export-evidence/blender-package.txt
+          dpkg-query -W blender python3-numpy > export-evidence/blender-package.txt
       - name: Retain immutable Git blobs only (no branch or release changes)
         env:
           GH_TOKEN: ${{ github.token }}
