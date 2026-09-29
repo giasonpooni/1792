@@ -43,6 +43,17 @@ func run() -> void:
 	stage.sample(110,true,beat)
 	check(scene.model.snapshot()==before,"market witness-like reaction creates no testimony or state")
 	var figure: Node3D=scene.bazaar_performance.figures[0]
+	figure.sample(0,0,"idle",0,false)
+	check(figure.eyes[0].scale.y<figure.eye_base[0].y*.3,"supporting figure has deterministic blink closure")
+	figure.sample(20,0,"idle",0,false)
+	check(is_equal_approx(figure.eyes[0].scale.y,figure.eye_base[0].y),"blink returns to open eye without state")
+	var quiet_mouth: Vector3=figure.mouth.scale
+	figure.sample(20,0,"idle",0,true)
+	check(figure.mouth.scale.y>quiet_mouth.y,"speaking pose animates simple mouth shape")
+	figure.sample(20,0,"windup",.8,false);var attack_brow:=figure.brows[0].rotation.z
+	figure.sample(20,0,"checked",.8,false);var checked_brow:=figure.brows[0].rotation.z
+	check(attack_brow<0 and checked_brow>0,"attack tension and checked surprise use distinct brow shapes")
+	check(scene.model.snapshot()==before,"facial micro-performance creates no world state")
 	var offsets: Dictionary={}
 	for action in ["windup","strike","checked","recover"]:
 		figure.sample(200,0,action,.8,false)
