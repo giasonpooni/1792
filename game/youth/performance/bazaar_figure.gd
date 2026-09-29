@@ -1,6 +1,7 @@
 # Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 extends Node3D
 ## Original articulated supporting-character study; all transforms are visual only.
+const Choreo := preload("res://youth/performance/bazaar_choreography.gd")
 var torso: Node3D
 var head: Node3D
 var shoulders: Array[Node3D]=[]
@@ -64,28 +65,30 @@ func sample(tick: int,speed: float,action: String,amount: float=0.0,speaking: bo
 		hips[i].position.y=.81
 		hips[i].rotation=Vector3(wave*(1 if i==0 else -1),0,0);knees[i].rotation=Vector3(maxf(0,-hips[i].rotation.x)*.5,0,0)
 		shoulders[i].rotation=Vector3(-hips[i].rotation.x*.6,0,.08 if i==0 else -.08);elbows[i].rotation=Vector3(-.15,0,0)
+	var choreo: Dictionary=Choreo.opponent(action,amount)
+	if not choreo.is_empty():
+		position=choreo.offset;torso.rotation=choreo.torso;head.rotation=choreo.head
+		hips[0].rotation.x=choreo.hip_l;hips[1].rotation.x=choreo.hip_r
+		knees[0].rotation.x=choreo.knee_l;knees[1].rotation.x=choreo.knee_r
 	match action:
 		"windup":
-			# The visible body settles over the rear foot before the existing strike window.
-			position=Vector3(-.04*amount,0,.10*amount)
-			hips[0].rotation.x=.35*amount;hips[1].rotation.x=-.22*amount
-			knees[0].rotation.x=.22*amount;knees[1].rotation.x=.42*amount
-			torso.rotation=Vector3(.06*amount,-.38*amount,-.04*amount);shoulders[1].rotation=Vector3(-.8-1.9*amount,-.35, -.25);elbows[1].rotation.x=-.8
+			shoulders[1].rotation=Vector3(-.8-1.9*Choreo.ease(amount),-.35,-.25);elbows[1].rotation.x=-.8
 			shoulders[0].rotation.x=-.7;elbows[0].rotation.x=-.6
 		"strike":
-			# Visual-only step-through; the authoritative CharacterBody remains untouched.
-			position=Vector3(.03*amount,0,-.18*amount)
-			hips[0].rotation.x=-.42*amount;hips[1].rotation.x=.30*amount;knees[0].rotation.x=.52*amount
-			torso.rotation=Vector3(.15,.40*amount,-.05);shoulders[1].rotation=Vector3(-2.7+1.45*amount,.3,0);elbows[1].rotation.x=-.7+.6*amount
+			shoulders[1].rotation=Vector3(-2.7+1.45*Choreo.ease(amount),.3,0);elbows[1].rotation.x=-.7+.6*Choreo.ease(amount)
 			shoulders[0].rotation.x=-.8
 		"checked":
-			position=Vector3(0,0,.08)
-			hips[0].rotation.x=-.18;hips[1].rotation.x=.22;knees[1].rotation.x=.28
-			torso.rotation=Vector3(-.14,-.24,.06);shoulders[1].rotation.x=-1.3;elbows[1].rotation.x=-1.05;head.rotation.y=.18
+			shoulders[1].rotation.x=-1.3;elbows[1].rotation.x=-1.05
 		"recover":
-			position=Vector3(0,0,-.06*(1-amount))
-			hips[0].rotation.x=-.18*(1-amount);hips[1].rotation.x=.12*(1-amount)
-			torso.rotation.y=.25*(1-amount);shoulders[1].rotation.x=-1.2*(1-amount)
+			shoulders[1].rotation.x=-1.2*(1-Choreo.ease(amount))
+		"brace":
+			torso.rotation=Vector3(-.08*amount,.16*amount,0);head.rotation=Vector3(.03,-.20*amount,.06*amount)
+			shoulders[0].rotation.x=-.55*amount;shoulders[1].rotation.x=-.7*amount;elbows[1].rotation.x=-.6*amount
+		"watch":
+			head.rotation.y=.28*amount;torso.rotation.y=.08*amount;shoulders[0].rotation.x=-.35*amount
+		"urge":
+			torso.rotation=Vector3(.05,-.12*amount,0);head.rotation.y=-.18*amount
+			shoulders[0].rotation=Vector3(-.75*amount,0,-.12);elbows[0].rotation.x=-.85*amount
 		"down":
 			# A seated/crouched defeated figure, not a squashed capsule or ragdoll.
 			torso.position.y=.55;torso.rotation.x=.42;head.rotation.x=.18
