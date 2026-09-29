@@ -82,8 +82,8 @@ func sample(tick: int,phase: String) -> void:
 	var work:=1.0 if pre_conflict else .45
 	merchant.rotation.z=.018*sin(t*1.1)
 	helper.rotation.z=-.015*sin(t*.95+.8)
-	var merchant_arm:=merchant.get_node("WorkingArm");merchant_arm.rotation=Vector3(-.22-.18*sin(t*1.4)*work,0,.12*sin(t*.7))
-	var helper_arm:=helper.get_node("WorkingArm");helper_arm.rotation=Vector3(-.35-.12*sin(t*1.1+.9)*work,0,-.10*sin(t*.8))
+	var merchant_arm: Node3D=merchant.get_node("WorkingArm");merchant_arm.rotation=Vector3(-.22-.18*sin(t*1.4)*work,0,.12*sin(t*.7))
+	var helper_arm: Node3D=helper.get_node("WorkingArm");helper_arm.rotation=Vector3(-.35-.12*sin(t*1.1+.9)*work,0,-.10*sin(t*.8))
 	cloth_bundle.rotation.y=.025*sin(t*.5)
 	animal_head.rotation=Vector3(.025*sin(t*.8),.13*sin(t*.36),.035*sin(t*.52))
 	animal_tail.rotation.z=.22*sin(t*.92)+.12
