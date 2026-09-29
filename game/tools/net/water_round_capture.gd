@@ -55,6 +55,19 @@ func observe(tick: int) -> void:
 			continue
 		samples.append({"tick":tick,"channel":channel,"value":values[channel]})
 
+func first_difference(a: Variant, b: Variant, path: String = "state") -> Dictionary:
+	if Economy._equal(a,b): return {}
+	if a is Dictionary and b is Dictionary:
+		for key in a:
+			if not b.has(key): return {"path":path+"."+str(key),"reason":"missing_loaded_key"}
+			var found := first_difference(a[key],b[key],path+"."+str(key))
+			if not found.is_empty(): return found
+	elif a is Array and b is Array and a.size()==b.size():
+		for i in range(a.size()):
+			var found := first_difference(a[i],b[i],path+"["+str(i)+"]")
+			if not found.is_empty(): return found
+	return {"path":path,"before":JSON.stringify(a,"",true,true),"after":JSON.stringify(b,"",true,true)}
+
 func _run() -> void:
 	var args := OS.get_cmdline_user_args()
 	if args.size()!=2:
@@ -88,7 +101,8 @@ func _run() -> void:
 			if checkpoint_ok==1: model = restored
 			events.append({"id":"water-checkpoint-%d" % events.size(),"tick":tick,
 				"kind":"water.checkpoint","actor_id":"ranjit_singh","target_ids":[],"causes":[],
-				"payload":{"roundtrip_equal":checkpoint_ok==1,"game_tick":int(model.snapshot().childhood.tick)}})
+				"payload":{"roundtrip_equal":checkpoint_ok==1,"game_tick":int(model.snapshot().childhood.tick),
+					"error":error,"first_difference":first_difference(original,restored.snapshot())}})
 		observe(tick)
 	var dropped := 1 if request.diagnostic_fault=="drop-sample" else 0
 	var trace := {"schema":"ciw.game-trace.v1", "request_nonce":request.nonce,
