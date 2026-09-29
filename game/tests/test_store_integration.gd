@@ -1,7 +1,7 @@
 # Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 extends "res://tests/test_platform.gd"
 ## Fake client and synthetic input: native-client/hardware qualification explicitly NOT claimed.
-const Steam := preload("res://platform/steam_services.gd")
+const SteamProvider := preload("res://platform/steam_services.gd")
 const Runtime := preload("res://platform/platform_runtime.gd")
 const Hardware := preload("res://platform/hardware_session.gd")
 const Shell := preload("res://platform/controller_shell.gd")
@@ -29,19 +29,19 @@ class FakeClient extends RefCounted:
 
 func _steam_domain() -> void:
 	for value in [null,true,0,-1,480,4294967296,1.5,"1234567"]:
-		var service:=Steam.new()
+		var service:=SteamProvider.new()
 		check(not service.initialize(value,FakeClient.new()).is_empty(),"invalid app identity refused "+str(value))
 		check(not service.ready and service.identity().platform_user_id==null,"no identity manufactured on refusal")
-	var absent:=Steam.new()
-	check(not absent.initialize(1234567).is_empty(),"standard Godot actually refuses missing native singleton")
-	check(not Steam.api_error(RefCounted.new()).is_empty(),"method-shape mismatch refused")
+	var absent:=SteamProvider.new()
+	check(not absent.initialize(1234567).is_empty(),"missing module or absent client cannot initialize a native session")
+	check(not SteamProvider.api_error(RefCounted.new()).is_empty(),"method-shape mismatch refused")
 	for result in [null,{"status":true},{"status":0.0},{"status":1},{}]:
 		var bad:=FakeClient.new();bad.result=result
-		var service:=Steam.new()
+		var service:=SteamProvider.new()
 		check(not service.initialize(1234567,bad).is_empty(),"malformed/failed init does not create session")
 		service.shutdown();check(bad.shutdowns==0,"no SDK shutdown without acquired session")
 	var client:=FakeClient.new()
-	var service:=Steam.new()
+	var service:=SteamProvider.new()
 	ok(service.initialize(1234567,client),"synthetic contract accepted")
 	check(client.init_args==[1234567,false],"verified app-id-first signature; only host owns callbacks")
 	check(service.ready and not client.online,"offline client not wrongly refused as online-only DRM")
@@ -81,7 +81,7 @@ func _steam_domain() -> void:
 	service.shutdown();service.shutdown();check(client.shutdowns==1,"idempotent one-owner shutdown")
 	shell.queue_free();DirAccess.remove_absolute(path)
 	for alteration in ["app","running","subscribed","user"]:
-		var fake:=FakeClient.new();var s:=Steam.new()
+		var fake:=FakeClient.new();var s:=SteamProvider.new()
 		ok(s.initialize(1234567,fake),"new labelled session fixture")
 		match alteration:
 			"app": fake.app=1
