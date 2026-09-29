@@ -15,7 +15,6 @@ func frames(n:=4) -> void:
 	await process_frame
 func run() -> void:
 	var home:=Launch.make_world();var scene=home.get_node("ChildhoodChapter")
-	var seed=scene.model.duplicate() if false else scene.model
 	root.add_child(home);await frames(8)
 	var stage: Node3D=scene.bazaar_performance.market_stage
 	check(is_instance_valid(stage),"market stage attached to shipped Home scene")
