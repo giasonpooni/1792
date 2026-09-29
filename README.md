@@ -8,13 +8,15 @@ A Cartesian Graphics historical open-world game following **Buddh Singh** from G
 
 [Play](#play) · [Walkthrough](docs/PLAYABLE_GUIDE.md) · [Creative direction](#scope-and-development-order) · [Research and production](#coupled-engineering-experiment) · [Development reference](DEVELOPMENT_REFERENCE.md) · [Rights](#rights)
 
-## Notation Systems and Cartesian Graphics
+## Cartesian Graphics and Notation Systems
 
-**Cartesian Graphics — Interactive Worlds, Simulation Technology and Digital IP.** We develop historically grounded games and the graphics, assets, simulation and production technology behind them. **1792 is the primary creative project**, not merely a benchmark for another product.
+**Cartesian Graphics — Private Creative, Simulation and Commercial IP Programme.** 1792 is its primary creative project and remains a product in its own right.
 
-**Notation Systems — Frontier Tooling and Instrumentation for Digital Futures.** Shared scientific instruments and the [Notations Systems Terminal](https://github.com/giasonpooni/Notations-Systems-Terminal) support the development work. Cartesian's private creative/IP direction and Notation Systems' public-interest tooling direction remain distinct. This positioning does not establish nonprofit status, transfer IP or change any licence.
+The proposed institutional direction places Cartesian Graphics as the private ownership/commercialization layer above a **Notation Systems public-interest scientific instrumentation commons**. This is conceptual governance—not a claim that a legal parent/subsidiary relationship, nonprofit entity or IP transfer has already been completed.
 
-Godot owns live game state and the clock. Story, art direction, historical interpretation, sacred-site rules, saves and release approval remain game-owned. Shared primitives do not turn simulated events into physical observations or authorize industrial evidence admission. [Organization and public profile](https://github.com/giasonpooni/Notations-Systems-Terminal/blob/b41b84922d4963a9206202029afd1e78b9451f9c/PUBLIC_POSITIONING.md).
+[Notations Systems Terminal](https://github.com/giasonpooni/Notations-Systems-Terminal) supplies shared scientific instrumentation. Cartesian can dogfood that commons while this game retains its worlds, assets, narrative, live state, clock, saves, creative direction and release approval.
+
+Godot owns live game state and the clock. Shared primitives do not turn simulated events into physical observations or authorize industrial evidence admission.
 
 ## Play
 
@@ -60,7 +62,7 @@ Plan the full geographic envelope from the beginning. Evidence-supported 1:1 ter
 
 ## Architecture
 
-Blender is the intended asset-authoring path. Python, Julia, Rust and C++ are complementary implementation tools for bounded external workloads, not four compulsory live game runtimes. Godot retains the game loop; Bevy and NET are optional external providers. No universal language compiler, GPU acceleration or proof guarantee follows from this architecture.
+Blender is the intended asset-authoring path. Python, Julia, Rust and C++ are complementary implementation tools for bounded external workloads, not four compulsory live game runtimes. Godot retains the game loop; Bevy and NET are optional external providers.
 
 [Shared game architecture](docs/SHARED_GAME_ARCHITECTURE.md) · [Campaign direction](docs/COUPLED_CAMPAIGN.md)
 
@@ -70,11 +72,13 @@ The production goal is to help a small human-led team turn research and creative
 
 ## Coupled engineering experiment
 
-The game can also test shared tooling: does a bounded workflow reduce rework, preserve world/actor-knowledge boundaries and improve accepted, integrated output? **Notations Game Foundry remains a workload on NET**, not a second engine or a claim of autonomous game production.
+The game is also a demanding **synthetic-world testbed** for public instrumentation. Unlike physical systems, the engine can expose selected ground truth, letting experiments deliberately compare true simulated state, partial observation and estimated state.
 
-Measure end-to-end human effort, setup, model/provider cost, build time, memory, regressions and artistic/playtesting acceptance. Unknown measurements stay unknown. Compare fixed tasks and acceptance criteria; software checks do not establish historical truth or visual quality. CUDA or hardware-GPU results require actual provisioned runs, not software rendering.
+That makes 1792 useful for state estimation, delayed information, partial observability, mapping, agents and rendering—but successful game-world results remain simulation evidence until separately validated for physical use.
 
-[Research programme and metric definitions](https://github.com/giasonpooni/Notations-Systems-Terminal/blob/b41b84922d4963a9206202029afd1e78b9451f9c/RESEARCH_PROGRAMME.md). Development examples remain separately tracked: [NET #68](https://github.com/giasonpooni/Notations-Systems-Terminal/pull/68), [1792 #30](https://github.com/giasonpooni/1792/pull/30), and [NET #76](https://github.com/giasonpooni/Notations-Systems-Terminal/pull/76). A link does not merge those branches into this checkout.
+**Notations Game Foundry remains a workload on NET**, not a second engine or a claim of autonomous game production. Measure end-to-end human effort, setup, model/provider cost, build time, memory, regressions and artistic/playtesting acceptance.
+
+[Shared research programme](https://github.com/giasonpooni/Notations-Systems-Terminal/blob/docs/coupled-game-foundry-scope-20260929/RESEARCH_PROGRAMME.md).
 
 ## Develop and verify
 
@@ -86,11 +90,11 @@ python tools/run_checks.py --godot /path/to/godot
 
 Existing gameplay, reconstruction and state-boundary checks remain unchanged. This documentation update does not rerun the suites, change the Godot pin, qualify repository-wide CI or publish a playable release.
 
-The full previous overview is preserved byte-for-byte as [DEVELOPMENT_REFERENCE.md](DEVELOPMENT_REFERENCE.md), with the same root-relative link base. Its dated qualification statements remain tied to their original revisions.
+The full previous overview is preserved byte-for-byte as [DEVELOPMENT_REFERENCE.md](DEVELOPMENT_REFERENCE.md).
 
 ## Rights
 
 **Copyright (c) 2026 Cartesian Graphics. All rights reserved.**
-Original protected game code and content are proprietary unless explicitly licensed otherwise. Engine and third-party rights remain separate. No claim is made over historical facts or public-domain material. This update imports no third-party art, voice or archival materials and changes no rights.
+Original protected game code and content are proprietary unless explicitly licensed otherwise. Engine and third-party rights remain separate. No claim is made over historical facts or public-domain material.
 
-[LICENSE](LICENSE) · [Licensing scope](docs/LICENSING.md) · [Asset rules](docs/ASSET_LICENSING.md) · [Third-party notices](THIRD_PARTY_NOTICES.md)
+The proposed institutional inversion does not itself transfer any existing right, asset or repository. [LICENSE](LICENSE) · [Licensing scope](docs/LICENSING.md) · [Asset rules](docs/ASSET_LICENSING.md) · [Third-party notices](THIRD_PARTY_NOTICES.md)
