@@ -11,16 +11,26 @@ later public names follow the [naming policy](docs/CHARACTER_NAMES.md).
 **Playable greybox in development, not a finished city or historical survey.**
 
 [Play](#play) · [Project scope](#scope-and-development-order) ·
+[Expertise amplification](#expertise-amplification-and-transfer) ·
 [Coupled engineering experiment](#coupled-engineering-experiment) ·
 [Develop and verify](#develop-and-verify)
 
 ## Notation Systems and Cartesian Graphics
 
 **Notation Systems is the parent organization of Cartesian Graphics.** Notation
-Systems focuses on industrial tooling, computational instrumentation and scientific
-computing. **Cartesian Graphics** is its games, graphics and simulation studio/label;
-**1792 is its primary historical-biographical game** and the first major reference
-workload for the shared game-production engineering experiment.
+Systems develops evidence-backed industrial intelligence, computational
+instrumentation and tooling that connect domain expertise to bounded, inspectable
+work. **Cartesian Graphics** is its games, graphics, physics and simulation
+studio/label; **1792 is its primary historical-biographical game** and the first
+major reference workload for the shared game-production engineering experiment.
+This describes an organizational relationship, not a separate incorporation claim.
+
+The firm's industrial domain identities remain **PAYLOAD** (physical operations,
+facilities, materials and logistics, including Caravan), **LANDSHARK** (land/site
+and spatial constraints), and **TRADEWIND** (contracts, prices and exposure).
+PayloadOS and ESM retain governed industrial evidence/state responsibilities;
+Dossier Services packages scoped service outputs. Games are not another
+industrial evidence domain or a reason to replace those identities.
 
 The studio's creative focus is historical lives experienced through geography,
 relationships, limited knowledge and consequential action. These layered worlds
@@ -29,12 +39,13 @@ simulation research. Such ambitions do not imply that every planned system or
 a general-purpose multiphysics engine is implemented in this game.
 
 **Shared primitives; separate state authority.** Reusable production tooling
-belongs on the existing NET workbench; specialist repositories keep their own
-mathematics, implementations and licences. Godot retains the game's live state
-and clock; story, art direction and game-release approval remain game-owned.
-Simulation output is not automatically admitted industrial evidence, and shared
-tooling does not grant industrial admission or release authority. Existing
-Cartesian Graphics copyright, licensing and third-party notices are unchanged.
+belongs on the existing [Notations Systems Terminal (NET)](https://github.com/giasonpooni/Notations-Systems-Terminal)
+workbench; specialist repositories keep their own mathematics, implementations
+and licences. Godot retains the game's live state and clock; story, art direction
+and game-release approval remain game-owned. Simulation output is not automatically
+admitted industrial evidence, and shared tooling does not grant industrial
+admission or release authority. Existing Cartesian Graphics copyright, licensing
+and third-party notices are unchanged.
 
 ## Play
 
@@ -112,8 +123,9 @@ Loading and checkpoints retain their existing validation and rollback semantics.
 Godot owns the active game, state and clock. Blender is the intended asset-authoring
 path. The shared **C++–Rust–Python–Julia** architecture remains documented for
 bounded provider workloads; this update does not pretend all four runtimes have
-been integrated. Bevy and Notations Engineering Terminal remain optional external
-simulation/experiment providers, not competing game loops.
+been integrated. Bevy and Notations Systems Terminal remain optional external
+simulation/experiment providers, not competing game loops. Existing NET / `net` /
+`ciw` interfaces are retained; this is not a universal cross-language compiler.
 
 [Shared game architecture](docs/SHARED_GAME_ARCHITECTURE.md) ·
 [Campaign direction](docs/COUPLED_CAMPAIGN.md)
@@ -139,6 +151,47 @@ authored campaign. Preserve their attribution and distinguish historical claims,
 later tradition, inference and original fiction rather than silently promoting
 all generated material into historical fact.
 
+## Expertise amplification and transfer
+
+1792 provides a concrete setting for **expertise amplification rather than
+expertise substitution**. Academic study, oral renditions, remembered episodes
+and creative direction can supply a rich authoring input; they are not all the
+same evidence class. Preserve the original account, its attribution, competing
+versions and unresolved questions before selecting a playable interpretation.
+
+The intended production path is:
+
+```text
+expert account + references + creative constraints
+        ↓
+reviewed episode specification and explicit knowledge boundaries
+        ↓
+typed research / geography / asset / mechanics work orders on NET
+        ↓
+candidate content → execution observations → checks + editorial review
+        ↓
+accepted, integrated playable increment
+```
+
+This is a **workflow-development target**, not a claim that free-form stories
+already compile automatically into games. The game owns its historical/editorial
+policy, sacred-site rules, live state, saves, clock and release approval. Agents
+may produce candidates within declared permissions; they do not choose their own
+acceptance criteria, authenticate history or acquire release authority.
+
+A correction affecting several scenes should eventually propagate through declared
+dependencies and trigger scoped rebuilds, not repeated manual edits. That requires
+actual dependency coverage and regression evidence; it is not established by this
+README. Human effort should increasingly concentrate on consequential decisions,
+while elicitation, research, review, integration and rework remain measured costs.
+
+The reusable asset belongs on the existing NET substrate: bounded capture,
+composition, execution, observation and verification contracts. Other stories,
+subjects, sensor/DSP investigations and industrial tasks may use those contracts
+with different domain schemas and validators. Cross-title and cross-domain reuse
+is a hypothesis to test, not proof that a historical simulation validates a
+physical process. **1792 remains a game worth finishing in its own right.**
+
 ## Coupled engineering experiment
 
 **1792 is both a game project and the first major reference workload for an
@@ -147,7 +200,7 @@ deliverable: reusable production workflows that help a small human-led team turn
 research and creative direction into coherent, tested, playable content.
 
 That work belongs in
-[Notations Engineering Terminal](https://github.com/giasonpooni/Notations-Engineering-Terminal),
+[Notations Systems Terminal](https://github.com/giasonpooni/Notations-Systems-Terminal),
 with **Notations Game Foundry (working name: NGF)** as a game-production workload
 on the existing workbench, not a new engine inside this repository. The question
 is whether typed work orders, bounded tools/agents, retained evidence and
@@ -164,23 +217,27 @@ autonomous large-studio production has already been achieved.
 Measure accepted and integrated work per human hour, compute/provider cost,
 review and rework effort, regressions, visual/playtesting quality and actual reuse.
 Compare equivalent tasks with fixed acceptance criteria; count tooling setup and
-failed attempts, not just successful generation. A working production system must
-improve the game rather than only produce more files, plans or agent activity.
+failed attempts, not just successful generation. Record cost and time separately.
+A working production system must improve the game rather than only produce more
+files, plans or agent activity.
 
-**Current boundary:** NET's [production-controller PR #65](https://github.com/giasonpooni/Notations-Engineering-Terminal/pull/65)
-is draft and unmerged as of September 29, 2026. Its
-[pinned implementation guide](https://github.com/giasonpooni/Notations-Engineering-Terminal/blob/98386f4dfa621f6340670755603abd229be4684f/docs/NET_PRODUCTION.md)
-describes a local sequential controller with declared parameter repairs and a
-synthetic Godot courier fixture. It does **not** attach this game or provide an
-autonomous asset factory. The next engineering gate is one actual 1792 scenario
-or asset operation with a fixed acceptance contract and retained failure/success
-evidence, demonstrated back in a playable build.
+**Documentation snapshot: September 29, 2026.** The earlier NET
+[production-controller PR #65](https://github.com/giasonpooni/Notations-Systems-Terminal/pull/65)
+[pinned implementation guide](https://github.com/giasonpooni/Notations-Systems-Terminal/blob/98386f4dfa621f6340670755603abd229be4684f/docs/NET_PRODUCTION.md)
+describes a local sequential controller, declared repairs and a synthetic courier.
+The subsequent draft/unmerged [NET Foundry PR #68](https://github.com/giasonpooni/Notations-Systems-Terminal/pull/68)
+and companion [1792 PR #30](https://github.com/giasonpooni/1792/pull/30) separately
+track the game-owned water-round attachment. Their evidence is revision-scoped;
+these implementation branches are not merged by this README update. Neither a
+headless attachment nor a passing contract establishes autonomous asset production,
+full-game validation or an automatically generated playable release.
 
 Godot remains the game-state and clock authority. Story, art direction, source
 interpretation, sacred-site rules, saves and release approval stay game-owned;
 automation does not get to redefine its own success criteria. Development-time
 agents do not add a live AI service requirement to playing 1792. Shared tooling
 may later benefit sister titles, but does not move them ahead of this campaign.
+A logical work container or MCP tool connection is not an OS security sandbox.
 
 ## Develop and verify
 
