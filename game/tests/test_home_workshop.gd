@@ -13,6 +13,7 @@ const SAVE:="user://home-workshop-test-isolated.json"
 var passed:=0
 var failed:=0
 var journey: Array=[]
+var motion_trace: Array=[]
 var isolated_save:=SAVE
 var output_dir:="user://"
 func _initialize() -> void: _run.call_deferred()
@@ -121,11 +122,19 @@ func walk(scene,p: Vector3) -> void:
 	for _i in range(1200):
 		if Base.distance(scene.avatar.global_position,p)<0.4: reached=true;break
 		look(scene,p);Input.action_press("move_forward");await physics_frame
+		if OS.get_environment("COURTYARD_MOTION_TRACE")=="1" and journey.size()==1 and _i%6==0:
+			motion_trace.append(observation(scene))
 	Input.action_release("move_forward");await frames(6)
 	if not reached: print("WORKSHOP WALK: ",scene.avatar.global_position," -> ",p," / ",scene._message)
 	check(reached,"input walk "+str(p))
+func observation(scene) -> Dictionary:
+	var camera: Camera3D=scene.avatar.get_node("CameraPivot/SpringArm3D/Camera3D")
+	return {"tick":scene.model.progress().tick,"snapshot":scene.model.snapshot(),"avatar_motion":scene.avatar.capture_motion(),
+		"camera_yaw":scene.avatar.pivot.rotation.y,"camera_position":Base.coords(camera.global_position),
+		"camera_basis":[Base.coords(camera.global_basis.x),Base.coords(camera.global_basis.y),Base.coords(camera.global_basis.z)],
+		"camera_fov":camera.fov,"message":scene._message}
 func capture_state(scene,step: String) -> void:
-	journey.append({"step":step,"tick":scene.model.progress().tick,"snapshot":scene.model.snapshot(),"camera_yaw":scene.avatar.pivot.rotation.y,"message":scene._message})
+	var value:=observation(scene);value.step=step;journey.append(value)
 
 func _journey() -> void:
 	var home:=Launch.make_world();var scene=home.get_node("ChildhoodChapter");scene.save_path=isolated_save
@@ -168,7 +177,7 @@ func _journey() -> void:
 	ok(scene.model.validate(scene.model.snapshot()),"journey validates")
 	capture_state(scene,"complete")
 	var file:=FileAccess.open(output_dir.path_join("home-workshop-journey.json"),FileAccess.WRITE)
-	file.store_string(JSON.stringify({"schema":"1792.home-workshop-journey.v2","kind":"input_driven_after_completed_inquiry_fixture","engine":Engine.get_version_info().string,"historical_authentication":false,"source_content_sha256":OS.get_environment("SOURCE_CONTENT_SHA256"),"source_commit":OS.get_environment("SOURCE_COMMIT"),"steps":journey},"\t",true,true));file.close()
+	file.store_string(JSON.stringify({"schema":"1792.home-workshop-journey.v2","kind":"input_driven_after_completed_inquiry_fixture","engine":Engine.get_version_info().string,"historical_authentication":false,"source_content_sha256":OS.get_environment("SOURCE_CONTENT_SHA256"),"source_commit":OS.get_environment("SOURCE_COMMIT"),"steps":journey,"motion_frames":motion_trace},"\t",true,true));file.close()
 	home.queue_free();await frames()
 
 func _late_access() -> void:

@@ -3,6 +3,7 @@ extends "res://presentation/art_chapter.gd"
 ## Selectively integrates PR21's finite workshop into the current Home, not its old town.
 const WorkshopState := preload("res://workshops/workshop_state.gd")
 const Craft := preload("res://workshops/workshop_rules.gd")
+const CourtyardEnvelope := preload("res://reconstruction/courtyard_envelope.gd")
 const WorkshopView := preload("res://workshops/workshop_world.gd")
 var workplace: Node3D
 var _workshop_action := ""
@@ -14,6 +15,7 @@ func _init() -> void:
 func _build_world() -> void:
 	super._build_world()
 	workplace=WorkshopView.new();add_child(workplace);workplace.build(avatar)
+	CourtyardEnvelope.attach(self)
 	_navigation.built=false
 
 func _clear_pending_actions() -> void:
@@ -115,6 +117,7 @@ func _refresh() -> void:
 		_hud.text="1792 · BUDDH SINGH · HOME COURTYARD\n\nSMITH'S COMMISSION · "+workshop_hint()+"\nHousehold coffers %d · timber %d · stored tools %d · personal purse %d" % [ledger.treasury,ledger.stock.timber,ledger.stock.tools,ledger.purse]
 		_hud.text+="\nE speak · B supplies · J journal · F5/F9 save/load · F7 visual comparison"
 	else: _hud.text+="\nWORKSHOP · "+workshop_hint()
+	if is_instance_valid(art) and is_instance_valid(art.detail) and is_instance_valid(art.detail.hud): art.detail.hud.sample()
 
 func _account_text() -> String:
 	var text:=super._account_text()

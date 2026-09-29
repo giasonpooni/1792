@@ -1,0 +1,236 @@
+{
+  "schema": "1792.visual-reference-intake.v1",
+  "historical_admission": false,
+  "images": [
+    {
+      "id": "R01",
+      "supplied_names": [
+        "IO6IY0(1).jpg"
+      ],
+      "sha256": "24f8f8bd904bb9a8a67f5930f94b5bbe0e3426da8a89e604b89e536502d4d5d6",
+      "bytes": 536919,
+      "role": "environment-quality",
+      "historical_authentication": false,
+      "redistribution_rights": "not established",
+      "pixels_committed": false
+    },
+    {
+      "id": "R02",
+      "supplied_names": [
+        "iDdcBJ(1).jpg"
+      ],
+      "sha256": "7ab53d050f2a8f50adb84bd67fa732efa6991e7fe5b1a38f973894d3605166b8",
+      "bytes": 524689,
+      "role": "environment-quality",
+      "historical_authentication": false,
+      "redistribution_rights": "not established",
+      "pixels_committed": false
+    },
+    {
+      "id": "R03",
+      "supplied_names": [
+        "QRrWIS(1).jpg"
+      ],
+      "sha256": "16de9ef3482d8a4661b570bef96370f11bda457ba8f930949bbfc0bd7e771c3a",
+      "bytes": 362319,
+      "role": "environment-quality",
+      "historical_authentication": false,
+      "redistribution_rights": "not established",
+      "pixels_committed": false
+    },
+    {
+      "id": "R04",
+      "supplied_names": [
+        "t1RW8+(1).jpg"
+      ],
+      "sha256": "a6f85a05bb92fc2b30daeba12c70e10305979a3e2be0ee239d9b6b0323f0b05b",
+      "bytes": 371002,
+      "role": "environment-quality",
+      "historical_authentication": false,
+      "redistribution_rights": "not established",
+      "pixels_committed": false
+    },
+    {
+      "id": "R05",
+      "supplied_names": [
+        "IMG_20170819_135353.jpg",
+        "IMG_20170819_135353(1).jpg"
+      ],
+      "sha256": "3ce1b7c8e890b13ea76e0fe9c590bd0a5389eb58f6a3890d79e38c908407a32e",
+      "bytes": 293210,
+      "role": "wargaming-miniature-reference",
+      "historical_authentication": false,
+      "redistribution_rights": "not established",
+      "pixels_committed": false
+    },
+    {
+      "id": "R06",
+      "supplied_names": [
+        "helion1000502.jpg"
+      ],
+      "sha256": "05d5ffbbd6f0a06cd41d8e279942abc92cbd557ba64178caacd755658b2f816c",
+      "bytes": 197536,
+      "role": "wargaming-miniature-reference",
+      "historical_authentication": false,
+      "redistribution_rights": "not established",
+      "pixels_committed": false
+    },
+    {
+      "id": "R07",
+      "supplied_names": [
+        "helion1000499 (1).jpg",
+        "helion1000499.jpg"
+      ],
+      "sha256": "6f4d4af9f4484747c609954c2ea044c04fb7fb0a4caa6f542d2e51b3ff6484ec",
+      "bytes": 147530,
+      "role": "wargaming-miniature-reference",
+      "historical_authentication": false,
+      "redistribution_rights": "not established",
+      "pixels_committed": false
+    },
+    {
+      "id": "R08",
+      "supplied_names": [
+        "helion1000498.jpg"
+      ],
+      "sha256": "f4a498f2681081297ce8acabf7a94a373f37522aeef3ac6323fba89a0f41a9d3",
+      "bytes": 250705,
+      "role": "wargaming-miniature-reference",
+      "historical_authentication": false,
+      "redistribution_rights": "not established",
+      "pixels_committed": false
+    },
+    {
+      "id": "R09",
+      "supplied_names": [
+        "images (8).jpg"
+      ],
+      "sha256": "9e4f63a79f3d3c9d6e004517264719de55002f892d5b7aae7c04d306e32ec94f",
+      "bytes": 66718,
+      "role": "wargaming-miniature-reference",
+      "historical_authentication": false,
+      "redistribution_rights": "not established",
+      "pixels_committed": false
+    },
+    {
+      "id": "R10",
+      "supplied_names": [
+        "images (9).jpg"
+      ],
+      "sha256": "997c6da69c84fda9b546d6151d2a8f686a0ac98e8b30ec1570dd4d550a214537",
+      "bytes": 28286,
+      "role": "riding-camera-reference",
+      "historical_authentication": false,
+      "redistribution_rights": "not established",
+      "pixels_committed": false
+    },
+    {
+      "id": "R11",
+      "supplied_names": [
+        "bn_default_header_2-1.jpg",
+        "bn_default_header_2-1(1).jpg"
+      ],
+      "sha256": "e6975acdbec8f6f8079ad902d2a4d0437c702faf5e81001565c912473e485496",
+      "bytes": 734454,
+      "role": "modern-character-art",
+      "historical_authentication": false,
+      "redistribution_rights": "not established",
+      "pixels_committed": false
+    },
+    {
+      "id": "R12",
+      "supplied_names": [
+        "images (12).jpg"
+      ],
+      "sha256": "214c9ba6f63a1cf7ac1e2cd4133111fa1d5a3f93d282732861fa8461cffb6fa8",
+      "bytes": 29186,
+      "role": "modern-character-art",
+      "historical_authentication": false,
+      "redistribution_rights": "not established",
+      "pixels_committed": false
+    },
+    {
+      "id": "R13",
+      "supplied_names": [
+        "images (11).jpg"
+      ],
+      "sha256": "0086973f4c0db8461fab63466a11bbe6a243e063d78369640ffb4441652859e3",
+      "bytes": 44746,
+      "role": "modern-character-art",
+      "historical_authentication": false,
+      "redistribution_rights": "not established",
+      "pixels_committed": false
+    },
+    {
+      "id": "R14",
+      "supplied_names": [
+        "images (10).jpg"
+      ],
+      "sha256": "a188774d54c87f13b0a5dee5b247fa08002df8f5e62d5fc86d0d8acd70eb54f9",
+      "bytes": 29998,
+      "role": "modern-character-art",
+      "historical_authentication": false,
+      "redistribution_rights": "not established",
+      "pixels_committed": false
+    },
+    {
+      "id": "R15",
+      "supplied_names": [
+        "jeff-de-guzman-fat-sikh-03.jpg"
+      ],
+      "sha256": "24721e28cb17bb390e8884bf1769150dc60e9e2fd29a6e9610921fde586da7ba",
+      "bytes": 136328,
+      "role": "modern-character-art",
+      "historical_authentication": false,
+      "redistribution_rights": "not established",
+      "pixels_committed": false
+    },
+    {
+      "id": "R16",
+      "supplied_names": [
+        "jeff-de-guzman-screenshot008.jpg"
+      ],
+      "sha256": "17086bb833c103a763452a1ddf1b3f06308d2e2a0a9c0ec0612d1b8155e23bd1",
+      "bytes": 450011,
+      "role": "modern-character-art",
+      "historical_authentication": false,
+      "redistribution_rights": "not established",
+      "pixels_committed": false
+    }
+  ],
+  "stl": {
+    "schema": "1792.user-mesh-inspection.v1",
+    "filename": "desert_cavalier(1).stl",
+    "sha256": "3cfa37c3ba0a505746e35d4cfb41eff58146705d0ac2c6805af71ae031c62ac2",
+    "format": "binary STL",
+    "bytes": 45748734,
+    "triangles": 914973,
+    "finite_vertices": true,
+    "bounds_raw_units": [
+      [
+        -39.41305160522461,
+        -112.38050842285156,
+        0.0
+      ],
+      [
+        38.94560241699219,
+        112.45762634277344,
+        200.0
+      ]
+    ],
+    "units": "not declared by STL",
+    "material_uv_rig": "not represented by standard STL",
+    "license_status": "not established",
+    "runtime_admission": false,
+    "redistribution": false
+  },
+  "user_direction": {
+    "ranjit_default_face_uncovered": true,
+    "concealment_hood_or_mask": false,
+    "everyday_wardrobe": "plain cotton; later dress must be period-specific",
+    "headgear": "cloth turban; not automatic adoption of oversized martial reference",
+    "pockmarks_and_left_eye": "production facial study still required",
+    "body_language": "self-possessed, not written as concealing his appearance"
+  },
+  "scope": "reference intake; no new army campaign, biome, religious figure or STL runtime import"
+}
