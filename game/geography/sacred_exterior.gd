@@ -26,6 +26,8 @@ func build(site: Dictionary, allow_qualification: bool=false) -> String:
 
 func access_error(actor: CharacterBody3D, forward: Vector3, frame_id: String, year: int, mounted: bool=false) -> String:
 	if definition.is_empty() or not is_instance_valid(actor) or frame_id!=definition.frame_id: return "Unknown actor/site frame."
+	if not is_inside_tree() or not actor.is_inside_tree() or actor.get_world_3d()!=get_world_3d(): return "Actor and site must share the current physics world."
+	if not actor.is_on_floor(): return "Stand on the ground at the exterior point."
 	if mounted or year<definition.from or year>=definition.until: return "Dismount at a site belonging to this period."
 	# Authored transforms must not turn metric geometry into scaled scenery.
 	if not global_basis.is_equal_approx(Basis.IDENTITY): return "Qualification exterior requires an unscaled, unrotated metric frame."

@@ -61,10 +61,3 @@ jobs:
           name: historical-world-evidence
           path: test-results/
           retention-days: 14
-      - name: Transfer pinned reference runtime for local qualification
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: historical-world-reference-runtime
-          path: ${{ runner.temp }}/godot.zip
-          retention-days: 1

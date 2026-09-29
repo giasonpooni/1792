@@ -6,7 +6,6 @@ const Fortune := preload("res://geography/fortune_rules.gd")
 const Exterior := preload("res://geography/sacred_exterior.gd")
 const Player := preload("res://player/player.tscn")
 const Launch := preload("res://childhood/home_launch.gd")
-const DIGEST := "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 var passed := 0
 var failed := 0
 var observations: Dictionary = {}
@@ -93,32 +92,34 @@ func catalogue_tests() -> void:
 func fortune_tests() -> void:
 	var sites: Dictionary={}
 	for importance in range(1,6): sites["site_"+str(importance)]=site("site_"+str(importance),importance)
-	var initial:=Fortune.initial(DIGEST)
+	var digest:=Fortune.content_digest(sites)
+	check(digest.length()==64,"site/rule content digest")
+	var initial:=Fortune.initial(digest)
 	var previous:=-1.0
 	for importance in range(1,6):
-		var result:=Fortune.append(initial,prayer("site_"+str(importance)),sites,DIGEST,0)
+		var result:=Fortune.append(initial,prayer("site_"+str(importance)),sites,digest,0)
 		check(result.error.is_empty(),"valid outside-prayer rule")
 		if not result.error.is_empty(): continue
 		check(result.ledger.luck>previous,"importance increases bounded benefit")
 		check(result.ledger.luck<=0.1,"benefit cap")
 		previous=result.ledger.luck
 	check(initial.events.is_empty(),"operation does not mutate source state")
-	var first:=Fortune.append(initial,prayer("site_5"),sites,DIGEST,0)
-	check(not Fortune.append(first.state,prayer("site_4"),sites,DIGEST,1).error.is_empty(),"global cross-site cooldown")
-	check(not Fortune.append(first.state,prayer("site_5"),sites,DIGEST,Fortune.COOLDOWN).error.is_empty(),"same-site cooldown")
-	var weaker:=Fortune.append(first.state,prayer("site_1"),sites,DIGEST,Fortune.COOLDOWN)
+	var first:=Fortune.append(initial,prayer("site_5"),sites,digest,0)
+	check(not Fortune.append(first.state,prayer("site_4"),sites,digest,1).error.is_empty(),"global cross-site cooldown")
+	check(not Fortune.append(first.state,prayer("site_5"),sites,digest,Fortune.COOLDOWN).error.is_empty(),"same-site cooldown")
+	var weaker:=Fortune.append(first.state,prayer("site_1"),sites,digest,Fortune.COOLDOWN)
 	check(weaker.error.is_empty(),"other site after global cooldown")
 	check(weaker.ledger.expires==first.ledger.expires,"weaker visit cannot extend stronger luck")
-	var repeat_visit:=Fortune.append(first.state,prayer("site_5"),sites,DIGEST,Fortune.SITE_COOLDOWN)
+	var repeat_visit:=Fortune.append(first.state,prayer("site_5"),sites,digest,Fortune.SITE_COOLDOWN)
 	near(repeat_visit.ledger.luck,0.05,0.00000001,"repeat diminishing returns")
 	near(Fortune.luck(first.ledger,Fortune.DURATION),0,0,"effect expires on the supplied world tick")
-	for year in [1779,1800]: check(not Fortune.append(initial,prayer("site_1",year),sites,DIGEST,0).error.is_empty(),"out-of-period significance refuses")
+	for year in [1779,1800]: check(not Fortune.append(initial,prayer("site_1",year),sites,digest,0).error.is_empty(),"out-of-period significance refuses")
 	var value:=initial
 	for i in range(5):
-		var bad_conduct:=Fortune.append(value,{"kind":"conduct","delta":-20,"reason_id":"qualification_broken_oath"},sites,DIGEST,i)
+		var bad_conduct:=Fortune.append(value,{"kind":"conduct","delta":-20,"reason_id":"qualification_broken_oath"},sites,digest,i)
 		check(bad_conduct.error.is_empty(),"conduct operation")
 		value=bad_conduct.state
-	var observed:=Fortune.append(value,prayer("site_5"),sites,DIGEST,5)
+	var observed:=Fortune.append(value,prayer("site_5"),sites,digest,5)
 	check(Fortune.karma(observed.ledger)<-90,"prayer does not erase serious conduct")
 	var low_grievance:=Fortune.probability("betrayal",0.2,observed.ledger,5,1,0)
 	var high_grievance:=Fortune.probability("betrayal",0.2,observed.ledger,5,1,1)
@@ -128,8 +129,14 @@ func fortune_tests() -> void:
 	near(Fortune.probability("assassination",0.2,first.ledger,0,1,1,true).probability,0.2,0,"fixed history is not rewritten")
 	check(not Fortune.probability("sword_damage",0.2,first.ledger,0).error.is_empty(),"no damage buff")
 	check(not Fortune.probability("warning",NAN,first.ledger,0).error.is_empty(),"nonfinite probability refuses")
+	var changed_sites: Dictionary=sites.duplicate(true);changed_sites.site_5.importance=1
+	check(not Fortune.replay(first.state,changed_sites,digest,0).error.is_empty(),"changed site weight invalidates old receipts")
+	check(Fortune.content_digest(changed_sites)!=digest,"actual site definitions bind the content digest")
+	check(Fortune.content_digest(JSON.parse_string(JSON.stringify(sites)))==digest,"site digest stable across JSON number types")
+	var forged_ledger: Dictionary=first.ledger.duplicate(true);forged_ledger.luck=2.0
+	check(not Fortune.probability("warning",0.2,forged_ledger,0).error.is_empty(),"out-of-range effect refuses")
 	var roundtrip: Variant=JSON.parse_string(JSON.stringify(first.state))
-	check(Fortune.replay(roundtrip,sites,DIGEST,0).error.is_empty(),"receipt JSON roundtrip")
+	check(Fortune.replay(roundtrip,sites,digest,0).error.is_empty(),"receipt JSON roundtrip")
 	check(not Fortune.replay(first.state,sites,"b".repeat(64),0).error.is_empty(),"changed content refuses")
 	for kind in ["seq","future","extra","importance","reason"]:
 		var bad: Dictionary=first.state.duplicate(true)
@@ -139,13 +146,13 @@ func fortune_tests() -> void:
 			"extra": bad.events[0].magic=1
 			"importance": bad.events[0].importance=5
 			"reason": bad.events[0]={"seq":1,"tick":0,"kind":"conduct","delta":20,"unknown":true}
-		check(not Fortune.replay(bad,sites,DIGEST,0).error.is_empty(),"receipt refusal: "+kind)
+		check(not Fortune.replay(bad,sites,digest,0).error.is_empty(),"receipt refusal: "+kind)
 	var bounded:=initial
 	for i in range(Fortune.MAX_EVENTS):
-		var result:=Fortune.append(bounded,{"kind":"conduct","delta":1,"reason_id":"qualification_only"},sites,DIGEST,i)
+		var result:=Fortune.append(bounded,{"kind":"conduct","delta":1,"reason_id":"qualification_only"},sites,digest,i)
 		if not result.error.is_empty(): check(false,"bounded receipt setup");break
 		bounded=result.state
-	check(not Fortune.append(bounded,prayer("site_1"),sites,DIGEST,Fortune.MAX_EVENTS).error.is_empty(),"bounded receipt capacity")
+	check(not Fortune.append(bounded,prayer("site_1"),sites,digest,Fortune.MAX_EVENTS).error.is_empty(),"bounded receipt capacity")
 	observations.fortune={"model_id":Fortune.VERSION,"operation_id":"exterior-prayer.v1","first_luck":first.ledger.luck,"repeat_luck":repeat_visit.ledger.luck,"negative_karma_after_prayer":Fortune.karma(observed.ledger),"campaign_save_integration":false}
 
 func floor_for(parent: Node3D) -> StaticBody3D:
@@ -157,6 +164,7 @@ func physical_tests() -> void:
 	var world:=Node3D.new();root.add_child(world);floor_for(world)
 	var exterior:=Exterior.new();world.add_child(exterior)
 	var definition:=site();var sites: Dictionary={definition.id:definition}
+	var digest:=Fortune.content_digest(sites)
 	check(not exterior.build(definition).is_empty(),"qualification requires explicit admission")
 	check(exterior.build(definition,true).is_empty(),"metric fixture builds")
 	check(not exterior.build(definition,true).is_empty(),"no duplicate geometry")
@@ -173,7 +181,7 @@ func physical_tests() -> void:
 		await physics_frame
 		if actor.global_position.z<=8.8: break
 	Input.action_release("move_forward");await frames(20)
-	var receipt:=exterior.pray(actor,Vector3.FORWARD,definition.frame_id,1792,Fortune.initial(DIGEST),sites,DIGEST,0)
+	var receipt:=exterior.pray(actor,Vector3.FORWARD,definition.frame_id,1792,Fortune.initial(digest),sites,digest,int(Engine.get_physics_frames()))
 	check(receipt.error.is_empty(),"actual physical exterior approach admits prayer")
 	check(not exterior.access_error(actor,Vector3.BACK,definition.frame_id,1792).is_empty(),"must face exterior")
 	check(not exterior.access_error(actor,Vector3.FORWARD,"another_frame",1792).is_empty(),"frame mismatch")
@@ -182,7 +190,7 @@ func physical_tests() -> void:
 	var blocker:=StaticBody3D.new();blocker.position=Vector3(0,1.2,7.4);world.add_child(blocker)
 	var collision:=CollisionShape3D.new();var shape:=BoxShape3D.new();shape.size=Vector3(2,2,0.2);collision.shape=shape;blocker.add_child(collision)
 	await frames(3)
-	check(not exterior.pray(actor,Vector3.FORWARD,definition.frame_id,1792,Fortune.initial(DIGEST),sites,DIGEST,0).error.is_empty(),"late occluder refuses queued action")
+	check(not exterior.pray(actor,Vector3.FORWARD,definition.frame_id,1792,Fortune.initial(digest),sites,digest,0).error.is_empty(),"late occluder refuses queued action")
 	world.remove_child(blocker);blocker.queue_free();await frames(3)
 	check(exterior.access_error(actor,Vector3.FORWARD,definition.frame_id,1792).is_empty(),"removing actual wall restores access")
 	Input.action_press("move_forward");await frames(140);Input.action_release("move_forward");await frames(15)
@@ -217,7 +225,7 @@ func run() -> void:
 	var source_hashes: Dictionary={}
 	for path in ["res://geography/geodesy.gd","res://geography/atlas.gd","res://geography/fortune_rules.gd","res://geography/sacred_exterior.gd","res://tests/test_world_atlas.gd"]:
 		source_hashes[path]=FileAccess.get_file_as_string(path).sha256_text()
-	var report: Dictionary={"verification_id":"historical-world-native.v1","execution_id":OS.get_environment("GITHUB_RUN_ID"),"engine":Engine.get_version_info().string,"physics_hz":Engine.physics_ticks_per_second,"passed":passed,"failed":failed,"source_sha256":source_hashes,"observations":observations,"human_playtested":false}
+	var report: Dictionary={"verification_id":"historical-world-native.v1","execution_id":OS.get_environment("GITHUB_RUN_ID") if not OS.get_environment("GITHUB_RUN_ID").is_empty() else "local-process-"+str(OS.get_process_id()),"engine":Engine.get_version_info().string,"physics_hz":Engine.physics_ticks_per_second,"passed":passed,"failed":failed,"source_sha256":source_hashes,"observations":observations,"human_playtested":false}
 	var file:=FileAccess.open("user://historical-world-tests.json",FileAccess.WRITE)
 	if file==null: check(false,"write qualification report")
 	else: file.store_string(JSON.stringify(report,"\t"));file.close()

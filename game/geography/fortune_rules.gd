@@ -7,7 +7,7 @@ const MAX_EVENTS := 128
 const COOLDOWN := 3600
 const SITE_COOLDOWN := 216000
 const DURATION := 18000
-const MAX_TICK := 9007199254740000
+const MAX_TICK := 9007199254720000
 const BENEFITS := ["help","warning","supply_find","wound_recovery"]
 const HAZARDS := ["betrayal","assassination","desertion"]
 
@@ -23,6 +23,22 @@ static func site_error(s: Variant) -> String:
 	if absf(s.prayer_at_m[0])<=s.size_m[0]/2.0 and absf(s.prayer_at_m[2])<=s.size_m[2]/2.0: return "Prayer anchor must lie outside the footprint."
 	return ""
 
+static func content_digest(sites: Dictionary) -> String:
+	# Stable semantic site records plus exact rule source. This is compatibility, not authentication.
+	if sites.is_empty() or sites.size()>128: return ""
+	for key in sites:
+		if not key is String or not site_error(sites[key]).is_empty() or sites[key].id!=key: return ""
+	var ids: Array=sites.keys();ids.sort()
+	var records: Array=[]
+	for id in ids:
+		var s: Dictionary=sites[id]
+		var size_m: Array=[];var at: Array=[]
+		for axis in range(3): size_m.append(float(s.size_m[axis]));at.append(float(s.prayer_at_m[axis]))
+		records.append([id,int(s.importance),int(s.from),int(s.until),false,false,s.classification,s.evidence_scope,s.frame_id,size_m,at])
+	var source:=FileAccess.get_file_as_string("res://geography/fortune_rules.gd")
+	if source.is_empty(): return ""
+	return JSON.stringify([VERSION,source.sha256_text(),records]).sha256_text()
+
 static func initial(content_digest: String) -> Dictionary:
 	return {"schema":VERSION,"content_digest":content_digest,"events":[]}
 
@@ -30,7 +46,7 @@ static func empty_ledger() -> Dictionary:
 	return {"conduct":0,"prayer_credit":0,"last_prayer":-SITE_COOLDOWN,"site_visits":{},"luck":0.0,"expires":0}
 
 static func replay(value: Variant, sites: Dictionary, digest: String, now: int) -> Dictionary:
-	if not value is Dictionary or value.size()!=3 or value.get("schema")!=VERSION or value.get("content_digest")!=digest or (digest.length()!=64 or not digest.is_valid_hex_number()) or not value.get("events") is Array or value.events.size()>MAX_EVENTS or now<0 or now>MAX_TICK:
+	if not value is Dictionary or value.size()!=3 or value.get("schema")!=VERSION or value.get("content_digest")!=digest or digest!=content_digest(sites) or (digest.length()!=64 or not digest.is_valid_hex_number()) or not value.get("events") is Array or value.events.size()>MAX_EVENTS or now<0 or now>MAX_TICK:
 		return {"error":"Malformed or incompatible fortune receipt stream."}
 	var ledger := empty_ledger()
 	var previous := -1
@@ -78,7 +94,14 @@ static func karma(ledger: Dictionary) -> int:
 static func luck(ledger: Dictionary, now: int) -> float:
 	return float(ledger.luck) if now<int(ledger.expires) else 0.0
 
+static func ledger_error(ledger: Dictionary, now: int) -> String:
+	if now<0 or now>MAX_TICK or not Geo.integer(ledger.get("conduct"),-100,100) or not Geo.integer(ledger.get("prayer_credit"),0,10): return "Invalid conduct/time ledger."
+	if not Geo.number(ledger.get("luck")) or ledger.luck<0 or ledger.luck>0.1 or not Geo.integer(ledger.get("expires"),0,MAX_TICK+DURATION): return "Invalid effect ledger."
+	return ""
+
 static func probability(kind: String, base: float, ledger: Dictionary, now: int, opportunity: float=1.0, grievance: float=0.0, fixed_history: bool=false) -> Dictionary:
+	var error:=ledger_error(ledger,now)
+	if not error.is_empty(): return {"error":error}
 	if kind not in BENEFITS and kind not in HAZARDS: return {"error":"No luck modifier for this event class."}
 	for v in [base,opportunity,grievance]:
 		if not is_finite(v) or v<0 or v>1: return {"error":"Invalid probability input."}
