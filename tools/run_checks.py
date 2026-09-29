@@ -69,6 +69,9 @@ def main() -> int:
     run([sys.executable, "tools/check_world_atlas.py"], "world-atlas-contracts")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_world_atlas.gd"],
         "world-atlas", "WORLD_ATLAS_TESTS:")
+    run([sys.executable, "tools/check_fall_of_empire.py"], "fall-of-empire-contracts")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_fall_of_empire.gd"],
+        "fall-of-empire", "FALL_OF_EMPIRE_TESTS:")
     return 0
 
 

@@ -43,3 +43,13 @@ Baba Farid’s era frames the opening; the 1873 institutional epilogue frames th
 Each chapter must distinguish observed evidence, attributed chronicle, oral tradition, disputed variants and original connective fiction. Lore is retained as lore, not excluded or falsely certified. Religious sites remain exterior-only. The original youth-story catalogue remains the binding childhood content inventory.
 
 Architecture, clothing, language, kinship, trade routes, canals, river channels, land cover and allegiance must vary by place and time. A reusable mesh does not prove historical presence. Current catalogue entries are research scheduling records, not loaded scenes or DLC launchers.
+
+## Fall of Empire: bounded DLC foundation
+
+[Fall of Empire](FALL_OF_EMPIRE.md) binds the retained succession, Naurangabad,
+Sutlej, Second War, post-annexation and Bar modules into a proposed 1839–1859 DLC.
+The working close follows the 1857 rebellion through the Crown transition and
+formal postwar settlement. Opposing perspectives share events, not omniscient
+knowledge. Its standalone synthetic desk tests that contract; it does not make
+these chapters playable or displace the full-Ranjit-before-DLC gate. The separate
+1873 epilogue and later cross-title leads remain outside this DLC.

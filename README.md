@@ -168,3 +168,12 @@ F2 extends the Gujranwala research notebook with distinct person/household/Misl
 records and source limitations. These two local errands are original fiction,
 not a completed regional Misl simulation. No main merge or other draft merge is
 implied by this branch. [Rules, research, controls and checks](docs/SUKERCHAKIA_SERVICE.md).
+
+## Deferred DLC foundation: Fall of Empire
+
+[Fall of Empire](docs/FALL_OF_EMPIRE.md) now has a source-scoped 1839–1859 campaign
+contract and a standalone **synthetic authoring desk** for opposing perspectives,
+delayed reports and postwar closure. It is not a playable historical campaign.
+The ordinary Home chapter, main menu and saves are unchanged; the full Ranjit
+Singh narrative still precedes DLC production. Run the isolated desk with
+`godot --path game res://dlc/fall_of_empire/desk.tscn`.
