@@ -1,8 +1,17 @@
 # Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 extends "res://territory/researched_chapter.gd"
 ## Situated input/presentation adapter. Existing state, physics, pause and save machinery persist.
+const Reading := preload("res://platform/reading_profile.gd")
+const ReadingUI := preload("res://platform/reading_ui.gd")
+var reading_settings_path:=Reading.PATH
+var _reading_page:=""
+var _displayed_messages: Dictionary={}
+const SaveRecovery := preload("res://platform/save_recovery.gd")
 const MemoryState := preload("res://narrative/oral_memory/memory_state.gd")
 const Memory := preload("res://narrative/oral_memory/memory_rules.gd")
+var _save_page := ""
+var _save_choice: Dictionary={}
+var _save_command: Dictionary={}
 var _oral_action := ""
 var _oral_import_requested := false
 var _oral_props: Array[Node3D]=[]
@@ -10,6 +19,24 @@ var _oral_props: Array[Node3D]=[]
 func _init() -> void:
 	model=MemoryState.new()
 	save_path=MemoryState.ORAL_SAVE
+
+func _ready() -> void:
+	Reading.install(reading_settings_path)
+	super._ready()
+	ReadingUI.apply(_panel)
+
+func _focus_actions() -> void:
+	if is_instance_valid(_panel): ReadingUI.apply(_panel)
+	super._focus_actions()
+	if is_instance_valid(_panel) and _panel.visible: ReadingUI.reveal_focus_after_layout(_panel,_journal_scroll)
+
+func _apply() -> void:
+	super._apply()
+	# A load/checkpoint never carries a later presentation snapshot into earlier play.
+	_displayed_messages={}
+	if is_instance_valid(_narrator_label):
+		_narrator_label.text=""
+		_narrator_label.hide()
 
 func _build_world() -> void:
 	super._build_world()
@@ -46,7 +73,26 @@ func _build_world() -> void:
 		_oral_props.append(label)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_F7:
+	if is_instance_valid(controls) and not controls.focused: return
+	if not _reading_page.is_empty() and event.is_action_pressed("ui_cancel"):
+		_open_journal()
+		get_viewport().set_input_as_handled()
+		return
+	if not _save_page.is_empty() and event.is_action_pressed("ui_cancel"):
+		if _save_page=="browser": _resume()
+		else: _open_saved_chapter()
+		get_viewport().set_input_as_handled()
+		return
+	# The active consumer routes semantic actions; earlier chapter implementations remain intact.
+	if event.is_action_pressed("open_accounts") and (not _paused or event is InputEventKey):
+		_open_accounts()
+		get_viewport().set_input_as_handled()
+		return
+	if event.is_action_pressed("open_research") and (not _paused or event is InputEventKey):
+		if not _paused: _show_dialog("GUJRANWALA — RESEARCH VIEW",fabric.notebook(),[["Return","resume"]])
+		get_viewport().set_input_as_handled()
+		return
+	if event.is_action_pressed("open_memories") and not event.is_echo():
 		_open_oral_memory()
 		get_viewport().set_input_as_handled()
 		return
@@ -54,10 +100,44 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _clear_pending_actions() -> void:
 	super._clear_pending_actions()
+	_reading_page=""
 	_oral_action=""
 	_oral_import_requested=false
+	_save_page=""
+	_save_choice={}
+	_save_command={}
 
 func _menu_action(action: String) -> void:
+	if action.begins_with("hardware:"):
+		if is_instance_valid(controls) and controls.focused: _hardware_action(action.trim_prefix("hardware:"))
+		return
+	if is_instance_valid(controls) and not controls.focused: return
+	if action=="reading_settings":
+		_open_reading_settings(Reading.warning)
+		return
+	if action=="reading_messages":
+		_open_displayed_messages()
+		return
+	if action=="reading_back":
+		_open_journal()
+		return
+	if action.begins_with("reading_"):
+		var candidate:=Reading.proposal(action)
+		if candidate.is_empty(): return
+		var reading_io: RefCounted=model.platform_services.storage
+		if model.platform_services.has_method("reading_storage"): reading_io=model.platform_services.reading_storage()
+		var error:=Reading.set_preferences(candidate,reading_settings_path,reading_io)
+		_open_reading_settings("Saved." if error.is_empty() else "Not saved: "+error)
+		return
+	if action=="saved_chapter":
+		_open_saved_chapter()
+		return
+	if action.begins_with("saved_select:"):
+		_confirm_saved_action(action.trim_prefix("saved_select:"))
+		return
+	if action=="saved_confirm":
+		_save_command=_save_choice.duplicate(true)
+		return
 	if action.begins_with("oral:"):
 		_oral_action=action.trim_prefix("oral:")
 		return
@@ -70,6 +150,12 @@ func _menu_action(action: String) -> void:
 	super._menu_action(action)
 
 func _physics_process(delta: float) -> void:
+	if not _save_command.is_empty():
+		var command:=_save_command.duplicate(true)
+		_save_command={}
+		if not controls.focused: return
+		_execute_saved_action(command)
+		return
 	if _oral_import_requested:
 		_oral_import_requested=false
 		_load(Territory.TERRITORY_SAVE)
@@ -166,17 +252,48 @@ func _open_oral_memory() -> void:
 
 func _open_journal() -> void:
 	super._open_journal()
+	var host:=get_tree().root.get_node_or_null("PlatformRuntime")
+	if host!=null and host.recorder!=null: _append_oral_button("Local hardware test session","hardware:open")
+	_append_oral_button("Text and reading settings","reading_settings")
+	_append_oral_button("Read current messages","reading_messages")
+	_append_oral_button("Saved chapter / recovery","saved_chapter")
 	_append_oral_button("Remembered stories [F7]","oral_view")
 	_append_oral_button("Import previous integrated Gujranwala save · replace current session","oral_import")
+
+func _open_controller_settings() -> void:
+	super._open_controller_settings()
+	_append_oral_button("Text and reading settings","reading_settings")
+
+func _open_reading_settings(note: String="") -> void:
+	_show_dialog("TEXT AND READING",Reading.description(note),Reading.actions("reading_back"))
+	_reading_page="settings"
+
+func _open_displayed_messages() -> void:
+	var text: String="No gameplay messages have been displayed in this chapter yet."
+	if not _displayed_messages.is_empty():
+		text="CURRENT TASK AND CONTROLS\n"+str(_displayed_messages.hud)+"\n\nCURRENT ON-SCREEN MESSAGE\n"+str(_displayed_messages.message)
+		if Reading.snapshot().narrator_captions and not str(_displayed_messages.narrator).is_empty():
+			text+="\n\nRETROSPECTIVE NARRATION\n"+str(_displayed_messages.narrator)
+	text+="\n\nA paused view of the last displayed messages, not additional testimony or a historical record. No new knowledge is granted."
+	_show_dialog("READ CURRENT MESSAGES",text,[["Text and reading settings","reading_settings"],["Back to journal","reading_back"],["Resume","resume"]])
+	_reading_page="messages"
 
 func _refresh() -> void:
 	super._refresh()
 	if is_instance_valid(_hud): _hud.text+="\nF7: remembered stories · E: hear, inspect or retell locally"
+	if is_instance_valid(controls) and controls.using_gamepad and is_instance_valid(_hud):
+		_hud.text=InputProfile.controller_text(_hud.text)
 	for prop in _oral_props:
 		prop.visible=model.aftermath_phase()=="complete"
+	if is_instance_valid(_narrator_label) and not Reading.snapshot().narrator_captions:
+		_narrator_label.hide()
+	if not _paused and is_instance_valid(_hud) and is_instance_valid(_caption):
+		_displayed_messages={"hud":_hud.text,"message":_caption.text,
+			"narrator":_narrator_label.text if is_instance_valid(_narrator_label) and _narrator_label.visible else ""}
 
 func _load(path: String="") -> void:
 	var staged:=MemoryState.new()
+	staged.platform_services=model.platform_services
 	var error:=staged.load_from(save_path if path.is_empty() else path)
 	if error.is_empty(): error=_candidate_error(staged)
 	if error.is_empty(): error=model.restore(staged.snapshot())
@@ -184,3 +301,100 @@ func _load(path: String="") -> void:
 	_message="The complete chapter, including received accounts, was restored." if error.is_empty() else error
 	_clear_pending_actions()
 	_resume()
+
+func _resume() -> void:
+	_reading_page=""
+	_save_page="";_save_choice={};_save_command={}
+	super._resume()
+
+func _save_manual() -> String:
+	return SaveRecovery.save(model,save_path)
+
+func _open_saved_chapter(note: String="") -> void:
+	var primary:=SaveRecovery.inspect(model,save_path)
+	var previous:=SaveRecovery.inspect(model,save_path+SaveRecovery.PREVIOUS_SUFFIX)
+	var text:=note+"\n\n" if not note.is_empty() else ""
+	text+=SaveRecovery.description(primary,"Primary manual save")+"\n\n"+SaveRecovery.description(previous,"Previous manual save")
+	text+="\n\nRecovery replaces the entire current chapter, including later memories, money and water progress. It does not copy anything back to disk. Controller settings stay unchanged."
+	var actions: Array=[]
+	if primary.status=="valid": actions.append(["Load primary — replace current progress","saved_select:primary"])
+	if previous.status=="valid": actions.append(["Recover previous — replace current progress","saved_select:previous"])
+	if primary.status=="invalid": actions.append(["Replace invalid primary with this chapter...","saved_select:replace"])
+	actions.append(["Return","resume"])
+	_show_dialog("SAVED CHAPTER / RECOVERY",text,actions)
+	_save_page="browser"
+
+func _confirm_saved_action(kind: String) -> void:
+	if kind not in ["primary","previous","replace"]: return
+	var path:=save_path+SaveRecovery.PREVIOUS_SUFFIX if kind=="previous" else save_path
+	var view:=SaveRecovery.inspect(model,path)
+	if (kind=="replace" and view.status!="invalid") or (kind!="replace" and view.status!="valid"):
+		_open_saved_chapter("That slot changed or is unavailable. Nothing was changed.")
+		return
+	var choice: Dictionary={"kind":kind,"path":path,"digest":view.digest,"world_digest":SaveRecovery.world_digest(model)}
+	var text:=SaveRecovery.description(view,"Selected save")
+	text+="\n\nReplace the invalid primary file with your CURRENT chapter? The previous file stays untouched." if kind=="replace" else "\n\nReplace the entire CURRENT chapter with this saved one? Files remain untouched. Later progress will be discarded, not merged."
+	_show_dialog("CONFIRM SAVED CHAPTER ACTION",text,[["Confirm replacement" if kind=="replace" else "Confirm load","saved_confirm"],["Cancel","saved_chapter"]])
+	_save_page="confirm";_save_choice=choice
+
+func _execute_saved_action(command: Dictionary) -> void:
+	var error: String=""
+	if command.world_digest!=SaveRecovery.world_digest(model):
+		error="Current progress changed during confirmation. Nothing was changed."
+	elif command.kind=="replace":
+		error=SaveRecovery.save(model,save_path,{"primary_digest":command.digest,"world_digest":command.world_digest})
+	else:
+		var selected:=SaveRecovery.read_selected(model,command.path,command.digest)
+		error=selected.error
+		if error.is_empty():
+			var staged:=MemoryState.new()
+			staged.platform_services=model.platform_services
+			error=staged.restore(selected.snapshot)
+			if error.is_empty(): error=_candidate_error(staged)
+			if error.is_empty(): error=model.restore(staged.snapshot())
+			if error.is_empty(): _apply()
+	if not error.is_empty():
+		_open_saved_chapter(error)
+		return
+	_show_dialog("SAVED CHAPTER UPDATED" if command.kind=="replace" else "SAVED CHAPTER RESTORED",
+		"The primary file was explicitly replaced; previous save retained." if command.kind=="replace" else "The complete selected chapter was restored. No save file was overwritten. Resume when ready.",
+		[["Resume","resume"],["Saved chapter / recovery","saved_chapter"]])
+
+func _hardware_action(action: String) -> void:
+	var host:=get_tree().root.get_node_or_null("PlatformRuntime")
+	if host==null or host.recorder==null: return
+	var recorder: Node=host.recorder
+	var message: String=""
+	if action=="export": message=recorder.write_report()
+	elif action=="capture": message=await recorder.capture_view()
+	elif action.begins_with("check|"):
+		var id:=action.trim_prefix("check|")
+		if not recorder.CHECKS.has(id): return
+		_show_dialog("OPERATOR SELF-REPORT",recorder.CHECKS[id]+"\nRecord only what you tested yourself. This is not a certification.",
+			[["Observed pass","hardware:record|"+id+"|pass"],["Observed failure","hardware:record|"+id+"|fail"],
+			["Not tested","hardware:record|"+id+"|not_tested"],["Cancel","hardware:open"]])
+		return
+	elif action.begins_with("record|"):
+		var parts:=action.split("|")
+		if parts.size()!=3: return
+		message=recorder.record_operator(parts[1],parts[2])
+	# An interrupted asynchronous screenshot must not reopen a modal over the pause notice.
+	if not is_instance_valid(controls) or not controls.focused: return
+	var actions: Array=[]
+	for id in recorder.CHECKS: actions.append(["Review: "+id,"hardware:check|"+id])
+	actions.append(["Export local report","hardware:export"])
+	actions.append(["Capture current game view","hardware:capture"])
+	actions.append(["Return","resume"])
+	_show_dialog("LOCAL HARDWARE TEST SESSION",recorder.text()+"\n"+message,actions)
+
+func _capture_checkpoint(reason: String) -> void:
+	if model.platform_services.identity().provider_id=="cg.steam-client.v1":
+		_checkpoint_note="Steam profile: use a manual save. Legacy shared checkpoints are not read or written in this opt-in profile."
+		return
+	super._capture_checkpoint(reason)
+
+func _restore_checkpoint() -> void:
+	if model.platform_services.identity().provider_id=="cg.steam-client.v1":
+		_show_dialog("CHECKPOINT PROFILE", "Legacy shared checkpoints are disabled in the opt-in Steam profile. Use your app/user-scoped manual save.",[["Return","resume"]])
+		return
+	super._restore_checkpoint()

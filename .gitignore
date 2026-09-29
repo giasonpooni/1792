@@ -21,3 +21,11 @@ __pycache__/
 
 # Generated test evidence (retained by CI artifacts instead)
 test-results/
+
+# Checked-in public Windows preset; never add export credentials.
+!game/export_presets.cfg
+.godot-export-credentials.cfg
+build/
+
+# This prototype uses path references; editor-generated UIDs are not release inputs.
+*.uid

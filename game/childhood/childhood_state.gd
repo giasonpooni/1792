@@ -29,6 +29,8 @@ const PERSONAL_MEMORIES := {
 	"assault": "Someone attacked me on the return trail. I do not know who sent him.",
 	"return": "I returned alive. The attack does not tell me which household, if any, ordered it."
 }
+const LocalServices := preload("res://platform/local_services.gd")
+var platform_services: RefCounted=LocalServices.new() # Runtime dependency, never serialized.
 var _state: Dictionary
 
 func _init() -> void:
@@ -337,26 +339,12 @@ func restore(value: Variant) -> String:
 func save_to(path: String = SAVE_PATH) -> String:
 	var error := validate(_state)
 	if not error.is_empty(): return error
-	var text := JSON.stringify(_state, "", true, true)
-	if text.to_utf8_buffer().size() > LIMIT: return "Save too large."
-	var f := FileAccess.open(path + ".tmp", FileAccess.WRITE)
-	if f == null: return "Cannot open temporary save."
-	f.store_string(text)
-	f.flush()
-	var result := f.get_error()
-	f.close()
-	if result != OK: return "Save write failed."
-	result = DirAccess.rename_absolute(ProjectSettings.globalize_path(path + ".tmp"), ProjectSettings.globalize_path(path))
-	return "" if result == OK else "Save replacement failed."
+	var bytes := JSON.stringify(_state, "", true, true).to_utf8_buffer()
+	return platform_services.storage.write_bytes(path,bytes,LIMIT)
 
 func load_from(path: String = SAVE_PATH) -> String:
-	var f := FileAccess.open(path, FileAccess.READ)
-	if f == null: return "No childhood save found."
-	if f.get_length() > LIMIT:
-		f.close()
-		return "Save too large."
-	var text := f.get_as_text()
-	f.close()
+	var result: Dictionary=platform_services.storage.read_bytes(path,LIMIT)
+	if not result.error.is_empty(): return result.error
 	var parser := JSON.new()
-	if parser.parse(text) != OK: return "Malformed childhood JSON."
+	if parser.parse(result.bytes.get_string_from_utf8()) != OK: return "Malformed childhood JSON."
 	return restore(parser.data)

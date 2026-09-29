@@ -77,6 +77,45 @@ import the previous integrated Gujranwala save without overwriting that old file
 
 [Oral-memory walkthrough, source lineage and tests](docs/ORAL_MEMORY.md)
 
+## PC and controller foundation
+
+The Home territory entry now accepts an Xbox-style controller from the title
+screen through the childhood lessons, inquiry, stories and save/load menus.
+Left stick moves; right stick looks; **X** interacts; **Y** mounts; **Menu** opens
+journal/save/settings; **View** opens remembered stories. **D-pad/A/B** navigate
+menus. Deadzone, look-speed and inversion settings are available under Menu.
+Keyboard and mouse controls remain. **Menu → Controller settings → Reassign
+gameplay buttons** opens the nine-action button editor. Occupied buttons require
+an explicit swap confirmation; A/B and the Menu/View recovery controls stay fixed.
+
+There is a public **Windows x86_64 (local)** export preset and an allowlisted,
+unsigned development packager. Steam gets an **offline preview-recipe generator**,
+not a published build or Steamworks SDK integration. Microsoft Store and Xbox
+remain explicitly blocked packaging/port targets pending their actual adapters.
+Local play invents no store account, achievement, cloud save or entitlement.
+
+The packager now emits a versioned manifest that binds Steam preview recipes as
+well as the payload. `python tools/verify_platform.py PACKAGE.zip` checks an
+archive or directory without extracting, executing or uploading it. It rejects
+changed/missing/extra files and non-preview recipes; it is not a signature check.
+[Remapping and package-verification guide](docs/PLATFORM_CONTINUATION.md).
+
+[Controller controls, Windows builds and platform qualification](docs/PLATFORM_FOUNDATION.md)
+
+## Reading on a controller
+
+**Text and reading settings** are available at the title and in the home journal.
+Choose **100–200% menu/dialogue text**, stronger menu contrast, and optional
+Shah Muhammad development captions. Right stick or mouse wheel scrolls long text;
+D-pad selects buttons. **Read current messages** provides a larger paused view of
+the displayed task and message without granting new knowledge.
+
+Preferences save separately from story progress and controller assignments. Live
+HUD/world labels retain their current size; this is not a screen-reader or console
+accessibility-certification claim.
+
+[Reading settings, boundaries and validation](docs/READING_ACCESSIBILITY.md)
+
 ## Other retained modes
 
 The menu also retains the separate Lahore command story, houses-and-rivals patrol
@@ -99,6 +138,27 @@ scenarios, not completed transitions in the childhood-to-Lahore biography.
 The detailed guide covers mounted gaits, alternate modes and optional framing.
 Loading and checkpoints retain their existing validation and rollback semantics.
 
+## Native store boundary and real-machine test sessions
+
+The Windows build now has an **opt-in local hardware session**. Launch
+`content/1792.exe -- --hardware-session`, then use **Local hardware test session** at
+title or in the Home journal to export renderer/input observations and explicit
+operator checklist results. No data is uploaded; automated runs cannot claim a
+human hardware pass.
+
+An optional **GodotSteam bridge** now handles client identity, overlay pause and
+app/user-scoped local manual saves. The normal Windows package does **not** include
+the native Steam dependency. Missing/changed sessions fail explicitly; no cloud,
+achievement or server-authentication result is invented.
+
+`tools/microsoft_pc.py` stages a verified local Windows payload with a supplied
+Partner Center identity and original logo assets, then can invoke a checksum-pinned
+installed MakePkg for local PC packaging **only with `--execute`**. It never uploads,
+installs, signs, or labels a Windows package as an Xbox port.
+
+[Integration and hardware-test guide](docs/STORE_AND_HARDWARE_INTEGRATION.md) ·
+[Private Xbox/signing handoff](docs/XBOX_PORT_HANDOFF.md)
+
 ## Architecture
 
 Godot owns the active game, state and clock. Blender is the intended asset-authoring
@@ -117,6 +177,7 @@ python tools/check_project.py
 python tools/check_reconstruction.py
 python tools/check_oral_memory.py
 python tools/run_checks.py --godot /path/to/godot
+python tools/run_platform_checks.py --godot /path/to/godot
 /path/to/godot --headless --fixed-fps 60 --path game --script res://tests/test_oral_memory.gd
 ```
 
@@ -144,3 +205,18 @@ plans, licensed game assets or voice recordings were imported for this update.
 
 [LICENSE](LICENSE) · [Licensing scope](docs/LICENSING.md) ·
 [Asset rules](docs/ASSET_LICENSING.md) · [Third-party notices](THIRD_PARTY_NOTICES.md)
+
+## Continue and recover a saved chapter
+
+The title now offers **Continue saved home chapter** and **Saved home chapter /
+recovery**. Continue validates the selected file and the actual scene's standing
+room before entering, then waits for Resume. The original Home entry still starts
+a new session and never overwrites a save just by entering.
+
+In the home journal, **Saved chapter / recovery** can load the primary or explicitly
+recover the previous manual snapshot. F5 / Save chapter preserves a different,
+valid primary as one previous generation before replacement. Corrupt primary
+saves require an explicit, reviewed replacement; loading alone never rewrites a
+file. No world-save format, clock or controller-preference migration is introduced.
+
+[Save recovery rules, failure boundaries and qualification](docs/SAVE_RECOVERY.md)

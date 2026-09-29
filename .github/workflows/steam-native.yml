@@ -1,0 +1,69 @@
+name: Native Steam runtime qualification
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: steam-native-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  native-windows:
+    runs-on: windows-2022
+    timeout-minutes: 25
+    env:
+      PYTHONUTF8: '1'
+      PYTHONIOENCODING: utf-8
+      GODOT_SILENCE_ROOT_WARNING: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: '3.12'
+      - name: Install the unchanged standard Windows reference and export templates
+        run: python tools/platform_reference.py --windows
+      - name: Retain exact source and bind execution
+        shell: bash
+        run: |
+          mkdir -p test-results
+          git rev-parse HEAD > test-results/source-commit.txt
+          git rev-parse 'HEAD^{tree}' > test-results/source-tree.txt
+          git archive HEAD > test-results/source.tar
+          echo "SOURCE_COMMIT=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+          echo "SOURCE_TREE=$(git rev-parse 'HEAD^{tree}')" >> "$GITHUB_ENV"
+      - name: Import and build the ordinary offline Windows package first
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os
+          from tools.run_checks import run
+          run([os.environ['GODOT'], '--headless', '--path', 'game', '--editor', '--import'], 'standard-import')
+          PY
+          python tools/windows_build.py --godot "$GODOT"
+      - name: Acquire exact native reference outside repository source
+        shell: bash
+        run: python tools/steam_native.py install --output "$RUNNER_TEMP/native-steam-reference"
+      - name: Execute every retained source suite on the real GodotSteam editor
+        shell: bash
+        run: |
+          python tools/steam_native.py inspect --reference "$RUNNER_TEMP/native-steam-reference"
+          python tools/run_platform_checks.py --godot "$RUNNER_TEMP/native-steam-reference/godotsteam.451.editor.win64.console.exe"
+      - name: Execute actual native release template with the unchanged verified game PCK
+        shell: bash
+        run: |
+          python tools/steam_native.py qualify \
+            --reference "$RUNNER_TEMP/native-steam-reference" \
+            --package build/1792-windows-development.zip \
+            --evidence test-results/native-runtime \
+            --expected-commit "$SOURCE_COMMIT" --expected-tree "$SOURCE_TREE"
+      - name: Retain source, logs and native observations only
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: native-steam-evidence
+          path: test-results/
+          retention-days: 14
