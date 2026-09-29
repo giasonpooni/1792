@@ -72,15 +72,15 @@ func sample(tick: int,speed: float,action: String,amount: float=0.0,speaking: bo
 		knees[0].rotation.x=choreo.knee_l;knees[1].rotation.x=choreo.knee_r
 	match action:
 		"windup":
-			shoulders[1].rotation=Vector3(-.8-1.9*Choreo.smooth(amount),-.35,-.25);elbows[1].rotation.x=-.8
+			shoulders[1].rotation=Vector3(-.8-1.9*Choreo.ease(amount),-.35,-.25);elbows[1].rotation.x=-.8
 			shoulders[0].rotation.x=-.7;elbows[0].rotation.x=-.6
 		"strike":
-			shoulders[1].rotation=Vector3(-2.7+1.45*Choreo.smooth(amount),.3,0);elbows[1].rotation.x=-.7+.6*Choreo.smooth(amount)
+			shoulders[1].rotation=Vector3(-2.7+1.45*Choreo.ease(amount),.3,0);elbows[1].rotation.x=-.7+.6*Choreo.ease(amount)
 			shoulders[0].rotation.x=-.8
 		"checked":
 			shoulders[1].rotation.x=-1.3;elbows[1].rotation.x=-1.05
 		"recover":
-			shoulders[1].rotation.x=-1.2*(1-Choreo.smooth(amount))
+			shoulders[1].rotation.x=-1.2*(1-Choreo.ease(amount))
 		"brace":
 			torso.rotation=Vector3(-.08*amount,.16*amount,0);head.rotation=Vector3(.03,-.20*amount,.06*amount)
 			shoulders[0].rotation.x=-.55*amount;shoulders[1].rotation.x=-.7*amount;elbows[1].rotation.x=-.6*amount

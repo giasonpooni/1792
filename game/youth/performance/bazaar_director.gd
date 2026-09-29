@@ -10,12 +10,16 @@ const Rules := preload("res://youth/brawl_rules.gd")
 const Choreo := preload("res://youth/performance/bazaar_choreography.gd")
 const Decompression := preload("res://youth/performance/bazaar_decompression.gd")
 const Departure := preload("res://youth/performance/bazaar_departure.gd")
+const InhabitedApproach := preload("res://youth/performance/bazaar_inhabited_approach.gd")
+const WalkLines := preload("res://youth/performance/bazaar_walk_lines.gd")
 var chapter: Node3D
 var figures: Array[Node3D]=[]
 var sounds: Array[AudioStreamPlayer3D]=[]
 var market_stage: Node3D
 var ambience: AudioStreamPlayer3D
 var departure: Node3D
+var inhabited_approach: Node3D
+var walk_seen: Dictionary={}
 var decompression: Dictionary={}
 var enabled := true
 var sound_enabled := true
@@ -43,6 +47,7 @@ func build(owner_chapter: Node3D) -> void:
 	chapter=owner_chapter
 	market_stage=MarketStage.new();chapter.add_child(market_stage);market_stage.build()
 	departure=Departure.new();chapter.add_child(departure);departure.build()
+	inhabited_approach=InhabitedApproach.new();chapter.add_child(inhabited_approach);inhabited_approach.build()
 	ambience=AudioStreamPlayer3D.new();ambience.name="OriginalBazaarAmbience";ambience.stream=Ambience.make();ambience.volume_db=-22
 	ambience.max_distance=18;ambience.unit_size=5;ambience.position=preload("res://youth/brawl_rules.gd").RING+Vector3(0,1,0);chapter.add_child(ambience)
 	for i in range(5):
@@ -67,7 +72,7 @@ func label(size: int,color: Color) -> Label:
 	var l:=Label.new();l.add_theme_font_size_override("font_size",size);l.add_theme_color_override("font_color",color);l.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;l.mouse_filter=Control.MOUSE_FILTER_IGNORE;return l
 func rehydrate() -> void:
 	if not is_instance_valid(chapter): return
-	queue.clear();speech.clear();decompression.clear();report_until=-1;last_tick=int(chapter.model.progress().tick)
+	queue.clear();speech.clear();walk_seen.clear();decompression.clear();report_until=-1;last_tick=int(chapter.model.progress().tick)
 	var b: Dictionary=chapter.model.brawl();origin=int(b.get("origin_tick",-1));event_cursor=b.get("events",[]).size()
 	_guard=false
 	for sound in sounds: sound.stop()
@@ -116,6 +121,7 @@ func sample(allow_edges: bool=true) -> void:
 		var regroup_tick:=Decompression.latest_regroup(b.events)
 		decompression=Decompression.beat(String(b.ledger.outcome),tick-regroup_tick)
 	if is_instance_valid(departure): departure.sample(tick,phase in ["leaving","returning"])
+	if is_instance_valid(inhabited_approach): inhabited_approach.sample(tick,phase)
 	if is_instance_valid(market_stage): market_stage.sample(tick,active,contact_beat)
 	if is_instance_valid(ambience):
 		var near_market: bool=chapter.avatar.global_position.distance_to(preload("res://youth/brawl_rules.gd").RING)<15
@@ -153,6 +159,11 @@ func sample(allow_edges: bool=true) -> void:
 		for sound in sounds: sound.stop()
 		if is_instance_valid(ambience): ambience.stop()
 	if not chapter._paused and allow_edges:
+		if phase=="invited" and speech.is_empty() and queue.is_empty() and audible(3,7.0) and audible(4,7.0):
+			var zone: Dictionary=WalkLines.available(chapter.avatar.global_position,phase,walk_seen)
+			if not zone.is_empty():
+				walk_seen[zone.id]=tick
+				for line in zone.lines: queue.append({"actor":line[0],"text":line[1],"expires":tick+600})
 		if not speech.is_empty() and (tick>=speech.until or not audible(int(speech.actor))): speech.clear()
 		while speech.is_empty() and not queue.is_empty():
 			var candidate: Dictionary=queue.pop_front()

@@ -3,10 +3,10 @@ extends RefCounted
 ## Authored presentation curves over existing combat events. Never authors a hit, guard or movement receipt.
 const CONTACT_WINDOW := 20
 const FRIEND_REACTION_WINDOW := 34
-static func smooth(value: float) -> float:
+static func ease(value: float) -> float:
 	var x:=clampf(value,0.0,1.0);return x*x*(3.0-2.0*x)
 static func opponent(action: String,amount: float) -> Dictionary:
-	var a:=smooth(amount)
+	var a:=ease(amount)
 	match action:
 		"windup":
 			return {"offset":Vector3(-.035*a,0,.105*a),"torso":Vector3(.055*a,-.40*a,-.04*a),
