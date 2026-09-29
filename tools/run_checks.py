@@ -66,6 +66,9 @@ def main() -> int:
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_locomotion.gd"],
         "locomotion", "LOCOMOTION_TESTS:")
     run([sys.executable, "tools/check_locomotion_rates.py", "--godot", args.godot], "locomotion-rates")
+    run([sys.executable, "tools/check_world_atlas.py"], "world-atlas-contracts")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_world_atlas.gd"],
+        "world-atlas", "WORLD_ATLAS_TESTS:")
     return 0
 
 
