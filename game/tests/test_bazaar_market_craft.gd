@@ -64,6 +64,28 @@ func run() -> void:
 	check(scene.bazaar_performance.departure.marks.size()==5,"five visual road-wear marks connect encounter and home approach")
 	check(scene.bazaar_performance.departure.find_children("*","CollisionShape3D",true,false).is_empty(),"departure dressing adds no collision")
 	check(scene.model.snapshot()==before,"decompression and departure dressing create no world state")
+	var director: Node=scene.bazaar_performance
+	var lateral_target:=scene.avatar.global_position+Vector3(8,1,-6)
+	var yaw: float=director._yaw_to(scene.avatar,lateral_target,.42)
+	var pitch: float=director._pitch_to(scene.avatar,lateral_target,.10)
+	check(absf(yaw)>0.05 and absf(yaw)<=.4201,"attention yaw is visible but bounded")
+	check(absf(pitch)<=.1001,"attention pitch remains bounded")
+	var synthetic: Dictionary={"ledger":{"phase":"challenged","down":[false,false,false],"outcome":""},"events":[]}
+	director.active=true
+	director.speech={"actor":3,"text":"presentation fixture","until":99}
+	var speaker_focus: Dictionary=director._hero_attention(synthetic,0)
+	check(speaker_focus.actor==3 and speaker_focus.strength>.9,"hero prioritizes the currently speaking nearby friend")
+	director.speech.clear()
+	var conflict_focus: Dictionary=director._hero_attention(synthetic,0)
+	check(int(conflict_focus.actor) in [0,1,2],"hero attention returns to an active challenger")
+	var attention_before: Dictionary=scene.model.snapshot()
+	var friend_head: Node3D=director.figures[3].head
+	director.speech={"actor":3,"text":"presentation fixture","until":99}
+	var old_head:=friend_head.rotation
+	director._apply_figure_attention(3,"invited",synthetic,0)
+	check(friend_head.rotation!=old_head,"speaking friend visibly turns attention toward Buddh")
+	check(scene.model.snapshot()==attention_before,"eye-line staging changes no authoritative state")
+	director.speech.clear()
 	check(scene.bazaar_performance.ambience.stream is AudioStreamWAV,"market ambience uses local generated WAV")
 	var audio: AudioStreamWAV=scene.bazaar_performance.ambience.stream
 	check(audio.loop_mode==AudioStreamWAV.LOOP_FORWARD and audio.mix_rate==22050 and not audio.stereo,"ambience is bounded looping mono PCM")
