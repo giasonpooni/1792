@@ -171,7 +171,7 @@ func sample(allow_edges: bool=true) -> void:
 		if phase=="invited" and speech.is_empty() and queue.is_empty() and not walk_pending.is_empty():
 			if tick<=int(walk_pending.expires):
 				for line in walk_pending.zone.lines:
-					queue.append({"actor":line[0],"text":line[1],"expires":tick+420,"duration":150})
+					queue.append({"actor":line[0],"text":line[1],"expires":tick+420,"duration":120})
 			walk_pending.clear()
 		while speech.is_empty() and not queue.is_empty():
 			var candidate: Dictionary=queue.pop_front()
