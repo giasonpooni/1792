@@ -10,6 +10,11 @@ later public names follow the [naming policy](docs/CHARACTER_NAMES.md).
 
 **Playable greybox in development, not a finished city or historical survey.**
 
+**Visual target:** grounded, high-fidelity historical realism. Current character,
+horse and environment proxies are not the intended finished style.
+[Street, interior and roofscape reference targets](docs/VISUAL_REFERENCE_TARGETS.md)
+apply to the existing childhood benchmark, not a new engine or copied setting.
+
 ## Current foundation work: movement before more content
 
 The existing stories remain intact. A new **Movement qualification** menu entry

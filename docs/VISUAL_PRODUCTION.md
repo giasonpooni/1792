@@ -142,3 +142,11 @@ reversible material/mesh/lighting pass and F7 comparison controls in the same
 childhood entry. It includes an actual native capture command and runtime
 invariant checks. This is a prototype art study, not completion of the proposed
 production-standard street, final character work or a measured AAA content rate.
+
+## Supplied visual benchmarks
+
+The [three-image visual reference intake](VISUAL_REFERENCE_TARGETS.md) translates
+the supplied street, interior and roofscape references into a high-fidelity
+historical-realism target for the same childhood benchmark. The current proxies
+are not the shipping aesthetic. This intake is an art-production brief, not new
+meshes, enabled roof traversal, historical admission or a claim of visual parity.
