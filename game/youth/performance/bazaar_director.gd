@@ -4,10 +4,14 @@ extends Node
 const Figure := preload("res://youth/performance/bazaar_figure.gd")
 const Dialogue :=  preload("res://youth/performance/bazaar_script.gd")
 const Sound := preload("res://youth/performance/bazaar_sound.gd")
+const MarketStage := preload("res://youth/performance/bazaar_market_stage.gd")
+const Ambience := preload("res://youth/performance/bazaar_ambience.gd")
 const Rules := preload("res://youth/brawl_rules.gd")
 var chapter: Node3D
 var figures: Array[Node3D]=[]
 var sounds: Array[AudioStreamPlayer3D]=[]
+var market_stage: Node3D
+var ambience: AudioStreamPlayer3D
 var enabled := true
 var sound_enabled := true
 var last_tick := -1
@@ -32,6 +36,9 @@ var active := false
 var report_until := -1
 func build(owner_chapter: Node3D) -> void:
 	chapter=owner_chapter
+	market_stage=MarketStage.new();chapter.add_child(market_stage);market_stage.build()
+	ambience=AudioStreamPlayer3D.new();ambience.name="OriginalBazaarAmbience";ambience.stream=Ambience.make();ambience.volume_db=-22
+	ambience.max_distance=18;ambience.unit_size=5;ambience.position=preload("res://youth/brawl_rules.gd").RING+Vector3(0,1,0);chapter.add_child(ambience)
 	for i in range(5):
 		var figure:=Figure.new();figure.name="BazaarCharacterStudy";chapter.youths[i].add_child(figure);figure.build(i);figures.append(figure)
 		var sound:=AudioStreamPlayer3D.new();sound.name="OriginalBazaarFoley";sound.max_distance=9;sound.unit_size=2;sound.volume_db=-12
@@ -58,6 +65,8 @@ func rehydrate() -> void:
 	var b: Dictionary=chapter.model.brawl();origin=int(b.get("origin_tick",-1));event_cursor=b.get("events",[]).size()
 	_guard=false
 	for sound in sounds: sound.stop()
+	if is_instance_valid(ambience):
+		ambience.stop()
 	sample(false)
 func audible(index: int,reach: float=7.0) -> bool:
 	if index<0 or index>=chapter.youths.size(): return false
@@ -95,6 +104,12 @@ func sample(allow_edges: bool=true) -> void:
 			event_cursor=b.events.size();origin=int(b.origin_tick)
 		elif not enabled: event_cursor=b.events.size()
 	active=enabled and phase not in ["none","reported","caught"]
+	if is_instance_valid(market_stage): market_stage.sample(tick,active)
+	if is_instance_valid(ambience):
+		var near_market: bool=chapter.avatar.global_position.distance_to(preload("res://youth/brawl_rules.gd").RING)<15
+		if sound_enabled and near_market and not chapter._paused:
+			if not ambience.playing: ambience.play()
+		elif ambience.playing: ambience.stop()
 	for i in range(figures.size()):
 		var shown: bool=enabled and chapter.youths[i].visible
 		figures[i].visible=shown;chapter.youth_rigs[i].visible=not enabled
@@ -117,6 +132,7 @@ func sample(allow_edges: bool=true) -> void:
 		figures[i].sample(tick,Vector2(chapter.youths[i].velocity.x,chapter.youths[i].velocity.z).length(),action,amount,speech.get("actor",-1)==i)
 	if chapter._paused or not enabled:
 		for sound in sounds: sound.stop()
+		if is_instance_valid(ambience): ambience.stop()
 	if not chapter._paused and allow_edges:
 		if not speech.is_empty() and (tick>=speech.until or not audible(int(speech.actor))): speech.clear()
 		while speech.is_empty() and not queue.is_empty():
@@ -181,4 +197,5 @@ func layout(phase: String,b: Dictionary,tick: int) -> void:
 func toggle_sound() -> void:
 	sound_enabled=not sound_enabled
 	for sound in sounds: sound.stop()
+	if is_instance_valid(ambience): ambience.stop()
 	sample(false)

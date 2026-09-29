@@ -1,4 +1,4 @@
-"""Run the original game suites, then the authored bazaar direction's native checks."""
+"""Run the original game suites, then authored bazaar direction/craft native checks."""
 from __future__ import annotations
 import argparse
 from pathlib import Path
@@ -19,6 +19,8 @@ def main() -> int:
     subprocess.run([sys.executable, '-u', 'tools/run_checks.py', '--godot', args.godot], cwd=ROOT, check=True)
     run([args.godot, '--headless', '--fixed-fps', '60', '--path', 'game', '--script',
          'res://tests/test_bazaar_direction.gd'], 'bazaar-direction', 'BAZAAR_DIRECTION_TESTS:')
+    run([args.godot, '--headless', '--fixed-fps', '60', '--path', 'game', '--script',
+         'res://tests/test_bazaar_market_craft.gd'], 'bazaar-market-craft', 'BAZAAR_MARKET_CRAFT_TESTS:')
     return 0
 
 if __name__ == '__main__':

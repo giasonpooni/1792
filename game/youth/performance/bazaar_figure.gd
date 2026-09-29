@@ -57,6 +57,7 @@ func build(index: int) -> void:
 		round_piece(e,Vector3(.115,.14,.12),Vector3(0,-.31,-.018),skin)
 func sample(tick: int,speed: float,action: String,amount: float=0.0,speaking: bool=false) -> void:
 	pose_name=action
+	position=Vector3.ZERO
 	var wave:=sin(float(tick)/60.0*8.5)*minf(speed/3.2,1)*.48
 	torso.position=Vector3(0,.81,0);torso.rotation=Vector3.ZERO;head.rotation=Vector3.ZERO
 	for i in range(2):
@@ -65,14 +66,25 @@ func sample(tick: int,speed: float,action: String,amount: float=0.0,speaking: bo
 		shoulders[i].rotation=Vector3(-hips[i].rotation.x*.6,0,.08 if i==0 else -.08);elbows[i].rotation=Vector3(-.15,0,0)
 	match action:
 		"windup":
-			torso.rotation.y=-.3*amount;shoulders[1].rotation=Vector3(-.8-1.9*amount,-.35, -.25);elbows[1].rotation.x=-.8
+			# The visible body settles over the rear foot before the existing strike window.
+			position=Vector3(-.04*amount,0,.10*amount)
+			hips[0].rotation.x=.35*amount;hips[1].rotation.x=-.22*amount
+			knees[0].rotation.x=.22*amount;knees[1].rotation.x=.42*amount
+			torso.rotation=Vector3(.06*amount,-.38*amount,-.04*amount);shoulders[1].rotation=Vector3(-.8-1.9*amount,-.35, -.25);elbows[1].rotation.x=-.8
 			shoulders[0].rotation.x=-.7;elbows[0].rotation.x=-.6
 		"strike":
-			torso.rotation=Vector3(.12,.32*amount,0);shoulders[1].rotation=Vector3(-2.7+1.45*amount,.3,0);elbows[1].rotation.x=-.7+.6*amount
+			# Visual-only step-through; the authoritative CharacterBody remains untouched.
+			position=Vector3(.03*amount,0,-.18*amount)
+			hips[0].rotation.x=-.42*amount;hips[1].rotation.x=.30*amount;knees[0].rotation.x=.52*amount
+			torso.rotation=Vector3(.15,.40*amount,-.05);shoulders[1].rotation=Vector3(-2.7+1.45*amount,.3,0);elbows[1].rotation.x=-.7+.6*amount
 			shoulders[0].rotation.x=-.8
 		"checked":
-			torso.rotation=Vector3(-.10,-.2,0);shoulders[1].rotation.x=-1.3;elbows[1].rotation.x=-1.05;head.rotation.y=.18
+			position=Vector3(0,0,.08)
+			hips[0].rotation.x=-.18;hips[1].rotation.x=.22;knees[1].rotation.x=.28
+			torso.rotation=Vector3(-.14,-.24,.06);shoulders[1].rotation.x=-1.3;elbows[1].rotation.x=-1.05;head.rotation.y=.18
 		"recover":
+			position=Vector3(0,0,-.06*(1-amount))
+			hips[0].rotation.x=-.18*(1-amount);hips[1].rotation.x=.12*(1-amount)
 			torso.rotation.y=.25*(1-amount);shoulders[1].rotation.x=-1.2*(1-amount)
 		"down":
 			# A seated/crouched defeated figure, not a squashed capsule or ragdoll.
