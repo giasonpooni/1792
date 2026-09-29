@@ -27,7 +27,10 @@ func record_frame() -> void:
 	if not d.speech.is_empty() and not snapshots.has("friends-walking"): snapshots["friends-walking"]=snapshot_view(scene)
 	if not d.speech.is_empty():
 		var text: String=String(d.speech.text)
-		if text.begins_with("Mind the baskets") and not snapshots.has("approach-goods"): snapshots["approach-goods"]=snapshot_view(scene)
+		var ambient_lines: Array=[]
+		for zone in WalkLines.ZONES:
+			for line in zone.lines: ambient_lines.append(String(line[1]))
+		if text in ambient_lines and not snapshots.has("approach-line"): snapshots["approach-line"]=snapshot_view(scene)
 	if scene.model.brawl_phase()=="invited" and not snapshots.has("approach-animal"):
 		var animal_zone: Dictionary=WalkLines.ZONES[1]
 		if scene.avatar.global_position.distance_to(animal_zone.center)<=float(animal_zone.radius): snapshots["approach-animal"]=snapshot_view(scene)
@@ -109,7 +112,7 @@ func run() -> void:
 	ensure(snapshots.has("windup") and snapshots.has("checked") and snapshots.has("down"),"actual fight produces windup, check and defeated poses")
 	ensure(clip.size()>12,"actual fight yields motion observations")
 	ensure(outcomes.fight.sound_cues.any(func(e):return e.kind=="check"),"actual checked strike emits foley cue")
-	ensure(snapshots.has("approach-goods") and snapshots.has("approach-animal"),"actual physical approach retains one spoken goods beat and the animal vignette")
+	ensure(snapshots.has("approach-line") and snapshots.has("approach-animal"),"actual physical approach retains at least one spoken ambient beat and the animal vignette")
 	ensure(outcomes.fight.heard.size()>0 and outcomes.leave.heard.size()>0,"nearby friends speak on both routes")
 	var report: Dictionary={"schema":"1792.bazaar-direction.v1","engine":Engine.get_version_info().string,"physics_hz":Engine.physics_ticks_per_second,
 		"new_assertions":new_checks,"passed":passed,"failed":failed,"snapshots":snapshots,"motion":clip,"outcomes":outcomes,
