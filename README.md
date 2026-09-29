@@ -1,5 +1,26 @@
 # 1792
 
+## Historical perspective and production order
+
+**1792 is the primary game workload.** Hero of the Two Worlds / Garibaldi
+progresses slowly as the secondary title and workflow-transfer test; Geronimo is
+on hold. The full Ranjit Singh narrative still precedes historical-character DLC.
+
+Our style is **situated, explorable history**: encounter people through their
+relationships, partial knowledge, obligations and choices, not biography cards
+alone. Reconstructed beliefs and motives retain their evidence or fiction status;
+actors do not inherit the narrator's hindsight or the developer's research.
+
+[Historical-perspective style and game-owned integration contract](docs/HISTORICAL_PERSPECTIVE.md).
+The first runnable authoring tool is published separately in
+[Terminal PR #70](https://github.com/giasonpooni/Notations-Systems-Terminal/pull/70)
+as `net history`. It compiles received-information views and audits annotated
+statements. **It is not yet a live 1792 integration or a historical-truth engine.**
+Godot remains the game-state, clock and save authority. Existing gameplay,
+oral-memory work, source interpretation, sacred-site rules and rights are retained.
+
+---
+
 **Build outward from home.**
 
 A Cartesian Graphics historical open-world game following **Buddh Singh** from
@@ -145,7 +166,7 @@ Compare equivalent tasks with fixed acceptance criteria; count tooling setup and
 failed attempts, not just successful generation. A working production system must
 improve the game rather than only produce more files, plans or agent activity.
 
-**Current boundary:** NET's [production-controller PR #65](https://github.com/giasonpooni/Notations-Engineering-Terminal/pull/65)
+**Earlier controller-only snapshot (PR #28):** NET's [production-controller PR #65](https://github.com/giasonpooni/Notations-Engineering-Terminal/pull/65)
 is draft and unmerged as of September 29, 2026. Its
 [pinned implementation guide](https://github.com/giasonpooni/Notations-Engineering-Terminal/blob/98386f4dfa621f6340670755603abd229be4684f/docs/NET_PRODUCTION.md)
 describes a local sequential controller with declared parameter repairs and a
@@ -153,6 +174,12 @@ synthetic Godot courier fixture. It does **not** attach this game or provide an
 autonomous asset factory. The next engineering gate is one actual 1792 scenario
 or asset operation with a fixed acceptance contract and retained failure/success
 evidence, demonstrated back in a playable build.
+
+Subsequent game-owned production adapters are tracked in [PR #29](https://github.com/giasonpooni/1792/pull/29)
+and [PR #30](https://github.com/giasonpooni/1792/pull/30), separately from the new
+historical-perspective authoring tool. Their implementation and qualification
+must be read at their own revisions; this documentation does not merge them or
+establish a live historical-perspective adapter.
 
 Godot remains the game-state and clock authority. Story, art direction, source
 interpretation, sacred-site rules, saves and release approval stay game-owned;
