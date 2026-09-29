@@ -4,6 +4,7 @@ const Launch:=preload("res://childhood/home_launch.gd")
 const Pose:=preload("res://tests/aftermath_fixture.gd")
 const Base:=preload("res://childhood/childhood_state.gd")
 const Market:=preload("res://youth/performance/bazaar_market_stage.gd")
+const Choreo:=preload("res://youth/performance/bazaar_choreography.gd")
 var passed:=0
 var failed:=0
 func _initialize() -> void: run.call_deferred()
@@ -28,10 +29,30 @@ func run() -> void:
 		stage.sample(tick,true);scene.bazaar_performance.sample(false)
 	check(scene.model.snapshot()==before,"market/pose sampling changes no world state")
 	for i in range(scene.youths.size()): check(scene.youths[i].global_transform==actor_poses[i],"visual craft never moves actor "+str(i))
+	var events: Array=[{"kind":"parry","tick":100,"index":0}]
+	var beat: Dictionary=Choreo.contact_pose(events,110)
+	check(beat.kind=="parry" and beat.amount>0,"contact beat derives from retained event without authoring one")
+	var mela: Dictionary=Choreo.friend_pose(events,110,3);var jiva: Dictionary=Choreo.friend_pose(events,110,4)
+	check(mela.action=="watch" and jiva.action=="watch","both friends react to same authoritative parry")
+	check(Choreo.friend_pose(events,200,3).is_empty(),"reaction expires instead of becoming persistent knowledge")
+	var hit_events: Array=[{"kind":"hit","tick":300,"index":1}]
+	check(Choreo.friend_pose(hit_events,310,3).action=="brace","landed blow has distinct friend reaction")
+	var counter_events: Array=[{"kind":"counter","tick":400,"index":2}]
+	check(Choreo.friend_pose(counter_events,410,4).action=="urge","counter has distinct friend reaction")
+	stage.sample(110,true,beat)
+	check(scene.model.snapshot()==before,"market witness-like reaction creates no testimony or state")
 	var figure: Node3D=scene.bazaar_performance.figures[0]
+	var offsets: Dictionary={}
 	for action in ["windup","strike","checked","recover"]:
 		figure.sample(200,0,action,.8,false)
 		check(figure.position.length()<.22,"visual-only footwork stays inside bounded presentation envelope "+action)
+		offsets[action]=figure.position
+	check(offsets.windup.z>0 and offsets.strike.z<0,"wind-up loads backward before strike steps through")
+	check(offsets.checked.z>0 and offsets.recover.z<0,"checked recoil and recovery are directionally distinct")
+	for friend_index in [3,4]:
+		var friend_figure: Node3D=scene.bazaar_performance.figures[friend_index]
+		friend_figure.sample(110,0,"brace",.8,false)
+		check(friend_figure.position==Vector3.ZERO,"friend reaction never becomes root motion "+str(friend_index))
 	check(scene.bazaar_performance.ambience.stream is AudioStreamWAV,"market ambience uses local generated WAV")
 	var audio: AudioStreamWAV=scene.bazaar_performance.ambience.stream
 	check(audio.loop_mode==AudioStreamWAV.LOOP_FORWARD and audio.mix_rate==22050 and not audio.stereo,"ambience is bounded looping mono PCM")
