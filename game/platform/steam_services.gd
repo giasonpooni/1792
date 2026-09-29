@@ -35,6 +35,13 @@ static func api_error(api: Object) -> String:
 	if not signal_ok: return "GodotSteam requires the three-argument overlay_toggled signal."
 	return ""
 
+static func client_preflight_error(api: Object) -> String:
+	# Shared native preflight. Never calls SteamInit or reads a platform-user ID.
+	var shape_error:=api_error(api)
+	if not shape_error.is_empty(): return shape_error
+	if not _true_bool(api.call("isSteamRunning")): return "Steam client is not running; no local-profile fallback was selected."
+	return ""
+
 func initialize(app_id: Variant, api: Object=null) -> String:
 	if _attempted: return "This Steam provider has already attempted initialization; create no concurrent owner."
 	_attempted=true
@@ -43,9 +50,8 @@ func initialize(app_id: Variant, api: Object=null) -> String:
 		return _fail("Disable GodotSteam automatic initialization and embedded callbacks; the platform runtime owns both.")
 	_injected_api=api!=null
 	_api=api if api!=null else (Engine.get_singleton("Steam") if Engine.has_singleton("Steam") else null)
-	var shape_error:=api_error(_api)
-	if not shape_error.is_empty(): return _fail(shape_error)
-	if not _true_bool(_api.call("isSteamRunning")): return _fail("Steam client is not running; no local-profile fallback was selected.")
+	var preflight_error:=client_preflight_error(_api)
+	if not preflight_error.is_empty(): return _fail(preflight_error)
 	# GodotSteam's documented signature is app_id FIRST, embed_callbacks SECOND.
 	var result: Variant=_api.call("steamInitEx",app_id,false)
 	if not result is Dictionary or not result.get("status") is int or result.status!=0:
