@@ -2,106 +2,43 @@
 
 **Build outward from home.**
 
-A Cartesian Graphics historical open-world game following **Buddh Singh** from
-Gujranwala and the Sukerchakia home territory toward wider command. Travel,
-relationships, provisions and incomplete knowledge matter before empire management.
-The stable character ID remains `ranjit_singh`; the childhood display name and
-later public names follow the [naming policy](docs/CHARACTER_NAMES.md).
+A Cartesian Graphics historical open-world game following **Buddh Singh** from Gujranwala and the Sukerchakia home territory toward wider command. Travel, relationships, provisions and incomplete knowledge matter before empire management. The stable character ID remains `ranjit_singh`; display names follow the [naming policy](docs/CHARACTER_NAMES.md).
 
-**Playable greybox in development, not a finished city or historical survey.**
+**Playable greybox in development—not a finished city, released game or historical survey.**
 
-[Play](#play) · [Project scope](#scope-and-development-order) ·
-[Expertise amplification](#expertise-amplification-and-transfer) ·
-[Coupled engineering experiment](#coupled-engineering-experiment) ·
-[Develop and verify](#develop-and-verify)
+[Play](#play) · [Walkthrough](docs/PLAYABLE_GUIDE.md) · [Creative direction](#scope-and-development-order) · [Research and production](#coupled-engineering-experiment) · [Development reference](DEVELOPMENT_REFERENCE.md) · [Rights](#rights)
 
 ## Notation Systems and Cartesian Graphics
 
-**Notation Systems is the parent organization of Cartesian Graphics.** Notation
-Systems develops evidence-backed industrial intelligence, computational
-instrumentation and tooling that connect domain expertise to bounded, inspectable
-work. **Cartesian Graphics** is its games, graphics, physics and simulation
-studio/label; **1792 is its primary historical-biographical game** and the first
-major reference workload for the shared game-production engineering experiment.
-This describes an organizational relationship, not a separate incorporation claim.
+**Cartesian Graphics — Interactive Worlds, Simulation Technology and Digital IP.** We develop historically grounded games and the graphics, assets, simulation and production technology behind them. **1792 is the primary creative project**, not merely a benchmark for another product.
 
-The firm's industrial domain identities remain **PAYLOAD** (physical operations,
-facilities, materials and logistics, including Caravan), **LANDSHARK** (land/site
-and spatial constraints), and **TRADEWIND** (contracts, prices and exposure).
-PayloadOS and ESM retain governed industrial evidence/state responsibilities;
-Dossier Services packages scoped service outputs. Games are not another
-industrial evidence domain or a reason to replace those identities.
+**Notation Systems — Frontier Tooling and Instrumentation for Digital Futures.** Shared scientific instruments and the [Notations Systems Terminal](https://github.com/giasonpooni/Notations-Systems-Terminal) support the development work. Cartesian's private creative/IP direction and Notation Systems' public-interest tooling direction remain distinct. This positioning does not establish nonprofit status, transfer IP or change any licence.
 
-The studio's creative focus is historical lives experienced through geography,
-relationships, limited knowledge and consequential action. These layered worlds
-motivate physics-engine, graphics, coupled physical/multi-agent and multirate
-simulation research. Such ambitions do not imply that every planned system or
-a general-purpose multiphysics engine is implemented in this game.
-
-**Shared primitives; separate state authority.** Reusable production tooling
-belongs on the existing [Notations Systems Terminal (NET)](https://github.com/giasonpooni/Notations-Systems-Terminal)
-workbench; specialist repositories keep their own mathematics, implementations
-and licences. Godot retains the game's live state and clock; story, art direction
-and game-release approval remain game-owned. Simulation output is not automatically
-admitted industrial evidence, and shared tooling does not grant industrial
-admission or release authority. Existing Cartesian Graphics copyright, licensing
-and third-party notices are unchanged.
+Godot owns live game state and the clock. Story, art direction, historical interpretation, sacred-site rules, saves and release approval remain game-owned. Shared primitives do not turn simulated events into physical observations or authorize industrial evidence admission. [Organization and public profile](https://github.com/giasonpooni/Notations-Systems-Terminal/blob/b41b84922d4963a9206202029afd1e78b9451f9c/PUBLIC_POSITIONING.md).
 
 ## Play
 
-Import `game/project.godot` in standard **Godot 4.5.1** and press **F5**.
-No .NET SDK, Python service, Bevy process or NET server is required to play.
-Choose **1792 · Buddh Singh · Home territory** for the integrated home chapter.
+Import `game/project.godot` in standard **Godot 4.5.1** and press **F5**. No .NET SDK, Python service, Bevy process or NET server is required to play. Choose **1792 · Buddh Singh · Home territory** for the integrated home chapter.
 
-Learn the yard, hear a letter read, ride, train, follow traces, survive an authored
-ambush, investigate and report home. After the inquiry, administer a limited
-household allowance: carry provisions to market, physically escort a carrier home,
-hire workers or guards, build infrastructure, and meet food, fodder and wage costs.
-Your personal purse and the household coffers are separate. Contracts pay once.
+Learn the yard, hear a letter read, ride, train, follow traces, survive an authored ambush, investigate and report home. The household allowance introduces provisions, escort, workers, guards, infrastructure and recurring costs. Personal purse and household coffers remain separate; contracts pay once.
 
-[Full walkthrough, rules and save behavior](docs/PLAYABLE_GUIDE.md) ·
-[Household economy](docs/GUJRANWALA.md)
+[Full walkthrough and save behavior](docs/PLAYABLE_GUIDE.md) · [Household economy](docs/GUJRANWALA.md)
 
 ## Gujranwala now has an evidence-bound setting
 
-The existing missions run within a compressed **56 × 56 metre** test area. The
-new reconstruction layer adds a verandah arcade, open forecourt, courtyard
-frontages, a collision-tested well, market props, field strips and ambient figures.
-Peripheral buildings are scenery, not a secretly enlarged playable city.
+The current missions use a compressed **56 × 56 metre** test area, with courtyard, well, market props, field strips and ambient figures. Peripheral buildings are scenery, not a completed city. **F2** opens a paused reconstruction notebook linking geometry to source claims and uncertainty; it is a developer reference, not knowledge granted to the character.
 
-**F2** opens a paused reconstruction notebook. Feature records bind original
-geometry to source claims, uncertainty classes and an exact content digest.
-Later or disputed monuments cannot silently appear at the 1792 start date.
-The notebook is a developer reference, not information granted to Buddh.
-
-**Shah Muhammad** is the retrospective narrator. Four milestone cues currently
-use original English development text—not historical verse, translations or a
-recorded voice. They observe the existing state without altering resources,
-knowledge or save history. Punjabi authoring and voice production remain future work.
-
-[Reconstruction and historical sources](docs/GUJRANWALA_1792.md) ·
-[Integration receipt](docs/GUJRANWALA_INTEGRATION.md)
+Shah Muhammad's retrospective narrator cues currently use original English development text, not historical verse, translations or recorded voice. [Reconstruction and sources](docs/GUJRANWALA_1792.md) · [Integration receipt](docs/GUJRANWALA_INTEGRATION.md).
 
 ## New playable task: Water for the Household
 
-After accepting the household allowance, ask the quartermaster for the optional
-water round. Leave through the courtyard's open front, take the east lane to the
-well, face it and press **E**. Draw a load, carry it back on foot, and deposit it
-with the quartermaster. Two trips complete the six-unit assignment. Drawing takes
-180 existing physics ticks; leaving cancels without consuming water. A full open
-carrier slows movement and prevents mounting until deposited.
+After accepting the allowance, ask the quartermaster for the water round. Draw at the well, carry the load on foot and deposit it at home. Two trips complete the six-unit assignment. Drawing uses 180 existing physics ticks; leaving cancels it. A full open carrier slows movement and prevents mounting.
 
-The task, pending draw and transfers use the existing save and clock. Its six
-units are not litres or a measured well yield. It grants no repeat cash reward;
-recurring consumption and water-dependent production are not implemented.
-
-[Water-round walkthrough and research](docs/GUJRANWALA_WATER_ROUND.md)
+The task uses the existing save and clock. Its units are not measured litres or well yield; it adds no repeat cash reward, recurring water consumption or water-dependent production. [Water-round guide](docs/GUJRANWALA_WATER_ROUND.md).
 
 ## Other retained modes
 
-The menu also retains the separate Lahore command story, houses-and-rivals patrol
-sandbox, and the political-exposure/perception experiment. These are development
-scenarios, not completed transitions in the childhood-to-Lahore biography.
+The separate Lahore command story, houses-and-rivals patrol sandbox and exposure/perception experiment remain development scenarios, not completed biographical transitions.
 
 ## Controls
 
@@ -115,129 +52,29 @@ scenarios, not completed transitions in the childhood-to-Lahore biography.
 | F2 | Paused reconstruction notebook in the home chapter |
 | F5 / F9 / R | Save / load / restore childhood checkpoint |
 
-The detailed guide covers mounted gaits, alternate modes and optional framing.
-Loading and checkpoints retain their existing validation and rollback semantics.
+## Scope and development order
+
+Build the rich Gujranwala childhood/adolescence campaign through the prelude to Lahore first; then complete Lahore and the remaining Ranjit Singh narrative. Historical-character DLC follows the completed main narrative. Hero of the Two Worlds remains secondary; Geronimo remains on hold.
+
+Plan the full geographic envelope from the beginning. Evidence-supported 1:1 terrain and location fidelity are reconstruction targets, not claims about the compressed playable cell. Visual beauty, movement, interaction and narrative are joint priorities. Historical claims, attributed oral tradition, conflicting accounts, reconstruction choices and original fiction remain distinguishable.
 
 ## Architecture
 
-Godot owns the active game, state and clock. Blender is the intended asset-authoring
-path. The shared **C++–Rust–Python–Julia** architecture remains documented for
-bounded provider workloads; this update does not pretend all four runtimes have
-been integrated. Bevy and Notations Systems Terminal remain optional external
-simulation/experiment providers, not competing game loops. Existing NET / `net` /
-`ciw` interfaces are retained; this is not a universal cross-language compiler.
+Blender is the intended asset-authoring path. Python, Julia, Rust and C++ are complementary implementation tools for bounded external workloads, not four compulsory live game runtimes. Godot retains the game loop; Bevy and NET are optional external providers. No universal language compiler, GPU acceleration or proof guarantee follows from this architecture.
 
-[Shared game architecture](docs/SHARED_GAME_ARCHITECTURE.md) ·
-[Campaign direction](docs/COUPLED_CAMPAIGN.md)
-
-## Scope and development order
-
-The intended product is an embodied historical open-world biography: childhood,
-adolescence, relationships, travel and increasing responsibility lead toward the
-full Ranjit Singh narrative. First complete the rich Gujranwala childhood and
-adolescent campaign through the prelude to Lahore, then the Lahore campaign and
-remaining life story. Historical-character DLC production follows the completed
-main narrative, not the other way around.
-
-Plan the wider geographic envelope from the beginning, while building playable
-detail outward from home. Evidence-supported 1:1 terrain and location fidelity
-are reconstruction targets, not claims about the current compressed test cell.
-Unknown historical layouts remain explicit reconstruction choices. Visual beauty,
-movement, interaction and narrative are joint production priorities, not a choice
-between an empty beautiful map and mechanics with indefinitely deferred art.
-
-Oral tradition, differing accounts and dramatized youth stories belong in the
-authored campaign. Preserve their attribution and distinguish historical claims,
-later tradition, inference and original fiction rather than silently promoting
-all generated material into historical fact.
+[Shared game architecture](docs/SHARED_GAME_ARCHITECTURE.md) · [Campaign direction](docs/COUPLED_CAMPAIGN.md)
 
 ## Expertise amplification and transfer
 
-1792 provides a concrete setting for **expertise amplification rather than
-expertise substitution**. Academic study, oral renditions, remembered episodes
-and creative direction can supply a rich authoring input; they are not all the
-same evidence class. Preserve the original account, its attribution, competing
-versions and unresolved questions before selecting a playable interpretation.
-
-The intended production path is:
-
-```text
-expert account + references + creative constraints
-        ↓
-reviewed episode specification and explicit knowledge boundaries
-        ↓
-typed research / geography / asset / mechanics work orders on NET
-        ↓
-candidate content → execution observations → checks + editorial review
-        ↓
-accepted, integrated playable increment
-```
-
-This is a **workflow-development target**, not a claim that free-form stories
-already compile automatically into games. The game owns its historical/editorial
-policy, sacred-site rules, live state, saves, clock and release approval. Agents
-may produce candidates within declared permissions; they do not choose their own
-acceptance criteria, authenticate history or acquire release authority.
-
-A correction affecting several scenes should eventually propagate through declared
-dependencies and trigger scoped rebuilds, not repeated manual edits. That requires
-actual dependency coverage and regression evidence; it is not established by this
-README. Human effort should increasingly concentrate on consequential decisions,
-while elicitation, research, review, integration and rework remain measured costs.
-
-The reusable asset belongs on the existing NET substrate: bounded capture,
-composition, execution, observation and verification contracts. Other stories,
-subjects, sensor/DSP investigations and industrial tasks may use those contracts
-with different domain schemas and validators. Cross-title and cross-domain reuse
-is a hypothesis to test, not proof that a historical simulation validates a
-physical process. **1792 remains a game worth finishing in its own right.**
+The production goal is to help a small human-led team turn research and creative direction into coherent playable increments. Preserve source accounts, annotations, variants and rejected attempts. A machine-generated candidate is neither historical authentication nor editorial approval.
 
 ## Coupled engineering experiment
 
-**1792 is both a game project and the first major reference workload for an
-industrial agentic game-development experiment.** Its ambition motivates a second
-deliverable: reusable production workflows that help a small human-led team turn
-research and creative direction into coherent, tested, playable content.
+The game can also test shared tooling: does a bounded workflow reduce rework, preserve world/actor-knowledge boundaries and improve accepted, integrated output? **Notations Game Foundry remains a workload on NET**, not a second engine or a claim of autonomous game production.
 
-That work belongs in
-[Notations Systems Terminal](https://github.com/giasonpooni/Notations-Systems-Terminal),
-with **Notations Game Foundry (working name: NGF)** as a game-production workload
-on the existing workbench, not a new engine inside this repository. The question
-is whether typed work orders, bounded tools/agents, retained evidence and
-independent acceptance gates can increase integrated output without supervision
-and repair consuming the gain. It is an engineering hypothesis, not a claim that
-autonomous large-studio production has already been achieved.
+Measure end-to-end human effort, setup, model/provider cost, build time, memory, regressions and artistic/playtesting acceptance. Unknown measurements stay unknown. Compare fixed tasks and acceptance criteria; software checks do not establish historical truth or visual quality. CUDA or hardware-GPU results require actual provisioned runs, not software rendering.
 
-```text
-1792 requirement → bounded production work → candidate artifact
-       ↑                                          ↓
-       └── playable result + review ← checks + controlled integration
-```
-
-Measure accepted and integrated work per human hour, compute/provider cost,
-review and rework effort, regressions, visual/playtesting quality and actual reuse.
-Compare equivalent tasks with fixed acceptance criteria; count tooling setup and
-failed attempts, not just successful generation. Record cost and time separately.
-A working production system must improve the game rather than only produce more
-files, plans or agent activity.
-
-**Documentation snapshot: September 29, 2026.** The earlier NET
-[production-controller PR #65](https://github.com/giasonpooni/Notations-Systems-Terminal/pull/65)
-[pinned implementation guide](https://github.com/giasonpooni/Notations-Systems-Terminal/blob/98386f4dfa621f6340670755603abd229be4684f/docs/NET_PRODUCTION.md)
-describes a local sequential controller, declared repairs and a synthetic courier.
-The subsequent draft/unmerged [NET Foundry PR #68](https://github.com/giasonpooni/Notations-Systems-Terminal/pull/68)
-and companion [1792 PR #30](https://github.com/giasonpooni/1792/pull/30) separately
-track the game-owned water-round attachment. Their evidence is revision-scoped;
-these implementation branches are not merged by this README update. Neither a
-headless attachment nor a passing contract establishes autonomous asset production,
-full-game validation or an automatically generated playable release.
-
-Godot remains the game-state and clock authority. Story, art direction, source
-interpretation, sacred-site rules, saves and release approval stay game-owned;
-automation does not get to redefine its own success criteria. Development-time
-agents do not add a live AI service requirement to playing 1792. Shared tooling
-may later benefit sister titles, but does not move them ahead of this campaign.
-A logical work container or MCP tool connection is not an OS security sandbox.
+[Research programme and metric definitions](https://github.com/giasonpooni/Notations-Systems-Terminal/blob/b41b84922d4963a9206202029afd1e78b9451f9c/RESEARCH_PROGRAMME.md). Development examples remain separately tracked: [NET #68](https://github.com/giasonpooni/Notations-Systems-Terminal/pull/68), [1792 #30](https://github.com/giasonpooni/1792/pull/30), and [NET #76](https://github.com/giasonpooni/Notations-Systems-Terminal/pull/76). A link does not merge those branches into this checkout.
 
 ## Develop and verify
 
@@ -247,27 +84,13 @@ python tools/check_reconstruction.py
 python tools/run_checks.py --godot /path/to/godot
 ```
 
-The runner retains every inherited gameplay suite and adds reconstruction,
-narration-isolation and political/perception tests. GitHub Actions uses pinned
-Godot 4.5.1, retains logs and exact source, and produces software-rendered captures.
-A test suite passing is not human playtesting or verification of historical truth.
+Existing gameplay, reconstruction and state-boundary checks remain unchanged. This documentation update does not rerun the suites, change the Godot pin, qualify repository-wide CI or publish a playable release.
 
-```text
-game/       Game, state authority, original meshes, source-bound layout and tests
-data/       Design fixtures and historical source index
-schemas/    Retained world-state contract
-docs/       Player guide, research, design, architecture and rights
-tools/      Offline and native verification runner
-archive/    Earlier disconnected layout study, not an active world
-```
+The full previous overview is preserved byte-for-byte as [DEVELOPMENT_REFERENCE.md](DEVELOPMENT_REFERENCE.md), with the same root-relative link base. Its dated qualification statements remain tied to their original revisions.
 
 ## Rights
 
 **Copyright (c) 2026 Cartesian Graphics. All rights reserved.**
-Original protected game code and content are proprietary unless explicitly
-licensed otherwise. Engine and third-party rights remain separate. No claim is
-made over historical facts or public-domain material. No archival photos, copied
-plans, licensed game assets or voice recordings were imported for this update.
+Original protected game code and content are proprietary unless explicitly licensed otherwise. Engine and third-party rights remain separate. No claim is made over historical facts or public-domain material. This update imports no third-party art, voice or archival materials and changes no rights.
 
-[LICENSE](LICENSE) · [Licensing scope](docs/LICENSING.md) ·
-[Asset rules](docs/ASSET_LICENSING.md) · [Third-party notices](THIRD_PARTY_NOTICES.md)
+[LICENSE](LICENSE) · [Licensing scope](docs/LICENSING.md) · [Asset rules](docs/ASSET_LICENSING.md) · [Third-party notices](THIRD_PARTY_NOTICES.md)
