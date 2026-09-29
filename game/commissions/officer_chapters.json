@@ -1,0 +1,144 @@
+{
+  "schema": "1792.future-officer-chapters.v1",
+  "active_campaign_priority": "Ranjit childhood through Lahore prelude, then full life before anthology production",
+  "records_are_authoring_only": true,
+  "sources": [
+    {
+      "id": "heath_2005_firangis",
+      "title": "Ian Heath, The Sikh Army 1799–1849",
+      "locator": "printed pp. 10–12 / supplied PDF pp. 12–14",
+      "consultation": "page images examined in the supplied edition; no payroll docket or contract original inspected",
+      "limits": "Supports entry periods, service context and remuneration discussion, not the fictional fees or a universal purchase-through-agent sequence."
+    },
+    {
+      "id": "wallace_firangis",
+      "title": "Wallace Collection: Ranjit Singh’s Army, His Firangis",
+      "url": "https://www.wallacecollection.org/explore/explore-in-depth/the-sikh-empire/sikh-arms-armour/ranjit-singhs-army-his-firangis/",
+      "consultation": "web entry read 2026-09-29",
+      "limits": "Supports Allard/Ventura arrival seeking employment in 1822; this does not establish that they were bought abroad through a royal recruitment agent."
+    }
+  ],
+  "officers": [
+    {
+      "id": "jean_francois_allard",
+      "display_name": "Jean-François Allard",
+      "source_service_window": [
+        1822,
+        1839
+      ],
+      "date_precision": "year-level reference eligibility, not a complete itinerary",
+      "source_ids": [
+        "heath_2005_firangis",
+        "wallace_firangis"
+      ],
+      "playable_chapter_required": true,
+      "playable_chapter_implemented": false,
+      "proposed_role": "cavalry_officer",
+      "proposed_focus": "Cavalry instruction, service and campaign responsibilities",
+      "recruitment_pipeline": "agent enquiry → officer consent → agreed terms → travel → arrival → appointment → recurring service obligations",
+      "pipeline_evidence_status": "authored gameplay requirement; exact historical recruitment must be researched per individual",
+      "paid_contract_grants": [
+        "agreed service only"
+      ],
+      "does_not_grant": [
+        "troops",
+        "global technology",
+        "sovereign treasury access",
+        "principal private knowledge",
+        "religious authority"
+      ]
+    },
+    {
+      "id": "jean_baptiste_ventura",
+      "display_name": "Jean-Baptiste Ventura",
+      "source_service_window": [
+        1822,
+        1843
+      ],
+      "date_precision": "year-level reference eligibility, not a complete itinerary",
+      "source_ids": [
+        "heath_2005_firangis",
+        "wallace_firangis"
+      ],
+      "playable_chapter_required": true,
+      "playable_chapter_implemented": false,
+      "proposed_role": "infantry_officer",
+      "proposed_focus": "Infantry training, command and negotiated service",
+      "recruitment_pipeline": "agent enquiry → officer consent → agreed terms → travel → arrival → appointment → recurring service obligations",
+      "pipeline_evidence_status": "authored gameplay requirement; exact historical recruitment must be researched per individual",
+      "paid_contract_grants": [
+        "agreed service only"
+      ],
+      "does_not_grant": [
+        "troops",
+        "global technology",
+        "sovereign treasury access",
+        "principal private knowledge",
+        "religious authority"
+      ]
+    },
+    {
+      "id": "claude_auguste_court",
+      "display_name": "Claude Auguste Court",
+      "source_service_window": [
+        1827,
+        1843
+      ],
+      "date_precision": "year-level reference eligibility, not a complete itinerary",
+      "source_ids": [
+        "heath_2005_firangis"
+      ],
+      "playable_chapter_required": true,
+      "playable_chapter_implemented": false,
+      "proposed_role": "artillery_officer",
+      "proposed_focus": "Artillery organization, crews, supply and manufacture",
+      "recruitment_pipeline": "agent enquiry → officer consent → agreed terms → travel → arrival → appointment → recurring service obligations",
+      "pipeline_evidence_status": "authored gameplay requirement; exact historical recruitment must be researched per individual",
+      "paid_contract_grants": [
+        "agreed service only"
+      ],
+      "does_not_grant": [
+        "troops",
+        "global technology",
+        "sovereign treasury access",
+        "principal private knowledge",
+        "religious authority"
+      ]
+    },
+    {
+      "id": "paolo_avitabile",
+      "display_name": "Paolo Avitabile",
+      "source_service_window": [
+        1827,
+        1843
+      ],
+      "date_precision": "year-level reference eligibility, not a complete itinerary",
+      "source_ids": [
+        "heath_2005_firangis"
+      ],
+      "playable_chapter_required": true,
+      "playable_chapter_implemented": false,
+      "proposed_role": "officer_governor",
+      "proposed_focus": "Command, administration and contested consequences of coercive government",
+      "recruitment_pipeline": "agent enquiry → officer consent → agreed terms → travel → arrival → appointment → recurring service obligations",
+      "pipeline_evidence_status": "authored gameplay requirement; exact historical recruitment must be researched per individual",
+      "paid_contract_grants": [
+        "agreed service only"
+      ],
+      "does_not_grant": [
+        "troops",
+        "global technology",
+        "sovereign treasury access",
+        "principal private knowledge",
+        "religious authority"
+      ]
+    }
+  ],
+  "binding_rules": {
+    "chapter_switching": "control authorization separate from employment and calendar eligibility",
+    "cash": "one existing treasury; earmarked funds are unavailable to unrelated spending",
+    "clock": "one active world clock, including when an officer is controlled",
+    "identity": "actor body, source attribution, money authorization and player viewpoint remain separate",
+    "protected": "religious-figure and established non-playable-character restrictions remain; this registry does not change them"
+  }
+}

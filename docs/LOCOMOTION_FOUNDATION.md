@@ -1,5 +1,11 @@
 # Movement foundation: qualification before content multiplication
 
+> This page retains the original PR #26 foundation description. The current branch
+> extends it with [active traversal saves and reachable hand contact](TRAVERSAL_CONTACT.md).
+> Its earlier mid-vault save refusal, no-hand-IK scope, old course slot, and unchanged-test
+> statements describe that baseline, not the current contact increment. The campaign
+> admission boundary and movement defaults remain unchanged.
+
 This increment extends the existing Player scene and motor. It does not add another
 player controller, import a second physics engine, rewrite a campaign, or declare
 the production vertical slice complete.

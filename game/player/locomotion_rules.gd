@@ -28,9 +28,10 @@ static func horizontal(current: Vector3,target: Vector3,rate: float,dt: float) -
 	return Vector3(current.x,0,current.z).move_toward(target,rate*dt)
 
 static func validate_snapshot(s: Variant) -> String:
-	if not s is Dictionary or s.size()!=7: return "Malformed motion snapshot."
+	if not s is Dictionary or s.size() not in [7,8]: return "Malformed motion snapshot."
 	for key in ["schema","position","velocity","grounded","coyote","buffer","camera"]:
 		if not s.has(key): return "Missing motion field."
+	if s.size()==8 and (not s.has("traversal") or not s.traversal is Dictionary): return "Unknown motion extension."
 	if s.schema!=VERSION or not vector(s.position,100) or not vector(s.velocity,MAX_FALL) or not vector(s.camera,100): return "Unknown or non-finite motion."
 	if not s.grounded is bool or not finite(s.coyote) or not finite(s.buffer): return "Invalid motion timers."
 	if s.coyote<0 or s.coyote>COYOTE_SECONDS or s.buffer<0 or s.buffer>BUFFER_SECONDS: return "Motion timer outside profile."

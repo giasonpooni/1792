@@ -66,6 +66,9 @@ def main() -> int:
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_locomotion.gd"],
         "locomotion", "LOCOMOTION_TESTS:")
     run([sys.executable, "tools/check_locomotion_rates.py", "--godot", args.godot], "locomotion-rates")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_traversal_contact.gd"],
+        "traversal-contact", "TRAVERSAL_CONTACT_TESTS:")
+    run([sys.executable, "tools/check_contact_restart.py", "--godot", args.godot], "contact-restart")
     return 0
 
 

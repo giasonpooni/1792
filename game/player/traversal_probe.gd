@@ -23,9 +23,11 @@ static func support(actor: CharacterBody3D,feet: Vector3) -> bool:
 	return not hit.is_empty() and hit.normal.y>=cos(actor.floor_max_angle)
 
 static func plan(actor: CharacterBody3D,forward: Vector3) -> Dictionary:
+	return plan_at(actor,actor.global_position,forward)
+
+static func plan_at(actor: CharacterBody3D,p: Vector3,forward: Vector3) -> Dictionary:
 	var refusal: Dictionary={"error":"Face a marked low obstacle with clear approach and landing space."}
 	if forward.length()<0.99: return refusal
-	var p:=actor.global_position
 	var front:=ray(actor,p+Vector3.UP*0.4,p+Vector3.UP*0.4+forward*REACH)
 	if front.is_empty() or not front.collider is StaticBody3D or not front.collider.get_meta("traversable",false): return refusal
 	# Do not infer handholds from art, slanted sides or unmarked walls.
@@ -35,6 +37,7 @@ static func plan(actor: CharacterBody3D,forward: Vector3) -> Dictionary:
 	if top.is_empty() or top.collider!=front.collider or top.normal.y<0.98: return refusal
 	var height: float=top.position.y-p.y
 	if height<HEIGHT_MIN or height>HEIGHT_MAX: return refusal
+	var landing: StaticBody3D=front.collider
 	var kind: String="mantle"
 	var destination: Vector3=top.position+forward*0.48+Vector3.UP*CLEARANCE
 	# A thin low rail may be vaulted only when its far edge and landing exist.
@@ -45,7 +48,8 @@ static func plan(actor: CharacterBody3D,forward: Vector3) -> Dictionary:
 			if check.is_empty() or check.collider!=front.collider:
 				var far: Vector3=beyond+forward*0.60
 				var ground:=ray(actor,Vector3(far.x,p.y+0.2,far.z),Vector3(far.x,p.y-0.3,far.z))
-				if ground.is_empty() or ground.normal.y<0.98: return refusal
+				if ground.is_empty() or not ground.collider is StaticBody3D or ground.normal.y<0.98: return refusal
+				landing=ground.collider
 				kind="vault";destination=ground.position+Vector3.UP*CLEARANCE;break
 		if kind!="vault": return refusal
 	if not clear_at(actor,destination) or not support(actor,destination): return refusal
@@ -57,4 +61,4 @@ static func plan(actor: CharacterBody3D,forward: Vector3) -> Dictionary:
 		var t:=actor.global_transform;t.origin=prior
 		if not clear_at(actor,target) or actor.test_move(t,target-prior): return {"error":"The body path or overhead clearance is blocked."}
 		prior=target
-	return {"error":"","kind":kind,"points":points,"surface":front.collider,"surface_transform":front.collider.global_transform,"contact":top.position}
+	return {"error":"","kind":kind,"points":points,"surface":front.collider,"surface_transform":front.collider.global_transform,"contact":top.position,"origin":p,"forward":forward,"landing":landing}

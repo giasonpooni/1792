@@ -18,6 +18,7 @@ const PROJECTS := {
 	"palisade":{"cost":36,"timber":6,"tools":1,"work":6},
 	"storehouse":{"cost":20,"timber":4,"tools":1,"work":4},
 	"mill":{"cost":28,"timber":4,"tools":1,"work":4}}
+const Commission := preload("res://commissions/commission_rules.gd")
 const Base := preload("res://childhood/childhood_state.gd")
 
 static func initial() -> Dictionary:
@@ -50,6 +51,7 @@ static func _room(s: Dictionary, quantity: int) -> bool:
 	return stored(s)+quantity <= capacity(s)
 
 static func apply(s: Dictionary, kind: String, arg: String) -> String:
+	if kind.begins_with("commission."): return Commission.apply(s,kind,arg)
 	# Caller works on a copy; rejected decisions never mutate the live authority.
 	match kind:
 		"buy":
@@ -171,6 +173,8 @@ static func _watch(s: Dictionary) -> void:
 		s.favor = maxi(0,s.favor-12)
 		s.last_notice = "The meeting was missed. This penalty is applied once, not every watch."
 
+	Commission.upkeep(s)
+
 static func blank_merchant() -> Dictionary:
 	return {"id":CARAVAN_ID,"position":Base.coords(MARKET+Vector3(1,0,0)),
 		"yaw":0.0,"velocity":[0.0,0.0,0.0]}
@@ -194,6 +198,9 @@ static func validate(value: Variant, tick: int) -> String:
 		if e.kind == "watch":
 			if e.tick != next_watch: return "Upkeep occurred on the wrong tick."
 		elif e.tick >= next_watch: return "Missing due upkeep before transaction."
+		if e.kind.begins_with("commission."):
+			var instruction:=Commission.payload(e.arg)
+			if instruction.is_empty() or instruction.tick!=e.tick: return "Commission instruction time differs from its receipt."
 		var error := apply(replay,e.kind,e.arg)
 		if not error.is_empty(): return "Invalid retained economic action: "+error
 		prior = int(e.tick)

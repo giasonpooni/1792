@@ -168,3 +168,23 @@ F2 extends the Gujranwala research notebook with distinct person/household/Misl
 records and source limitations. These two local errands are original fiction,
 not a completed regional Misl simulation. No main merge or other draft merge is
 implied by this branch. [Rules, research, controls and checks](docs/SUKERCHAKIA_SERVICE.md).
+
+## Active traversal saves and hand contact (this branch)
+
+The existing **Movement qualification** entry now saves and resumes a vault or
+mantle while it is in progress. Saves bind the obstacle, landing support and
+remaining path; an incompatible or blocked restore leaves the live run unchanged.
+The small articulated proxy places its hands on the admitted ledge only while
+both fixed-length arm segments can reach it without an intervening collision ray.
+It releases unreachable targets instead of stretching the arms or moving the body.
+
+F5/F9 use the separate `1792-locomotion-contact-v1.json` practice slot. Campaign
+parkour remains disabled; no stories, campaign saves, horse rules or economy are
+replaced. This is a static-box traversal and limited hand-contact increment, not
+finished climbing animation or a campaign-wide rollout.
+
+[Controls, implementation, verification and limits](docs/TRAVERSAL_CONTACT.md).
+
+## Funded service and officer-viewpoint foundation
+
+The same Home territory entry now includes a funded local instructor commission: actual market introduction, candidate escort, signing, wage reserve/arrears, a bounded funded practice, and a limited same-world instructor viewpoint. The four later European officer chapters remain required but unimplemented. See [Funded service](docs/FUNDED_SERVICE.md) for play, budgets, tests and boundaries. The prior traversal-contact course remains; campaign-wide parkour is not enabled.

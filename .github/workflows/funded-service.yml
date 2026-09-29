@@ -1,17 +1,17 @@
-name: Locomotion foundation qualification
+name: Funded service qualification
 on:
   pull_request:
     paths:
       - 'game/**'
       - 'tools/**'
-      - '.github/workflows/locomotion-foundation.yml'
+      - '.github/workflows/funded-service.yml'
 permissions:
   contents: read
 concurrency:
-  group: locomotion-foundation-${{ github.ref }}
+  group: funded-service-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  locomotion:
+  funded-service:
     runs-on: ubuntu-24.04
     timeout-minutes: 12
     steps:
@@ -28,10 +28,10 @@ jobs:
           echo "02ec53d1cc7dbb9cc6355393c61b9ab43d1244751a124f10248a4802830788cd  $RUNNER_TEMP/godot.zip" | sha256sum --check
           unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
           chmod +x "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
-      - name: Full inherited and movement campaign
+      - name: Full inherited and funded-service campaign
         shell: bash
-        run: python3 tools/run_checks.py --godot "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
-      - name: Actual software-rendered movement views
+        run: python3 tools/run_commission_checks.py --godot "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
+      - name: Actual software-rendered service views
         shell: bash
         env:
           LIBGL_ALWAYS_SOFTWARE: '1'
@@ -39,11 +39,12 @@ jobs:
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install --yes --no-install-recommends xvfb xauth libgl1-mesa-dri
-          timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy --script res://tests/render_locomotion.gd 2>&1 | tee test-results/locomotion-render.log
-          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/locomotion-render.log
-          grep -q 'LOCOMOTION_RENDER: 5 captures; 0 failures' test-results/locomotion-render.log
+          timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy --script res://tests/render_commissions.gd 2>&1 | tee test-results/commission-render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/commission-render.log
+          grep -q 'COMMISSION_RENDER: 6 captures; 0 failures' test-results/commission-render.log
           mkdir -p test-results/screenshots
-          cp "$HOME/.local/share/godot/app_userdata/1792/"locomotion-*.png test-results/screenshots/
+          cp "$HOME/.local/share/godot/app_userdata/1792/"commission-*.png test-results/screenshots/
+          cp "$HOME/.local/share/godot/app_userdata/1792/commission-journey.json" test-results/
           cp "$HOME/.local/share/godot/app_userdata/1792/"locomotion-route-trace.json test-results/
           cp "$HOME/.local/share/godot/app_userdata/1792/"locomotion-test-summary.json test-results/
       - name: Active contact saves and rendered hand placement
@@ -70,6 +71,6 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: locomotion-foundation-evidence
+          name: funded-service-evidence
           path: test-results/
           retention-days: 14
