@@ -134,3 +134,11 @@ courtyard and stable. Register later court material now, but do not insert matur
 imperial acquisitions or later-arriving personnel into childhood without evidence.
 No production mesh, character performance or workshop quest is claimed complete
 by these documents.
+
+## First executable presentation increment
+
+The [Home visual study](HOME_VISUAL_STUDY.md) now implements an in-place,
+reversible material/mesh/lighting pass and F7 comparison controls in the same
+childhood entry. It includes an actual native capture command and runtime
+invariant checks. This is a prototype art study, not completion of the proposed
+production-standard street, final character work or a measured AAA content rate.

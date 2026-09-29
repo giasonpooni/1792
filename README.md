@@ -168,3 +168,14 @@ F2 extends the Gujranwala research notebook with distinct person/household/Misl
 records and source limitations. These two local errands are original fiction,
 not a completed regional Misl simulation. No main merge or other draft merge is
 implied by this branch. [Rules, research, controls and checks](docs/SUKERCHAKIA_SERVICE.md).
+
+### Home visual study — same childhood entry
+
+The Home entry now includes an original material/mesh study for its courtyard,
+stable and market. **F7** opens paused comparison controls (retained greybox,
+daylight, golden hour, evening); it does not change the calendar or saved world.
+The visual kit retains original collision, missions, horse and state authority.
+The scenery and characters remain development reconstructions/proxies, not a
+surveyed 1:1 Gujranwala or finished production art.
+
+See [the implementation and native capture command](docs/HOME_VISUAL_STUDY.md).
