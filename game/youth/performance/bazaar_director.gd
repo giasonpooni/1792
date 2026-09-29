@@ -164,15 +164,21 @@ func sample(allow_edges: bool=true) -> void:
 		if phase=="invited" and audible(3,7.0) and audible(4,7.0) and walk_pending.is_empty():
 			var zone: Dictionary=WalkLines.available(chapter.avatar.global_position,phase,walk_seen)
 			if not zone.is_empty():
-				walk_seen[zone.id]=tick
-				walk_pending={"zone":zone,"expires":tick+420}
+				# Do not mark an ambient observation seen merely because higher-priority
+				# story dialogue was already occupying the subtitle channel.
+				walk_pending={"zone":zone,"entered":tick,"expires":tick+540}
 		if phase!="invited": walk_pending.clear()
 		if not speech.is_empty() and (tick>=speech.until or not audible(int(speech.actor))): speech.clear()
-		if phase=="invited" and speech.is_empty() and queue.is_empty() and not walk_pending.is_empty():
-			if tick<=int(walk_pending.expires):
+		if phase=="invited" and not walk_pending.is_empty():
+			var center: Vector3=walk_pending.zone.center
+			var still_relevant: bool=chapter.avatar.global_position.distance_to(center)<=float(walk_pending.zone.radius)+4.0
+			if tick>int(walk_pending.expires) or not still_relevant:
+				walk_pending.clear()
+			elif speech.is_empty() and queue.is_empty():
 				for line in walk_pending.zone.lines:
-					queue.append({"actor":line[0],"text":line[1],"expires":tick+420,"duration":120})
-			walk_pending.clear()
+					queue.append({"actor":line[0],"text":line[1],"expires":tick+420,"duration":120,"ambient_zone":walk_pending.zone.id})
+				walk_seen[walk_pending.zone.id]=tick
+				walk_pending.clear()
 		while speech.is_empty() and not queue.is_empty():
 			var candidate: Dictionary=queue.pop_front()
 			if tick>candidate.expires or not audible(int(candidate.actor)): continue
