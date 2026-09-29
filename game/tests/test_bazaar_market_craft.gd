@@ -5,6 +5,7 @@ const Pose:=preload("res://tests/aftermath_fixture.gd")
 const Base:=preload("res://childhood/childhood_state.gd")
 const Market:=preload("res://youth/performance/bazaar_market_stage.gd")
 const Choreo:=preload("res://youth/performance/bazaar_choreography.gd")
+const Decompression:=preload("res://youth/performance/bazaar_decompression.gd")
 var passed:=0
 var failed:=0
 func _initialize() -> void: run.call_deferred()
@@ -53,6 +54,16 @@ func run() -> void:
 		var friend_figure: Node3D=scene.bazaar_performance.figures[friend_index]
 		friend_figure.sample(110,0,"brace",.8,false)
 		check(friend_figure.position==Vector3.ZERO,"friend reaction never becomes root motion "+str(friend_index))
+	var outcomes: Dictionary={}
+	for outcome in ["stood_ground","withdrew","walked_away"]:
+		var beat: Dictionary=Decompression.beat(outcome,30);outcomes[outcome]=beat
+		check(not beat.is_empty() and beat.amount>0,"post-conflict beat exists for "+outcome)
+	check(outcomes.stood_ground.caption!=outcomes.withdrew.caption and outcomes.withdrew.caption!=outcomes.walked_away.caption,"three outcomes decompress differently")
+	check(Decompression.beat("stood_ground",Decompression.WINDOW+1).is_empty(),"decompression expires instead of becoming persistent state")
+	check(Decompression.latest_regroup([{"kind":"invite","tick":1},{"kind":"regroup","tick":40}])==40,"decompression anchors to authoritative regroup receipt")
+	check(scene.bazaar_performance.departure.marks.size()==5,"five visual road-wear marks connect encounter and home approach")
+	check(scene.bazaar_performance.departure.find_children("*","CollisionShape3D",true,false).is_empty(),"departure dressing adds no collision")
+	check(scene.model.snapshot()==before,"decompression and departure dressing create no world state")
 	check(scene.bazaar_performance.ambience.stream is AudioStreamWAV,"market ambience uses local generated WAV")
 	var audio: AudioStreamWAV=scene.bazaar_performance.ambience.stream
 	check(audio.loop_mode==AudioStreamWAV.LOOP_FORWARD and audio.mix_rate==22050 and not audio.stereo,"ambience is bounded looping mono PCM")

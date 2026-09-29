@@ -8,11 +8,15 @@ const MarketStage := preload("res://youth/performance/bazaar_market_stage.gd")
 const Ambience := preload("res://youth/performance/bazaar_ambience.gd")
 const Rules := preload("res://youth/brawl_rules.gd")
 const Choreo := preload("res://youth/performance/bazaar_choreography.gd")
+const Decompression := preload("res://youth/performance/bazaar_decompression.gd")
+const Departure := preload("res://youth/performance/bazaar_departure.gd")
 var chapter: Node3D
 var figures: Array[Node3D]=[]
 var sounds: Array[AudioStreamPlayer3D]=[]
 var market_stage: Node3D
 var ambience: AudioStreamPlayer3D
+var departure: Node3D
+var decompression: Dictionary={}
 var enabled := true
 var sound_enabled := true
 var last_tick := -1
@@ -38,6 +42,7 @@ var report_until := -1
 func build(owner_chapter: Node3D) -> void:
 	chapter=owner_chapter
 	market_stage=MarketStage.new();chapter.add_child(market_stage);market_stage.build()
+	departure=Departure.new();chapter.add_child(departure);departure.build()
 	ambience=AudioStreamPlayer3D.new();ambience.name="OriginalBazaarAmbience";ambience.stream=Ambience.make();ambience.volume_db=-22
 	ambience.max_distance=18;ambience.unit_size=5;ambience.position=preload("res://youth/brawl_rules.gd").RING+Vector3(0,1,0);chapter.add_child(ambience)
 	for i in range(5):
@@ -62,7 +67,7 @@ func label(size: int,color: Color) -> Label:
 	var l:=Label.new();l.add_theme_font_size_override("font_size",size);l.add_theme_color_override("font_color",color);l.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;l.mouse_filter=Control.MOUSE_FILTER_IGNORE;return l
 func rehydrate() -> void:
 	if not is_instance_valid(chapter): return
-	queue.clear();speech.clear();report_until=-1;last_tick=int(chapter.model.progress().tick)
+	queue.clear();speech.clear();decompression.clear();report_until=-1;last_tick=int(chapter.model.progress().tick)
 	var b: Dictionary=chapter.model.brawl();origin=int(b.get("origin_tick",-1));event_cursor=b.get("events",[]).size()
 	_guard=false
 	for sound in sounds: sound.stop()
@@ -106,6 +111,11 @@ func sample(allow_edges: bool=true) -> void:
 		elif not enabled: event_cursor=b.events.size()
 	active=enabled and phase not in ["none","reported","caught"]
 	var contact_beat: Dictionary=Choreo.contact_pose(b.get("events",[]),tick) if not b.is_empty() else {}
+	decompression.clear()
+	if not b.is_empty() and phase=="returning":
+		var regroup_tick:=Decompression.latest_regroup(b.events)
+		decompression=Decompression.beat(String(b.ledger.outcome),tick-regroup_tick)
+	if is_instance_valid(departure): departure.sample(tick,phase in ["leaving","returning"])
 	if is_instance_valid(market_stage): market_stage.sample(tick,active,contact_beat)
 	if is_instance_valid(ambience):
 		var near_market: bool=chapter.avatar.global_position.distance_to(preload("res://youth/brawl_rules.gd").RING)<15
@@ -122,6 +132,10 @@ func sample(allow_edges: bool=true) -> void:
 		if i>=3 and not b.is_empty():
 			var friend: Dictionary=Choreo.friend_pose(b.get("events",[]),tick,i)
 			if not friend.is_empty(): action=friend.action;amount=friend.amount
+			elif not decompression.is_empty():
+				var mood: String=String(decompression.mela if i==3 else decompression.jiva)
+				action={"energized":"urge","checking":"watch","restless":"watch","relieved":"brace","questioning":"watch","easy":"idle"}.get(mood,"idle")
+				amount=float(decompression.amount)
 		if i<3 and not b.is_empty():
 			var cycle:=Rules.attack_phase(tick,int(b.ledger.start_tick),i)
 			if b.ledger.down[i]: action="down";amount=1.0
@@ -194,9 +208,10 @@ func layout(phase: String,b: Dictionary,tick: int) -> void:
 			if b.ledger.stun_until[i]>=tick: tell="BLOW CHECKED  ·  Counter now [left click]";break
 			if Rules.attack_phase(tick,int(b.ledger.start_tick),i) in range(80,106): tell="STRIKE COMING  ·  Face him and hold Q";break
 		prompt.text=tell+"\nUnguarded blows: %d / 3  ·  F6 sound %s"%[b.ledger.hits,"on" if sound_enabled else "off"]
-	bottom.visible=ending or not speech.is_empty()
+	bottom.visible=ending or not speech.is_empty() or not decompression.is_empty()
 	if ending: speaker.text="QUARTERMASTER";subtitle.text=Dialogue.REPORT[b.ledger.outcome].trim_prefix("Quartermaster · ")
 	elif not speech.is_empty(): speaker.text="MELA" if speech.actor==3 else "JIVA";subtitle.text=speech.text
+	elif not decompression.is_empty(): speaker.text="THE WALK HOME";subtitle.text=String(decompression.caption)
 	bottom.size=Vector2(minf(740,size.x-36),0)
 	bottom.position=Vector2((size.x-bottom.size.x)*.5,size.y-bottom.get_combined_minimum_size().y-20)
 func toggle_sound() -> void:
