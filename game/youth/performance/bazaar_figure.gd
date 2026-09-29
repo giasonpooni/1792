@@ -8,6 +8,12 @@ var shoulders: Array[Node3D]=[]
 var elbows: Array[Node3D]=[]
 var hips: Array[Node3D]=[]
 var knees: Array[Node3D]=[]
+var eyes: Array[MeshInstance3D]=[]
+var brows: Array[MeshInstance3D]=[]
+var eye_base: Array[Vector3]=[]
+var brow_base: Array[Vector3]=[]
+var mouth: MeshInstance3D
+var mouth_base:=Vector3.ONE
 var palette: Dictionary={}
 var pose_name := "idle"
 var actor_index := 0
@@ -17,9 +23,9 @@ func surface(color: Color) -> StandardMaterial3D:
 	var key:=color.to_html()
 	if palette.has(key): return palette[key]
 	var m:=StandardMaterial3D.new();m.albedo_color=color;m.roughness=.96;palette[key]=m;return m
-func round_piece(parent: Node3D,size: Vector3,p: Vector3,color: Color) -> void:
+func round_piece(parent: Node3D,size: Vector3,p: Vector3,color: Color) -> MeshInstance3D:
 	var mesh:=MeshInstance3D.new();var sphere:=SphereMesh.new();sphere.radius=.5;sphere.height=1;sphere.radial_segments=12;sphere.rings=6
-	mesh.mesh=sphere;mesh.scale=size;mesh.position=p;mesh.material_override=surface(color);parent.add_child(mesh)
+	mesh.mesh=sphere;mesh.scale=size;mesh.position=p;mesh.material_override=surface(color);parent.add_child(mesh);return mesh
 func tapered(parent: Node3D,top: float,bottom: float,height: float,p: Vector3,color: Color,depth: float=1.0) -> void:
 	var mesh:=MeshInstance3D.new();var c:=CylinderMesh.new();c.top_radius=top;c.bottom_radius=bottom;c.height=height;c.radial_segments=12
 	mesh.mesh=c;mesh.position=p;mesh.scale.z=depth;mesh.material_override=surface(color);parent.add_child(mesh)
@@ -41,8 +47,9 @@ func build(index: int) -> void:
 		band.mesh=ring;band.scale=Vector3(1,.48,.94);band.position.y=y;band.material_override=surface(cloth.darkened(.12));head.add_child(band)
 	round_piece(head,Vector3(.06,.095,.075),Vector3(0,.055,-.139),skin.lightened(.05))
 	for x in [-.065,.065]:
-		round_piece(head,Vector3(.035,.018,.018),Vector3(x,.102,-.130),Color("322c25"))
-		round_piece(head,Vector3(.049,.013,.018),Vector3(x,.135,-.124),Color("3f3427"))
+		var eye:=round_piece(head,Vector3(.035,.018,.018),Vector3(x,.102,-.130),Color("322c25"));eyes.append(eye);eye_base.append(eye.scale)
+		var brow:=round_piece(head,Vector3(.049,.013,.018),Vector3(x,.135,-.124),Color("3f3427"));brows.append(brow);brow_base.append(brow.position)
+	mouth=round_piece(head,Vector3(.075,.010,.014),Vector3(0,.008,-.132),Color("5a352f"));mouth_base=mouth.scale
 	# Individual clothing accents, not religious/faction-rank uniforms.
 	if index==4: round_piece(torso,Vector3(.12,.57,.08),Vector3(-.16,.27,-.175),cloth)
 	for side in [-1,1]:
@@ -56,6 +63,37 @@ func build(index: int) -> void:
 		var e:=joint(a,"Elbow",Vector3(0,-.29,0));elbows.append(e)
 		tapered(e,.07,.06,.26,Vector3(0,-.13,0),cloth)
 		round_piece(e,Vector3(.115,.14,.12),Vector3(0,-.31,-.018),skin)
+func _face(tick: int,action: String,amount: float,speaking: bool) -> void:
+	var blink:=posmod(tick+actor_index*47,210)
+	var closure:=0.18 if blink in range(0,4) else 0.55 if blink in range(4,7) else 1.0
+	for i in range(eyes.size()):
+		eyes[i].scale=eye_base[i];eyes[i].scale.y=eye_base[i].y*closure
+	for i in range(brows.size()):
+		brows[i].position=brow_base[i];brows[i].rotation=Vector3.ZERO
+	mouth.scale=mouth_base;mouth.rotation=Vector3.ZERO
+	if speaking:
+		var syllable:=.5+.5*sin(float(tick)/4.0+actor_index)
+		mouth.scale.x=mouth_base.x*(1.0+.18*syllable)
+		mouth.scale.y=mouth_base.y*(1.0+.85*syllable)
+	match action:
+		"windup","strike":
+			brows[0].rotation.z=-.14;brows[1].rotation.z=.14
+			brows[0].position.y-=.008;brows[1].position.y-=.008
+		"checked","brace":
+			brows[0].rotation.z=.10;brows[1].rotation.z=-.10
+			brows[0].position.y+=.010;brows[1].position.y+=.010
+			mouth.scale.x*=.88
+		"urge":
+			brows[0].rotation.z=-.06;brows[1].rotation.z=.02
+			mouth.scale.x*=1.12
+		"watch":
+			brows[0].position.y+=.006;brows[1].position.y+=.006
+		"down":
+			for i in range(eyes.size()): eyes[i].scale.y=eye_base[i].y*.48
+			brows[0].position.y-=.006;brows[1].position.y-=.006
+			mouth.rotation.z=.025
+		_: pass
+
 func sample(tick: int,speed: float,action: String,amount: float=0.0,speaking: bool=false) -> void:
 	pose_name=action
 	position=Vector3.ZERO
@@ -96,3 +134,4 @@ func sample(tick: int,speed: float,action: String,amount: float=0.0,speaking: bo
 		_:
 			if speaking:
 				head.rotation.z=.07*sin(float(tick)/13);shoulders[0].rotation.x=-.55;elbows[0].rotation.x=-.7
+	_face(tick,action,amount,speaking)
