@@ -165,7 +165,7 @@ func sample(allow_edges: bool=true) -> void:
 			var zone: Dictionary=WalkLines.available(chapter.avatar.global_position,phase,walk_seen)
 			if not zone.is_empty():
 				walk_seen[zone.id]=tick
-				walk_pending={"zone":zone,"expires":tick+300}
+				walk_pending={"zone":zone,"expires":tick+420}
 		if phase!="invited": walk_pending.clear()
 		if not speech.is_empty() and (tick>=speech.until or not audible(int(speech.actor))): speech.clear()
 		if phase=="invited" and speech.is_empty() and queue.is_empty() and not walk_pending.is_empty():
