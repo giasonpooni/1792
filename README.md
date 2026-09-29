@@ -179,3 +179,24 @@ The scenery and characters remain development reconstructions/proxies, not a
 surveyed 1:1 Gujranwala or finished production art.
 
 See [the implementation and native capture command](docs/HOME_VISUAL_STUDY.md).
+
+## Inhabited courtyard: integrated smith commission
+
+The current Home entry now brings PR #21's finite workshop recipe into the visual,
+youth, water and service build, without importing the older town/remount branch.
+After the inquiry and allowance, speak to the quartermaster, carry fuel/payment to
+the west courtyard smith, collect the finished tools, and physically return them
+to household stock. This is an original fictional errand and prototype workplace,
+not a surveyed historical building or completed production art. F5/F9 use a new
+workshop-aware whole-run slot; the earlier youth save is an explicit journal import.
+
+See [the integrated workshop guide](docs/HOME_WORKSHOP_INTEGRATION.md) for the
+finite recipe, shared-clock/replay boundaries and qualification methods.
+
+```sh
+python tools/capture_home_art.py --profile workshop --godot /path/to/godot --output /existing-parent/new-run
+```
+
+The default Home-art capture profile, F7 comparison, full-envelope atlas and active
+Ranjit childhood priority remain. The five workshop views come from an executed
+input journey and native Godot rendering, not concept-art generation.
