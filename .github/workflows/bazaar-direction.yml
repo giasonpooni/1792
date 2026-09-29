@@ -38,7 +38,7 @@ jobs:
           sudo apt-get install --yes --no-install-recommends xvfb xauth libgl1-mesa-dri ffmpeg
           timeout 300 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy --script res://tests/render_bazaar_direction.gd 2>&1 | tee test-results/bazaar-render.log
           ! grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/bazaar-render.log
-          grep -q 'BAZAAR_DIRECTION_RENDER: 45 captures; 0 failures' test-results/bazaar-render.log
+          grep -q 'BAZAAR_DIRECTION_RENDER: 47 captures; 0 failures' test-results/bazaar-render.log
           cp "$HOME/.local/share/godot/app_userdata/1792/bazaar-direction.json" test-results/
           cp -r "$HOME/.local/share/godot/app_userdata/1792/bazaar-direction-images" test-results/
           ffmpeg -loglevel error -framerate 15 -i test-results/bazaar-direction-images/motion-%03d.png -c:v libx264 -pix_fmt yuv420p -movflags +faststart test-results/bazaar-motion.mp4
