@@ -17,7 +17,7 @@ func ok(error: String,label: String) -> void: check(error.is_empty(),label+": "+
 func frames(n:=4) -> void:
 	for _i in range(n): await physics_frame
 	await process_frame
-func invited_at(point: Vector3) -> State:
+func invited_at(point: Vector3):
 	var model:=State.new();ok(model.restore(Fixture.complete()),"completed inquiry fixture")
 	ok(Pose.pose(model,Supply.MARKET),"market fixture")
 	ok(model.begin_brawl(),"existing invitation")
