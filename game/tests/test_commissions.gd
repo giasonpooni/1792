@@ -131,6 +131,23 @@ func walk(scene,p: Vector3,slow: bool=false) -> void:
 	Input.action_release("move_forward");await frames(6)
 	if not reached: print("COMMISSION WALK ",scene.avatar.global_position," -> ",p," / ",scene._message)
 	check(reached,"walk "+str(p))
+func camera_ownership() -> void:
+	# Declared presentation fixture: ordinary scene hydration cannot seize its camera.
+	var home:=Launch.make_world();var scene=home.get_node("ChildhoodChapter")
+	root.add_child(home);await frames(8)
+	check(root.get_camera_3d()==scene.avatar.get_node("CameraPivot/SpringArm3D/Camera3D"),"secondary body does not steal initial scene camera")
+	var external:=Camera3D.new();home.add_child(external);external.current=true
+	var before: Dictionary=scene.model.snapshot()
+	scene._sync_commission()
+	check(root.get_camera_3d()==external,"ordinary commission sync preserves selected camera")
+	scene._apply()
+	check(root.get_camera_3d()==external,"uncommissioned whole-world hydration preserves selected camera")
+	scene._open_journal()
+	check(root.get_camera_3d()==external,"ordinary modal preserves selected camera")
+	scene._resume()
+	check(root.get_camera_3d()==external,"ordinary resume preserves selected camera")
+	check(Supply._equal(before,scene.model.snapshot()),"camera coordination creates no gameplay state")
+	home.queue_free();await frames(3)
 func journey() -> void:
 	var home:=Launch.make_world();var scene=home.get_node("ChildhoodChapter");scene.save_path=SAVE
 	ok(scene.model.restore(Fixture.complete()),"only journey setup is completed inquiry")
@@ -160,11 +177,16 @@ func journey() -> void:
 		await physics_frame
 	look(scene,C.HOME);await tap(scene,KEY_E);await press(scene,"Sign with")
 	check(scene.model.commission().phase=="appointed","actual physical return admits signing")
+	var external:=Camera3D.new();home.add_child(external);external.current=true
+	scene._sync_commission(true)
+	check(root.get_camera_3d()==external,"appointed principal hydration still preserves external camera")
+	scene.avatar.get_node("CameraPivot/SpringArm3D/Camera3D").current=true;external.queue_free()
 	look(scene,C.HOME);await tap(scene,KEY_E);await press(scene,"Hire a garrison guard")
 	await tap(scene,KEY_E);await press(scene,"Rest until next")
 	check(scene.model.economy().ledger.duty_guards==1,"pupil paid and provisioned")
 	await tap(scene,KEY_E);await press(scene,"Take the instructor")
 	check(scene.model.controlling_specialist(),"limited specialist actually controlled")
+	check(root.get_camera_3d()==scene.specialist_body.get_node("CameraPivot/SpringArm3D/Camera3D"),"actual role transition selects instructor camera")
 	var principal: Vector3=scene.model.position();var stock: Dictionary=scene.model.economy().ledger.stock.duplicate()
 	await walk(scene,Vector3(5,0,5));check(scene.model.position()==principal,"instructor movement does not move Buddh")
 	check(scene.model.economy().ledger.stock==stock,"walking in another role creates no stock")
@@ -179,6 +201,7 @@ func journey() -> void:
 	check(scene.model.commission().lesson=="complete" and scene.model.specialist().practice==180,"bounded practice completes with common clock")
 	look(scene,C.HOME);await tap(scene,KEY_E);await press(scene,"Return to Buddh")
 	check(not scene.model.controlling_specialist() and scene.model.position()==principal,"view returns without moving principal")
+	check(root.get_camera_3d()==scene.avatar.get_node("CameraPivot/SpringArm3D/Camera3D"),"return transition selects principal camera")
 	ok(scene.model.validate(scene.model.snapshot()),"played journey and economy replay validate")
 	var file:=FileAccess.open("user://commission-journey.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"kind":"input_driven_after_declared_inquiry_fixture","engine":Engine.get_version_info().string,"state":scene.model.snapshot()},"\t",true,true));file.close()
@@ -210,5 +233,5 @@ func run() -> void:
 		check(not catalogue.playable_now(record.id,record.source_service_window[0]),"no fake playable historical chapter "+record.id)
 	check(not catalogue.eligible("unknown",1827),"unknown officer")
 	check(not catalogue.eligible("jean_francois_allard",NAN),"nonfinite year")
-	await journey()
+	await camera_ownership();await journey()
 	print("COMMISSION_TESTS: %d passed, %d failed"%[passed,failed]);quit(1 if failed else 0)

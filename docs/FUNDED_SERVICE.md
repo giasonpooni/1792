@@ -155,8 +155,23 @@ checks and the actual native commission suite. Rendering requires the input-driv
 retained output. Receiving-yard and account views use declared presentation fixtures; returned
 household and instructor views use the played journey state. These are not human playtests.
 
-Current local result: **8,071 native assertions (7,894 retained +177 new), zero failures;
+Current local result: **8,080 native assertions (7,894 retained +186 new), zero failures;
 51 Python tests (41 retained +10 new); 18 fresh-process contact replay comparisons; six new
 software-rendered views**. Hosted execution is a separate observation, not inferred from this
 workflow definition. Physical GPUs, human feel, Windows, consoles and controller hardware
 remain unqualified by this increment.
+
+## Camera-ownership regression caught by inherited CI
+
+The first hosted revision passed the funded-service and native suites, but failed the
+unchanged completed-water screenshot assertion. A local replay reproduced the identical
+occluded-water pixel. The cause was not the water mesh: routine commission hydration
+unconditionally selected the principal camera, replacing the water fixture's chosen camera.
+
+Secondary actor construction now leaves its camera inactive. Commission synchronization
+changes cameras only on an actual transition into or out of the instructor viewpoint.
+Ordinary hydration, pause, resume and repeated sync preserve the current scene camera.
+Nine added assertions cover the initial camera, scene-owned camera preservation, unchanged
+state, appointed-principal hydration, and both genuine role transitions. The original
+water rendering script and its pixel/visibility assertions remain byte-identical; rerunning
+that script now produces five captures with zero failures.

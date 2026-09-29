@@ -8,12 +8,15 @@ var specialist_body: CharacterBody3D
 var specialist_label: Label3D
 var _commission_action := ""
 var _commission_purse: MeshInstance3D
+var _specialist_view_active := false
 func _init() -> void:
 	model=CommissionState.new();save_path=CommissionState.COMMISSION_SAVE
 func _build_world() -> void:
 	super._build_world()
 	specialist_body=PlayerScene.instantiate();specialist_body.name="CommissionedSpecialist"
 	specialist_body.menu_shortcut=false;specialist_body.movement_profile=0
+	# A second body must not acquire the scene camera merely by being instantiated.
+	specialist_body.get_node("CameraPivot/SpringArm3D/Camera3D").current=false
 	add_child(specialist_body)
 	specialist_body.get_node("HomeIdentity").hide();specialist_body.get_node("MeshInstance3D").hide()
 	var proxy:=preload("res://player/locomotion_proxy.gd").new();proxy.name="LocomotionProxy";specialist_body.add_child(proxy)
@@ -41,14 +44,19 @@ func _sync_commission(reset: bool=false) -> void:
 	specialist_body.visible=not c.is_empty() and c.phase in ["introduced","escorting","appointed","dismissed"]
 	specialist_body.collision_layer=2 if specialist_body.visible else 0
 	specialist_body.set_physics_process(false) # Owner steps either AI or shared-player inputs once.
-	specialist_body.input_enabled=model.controlling_specialist() and not _paused
-	if model.controlling_specialist():
+	var specialist_view: bool=model.controlling_specialist()
+	specialist_body.input_enabled=specialist_view and not _paused
+	# Ordinary hydration, dialogue and upkeep do not own the camera. A camera
+	# selected by another scene/view remains current until an actual role transition.
+	if specialist_view!=_specialist_view_active:
+		var view_body: CharacterBody3D=specialist_body if specialist_view else avatar
+		view_body.get_node("CameraPivot/SpringArm3D/Camera3D").current=true
+		_specialist_view_active=specialist_view
+	if specialist_view:
 		avatar.input_enabled=false;avatar.set_physics_process(false)
-		specialist_body.get_node("CameraPivot/SpringArm3D/Camera3D").current=true
 		if is_instance_valid(_veil): _veil.visible=false
 	else:
 		if is_instance_valid(_veil): _veil.visible=_subjective
-		avatar.get_node("CameraPivot/SpringArm3D/Camera3D").current=true
 	_commission_purse.visible=not c.is_empty() and c.phase in ["reserved","introduced","escorting"]
 	specialist_label.text="Local instructor [E]" if not c.is_empty() and c.phase=="appointed" else "Local instructor · candidate [E]"
 func _clear_pending_actions() -> void:
