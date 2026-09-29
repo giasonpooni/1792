@@ -58,6 +58,8 @@ def main() -> int:
         "political-exposure", "POLITICAL_EXPOSURE:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_water_round.gd"],
         "water-round", "WATER_ROUND_TESTS:")
+    run([args.godot, "--headless", "--path", "game", "--script", "res://tests/test_clock_restore.gd"],
+        "derived-clock", "DERIVED_CLOCK_TESTS:")
     return 0
 
 

@@ -332,6 +332,11 @@ func restore(value: Variant) -> String:
 	for key in ["start_tick", "end_tick", "hits", "stun_until"]: _state.childhood.ambush[key] = int(_state.childhood.ambush[key])
 	for memory in _state.childhood.memories: memory.received_tick = int(memory.received_tick)
 	Riding.normalize(_state.riding)
+	# The integer tick is authoritative; JSON may round the derived hour by one
+	# float step. Reuse the existing clock mapping after validation, not a new clock.
+	var hours: float = 7.0 + _state.childhood.tick / 216000.0
+	_state.game_time.day = 1 + int(hours / 24.0)
+	_state.game_time.hour = fmod(hours, 24.0)
 	return ""
 
 func save_to(path: String = SAVE_PATH) -> String:

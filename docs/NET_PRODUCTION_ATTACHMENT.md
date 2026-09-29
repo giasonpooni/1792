@@ -2,8 +2,11 @@
 
 This first title-owned workload exposes the ORIGINAL `gujranwala_state.gd`,
 `water_round_rules.gd` and inherited save/clock code to an external production
-controller. No NET dependency is added to the playable game. No existing game
-source, scene, fixture, licence, mission or balance constant is changed.
+controller. No NET dependency is added to the playable game. The native batch exposed a one-float-step derived-clock discrepancy on JSON
+reload at tick 274. The existing childhood restore now recomputes day/hour from
+the authoritative integer tick after unchanged validation, using the original
+clock mapping. Four checkpoint regressions retain exact equality and refusal of
+inconsistent clocks. No scene, fixture, licence, mission or balance constant changes.
 
 `game/tools/net/water_round_capture.gd` is a development entrypoint, not a new game
 loop. The explicit post-inquiry fixture is the initial condition. Validated pose
