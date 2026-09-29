@@ -1,0 +1,64 @@
+name: Courtyard Blender source export
+on:
+  push:
+    branches: [feat/courtyard-authored-v1-20260929]
+    paths: [tools/art/build_courtyard.py, .github/workflows/courtyard-assets.yml]
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Install and identify Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends blender
+          blender --version
+      - name: Execute original authored asset recipe
+        run: |
+          mkdir -p export-evidence
+          set -o pipefail
+          blender --background --factory-startup --python tools/art/build_courtyard.py -- --output export-evidence/assets 2>&1 | tee export-evidence/build.log
+          test -f export-evidence/assets/build.json
+          git rev-parse HEAD > export-evidence/source-commit.txt
+          sha256sum tools/art/build_courtyard.py > export-evidence/generator.sha256
+          dpkg-query -W blender > export-evidence/blender-package.txt
+      - name: Retain immutable Git blobs only (no branch or release changes)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import base64, hashlib, json, os, pathlib, urllib.request
+          root=pathlib.Path('export-evidence/assets')
+          report=json.loads((root/'build.json').read_text())
+          assert report['generator_sha256']==hashlib.sha256(pathlib.Path('tools/art/build_courtyard.py').read_bytes()).hexdigest()
+          files=['courtyard_bay.glb','childhood_costume.glb','build.json']
+          assert [a['file'] for a in report['assets']]==files[:2]
+          records={}
+          for name in files:
+              raw=(root/name).read_bytes()
+              assert 0<len(raw)<8388608
+              if name.endswith('.glb'):
+                  assert raw[:4]==b'glTF'
+                  assert next(a['sha256'] for a in report['assets'] if a['file']==name)==hashlib.sha256(raw).hexdigest()
+              expected=hashlib.sha1(('blob %d\0'%len(raw)).encode()+raw).hexdigest()
+              request=urllib.request.Request('https://api.github.com/repos/'+os.environ['GITHUB_REPOSITORY']+'/git/blobs',data=json.dumps({'content':base64.b64encode(raw).decode(),'encoding':'base64'}).encode(),headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json'},method='POST')
+              with urllib.request.urlopen(request,timeout=60) as response: result=json.load(response)
+              assert result['sha']==expected
+              records[name]={'git_blob':expected,'sha256':hashlib.sha256(raw).hexdigest(),'bytes':len(raw)}
+          (root/'git-blobs.json').write_text(json.dumps(records,indent=2)+'\n')
+          print(json.dumps(records,indent=2))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: courtyard-blender-export
+          path: export-evidence/
+          retention-days: 14
