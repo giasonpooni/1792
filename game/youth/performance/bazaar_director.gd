@@ -20,6 +20,7 @@ var ambience: AudioStreamPlayer3D
 var departure: Node3D
 var inhabited_approach: Node3D
 var walk_seen: Dictionary={}
+var walk_pending: Dictionary={}
 var decompression: Dictionary={}
 var enabled := true
 var sound_enabled := true
@@ -72,7 +73,7 @@ func label(size: int,color: Color) -> Label:
 	var l:=Label.new();l.add_theme_font_size_override("font_size",size);l.add_theme_color_override("font_color",color);l.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;l.mouse_filter=Control.MOUSE_FILTER_IGNORE;return l
 func rehydrate() -> void:
 	if not is_instance_valid(chapter): return
-	queue.clear();speech.clear();walk_seen.clear();decompression.clear();report_until=-1;last_tick=int(chapter.model.progress().tick)
+	queue.clear();speech.clear();walk_seen.clear();walk_pending.clear();decompression.clear();report_until=-1;last_tick=int(chapter.model.progress().tick)
 	var b: Dictionary=chapter.model.brawl();origin=int(b.get("origin_tick",-1));event_cursor=b.get("events",[]).size()
 	_guard=false
 	for sound in sounds: sound.stop()
@@ -163,7 +164,8 @@ func play(kind: String,index: int,tick: int) -> void:
 	if played.size()>96: played.pop_front()
 func receive(event: Dictionary,ledger: Dictionary) -> void:
 	var kind: String=event.kind
-	if kind in ["stand","leave","regroup","report"]: queue.clear();speech.clear()
+	if kind in ["challenge","stand","leave","regroup","report"]:
+		queue.clear();speech.clear();walk_pending.clear()
 	for line in Dialogue.lines(kind,ledger.outcome): queue.append({"actor":line[0],"text":line[1],"expires":int(event.tick)+780})
 	if kind in ["parry","hit","counter"]: play("check" if kind=="parry" else "impact",int(event.index),int(event.tick))
 	if kind=="report": report_until=int(event.tick)+480
@@ -226,16 +228,22 @@ func sample(allow_edges: bool=true) -> void:
 		for sound in sounds: sound.stop()
 		if is_instance_valid(ambience): ambience.stop()
 	if not chapter._paused and allow_edges:
-		if phase=="invited" and speech.is_empty() and queue.is_empty() and audible(3,7.0) and audible(4,7.0):
+		if phase=="invited" and audible(3,7.0) and audible(4,7.0) and walk_pending.is_empty():
 			var zone: Dictionary=WalkLines.available(chapter.avatar.global_position,phase,walk_seen)
 			if not zone.is_empty():
 				walk_seen[zone.id]=tick
-				for line in zone.lines: queue.append({"actor":line[0],"text":line[1],"expires":tick+600})
+				walk_pending={"zone":zone,"expires":tick+420}
+		if phase!="invited": walk_pending.clear()
 		if not speech.is_empty() and (tick>=speech.until or not audible(int(speech.actor))): speech.clear()
+		if phase=="invited" and speech.is_empty() and queue.is_empty() and not walk_pending.is_empty():
+			if tick<=int(walk_pending.expires):
+				for line in walk_pending.zone.lines:
+					queue.append({"actor":line[0],"text":line[1],"expires":tick+420,"duration":150})
+			walk_pending.clear()
 		while speech.is_empty() and not queue.is_empty():
 			var candidate: Dictionary=queue.pop_front()
 			if tick>candidate.expires or not audible(int(candidate.actor)): continue
-			candidate.until=tick+210;speech=candidate
+			candidate.until=tick+int(candidate.get("duration",210));speech=candidate
 			heard.append({"actor":candidate.actor,"tick":tick,"text":candidate.text})
 			if heard.size()>32: heard.pop_front()
 	_pose_hero(b,tick)
