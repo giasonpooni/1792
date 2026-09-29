@@ -9,16 +9,22 @@ func _initialize() -> void: _probe_run.call_deferred()
 static func observe(args: PackedStringArray) -> Dictionary:
 	var source: Variant=JSON.parse_string(FileAccess.get_file_as_string("res://platform/build_identity.json"))
 	var errors: Array=[]
+	var expected_root:=OS.get_environment("CG_NATIVE_PROBE_USER_ROOT").replace("\\","/").simplify_path()
+	var actual_root:=OS.get_user_data_dir().replace("\\","/").simplify_path()
+	var isolated:=not expected_root.is_empty() and actual_root.begins_with(expected_root.trim_suffix("/")+"/")
 	var record: Dictionary={"schema":"cg.steam-native-probe.v1","os":OS.get_name(),
 		"engine":Engine.get_version_info().string,"exported":not OS.has_feature("editor"),
 		"source_commit":source.get("source_commit","") if source is Dictionary else "",
 		"source_tree":source.get("source_tree","") if source is Dictionary else "",
 		"build_execution_id":source.get("execution_id","") if source is Dictionary else "",
 		"native_module_loaded":Engine.has_singleton("Steam"),"adapter_contract_matches":false,
-		"client_running":null,"adapter_preflight_refused_without_client":false,"sdk_session_initialized":false,
+		"isolated_user_storage":isolated,"client_running":null,"adapter_preflight_refused_without_client":false,"sdk_session_initialized":false,
 		"live_client_qualified":false,"physical_hardware_qualified":false,"store_uploaded":false,"errors":errors}
 	if args!=PackedStringArray(["--steam-native-probe"]):
 		errors.append("The isolated native probe accepts no other application flags.")
+		return record
+	if not expected_root.is_empty() and not isolated:
+		errors.append("The native probe did not receive its isolated user-storage environment.")
 		return record
 	if not Engine.has_singleton("Steam"):
 		errors.append("Native Steam singleton absent; this is the ordinary local-PC runtime.")

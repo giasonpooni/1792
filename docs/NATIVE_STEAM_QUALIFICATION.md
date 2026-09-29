@@ -73,6 +73,8 @@ python tools/steam_native.py qualify `
 Use a fresh output directory. `install --archive <downloaded-archive>` performs
 the same locked validation without downloading again. `qualify` is an explicit
 local execution operation on Windows, with isolated APPDATA/LOCALAPPDATA paths.
+The packaged probe checks the actual Godot user-data directory against the requested
+isolation root before gameplay/storage qualification proceeds.
 The no-client probe requires Steam not running; it does not close or launch it.
 It does not create `steam_appid.txt`, invoke SteamCMD, authenticate, upload, register
 an installer, sign a payload or write normal player saves/preferences.

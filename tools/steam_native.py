@@ -116,7 +116,7 @@ def install(output: Path, archive: Path | None = None) -> dict:
         _extract_locked(archive, content, MEMBERS, SELECTED)
         record = reference_record()
         (content / "reference.json").write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
-        (content / "REFERENCE-NOTICE.txt").write_text(NOTICE, encoding="utf-8")
+        (content / "REFERENCE-NOTICE.txt").write_text(NOTICE, encoding="utf-8", newline="\n")
         inspect(content)
         content.rename(output)
         return record
@@ -132,7 +132,7 @@ def inspect(reference: Path) -> dict:
     if _linked(p) or not p.is_file() or p.stat().st_size > 16384: raise ValueError("Invalid native reference receipt")
     record = _json(p.read_bytes())
     if json.dumps(record, sort_keys=True) != json.dumps(reference_record(), sort_keys=True): raise ValueError("Native reference receipt differs from trusted lock")
-    if digest(reference / "REFERENCE-NOTICE.txt") != hashlib.sha256(NOTICE.encode()).hexdigest():
+    if digest(reference / "REFERENCE-NOTICE.txt", len(NOTICE.encode())) != hashlib.sha256(NOTICE.encode()).hexdigest():
         raise ValueError("Native reference notice changed")
     for name in SELECTED:
         size, expected = MEMBERS[name]
@@ -145,6 +145,7 @@ def validate_probe(value: object, *, source_commit: str, source_tree: str, expor
         raise ValueError("Missing native probe observation")
     exact = {"source_commit": source_commit, "source_tree": source_tree, "os": "Windows",
              "exported": exported, "native_module_loaded": True, "adapter_contract_matches": True,
+             "isolated_user_storage": True,
              "client_running": False, "adapter_preflight_refused_without_client": True,
              "sdk_session_initialized": False, "live_client_qualified": False,
              "physical_hardware_qualified": False, "store_uploaded": False, "errors": []}
@@ -156,7 +157,8 @@ def validate_probe(value: object, *, source_commit: str, source_tree: str, expor
         actual = value.get(key)
         if type(actual) is not type(expected) or actual != expected:
             raise ValueError("Native observation did not establish " + key)
-    if not isinstance(value.get("engine"), str) or not value["engine"].startswith("4.5.1."):
+    engine = value.get("engine")
+    if not isinstance(engine, str) or not (engine == "4.5.1-stable" or (engine.startswith("4.5.1-stable (") and engine.endswith(")"))):
         raise ValueError("Native engine line changed")
     return value
 
@@ -200,7 +202,8 @@ def qualify(reference: Path, package: Path, evidence: Path, *, source_commit: st
             work = Path(temp); payload = work / "payload"; payload.mkdir()
             user = work / "isolated-user"; user.mkdir()
             environment = os.environ.copy()
-            environment.update(APPDATA=str(user), LOCALAPPDATA=str(user), GODOT_SILENCE_ROOT_WARNING="1")
+            environment.update(APPDATA=str(user), LOCALAPPDATA=str(user), GODOT_SILENCE_ROOT_WARNING="1",
+                               CG_NATIVE_PROBE_USER_ROOT=str(user))
             for name, target in ((TEMPLATE, "1792.exe"), (DLL, DLL)):
                 shutil.copyfile(reference / name, payload / target)
                 if digest(payload / target, MEMBERS[name][0]) != MEMBERS[name][1]: raise ValueError("Native copy changed")

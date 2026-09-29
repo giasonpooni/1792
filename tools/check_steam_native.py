@@ -8,6 +8,7 @@ import tarfile
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 from steam_native import _extract_locked, digest, inspect, install, reference_record, validate_probe
 
 
@@ -37,8 +38,8 @@ class SteamNativeChecks(unittest.TestCase):
 
     def record(self) -> dict:
         return {"schema": "cg.steam-native-probe.v1", "source_commit": "a"*40, "source_tree": "b"*40,
-                "build_execution_id": "synthetic-test", "os": "Windows", "engine": "4.5.1.stable.synthetic",
-                "exported": True, "native_module_loaded": True, "adapter_contract_matches": True,
+                "build_execution_id": "synthetic-test", "os": "Windows", "engine": "4.5.1-stable (synthetic)",
+                "exported": True, "isolated_user_storage": True, "native_module_loaded": True, "adapter_contract_matches": True,
                 "client_running": False, "adapter_preflight_refused_without_client": True,
                 "sdk_session_initialized": False, "live_client_qualified": False,
                 "physical_hardware_qualified": False, "store_uploaded": False, "errors": []}
@@ -112,6 +113,42 @@ class SteamNativeChecks(unittest.TestCase):
         with self.assertRaises(ValueError): digest(path,4)
         with self.assertRaises(ValueError): digest(self.destination)
 
+    def fixture_lock(self):
+        self.archive([("runtime.exe", b"abc"), ("library.dll", b"def")])
+        return patch.multiple("steam_native", MEMBERS=self.members, SELECTED=self.selected,
+                              ARCHIVE_BYTES=self.source.stat().st_size, ARCHIVE_SHA256=digest(self.source))
+
+    def test_full_synthetic_install_uses_canonical_notice_bytes(self) -> None:
+        output=self.root/"installed"
+        with self.fixture_lock():
+            record=install(output,self.source)
+            self.assertEqual(inspect(output),record)
+            self.assertNotIn(b"\r",(output/"REFERENCE-NOTICE.txt").read_bytes())
+        self.assertTrue(self.source.exists())
+        self.assertEqual(list(self.root.glob(".steam-reference-*")),[])
+
+    def test_installed_boolean_type_cannot_be_weakened(self) -> None:
+        output=self.root/"installed"
+        with self.fixture_lock():
+            record=install(output,self.source);record["steam_client_qualified"]=0
+            (output/"reference.json").write_text(json.dumps(record))
+            with self.assertRaises(ValueError): inspect(output)
+
+    def test_installed_file_change_cannot_be_rehashed_into_trust(self) -> None:
+        output=self.root/"installed"
+        with self.fixture_lock():
+            record=install(output,self.source)
+            (output/"runtime.exe").write_bytes(b"xyz")
+            record["files"]["runtime.exe"]["sha256"]=digest(output/"runtime.exe")
+            (output/"reference.json").write_text(json.dumps(record))
+            with self.assertRaises(ValueError): inspect(output)
+
+    def test_installed_extra_dependency_is_refused(self) -> None:
+        output=self.root/"installed"
+        with self.fixture_lock():
+            install(output,self.source);(output/"unapproved.dll").write_bytes(b"synthetic")
+            with self.assertRaises(ValueError): inspect(output)
+
     def test_complete_synthetic_observation_shape(self) -> None:
         self.assertEqual(self.validate(self.record()), self.record())
 
@@ -124,7 +161,7 @@ class SteamNativeChecks(unittest.TestCase):
     def test_false_claims_or_wrong_source_rejected(self) -> None:
         for key,value in (("source_commit","c"*40),("source_tree","c"*40),("os","Linux"),("exported",False),
                           ("native_module_loaded",False),("adapter_contract_matches",False),
-                          ("client_running",True),("sdk_session_initialized",True),("live_client_qualified",True),
+                          ("isolated_user_storage",False),("client_running",True),("sdk_session_initialized",True),("live_client_qualified",True),
                           ("physical_hardware_qualified",True),("store_uploaded",True),("errors",["incomplete"]),
                           ("adapter_preflight_refused_without_client",False),("engine","4.6.stable")):
             with self.subTest(key=key), self.assertRaises(ValueError): self.validate(self.record() | {key:value})

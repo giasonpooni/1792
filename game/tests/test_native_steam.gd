@@ -25,6 +25,12 @@ func _run() -> void:
 		var record:=Probe.observe(args)
 		check(not record.errors.is_empty() and not record.sdk_session_initialized,"incompatible probe flags do not initialize SDK")
 		check(not record.live_client_qualified and not record.physical_hardware_qualified and not record.store_uploaded,"probe cannot grant qualification or upload")
+	var previous_root:=OS.get_environment("CG_NATIVE_PROBE_USER_ROOT")
+	OS.set_environment("CG_NATIVE_PROBE_USER_ROOT",OS.get_user_data_dir().path_join("not-the-parent"))
+	var wrong_root:=Probe.observe(PackedStringArray(["--steam-native-probe"]))
+	check(not wrong_root.isolated_user_storage and not wrong_root.errors.is_empty(),"wrong storage environment refused before any SDK session")
+	if previous_root.is_empty(): OS.unset_environment("CG_NATIVE_PROBE_USER_ROOT")
+	else: OS.set_environment("CG_NATIVE_PROBE_USER_ROOT",previous_root)
 	var observation:=Probe.observe(PackedStringArray(["--steam-native-probe"]))
 	if Engine.has_singleton("Steam"):
 		check(observation.errors.is_empty(),"real native no-client ABI probe passes")
