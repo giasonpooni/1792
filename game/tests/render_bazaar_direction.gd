@@ -16,7 +16,7 @@ func frames(n: int=4) -> void:
 	for _i in range(n): await process_frame
 func apply(item: Dictionary) -> void:
 	check(scene.model.restore(item.state).is_empty(),"retained gameplay state restores")
-	scene._apply();scene.avatar.pivot.rotation=Base.point(item.camera_pivot);scene.avatar.velocity=Base.point(item.velocity)
+	scene._apply();scene._resume();scene.avatar.pivot.rotation=Base.point(item.camera_pivot);scene.avatar.velocity=Base.point(item.velocity)
 	scene._message=item.message;scene._paused=false
 	scene.set_physics_process(false);scene.avatar.set_physics_process(false)
 	var director: Node=scene.bazaar_performance
@@ -27,6 +27,7 @@ func capture(name: String,check_ui: bool=true) -> void:
 	scene.bazaar_performance.sample(false);await RenderingServer.frame_post_draw
 	var d: Node=scene.bazaar_performance
 	var screen:=root.get_visible_rect()
+	if name!="friends-dialogue": check(not scene._panel.visible,"previous dialogue cannot cover gameplay playback")
 	if check_ui and d.canvas.visible:
 		check(screen.encloses(d.top.get_global_rect()),"objective panel inside viewport")
 		if d.bottom.visible: check(screen.encloses(d.bottom.get_global_rect()),"subtitle panel inside viewport")
