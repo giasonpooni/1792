@@ -24,6 +24,10 @@ func record_frame() -> void:
 	var scene:=current_chapter;var d: Node=scene.bazaar_performance
 	if scene._paused or not scene.model.has_brawl(): return
 	if not d.speech.is_empty() and not snapshots.has("friends-walking"): snapshots["friends-walking"]=snapshot_view(scene)
+	if not d.speech.is_empty():
+		var text: String=String(d.speech.text)
+		if text.begins_with("Mind the baskets") and not snapshots.has("approach-goods"): snapshots["approach-goods"]=snapshot_view(scene)
+		if text.begins_with("Look at that one") and not snapshots.has("approach-animal"): snapshots["approach-animal"]=snapshot_view(scene)
 	if route_name=="fight" and scene.model.brawl_phase()=="fighting":
 		for i in range(3):
 			var pose: String=d.figures[i].pose_name
@@ -102,6 +106,7 @@ func run() -> void:
 	ensure(snapshots.has("windup") and snapshots.has("checked") and snapshots.has("down"),"actual fight produces windup, check and defeated poses")
 	ensure(clip.size()>12,"actual fight yields motion observations")
 	ensure(outcomes.fight.sound_cues.any(func(e):return e.kind=="check"),"actual checked strike emits foley cue")
+	ensure(snapshots.has("approach-goods") and snapshots.has("approach-animal"),"actual physical approach triggers two ambient companion observations")
 	ensure(outcomes.fight.heard.size()>0 and outcomes.leave.heard.size()>0,"nearby friends speak on both routes")
 	var report: Dictionary={"schema":"1792.bazaar-direction.v1","engine":Engine.get_version_info().string,"physics_hz":Engine.physics_ticks_per_second,
 		"new_assertions":new_checks,"passed":passed,"failed":failed,"snapshots":snapshots,"motion":clip,"outcomes":outcomes,
