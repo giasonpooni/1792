@@ -1,5 +1,7 @@
 extends Node3D
 ## Original procedural props and clock-driven work poses, not autonomous population AI.
+const AcceptedBench := preload("res://workshops/accepted_workbench.tscn")
+var bench: Node3D
 const Craft := preload("res://workshops/workshop_rules.gd")
 var smith_arm: Node3D
 var potter_arm: Node3D
@@ -23,10 +25,11 @@ func build(town: Node3D,avatar: Node3D) -> void:
 	_town.box(self,Vector3(0.32,0.13,0.32),Craft.SITE+Vector3(0.55,0.83,-0.78),Color("656668"))
 	_town.box(self,Vector3(1.6,0.8,1.4),Craft.SITE+Vector3(-3,0.4,-1.8),Color("856653"),true)
 	coal=_town.box(self,Vector3(1.15,0.05,0.95),Craft.SITE+Vector3(-3,0.83,-1.8),Color("c07438"))
-	_town.box(self,Vector3(2.0,0.14,0.8),Craft.SITE+Vector3(0,0.92,1.6),Color("745d43"),true)
-	for x in [-0.85,0.85]:
-		for z in [-0.28,0.28]: _town.box(self,Vector3(0.12,0.85,0.12),Craft.SITE+Vector3(x,0.425,1.6+z),Color("745d43"))
-	finished=Node3D.new();finished.position=Craft.SITE+Vector3(0,1.08,1.6);add_child(finished)
+	# Accepted NET-produced visual, unchanged bytes; collision is game-owned.
+	bench=AcceptedBench.instantiate();bench.position=bench.PLACEMENT;add_child(bench)
+	finished=Node3D.new();finished.name="FinishedTools"
+	# Tool-head underside clears the new tabletop by 5 mm. No floating old-height props.
+	finished.position=Vector3(0,0.965,0);bench.add_child(finished)
 	for x in [-0.45,0.35]:
 		_town.box(finished,Vector3(0.13,0.08,0.7),Vector3(x,0,0),Color("705436"))
 		_town.box(finished,Vector3(0.4,0.12,0.14),Vector3(x,0,-0.29),Color("637078"))
