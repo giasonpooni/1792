@@ -14,6 +14,28 @@ later public names follow the [naming policy](docs/CHARACTER_NAMES.md).
 [Coupled engineering experiment](#coupled-engineering-experiment) ·
 [Develop and verify](#develop-and-verify)
 
+## Notation Systems and Cartesian Graphics
+
+**Notation Systems is the parent organization of Cartesian Graphics.** Notation
+Systems focuses on industrial tooling, computational instrumentation and scientific
+computing. **Cartesian Graphics** is its games, graphics and simulation studio/label;
+**1792 is its primary historical-biographical game** and the first major reference
+workload for the shared game-production engineering experiment.
+
+The studio's creative focus is historical lives experienced through geography,
+relationships, limited knowledge and consequential action. These layered worlds
+motivate physics-engine, graphics, coupled physical/multi-agent and multirate
+simulation research. Such ambitions do not imply that every planned system or
+a general-purpose multiphysics engine is implemented in this game.
+
+**Shared primitives; separate state authority.** Reusable production tooling
+belongs on the existing NET workbench; specialist repositories keep their own
+mathematics, implementations and licences. Godot retains the game's live state
+and clock; story, art direction and game-release approval remain game-owned.
+Simulation output is not automatically admitted industrial evidence, and shared
+tooling does not grant industrial admission or release authority. Existing
+Cartesian Graphics copyright, licensing and third-party notices are unchanged.
+
 ## Play
 
 Import `game/project.godot` in standard **Godot 4.5.1** and press **F5**.
