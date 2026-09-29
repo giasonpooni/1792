@@ -19,7 +19,7 @@ def check():
         raw=(ROOT/'game'/name).read_bytes()
         assert item=={'sha256':'sha256:'+hashlib.sha256(raw).hexdigest(),'bytes':len(raw)}, name
         for dependency in re.findall(r'(?:preload|load)\("res://([^"\n]+)"\)',raw.decode()):
-            assert dependency in p['sources'] or dependency=='smith.scn', (name,dependency)
+            assert dependency in p['sources'], (name,dependency)
     assert (ROOT/'game/workcells/NOTICE.txt').read_bytes()==(ROOT/'LICENSE').read_bytes()
     return p
 
@@ -36,6 +36,14 @@ class CapsuleTests(unittest.TestCase):
         self.assertIn('Craft.apply(',text)
         self.assertNotIn('ledger.stock.tools+=',text)
         self.assertIn('extends "res://workshops/workshop_world.gd"',(ROOT/'game/workcells/baked_smith.gd').read_text())
+
+    def test_generated_outputs_are_distinct_from_authored_resources(self):
+        text=(ROOT/'game/workcells/smith_probe.gd').read_text()
+        self.assertIn('const COMPILED_NAME := "smith.scn"',text)
+        self.assertIn('ResourceSaver.save(packed,compiled_path)',text)
+        self.assertIn('load(compiled_path)',text)
+        self.assertIn('An explicit SMITH_REPORT output path is required',text)
+        self.assertFalse((ROOT/'game/smith.scn').exists())
 
 
 if __name__=='__main__':unittest.main()

@@ -4,6 +4,9 @@ extends SceneTree
 const Scene := preload("res://workcells/smith_scene.gd")
 const Craft := preload("res://workshops/workshop_rules.gd")
 const Economy := preload("res://territory/misl_rules.gd")
+# This file is created by the build stage, not a checked-in Resource dependency.
+const COMPILED_NAME := "smith.scn"
+var compiled_path: String = "res://" + COMPILED_NAME
 var mode := ""
 var report: Dictionary={}
 
@@ -96,7 +99,7 @@ func run() -> void:
 	var scene: Node3D
 	if mode=="build": scene=Scene.new()
 	else:
-		var packed: PackedScene=load("res://smith.scn")
+		var packed: PackedScene=load(compiled_path)
 		if packed==null: quit(4);return
 		scene=packed.instantiate()
 	report["loaded_baked_scene"]=mode=="build" or (scene.baked and scene.has_node("Workshop"))
@@ -105,8 +108,8 @@ func run() -> void:
 	if mode=="build":
 		own_descendants(scene,scene)
 		var packed:=PackedScene.new()
-		if packed.pack(scene)!=OK or ResourceSaver.save(packed,"res://smith.scn")!=OK: quit(5);return
-		report["compiled_scene_sha256"]="sha256:"+FileAccess.get_sha256("res://smith.scn")
+		if packed.pack(scene)!=OK or ResourceSaver.save(packed,compiled_path)!=OK: quit(5);return
+		report["compiled_scene_sha256"]="sha256:"+FileAccess.get_sha256(compiled_path)
 	else:
 		report["rules"]=rules_probe()
 		report["scene_actions"]=[scene.action("reserve"),scene.action("start")]
@@ -119,7 +122,8 @@ func run() -> void:
 			for _i in range(564): scene.step()
 			report["completion_phase"]=Craft.phase(scene.ledger)
 	var output:=OS.get_environment("SMITH_REPORT")
-	if output.is_empty(): output="res://observations.json"
+	if output.is_empty():
+		push_error("An explicit SMITH_REPORT output path is required");quit(6);return
 	var file:=FileAccess.open(output,FileAccess.WRITE)
 	file.store_string(JSON.stringify(report));file.close()
 	scene.queue_free();quit(0)
