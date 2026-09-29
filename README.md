@@ -10,6 +10,10 @@ later public names follow the [naming policy](docs/CHARACTER_NAMES.md).
 
 **Playable greybox in development, not a finished city or historical survey.**
 
+[Play](#play) · [Project scope](#scope-and-development-order) ·
+[Coupled engineering experiment](#coupled-engineering-experiment) ·
+[Develop and verify](#develop-and-verify)
+
 ## Play
 
 Import `game/project.godot` in standard **Godot 4.5.1** and press **F5**.
@@ -91,6 +95,70 @@ simulation/experiment providers, not competing game loops.
 
 [Shared game architecture](docs/SHARED_GAME_ARCHITECTURE.md) ·
 [Campaign direction](docs/COUPLED_CAMPAIGN.md)
+
+## Scope and development order
+
+The intended product is an embodied historical open-world biography: childhood,
+adolescence, relationships, travel and increasing responsibility lead toward the
+full Ranjit Singh narrative. First complete the rich Gujranwala childhood and
+adolescent campaign through the prelude to Lahore, then the Lahore campaign and
+remaining life story. Historical-character DLC production follows the completed
+main narrative, not the other way around.
+
+Plan the wider geographic envelope from the beginning, while building playable
+detail outward from home. Evidence-supported 1:1 terrain and location fidelity
+are reconstruction targets, not claims about the current compressed test cell.
+Unknown historical layouts remain explicit reconstruction choices. Visual beauty,
+movement, interaction and narrative are joint production priorities, not a choice
+between an empty beautiful map and mechanics with indefinitely deferred art.
+
+Oral tradition, differing accounts and dramatized youth stories belong in the
+authored campaign. Preserve their attribution and distinguish historical claims,
+later tradition, inference and original fiction rather than silently promoting
+all generated material into historical fact.
+
+## Coupled engineering experiment
+
+**1792 is both a game project and the first major reference workload for an
+industrial agentic game-development experiment.** Its ambition motivates a second
+deliverable: reusable production workflows that help a small human-led team turn
+research and creative direction into coherent, tested, playable content.
+
+That work belongs in
+[Notations Engineering Terminal](https://github.com/giasonpooni/Notations-Engineering-Terminal),
+with **Notations Game Foundry (working name: NGF)** as a game-production workload
+on the existing workbench, not a new engine inside this repository. The question
+is whether typed work orders, bounded tools/agents, retained evidence and
+independent acceptance gates can increase integrated output without supervision
+and repair consuming the gain. It is an engineering hypothesis, not a claim that
+autonomous large-studio production has already been achieved.
+
+```text
+1792 requirement → bounded production work → candidate artifact
+       ↑                                          ↓
+       └── playable result + review ← checks + controlled integration
+```
+
+Measure accepted and integrated work per human hour, compute/provider cost,
+review and rework effort, regressions, visual/playtesting quality and actual reuse.
+Compare equivalent tasks with fixed acceptance criteria; count tooling setup and
+failed attempts, not just successful generation. A working production system must
+improve the game rather than only produce more files, plans or agent activity.
+
+**Current boundary:** NET's [production-controller PR #65](https://github.com/giasonpooni/Notations-Engineering-Terminal/pull/65)
+is draft and unmerged as of September 29, 2026. Its
+[pinned implementation guide](https://github.com/giasonpooni/Notations-Engineering-Terminal/blob/98386f4dfa621f6340670755603abd229be4684f/docs/NET_PRODUCTION.md)
+describes a local sequential controller with declared parameter repairs and a
+synthetic Godot courier fixture. It does **not** attach this game or provide an
+autonomous asset factory. The next engineering gate is one actual 1792 scenario
+or asset operation with a fixed acceptance contract and retained failure/success
+evidence, demonstrated back in a playable build.
+
+Godot remains the game-state and clock authority. Story, art direction, source
+interpretation, sacred-site rules, saves and release approval stay game-owned;
+automation does not get to redefine its own success criteria. Development-time
+agents do not add a live AI service requirement to playing 1792. Shared tooling
+may later benefit sister titles, but does not move them ahead of this campaign.
 
 ## Develop and verify
 
