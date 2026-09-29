@@ -41,7 +41,7 @@ func run() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
 	home=Launch.make_world();root.add_child(home);scene=home.get_node("ChildhoodChapter")
 	scene.set_physics_process(false);scene.avatar.set_physics_process(false);await frames(8)
-	for name in ["approach-goods","approach-animal","friends-walking","windup","checked","down","ending-fight","ending-leave"]:
+	for name in ["approach-line","approach-animal","friends-walking","windup","checked","down","ending-fight","ending-leave"]:
 		apply(input.snapshots[name]);await capture(name)
 	# Optional dialogue uses its actual captured pre-decision state and the actual shipped panel.
 	apply(input.snapshots["friends-dialogue"])
