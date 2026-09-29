@@ -90,6 +90,72 @@ func in_view(index: int) -> bool:
 	if camera==null: return false
 	var p: Vector3=chapter.youths[index].global_position+Vector3.UP*1.3
 	return not camera.is_position_behind(p) and chapter.get_viewport().get_visible_rect().has_point(camera.unproject_position(p))
+
+func _yaw_to(origin: Node3D,target: Vector3,limit: float=.48) -> float:
+	var delta:=target-origin.global_position
+	if delta.length_squared()<0.0001: return 0.0
+	var local: Vector3=origin.global_basis.inverse()*delta
+	return clampf(atan2(-local.x,-local.z),-limit,limit)
+
+func _pitch_to(origin: Node3D,target: Vector3,limit: float=.12) -> float:
+	var delta:=target-origin.global_position
+	var horizontal:=Vector2(delta.x,delta.z).length()
+	if horizontal<0.01: return 0.0
+	return clampf(-atan2(delta.y,horizontal),-limit,limit)
+
+func _nearest_active_opponent(b: Dictionary) -> int:
+	if b.is_empty(): return -1
+	var best:=-1
+	var best_distance:=INF
+	for i in range(3):
+		if b.ledger.down[i]: continue
+		var d: float=chapter.avatar.global_position.distance_to(chapter.youths[i].global_position)
+		if d<best_distance:
+			best_distance=d
+			best=i
+	return best
+
+func _hero_attention(b: Dictionary,tick: int) -> Dictionary:
+	if not active or b.is_empty(): return {}
+	if not speech.is_empty() and int(speech.actor)>=0 and int(speech.actor)<chapter.youths.size():
+		return {"actor":int(speech.actor),"target":chapter.youths[int(speech.actor)].global_position+Vector3.UP*1.35,"strength":.95}
+	var phase: String=String(b.ledger.phase)
+	if phase in ["challenged","fighting"]:
+		var index:=_nearest_active_opponent(b)
+		if index>=0: return {"actor":index,"target":chapter.youths[index].global_position+Vector3.UP*1.35,"strength":.78}
+	if phase=="returning" and not decompression.is_empty():
+		var friend:=4 if String(b.ledger.outcome) in ["withdrew","walked_away"] else (3 if posmod(tick/90,2)==0 else 4)
+		return {"actor":friend,"target":chapter.youths[friend].global_position+Vector3.UP*1.35,"strength":.48}
+	return {}
+
+func _apply_figure_attention(index: int,phase: String,b: Dictionary,tick: int) -> void:
+	if not is_instance_valid(figures[index]) or not figures[index].visible: return
+	var target:=Vector3.ZERO
+	var strength:=0.0
+	if index<3 and phase in ["challenged","fighting"] and not b.is_empty() and not b.ledger.down[index]:
+		target=chapter.avatar.global_position+Vector3.UP*1.35
+		strength=.75
+	elif index>=3:
+		if not speech.is_empty():
+			var speaker_index:=int(speech.actor)
+			if speaker_index==index:
+				target=chapter.avatar.global_position+Vector3.UP*1.35
+				strength=.88
+			elif speaker_index>=0 and speaker_index<chapter.youths.size():
+				target=chapter.youths[speaker_index].global_position+Vector3.UP*1.35
+				strength=.72
+		elif phase=="fighting" and not b.is_empty():
+			var opponent:=_nearest_active_opponent(b)
+			if opponent>=0:
+				target=chapter.youths[opponent].global_position+Vector3.UP*1.35
+				strength=.62
+		elif phase=="returning":
+			target=chapter.avatar.global_position+Vector3.UP*1.35
+			strength=.35
+	if strength<=0: return
+	var head: Node3D=figures[index].head
+	head.rotation.y+=_yaw_to(head,target,.50)*strength
+	head.rotation.x+=_pitch_to(head,target,.10)*strength
 func play(kind: String,index: int,tick: int) -> void:
 	if not sound_enabled or not audible(index): return
 	sounds[index].stream=_streams[kind];sounds[index].play()
@@ -155,6 +221,7 @@ func sample(allow_edges: bool=true) -> void:
 				var d: Vector3=chapter.avatar.global_position-chapter.youths[i].global_position;figures[i].rotation.y=atan2(-d.x,-d.z)-chapter.youths[i].rotation.y
 			else: figures[i].rotation.y=0
 		figures[i].sample(tick,Vector2(chapter.youths[i].velocity.x,chapter.youths[i].velocity.z).length(),action,amount,speech.get("actor",-1)==i)
+		_apply_figure_attention(i,phase,b,tick)
 	if chapter._paused or not enabled:
 		for sound in sounds: sound.stop()
 		if is_instance_valid(ambience): ambience.stop()
@@ -180,27 +247,38 @@ func sample(allow_edges: bool=true) -> void:
 		for actor in chapter.youths: actor.caption.hide()
 	last_tick=tick
 func _pose_hero(b: Dictionary,tick: int) -> void:
-	if (not active or b.is_empty() or b.ledger.phase!="fighting") and _hero_restore.is_empty(): return
+	if (not active or b.is_empty()) and _hero_restore.is_empty(): return
 	var proxy: Node3D=chapter.art._hero_proxy
 	if not is_instance_valid(proxy): return
 	var rig: Skeleton3D=proxy.skeleton
 	if not _hero_restore.is_empty():
-		for id in _hero_restore: rig.set_bone_pose_rotation(rig.find_bone(id),_hero_restore[id])
+		for id in _hero_restore:
+			var restore_bone:=rig.find_bone(id)
+			if restore_bone>=0: rig.set_bone_pose_rotation(restore_bone,_hero_restore[id])
 		_hero_restore.clear()
 	proxy.sample_tick(tick)
-	if not active or b.is_empty() or b.ledger.phase!="fighting":
+	if not active or b.is_empty():
 		if is_instance_valid(chapter.art.detail): chapter.art.detail.sample(tick)
 		return
 	var rotations: Dictionary={}
-	if _guard:
-		rotations={"upper_armL":Vector3(-1.4,0,-.22),"forearmL":Vector3(-1.05,0,0),"upper_armR":Vector3(-1.0,0,.20),"forearmR":Vector3(-1.2,0,0)}
-	for event in b.events:
-		var elapsed:=tick-int(event.tick)
-		if elapsed<0 or elapsed>20: continue
-		if event.kind=="counter": rotations={"upper_armR":Vector3(-1.4,.2,0),"forearmR":Vector3(-.05,0,0),"spine":Vector3(0,.30*sin(PI*float(elapsed)/20),0)}
-		elif event.kind=="hit": rotations["spine"]=Vector3(-.17*sin(PI*float(elapsed)/20),0,0)
+	if b.ledger.phase=="fighting":
+		if _guard:
+			rotations={"upper_armL":Vector3(-1.4,0,-.22),"forearmL":Vector3(-1.05,0,0),"upper_armR":Vector3(-1.0,0,.20),"forearmR":Vector3(-1.2,0,0)}
+		for event in b.events:
+			var elapsed:=tick-int(event.tick)
+			if elapsed<0 or elapsed>20: continue
+			if event.kind=="counter": rotations={"upper_armR":Vector3(-1.4,.2,0),"forearmR":Vector3(-.05,0,0),"spine":Vector3(0,.30*sin(PI*float(elapsed)/20),0)}
+			elif event.kind=="hit": rotations["spine"]=Vector3(-.17*sin(PI*float(elapsed)/20),0,0)
+	var attention:=_hero_attention(b,tick)
+	if not attention.is_empty():
+		var local_yaw:=_yaw_to(chapter.avatar,attention.target,.42)*float(attention.strength)
+		var local_pitch:=_pitch_to(chapter.avatar,attention.target,.10)*float(attention.strength)
+		rotations["head"]=Vector3(local_pitch,local_yaw,0)
 	for id in rotations:
-		var bone:=rig.find_bone(id);_hero_restore[id]=rig.get_bone_pose_rotation(bone);rig.set_bone_pose_rotation(bone,Quaternion.from_euler(rotations[id]))
+		var bone:=rig.find_bone(id)
+		if bone<0: continue
+		_hero_restore[id]=rig.get_bone_pose_rotation(bone)
+		rig.set_bone_pose_rotation(bone,Quaternion.from_euler(rotations[id]))
 	if is_instance_valid(chapter.art.detail): chapter.art.detail.sample(tick)
 func layout(phase: String,b: Dictionary,tick: int) -> void:
 	var ending: bool=enabled and phase=="reported" and tick<report_until
