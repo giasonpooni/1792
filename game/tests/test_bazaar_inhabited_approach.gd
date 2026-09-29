@@ -50,14 +50,14 @@ func run() -> void:
 	# Use actual director/contact logic at the goods zone. Friends remain the original physical actors.
 	scene.avatar.global_position=WalkLines.ZONES[0].center
 	ok(Pose.pose(scene.model,WalkLines.ZONES[0].center),"align authoritative player fixture")
+	var positioned: Dictionary=scene.model.snapshot()
 	scene.bazaar_performance.walk_seen.clear();scene.bazaar_performance.speech.clear();scene.bazaar_performance.queue.clear()
 	scene.bazaar_performance.sample(true)
 	check(not scene.bazaar_performance.speech.is_empty(),"director emits a nearby ambient companion line")
 	check(String(scene.bazaar_performance.speech.text).begins_with("Mind the baskets"),"Jiva owns the first goods observation")
-	check(scene.model.snapshot()!=before or scene.model.snapshot()==scene.model.snapshot(),"fixture comparison remains well-defined")
-	var after_pose: Dictionary=scene.model.snapshot()
+	check(scene.model.snapshot()==positioned,"ambient line trigger adds no receipt, memory or clock")
 	scene.bazaar_performance.sample(true)
-	check(scene.model.snapshot()==after_pose,"ambient subtitle sampling adds no receipts or memory")
+	check(scene.model.snapshot()==positioned,"ambient subtitle sampling remains authority-neutral")
 	check(scene.model.journal().filter(func(m): return String(m.id).contains("goods") or String(m.id).contains("animal") or String(m.id).contains("cart")).is_empty(),"ambient observations never enter journal")
 	home.queue_free();await frames(3)
 	print("BAZAAR_INHABITED_APPROACH_TESTS: %d passed, %d failed"%[passed,failed]);quit(1 if failed else 0)
