@@ -18,7 +18,7 @@ func capture(name: String,c: Node3D) -> void:
 	if image.save_png("user://locomotion-"+name+".png")!=OK: failures+=1;return
 	captures+=1
 func pose(c: Node3D,p: Vector3) -> void:
-	c.avatar._route.clear();c.avatar.global_position=p;c.avatar.velocity=Vector3.ZERO;c.avatar._grounded=false
+	c.avatar.clear_traversal();c.avatar.global_position=p;c.avatar.velocity=Vector3.ZERO;c.avatar._grounded=false
 	c.avatar._coyote=0;c.avatar._buffer=0;c.avatar.clear_motion_requests();await frames(15)
 func run() -> void:
 	root.content_scale_size=Vector2i.ZERO
@@ -32,7 +32,7 @@ func run() -> void:
 	camera.global_position=Vector3(4.5,3.8,-2);camera.look_at(Vector3(0,1.4,-3.3))
 	var e:=InputEventAction.new();e.action="traverse_obstacle";e.pressed=true;Input.parse_input_event(e);await frames(10)
 	e=InputEventAction.new();e.action="traverse_obstacle";e.pressed=false;Input.parse_input_event(e)
-	c.set_paused(true);c.message="Presentation fixture: same capsule is mid-mantle; the skeleton supplies a provisional pose, not IK.";c.refresh()
+	c.set_paused(true);c.message="Presentation fixture: same capsule is mid-mantle; contact IK applies only when the ledge is in arm reach.";c.refresh()
 	await capture("mantle",c)
 	camera.current=false;c.avatar.get_node("CameraPivot/SpringArm3D/Camera3D").current=true
 	c.set_paused(false);await pose(c,Vector3(0,1.44,-10.5))

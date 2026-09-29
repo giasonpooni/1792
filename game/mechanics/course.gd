@@ -4,7 +4,7 @@ extends Node3D
 const Player := preload("res://player/player.tscn")
 const Motion := preload("res://player/locomotion_rules.gd")
 const LayoutPath := "res://mechanics/course_layout.json"
-const SAVE := "user://1792-locomotion-course-v1.json"
+const SAVE := "user://1792-locomotion-contact-v1.json" # Keep the older course file untouched.
 var avatar: CharacterBody3D
 var tick := 0
 var paused := false
@@ -19,7 +19,7 @@ func geometry_digest() -> String:
 	return (FileAccess.get_file_as_string(LayoutPath)+FileAccess.get_file_as_string("res://mechanics/course.gd")).sha256_text()
 func motor_digest() -> String:
 	var text: String=""
-	for path in ["res://player/player.gd","res://player/locomotion_rules.gd","res://player/traversal_probe.gd","res://player/player.tscn"]: text+=FileAccess.get_file_as_string(path)
+	for path in ["res://player/player.gd","res://player/locomotion_rules.gd","res://player/traversal_probe.gd","res://player/traversal_record.gd","res://player/player.tscn"]: text+=FileAccess.get_file_as_string(path)
 	return (text+JSON.stringify([avatar.movement_profile,avatar.traversal_enabled,avatar.walk_speed,avatar.run_speed,avatar.acceleration,avatar.gravity_strength,avatar.floor_max_angle,avatar.floor_snap_length])).sha256_text()
 
 func _ready() -> void:
@@ -38,6 +38,7 @@ func _ready() -> void:
 	label("UNMARKED / TOO HIGH",Vector3(9,3.2,4))
 	label("30 DEGREE SLOPE",Vector3(9,3.6,-5))
 	avatar=Player.instantiate();avatar.name="Player";avatar.movement_profile=1;avatar.traversal_enabled=true;avatar.gamepad_camera=true;avatar.menu_shortcut=false
+	avatar.traversal_scope=self
 	add_child(avatar);avatar.get_node("HomeIdentity").hide()
 	avatar.get_node("MeshInstance3D").hide()
 	var proxy:=preload("res://player/locomotion_proxy.gd").new();proxy.name="LocomotionProxy";avatar.add_child(proxy)
@@ -58,7 +59,7 @@ func _ready() -> void:
 
 func build_box(item: Dictionary) -> StaticBody3D:
 	var body:=StaticBody3D.new();body.name=item.id;body.position=Motion.point(item.at)
-	body.rotation.x=deg_to_rad(item.get("rotate_x_degrees",0));body.set_meta("traversable",item.traversable)
+	body.rotation.x=deg_to_rad(item.get("rotate_x_degrees",0));body.set_meta("traversable",item.traversable);body.set_meta("traversal_id",item.id)
 	var shape:=BoxShape3D.new();shape.size=Motion.point(item.size)
 	var collider:=CollisionShape3D.new();collider.shape=shape;body.add_child(collider)
 	var mesh:=MeshInstance3D.new();var box:=BoxMesh.new();box.size=shape.size;mesh.mesh=box
@@ -70,7 +71,7 @@ func label(text: String,at: Vector3) -> void:
 	node.font_size=32;node.pixel_size=0.008;node.modulate=Color("f8f4e7");add_child(node)
 
 func reset_course() -> void:
-	avatar._route.clear();avatar.global_position=Motion.point(layout().spawn);avatar.velocity=Vector3.ZERO
+	avatar.clear_traversal();avatar.global_position=Motion.point(layout().spawn);avatar.velocity=Vector3.ZERO
 	avatar._grounded=false;avatar._coyote=0;avatar._buffer=0;avatar.clear_motion_requests()
 	avatar.pivot.rotation=Vector3(-0.2094395,0,0);avatar.motion_mode_name="air";avatar.last_motion_event=""
 	tick=0;samples.clear();set_paused(false);message="New practice run. No campaign progress or story save is changed."
@@ -133,7 +134,9 @@ func restore(s: Variant) -> String:
 	# Validate everything before replacing either the body or course observation time.
 	error=avatar.restore_motion(s.motion)
 	if not error.is_empty(): return error
-	tick=int(s.tick);samples.clear();return ""
+	tick=int(s.tick);samples.clear()
+	avatar.get_node("LocomotionProxy").update_pose(0.0)
+	return ""
 
 func save_course() -> String:
 	var s:=snapshot()
@@ -145,7 +148,7 @@ func save_course() -> String:
 	file.store_string(JSON.stringify(s));file.flush();var write_error:=file.get_error();file.close()
 	if write_error!=OK: return "Course save write failed; previous save retained."
 	var replaced:=DirAccess.rename_absolute(ProjectSettings.globalize_path(save_path+".tmp"),ProjectSettings.globalize_path(save_path))
-	return "Course motion saved, including airborne velocity." if replaced==OK else "Cannot replace course save; previous save retained."
+	return "Course motion saved, including velocity and active traversal contact." if replaced==OK else "Cannot replace course save; previous save retained."
 
 func load_course() -> String:
 	var file:=FileAccess.open(save_path,FileAccess.READ)
