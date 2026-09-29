@@ -69,7 +69,13 @@ func run() -> void:
 		if int(o.tick)<=previous_tick: check(false,"nonchronological input trace");break
 		previous_tick=int(o.tick)
 		if not restore_observation(o): break
-		var before: Dictionary=c.model.snapshot();await frames(4 if motions.is_empty() else 1)
+		var before: Dictionary=c.model.snapshot()
+		if motions.is_empty():
+			# Live play resamples the HUD each tick. Reproduce its post-wrap layout
+			# pass without advancing this frozen input observation.
+			await frames(3);c.art.detail.hud.sample()
+		await frames(2)
+		check(c.art.detail.hud.top.size.y<240 and c.art.detail.hud.bottom.size.y<180,"bounded replay HUD layout")
 		var path:=output.path_join("walk-frames/%04d.png"%motions.size());var image:=root.get_texture().get_image()
 		check(image.save_png(path)==OK,"motion frame");check(c.model.snapshot()==before,"motion replay freezes source state")
 		var r:=metadata(path);r.input_observation_index=motions.size();motions.append(r)
