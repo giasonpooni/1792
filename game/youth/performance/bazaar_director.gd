@@ -15,6 +15,7 @@ const WalkLines := preload("res://youth/performance/bazaar_walk_lines.gd")
 const Attention := preload("res://youth/performance/bazaar_attention.gd")
 const GazeTrack := preload("res://youth/performance/bazaar_gaze_track.gd")
 const StreetSection := preload("res://youth/performance/bazaar_street_section.gd")
+const MemoryAnchors := preload("res://youth/performance/bazaar_memory_anchors.gd")
 var gaze_tracks: Array=[]
 var hero_gaze=GazeTrack.new()
 var chapter: Node3D
@@ -25,6 +26,7 @@ var ambience: AudioStreamPlayer3D
 var departure: Node3D
 var inhabited_approach: Node3D
 var street_section: Node3D
+var memory_anchors: Node3D
 var walk_seen: Dictionary={}
 var walk_pending: Dictionary={}
 var decompression: Dictionary={}
@@ -56,6 +58,7 @@ func build(owner_chapter: Node3D) -> void:
 	departure=Departure.new();chapter.add_child(departure);departure.build()
 	inhabited_approach=InhabitedApproach.new();chapter.add_child(inhabited_approach);inhabited_approach.build()
 	street_section=StreetSection.new();chapter.add_child(street_section);street_section.build()
+	memory_anchors=MemoryAnchors.new();chapter.add_child(memory_anchors);memory_anchors.build(street_section)
 	ambience=AudioStreamPlayer3D.new();ambience.name="OriginalBazaarAmbience";ambience.stream=Ambience.make();ambience.volume_db=-22
 	ambience.max_distance=18;ambience.unit_size=5;ambience.position=preload("res://youth/brawl_rules.gd").RING+Vector3(0,1,0);chapter.add_child(ambience)
 	for i in range(5):
