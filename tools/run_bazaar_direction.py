@@ -25,6 +25,7 @@ def main() -> int:
         ('res://tests/test_hand_worked_lives.gd','hand-worked-lives','HAND_WORKED_LIVES_TESTS:'),
         ('res://tests/test_world_reference_grammar.gd','world-reference-grammar','WORLD_REFERENCE_GRAMMAR_TESTS:'),
         ('res://tests/test_world_memory_anchors.gd','world-memory-anchors','WORLD_MEMORY_ANCHOR_TESTS:'),
+        ('res://tests/test_threshold_occupation.gd','threshold-occupation','THRESHOLD_OCCUPATION_TESTS:'),
     ]:
         run([args.godot,'--headless','--fixed-fps','60','--path','game','--script',script],name,marker)
     return 0
