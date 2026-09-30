@@ -4,13 +4,13 @@ extends Node3D
 const Dialogue:=preload("res://youth/performance/bazaar_material_dialogue.gd")
 var details: Array[Dictionary]=[]
 var _materials: Dictionary={}
-func mat(color: Color,roughness:=.96) -> StandardMaterial3D:
+func mat(color: Color,roughness: float=.96) -> StandardMaterial3D:
 	var key:=color.to_html()+":"+str(roughness)
 	if _materials.has(key):return _materials[key]
 	var m:=StandardMaterial3D.new();m.albedo_color=color;m.roughness=roughness;_materials[key]=m;return m
 func box(parent: Node3D,name: String,size: Vector3,pos: Vector3,color: Color) -> MeshInstance3D:
 	var mesh:=MeshInstance3D.new();var b:=BoxMesh.new();b.size=size;mesh.mesh=b;mesh.name=name;mesh.position=pos;mesh.material_override=mat(color);parent.add_child(mesh);return mesh
-func cylinder(parent: Node3D,name: String,radius: float,height: float,pos: Vector3,color: Color,segments:=12) -> MeshInstance3D:
+func cylinder(parent: Node3D,name: String,radius: float,height: float,pos: Vector3,color: Color,segments: int=12) -> MeshInstance3D:
 	var mesh:=MeshInstance3D.new();var c:=CylinderMesh.new();c.top_radius=radius;c.bottom_radius=radius;c.height=height;c.radial_segments=segments
 	mesh.mesh=c;mesh.name=name;mesh.position=pos;mesh.material_override=mat(color);parent.add_child(mesh);return mesh
 func ring(parent: Node3D,name: String,inner: float,outer: float,pos: Vector3,color: Color) -> MeshInstance3D:
@@ -55,7 +55,7 @@ func _build_cup() -> void:
 	box(root,"RimNick",Vector3(.055,.03,.025),Vector3(.405,.273,-.055),Color("443a32")).rotation.y=.6
 	var cloth:=box(root,"RolledCloth",Vector3(.46,.12,.16),Vector3(-.38,.11,-.10),Color("887159"));cloth.rotation.y=.18
 	add_detail("kept_place",root.position,root.position+Vector3(.25,.15,0),root)
-func nearest(position: Vector3,max_distance:=1.9) -> Dictionary:
+func nearest(position: Vector3,max_distance: float=1.9) -> Dictionary:
 	var best: Dictionary={};var distance:=max_distance
 	for detail in details:
 		var d:=position.distance_to(detail.position)
