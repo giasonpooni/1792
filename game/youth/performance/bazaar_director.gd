@@ -14,6 +14,7 @@ const InhabitedApproach := preload("res://youth/performance/bazaar_inhabited_app
 const WalkLines := preload("res://youth/performance/bazaar_walk_lines.gd")
 const Attention := preload("res://youth/performance/bazaar_attention.gd")
 const GazeTrack := preload("res://youth/performance/bazaar_gaze_track.gd")
+const StreetSection := preload("res://youth/performance/bazaar_street_section.gd")
 var gaze_tracks: Array=[]
 var hero_gaze=GazeTrack.new()
 var chapter: Node3D
@@ -23,6 +24,7 @@ var market_stage: Node3D
 var ambience: AudioStreamPlayer3D
 var departure: Node3D
 var inhabited_approach: Node3D
+var street_section: Node3D
 var walk_seen: Dictionary={}
 var walk_pending: Dictionary={}
 var decompression: Dictionary={}
@@ -53,6 +55,7 @@ func build(owner_chapter: Node3D) -> void:
 	market_stage=MarketStage.new();chapter.add_child(market_stage);market_stage.build()
 	departure=Departure.new();chapter.add_child(departure);departure.build()
 	inhabited_approach=InhabitedApproach.new();chapter.add_child(inhabited_approach);inhabited_approach.build()
+	street_section=StreetSection.new();chapter.add_child(street_section);street_section.build()
 	ambience=AudioStreamPlayer3D.new();ambience.name="OriginalBazaarAmbience";ambience.stream=Ambience.make();ambience.volume_db=-22
 	ambience.max_distance=18;ambience.unit_size=5;ambience.position=preload("res://youth/brawl_rules.gd").RING+Vector3(0,1,0);chapter.add_child(ambience)
 	for i in range(5):
@@ -132,6 +135,7 @@ func sample(allow_edges: bool=true) -> void:
 		decompression=Decompression.beat(String(b.ledger.outcome),tick-regroup_tick)
 	if is_instance_valid(departure): departure.sample(tick,phase in ["leaving","returning"])
 	if is_instance_valid(inhabited_approach): inhabited_approach.sample(tick,phase)
+	if is_instance_valid(street_section): street_section.sample(tick)
 	if is_instance_valid(market_stage): market_stage.sample(tick,active,contact_beat)
 	if is_instance_valid(ambience):
 		var near_market: bool=chapter.avatar.global_position.distance_to(preload("res://youth/brawl_rules.gd").RING)<15
