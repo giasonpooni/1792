@@ -47,7 +47,10 @@ func run() -> void:
 	check(absf(attention_angle.x)<=Attention.MAX_HEAD_YAW and absf(attention_angle.y)<=Attention.MAX_HEAD_PITCH,"head attention stays inside authored angular limits")
 	var eye_shift:=Attention.eyes(attention_angle)
 	check(absf(eye_shift.x)<=Attention.MAX_EYE_YAW and absf(eye_shift.y)<=Attention.MAX_EYE_PITCH,"eye-line stays inside prototype face limits")
-	check(Attention.blink(0,1)!=Attention.blink(0,4) or Attention.blink(50,1)!=Attention.blink(50,4),"blink phase is not globally synchronized")
+	var independent_blinks: bool=false
+	for blink_tick in range(300):
+		if not is_equal_approx(Attention.blink(blink_tick,1),Attention.blink(blink_tick,4)): independent_blinks=true
+	check(independent_blinks,"blink phase is not globally synchronized across a complete cycle")
 	var figure: Node3D=scene.bazaar_performance.figures[0]
 	check(figure.eyes.size()==2,"supporting face exposes two bounded eye presentation points")
 	var actor_transform: Transform3D=scene.youths[0].global_transform
@@ -73,20 +76,20 @@ func run() -> void:
 		check(friend_figure.position==Vector3.ZERO,"friend reaction never becomes root motion "+str(friend_index))
 	var outcomes: Dictionary={}
 	for outcome in ["stood_ground","withdrew","walked_away"]:
-		var beat: Dictionary=Decompression.beat(outcome,30);outcomes[outcome]=beat
-		check(not beat.is_empty() and beat.amount>0,"post-conflict beat exists for "+outcome)
+		var outcome_beat: Dictionary=Decompression.beat(outcome,30);outcomes[outcome]=outcome_beat
+		check(not outcome_beat.is_empty() and outcome_beat.amount>0,"post-conflict beat exists for "+outcome)
 	check(outcomes.stood_ground.caption!=outcomes.withdrew.caption and outcomes.withdrew.caption!=outcomes.walked_away.caption,"three outcomes decompress differently")
 	check(Decompression.beat("stood_ground",Decompression.WINDOW+1).is_empty(),"decompression expires instead of becoming persistent state")
 	check(Decompression.latest_regroup([{"kind":"invite","tick":1},{"kind":"regroup","tick":40}])==40,"decompression anchors to authoritative regroup receipt")
 	check(scene.bazaar_performance.departure.marks.size()==5,"five visual road-wear marks connect encounter and home approach")
 	check(scene.bazaar_performance.departure.find_children("*","CollisionShape3D",true,false).is_empty(),"departure dressing adds no collision")
 	check(scene.model.snapshot()==before,"decompression and departure dressing create no world state")
-	var target:=Attention.figure_target(3,"challenged",{},scene.youths,scene.avatar.global_position,scene.model.brawl())
+	var target: Variant=Attention.figure_target(3,"challenged",{},scene.youths,scene.avatar.global_position,scene.model.brawl())
 	check(target is Vector3,"challenged friend receives transient spatial attention target")
-	var journal_before:=scene.model.journal()
-	var world_before:=scene.model.snapshot()
+	var journal_before: Array=scene.model.journal()
+	var world_before: Dictionary=scene.model.snapshot()
 	for i in range(scene.bazaar_performance.figures.size()):
-		var gaze_target:=Attention.figure_target(i,"challenged",{},scene.youths,scene.avatar.global_position,scene.model.brawl())
+		var gaze_target: Variant=Attention.figure_target(i,"challenged",{},scene.youths,scene.avatar.global_position,scene.model.brawl())
 		if gaze_target is Vector3:
 			var a:=Attention.angles(scene.bazaar_performance.figures[i].global_transform,gaze_target)
 			scene.bazaar_performance.figures[i].apply_attention(a.x,a.y,Attention.eyes(a),Attention.blink(123,i+1))

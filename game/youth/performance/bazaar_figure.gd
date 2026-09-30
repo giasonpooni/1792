@@ -1,6 +1,7 @@
 # Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 extends Node3D
 ## Original articulated supporting-character study; all transforms are visual only.
+const Attention := preload("res://youth/performance/bazaar_attention.gd")
 const Choreo := preload("res://youth/performance/bazaar_choreography.gd")
 var torso: Node3D
 var head: Node3D
@@ -10,6 +11,8 @@ var hips: Array[Node3D]=[]
 var knees: Array[Node3D]=[]
 var eyes: Array[MeshInstance3D]=[]
 var eye_origins: Array[Vector3]=[]
+var eye_scales: Array[Vector3]=[]
+var authored_head_rotation:=Vector3.ZERO
 var palette: Dictionary={}
 var pose_name := "idle"
 var actor_index := 0
@@ -43,7 +46,7 @@ func build(index: int) -> void:
 		band.mesh=ring;band.scale=Vector3(1,.48,.94);band.position.y=y;band.material_override=surface(cloth.darkened(.12));head.add_child(band)
 	round_piece(head,Vector3(.06,.095,.075),Vector3(0,.055,-.139),skin.lightened(.05))
 	for x in [-.065,.065]:
-		var eye:=round_piece(head,Vector3(.035,.018,.018),Vector3(x,.102,-.130),Color("322c25"));eyes.append(eye);eye_origins.append(eye.position)
+		var eye:=round_piece(head,Vector3(.035,.018,.018),Vector3(x,.102,-.130),Color("322c25"));eyes.append(eye);eye_origins.append(eye.position);eye_scales.append(eye.scale)
 		round_piece(head,Vector3(.049,.013,.018),Vector3(x,.135,-.124),Color("3f3427"))
 	# Individual clothing accents, not religious/faction-rank uniforms.
 	if index==4: round_piece(torso,Vector3(.12,.57,.08),Vector3(-.16,.27,-.175),cloth)
@@ -99,9 +102,17 @@ func sample(tick: int,speed: float,action: String,amount: float=0.0,speaking: bo
 			if speaking:
 				head.rotation.z=.07*sin(float(tick)/13);shoulders[0].rotation.x=-.55;elbows[0].rotation.x=-.7
 
+	authored_head_rotation=head.rotation
+
+func attention_frame() -> Transform3D:
+	var frame: Transform3D=head.get_parent().global_transform*Transform3D(Basis.from_euler(authored_head_rotation),head.position)
+	frame.origin=frame*Vector3(0,.102,-.13)
+	return frame
+
 func apply_attention(yaw: float,pitch: float,eye_offset: Vector2,blink_amount: float) -> void:
-	# Additive on the authored pose. The actor root/collider is never touched.
-	head.rotation.x+=clampf(pitch,-.22,.22);head.rotation.y+=clampf(yaw,-.46,.46)
+	# Apply from the latest authored pose, never add again to last refresh's gaze.
+	head.rotation=authored_head_rotation+Vector3(clampf(pitch,-.22,.22),clampf(yaw,-.46,.46),0)
+	var shift:=Vector2(clampf(eye_offset.x,-Attention.MAX_EYE_YAW,Attention.MAX_EYE_YAW),clampf(eye_offset.y,-Attention.MAX_EYE_PITCH,Attention.MAX_EYE_PITCH))
 	for i in range(eyes.size()):
-		eyes[i].position=eye_origins[i]+Vector3(eye_offset.x,eye_offset.y,0)
-		eyes[i].scale.y=maxf(.12,1.0-.88*clampf(blink_amount,0,1))
+		eyes[i].position=eye_origins[i]+Vector3(shift.x,shift.y,0)
+		eyes[i].scale=eye_scales[i]*Vector3(1,maxf(.12,1.0-.88*clampf(blink_amount,0,1)),1)

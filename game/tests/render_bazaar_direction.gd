@@ -21,7 +21,11 @@ func apply(item: Dictionary) -> void:
 	scene.set_physics_process(false);scene.avatar.set_physics_process(false)
 	var director: Node=scene.bazaar_performance
 	director.sound_enabled=false;director.speech=item.speech.duplicate(true);director._guard=item.guard;director.report_until=int(item.report_until)
+	check(director.restore_attention(item.attention),"retained gaze state restores without advancing the game")
+	# JSON parses scalar numbers as float64; snapshot after validated float32 reconstruction.
+	var restored_attention: Dictionary=director.capture_attention()
 	scene._refresh();director._guard=item.guard;director.sample(false)
+	check(director.capture_attention()==restored_attention,"observation playback does not advance retained eye-line")
 func capture(name: String,check_ui: bool=true) -> void:
 	await frames(1)
 	scene.bazaar_performance.sample(false);await RenderingServer.frame_post_draw
