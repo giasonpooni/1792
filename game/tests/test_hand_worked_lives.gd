@@ -14,7 +14,7 @@ func check(value: bool,label: String) -> void:
 	if value: passed+=1
 	else: failed+=1;push_error("HAND WORKED LIVES FAIL: "+label)
 func ok(error: String,label: String) -> void: check(error.is_empty(),label+": "+error)
-func frames(n:=4) -> void:
+func frames(n: int=4) -> void:
 	for _i in range(n): await physics_frame
 	await process_frame
 func look(scene: Node3D,p: Vector3) -> void:
