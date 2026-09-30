@@ -30,10 +30,14 @@ func invited() -> State:
 	ok(Pose.pose(model,Supply.MARKET),"market fixture");ok(model.begin_brawl(),"existing invitation")
 	return model
 func align_detail(scene: Node3D,item: Dictionary) -> bool:
-	var offsets: Array[Vector3]=[Vector3(0,0,1.15),Vector3(1.15,0,0),Vector3(0,0,-1.15),Vector3(-1.15,0,0)]
+	var offsets: Array[Vector3]=[
+		Vector3(0,0,1.15),Vector3(1.15,0,0),Vector3(0,0,-1.15),Vector3(-1.15,0,0),
+		Vector3(.81,0,.81),Vector3(.81,0,-.81),Vector3(-.81,0,.81),Vector3(-.81,0,-.81)]
 	for offset in offsets:
 		var p:=Vector3(item.position.x+offset.x,.14,item.position.z+offset.z)
 		if not Pose.pose(scene.model,p).is_empty(): continue
+		var nearest: Dictionary=scene.material_memory.nearest(p)
+		if nearest.is_empty() or nearest.id!=item.id: continue
 		var snap: Dictionary=scene.model.snapshot()
 		for i in [3,4]: snap.youth_brawl.actors[i].position=Base.coords(p+Vector3(-.8 if i==3 else .8,0,1.05))
 		if not scene.model.restore(snap).is_empty(): continue
@@ -74,8 +78,11 @@ func run() -> void:
 	check(int(scene.model.progress().tick)==tick_before+1,"interaction consumes only the normal input physics tick before dialogue pause")
 	await press(scene,"Continue")
 	# Broad cube centered on the current eye-to-object line: actual physics obstruction, not a mocked visibility result.
-	var wall: MeshInstance3D=scene._box(Vector3(1.2,2.5,1.2),(scene.avatar.global_position+detail.focus)*.5+Vector3.UP*.55,Color.GRAY,true)
-	await frames(2);look(scene,detail.focus);before=authority_record(scene);await tap_e(scene)
+	var wall: MeshInstance3D=scene._box(Vector3(4.0,3.0,.20),(scene.avatar.global_position+detail.focus)*.5+Vector3.UP*.75,Color.GRAY,true)
+	wall.get_parent().look_at(detail.focus,Vector3.UP)
+	await frames(2);look(scene,detail.focus)
+	check(not scene._seen(detail.focus,2.8),"synthetic wall actually occludes the inspected object")
+	before=authority_record(scene);await tap_e(scene)
 	check(not scene._panel.visible and scene._message.contains("clear sight"),"new obstruction refuses stale object access")
 	check(authority_same(scene,before),"blocked inspection changes no receipts, outcome, economy or journal")
 	wall.get_parent().queue_free();await frames(3)
