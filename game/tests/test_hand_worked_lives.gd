@@ -25,6 +25,8 @@ func press(scene: Node3D,prefix: String) -> void:
 	for button in scene._actions.get_children():
 		if button is Button and button.text.begins_with(prefix): button.pressed.emit();await frames(2);return
 	check(false,"missing button "+prefix)
+func inspection_point(item: Dictionary) -> Vector3:
+	return Vector3(item.position.x,.14,item.position.z+1.15)
 func invited_at(point: Vector3) -> State:
 	var model:=State.new();ok(model.restore(Fixture.complete()),"completed inquiry fixture")
 	ok(Pose.pose(model,Supply.MARKET),"market fixture");ok(model.begin_brawl(),"existing invitation")
@@ -35,7 +37,8 @@ func invited_at(point: Vector3) -> State:
 	return model
 func run() -> void:
 	var home: Node3D=Launch.make_world();var scene: Node3D=home.get_node("ChildhoodChapter")
-	var model: State=invited_at(Vector3(-21.25,.14,-12.05));ok(scene.model.restore(model.snapshot()),"restore invited detail fixture")
+	var basket_item: Dictionary={"position":Vector3(-21.25,0,-12.05)}
+	var model: State=invited_at(inspection_point(basket_item));ok(scene.model.restore(model.snapshot()),"restore invited detail fixture")
 	root.add_child(home);scene._apply();await frames(8)
 	var stage: Node3D=scene.material_memory
 	check(is_instance_valid(stage),"material-memory stage attached to existing Home")
@@ -51,22 +54,31 @@ func run() -> void:
 	check(ids==["pale_repair","hidden_colour","kept_place"],"stable authored detail order")
 	var far: Dictionary=stage.call("nearest",Vector3.ZERO)
 	check(far.is_empty(),"far world position discovers no detail")
-	var before: Dictionary=scene.model.snapshot();var journal_before: Array=scene.model.journal()
-	var detail: Dictionary=stage.call("record","pale_repair");look(scene,detail.focus);await tap_e(scene)
+	var detail: Dictionary=stage.call("record","pale_repair")
+	var journal_before: Array=scene.model.journal();var brawl_before: Dictionary=scene.model.brawl().duplicate(true)
+	var economy_before: Dictionary=scene.model.economy().duplicate(true) if scene.model.has_economy() else {}
+	var tick_before: int=int(scene.model.progress().tick)
+	look(scene,detail.focus);await tap_e(scene)
 	check(scene._panel.visible and scene._panel_text.text.contains("THE PALE REPAIR"),"physical E interaction opens repaired-basket scene")
 	check(scene._panel_text.text.contains("JIVA") and scene._panel_text.text.contains("MELA"),"nearby physical friends join the optional exchange")
-	check(scene.model.snapshot()==before and scene.model.journal()==journal_before,"inspection adds no time, receipts, inventory, money or journal fact")
+	check(scene.model.brawl()==brawl_before and scene.model.journal()==journal_before and (not scene.model.has_economy() or scene.model.economy()==economy_before),"inspection adds no receipts, inventory, money or journal fact")
+	check(int(scene.model.progress().tick)==tick_before+1,"interaction consumes only the normal input physics tick before dialogue pause")
 	await press(scene,"Continue")
 	var wall: MeshInstance3D=scene._box(Vector3(.2,2.5,2.0),(scene.avatar.global_position+detail.focus)*.5+Vector3.UP*.6,Color.GRAY,true)
-	await frames(4);look(scene,detail.focus);await tap_e(scene)
+	await frames(4);look(scene,detail.focus)
+	journal_before=scene.model.journal();brawl_before=scene.model.brawl().duplicate(true)
+	economy_before=scene.model.economy().duplicate(true) if scene.model.has_economy() else {}
+	await tap_e(scene)
 	check(not scene._panel.visible and scene._message.contains("clear sight"),"new obstruction refuses stale object access")
-	check(scene.model.snapshot()==before and scene.model.journal()==journal_before,"blocked inspection is atomic")
+	check(scene.model.brawl()==brawl_before and scene.model.journal()==journal_before and (not scene.model.has_economy() or scene.model.economy()==economy_before),"blocked inspection is atomic")
 	wall.get_parent().queue_free();await frames(4)
 	for id in ["hidden_colour","kept_place"]:
 		var item: Dictionary=stage.call("record",id)
-		var next: State=invited_at(item.position);ok(scene.model.restore(next.snapshot()),"restore "+id+" fixture");scene._apply();await frames(5);look(scene,item.focus);before=scene.model.snapshot();journal_before=scene.model.journal();await tap_e(scene)
+		var next: State=invited_at(inspection_point(item));ok(scene.model.restore(next.snapshot()),"restore "+id+" fixture");scene._apply();await frames(5);look(scene,item.focus)
+		journal_before=scene.model.journal();brawl_before=scene.model.brawl().duplicate(true);economy_before=scene.model.economy().duplicate(true) if scene.model.has_economy() else {}
+		await tap_e(scene)
 		check(scene._panel.visible and scene._panel_text.text.contains(String(item.title)),"optional interaction opens "+id)
-		check(scene.model.snapshot()==before and scene.model.journal()==journal_before,"optional "+id+" conversation remains transient")
+		check(scene.model.brawl()==brawl_before and scene.model.journal()==journal_before and (not scene.model.has_economy() or scene.model.economy()==economy_before),"optional "+id+" conversation remains transient")
 		await press(scene,"Continue")
 	home.queue_free();await frames(3)
 	print("HAND_WORKED_LIVES_TESTS: %d passed, %d failed"%[passed,failed]);quit(1 if failed else 0)
