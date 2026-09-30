@@ -37,7 +37,7 @@ func run() -> void:
 	var home:=Launch.make_world();var scene=home.get_node("ChildhoodChapter")
 	var model:=invited_at(Vector3(-21.25,.14,-12.05));ok(scene.model.restore(model.snapshot()),"restore invited detail fixture")
 	root.add_child(home);await frames(8)
-	var stage: Node3D=scene.bazaar_performance.material_memory
+	var stage: Node3D=scene.material_memory
 	check(is_instance_valid(stage),"material-memory stage attached to existing Home")
 	check(stage.get_meta("classification","")=="original-fictional-material-memory","explicit fictional craft classification")
 	check(stage.details.size()==3,"exactly three hand-authored material stories")
