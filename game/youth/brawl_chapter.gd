@@ -80,6 +80,17 @@ func _open_journal() -> void:
 	if FileAccess.file_exists(ServiceState.SERVICE_SAVE): _youth_button("Import prior household-service save (replaces this run)","import")
 func _interact() -> void:
 	var phase: String=model.brawl_phase()
+	if phase=="invited" and is_instance_valid(bazaar_performance):
+		var detail: Dictionary=bazaar_performance.material_detail(model.position())
+		if not detail.is_empty():
+			if model.mounted(): _message="Dismount before stopping to inspect the market detail.";return
+			if not _seen(detail.focus,2.8): _message="Step closer and face the object in clear sight.";return
+			var together: bool=_contact(youths[3]) and _contact(youths[4]) and Model.distance(model.position(),youths[3].global_position)<5 and Model.distance(model.position(),youths[4].global_position)<5
+			var body: String=String(detail.description)
+			if together: body+="\n\n"+String(detail.with_friends)
+			body+="\n\nOriginal fictional micro-detail. No reward, codex unlock or historical authentication."
+			_show_dialog("HAND-WORKED LIVES · "+String(detail.title),body,[["Continue","resume"]])
+			return
 	if phase in ["invited","challenged"] and Model.distance(model.position(),youths[0].global_position)<3.2:
 		if not _seen(youths[0].global_position+Vector3.UP*1.4,4.5): _message="Face the challenger in clear sight.";return
 		if phase=="invited":
