@@ -36,7 +36,7 @@ func invited_at(point: Vector3) -> State:
 func run() -> void:
 	var home: Node3D=Launch.make_world();var scene: Node3D=home.get_node("ChildhoodChapter")
 	var model: State=invited_at(Vector3(-21.25,.14,-12.05));ok(scene.model.restore(model.snapshot()),"restore invited detail fixture")
-	root.add_child(home);await frames(8)
+	root.add_child(home);scene._apply();await frames(8)
 	var stage: Node3D=scene.material_memory
 	check(is_instance_valid(stage),"material-memory stage attached to existing Home")
 	check(stage.get_meta("classification","")=="original-fictional-material-memory","explicit fictional craft classification")
