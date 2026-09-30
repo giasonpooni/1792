@@ -231,3 +231,19 @@ pre-decision exchange, articulated supporting figures, visible guard/counter rea
 local nonvocal foley, compact action cues and outcome-specific homecoming text. The
 three original outcomes, timing, player/companion collision, money and saves remain.
 This is direct game content, not another terminal feature. [Play and limits](docs/BAZAAR_DIRECTION.md).
+
+## Quiet object stories and reference-led character craft
+
+The current Home contains three optional close observations: a mended saffron/ivory
+cloth, a repaired harness cheekpiece, and a patched pan with different stories from
+Mela and Jiva. On foot, face a nearby object and press **V**; **E** keeps its existing
+functions. Both friends must actually be nearby for their tale. These original
+micro-scenes award no inventory, money or authenticated historical knowledge.
+
+The supplied mature portrait is the adult art direction, not a replacement of the
+child's age or a claim of reproduced likeness. The supporting faces now have bounded
+brow/mouth reactions and corrected eye/blink attachment. All remain prototype art.
+
+[Object scenes and play route](docs/QUIET_OBJECT_STORIES.md) ·
+[Portrait/age continuity](docs/PROTAGONIST_REFERENCE_DIRECTION.md) ·
+[Facial performance and its limits](docs/BAZAAR_FACIAL_PERFORMANCE.md)

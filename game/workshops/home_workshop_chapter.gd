@@ -6,6 +6,8 @@ const Craft := preload("res://workshops/workshop_rules.gd")
 const CourtyardEnvelope := preload("res://reconstruction/courtyard_envelope.gd")
 const WorkshopView := preload("res://workshops/workshop_world.gd")
 const BazaarPerformance := preload("res://youth/performance/bazaar_director.gd")
+const QuietObjects := preload("res://youth/details/quiet_objects.gd")
+var quiet_objects: Node3D
 var bazaar_performance: Node
 var workplace: Node3D
 var _workshop_action := ""
@@ -20,6 +22,9 @@ func _ready() -> void:
 	_refresh()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_V and is_instance_valid(quiet_objects):
+		if not _paused: quiet_objects.request_open=true
+		get_viewport().set_input_as_handled();return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_F6 and is_instance_valid(bazaar_performance):
 		bazaar_performance.toggle_sound();get_viewport().set_input_as_handled();return
 	super._unhandled_input(event)
@@ -32,12 +37,17 @@ func _build_world() -> void:
 	super._build_world()
 	workplace=WorkshopView.new();add_child(workplace);workplace.build(avatar)
 	CourtyardEnvelope.attach(self)
+	quiet_objects=QuietObjects.new();add_child(quiet_objects);quiet_objects.build(self)
 	_navigation.built=false
 
 func _clear_pending_actions() -> void:
 	super._clear_pending_actions();_workshop_action="";_workshop_choices.clear()
+	if is_instance_valid(quiet_objects): quiet_objects.reset()
 
 func _menu_action(action: String) -> void:
+	if action.begins_with("quiet:"):
+		if is_instance_valid(quiet_objects): quiet_objects.consume(action.trim_prefix("quiet:"))
+		return
 	if action.begins_with("smith:"):
 		var kind:=action.trim_prefix("smith:")
 		if _paused and kind in _workshop_choices and _workshop_action.is_empty(): _workshop_action=kind
@@ -45,6 +55,7 @@ func _menu_action(action: String) -> void:
 	super._menu_action(action)
 
 func _resume() -> void:
+	if is_instance_valid(quiet_objects): quiet_objects.reset()
 	_workshop_action="";_workshop_choices.clear()
 	super._resume()
 
@@ -96,6 +107,7 @@ func _workshop_access(kind: String) -> String:
 	return ""
 
 func _physics_process(delta: float) -> void:
+	if is_instance_valid(quiet_objects) and quiet_objects.step(): return
 	if not _workshop_action.is_empty():
 		var kind:=_workshop_action;_workshop_action=""
 		if kind=="import": _load(YouthState.BRAWL_SAVE);return
@@ -119,6 +131,7 @@ func _sync_water() -> void:
 
 func _apply() -> void:
 	super._apply();_sync_workshop()
+	if is_instance_valid(quiet_objects): quiet_objects.reset()
 	if is_instance_valid(bazaar_performance): bazaar_performance.rehydrate()
 
 func workshop_hint() -> String:
@@ -128,6 +141,7 @@ func workshop_hint() -> String:
 
 func _refresh() -> void:
 	super._refresh();_sync_workshop()
+	if is_instance_valid(quiet_objects): quiet_objects.sample()
 	if not is_instance_valid(_hud) or not model.has_economy():
 		if is_instance_valid(bazaar_performance): bazaar_performance.sample()
 		return

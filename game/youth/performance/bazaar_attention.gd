@@ -2,17 +2,20 @@
 extends RefCounted
 ## Transient attention from current geometry and existing presentation context.
 ## No perception, knowledge, testimony, relationship or save authority.
-const MAX_HEAD_YAW:=0.46
-const MAX_HEAD_PITCH:=0.22
-const MAX_EYE_YAW:=0.055
-const MAX_EYE_PITCH:=0.026
+# Vector components use the same precision as the returned Vector2, including at limits.
+const HEAD_LIMIT := Vector2(.46,.22)
+const EYE_LIMIT := Vector2(.006,.003)
+const MAX_HEAD_YAW := HEAD_LIMIT.x
+const MAX_HEAD_PITCH := HEAD_LIMIT.y
+const MAX_EYE_YAW := EYE_LIMIT.x
+const MAX_EYE_PITCH := EYE_LIMIT.y
 
 static func angles(observer: Transform3D,target: Vector3) -> Vector2:
 	var local: Vector3=observer.basis.inverse()*(target-observer.origin)
-	if local.length_squared()<0.0001:return Vector2.ZERO
+	if local.length_squared()<0.0001 or local.z>=-.01:return Vector2.ZERO
 	var horizontal:=sqrt(local.x*local.x+local.z*local.z)
 	var yaw:=atan2(-local.x,-local.z)
-	var pitch:=-atan2(local.y,horizontal)
+	var pitch:=atan2(local.y,horizontal)
 	return Vector2(clampf(yaw,-MAX_HEAD_YAW,MAX_HEAD_YAW),clampf(pitch,-MAX_HEAD_PITCH,MAX_HEAD_PITCH))
 
 static func blink(tick: int,identity: int) -> float:
@@ -21,8 +24,8 @@ static func blink(tick: int,identity: int) -> float:
 	return sin(PI*float(cycle)/5.0)
 
 static func eyes(head_angles: Vector2) -> Vector2:
-	return Vector2(clampf(head_angles.x*.18,-MAX_EYE_YAW,MAX_EYE_YAW),
-		clampf(-head_angles.y*.16,-MAX_EYE_PITCH,MAX_EYE_PITCH))
+	return Vector2(clampf(-head_angles.x*.012,-MAX_EYE_YAW,MAX_EYE_YAW),
+		clampf(head_angles.y*.010,-MAX_EYE_PITCH,MAX_EYE_PITCH))
 
 static func hero_target(phase: String,speech: Dictionary,youths: Array,brawl: Dictionary,avatar_position: Vector3) -> Variant:
 	if not speech.is_empty():

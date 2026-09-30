@@ -21,6 +21,8 @@ def main() -> int:
         ('res://tests/test_bazaar_direction.gd','bazaar-direction','BAZAAR_DIRECTION_TESTS:'),
         ('res://tests/test_bazaar_market_craft.gd','bazaar-market-craft','BAZAAR_MARKET_CRAFT_TESTS:'),
         ('res://tests/test_bazaar_inhabited_approach.gd','bazaar-inhabited-approach','BAZAAR_INHABITED_APPROACH_TESTS:'),
+        ('res://tests/test_bazaar_face_performance.gd','bazaar-face-performance','BAZAAR_FACE_TESTS:'),
+        ('res://tests/test_quiet_objects.gd','quiet-objects','QUIET_OBJECT_TESTS:'),
     ]:
         run([args.godot,'--headless','--fixed-fps','60','--path','game','--script',script],name,marker)
     return 0

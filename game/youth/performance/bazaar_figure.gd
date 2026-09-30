@@ -2,6 +2,7 @@
 extends Node3D
 ## Original articulated supporting-character study; all transforms are visual only.
 const Choreo := preload("res://youth/performance/bazaar_choreography.gd")
+const FaceScore := preload("res://youth/performance/bazaar_expression.gd")
 var torso: Node3D
 var head: Node3D
 var shoulders: Array[Node3D]=[]
@@ -10,6 +11,16 @@ var hips: Array[Node3D]=[]
 var knees: Array[Node3D]=[]
 var eyes: Array[MeshInstance3D]=[]
 var eye_origins: Array[Vector3]=[]
+var eye_scales: Array[Vector3]=[]
+var brows: Array[MeshInstance3D]=[]
+var brow_origins: Array[Vector3]=[]
+var mouth: Array[MeshInstance3D]=[]
+var mouth_origins: Array[Vector3]=[]
+var authored_head := Vector3.ZERO
+var gaze_rotation := Vector2.ZERO
+var blink_weight := 0.0
+var expression_name := "neutral"
+var speech_emphasis := 0.0
 var palette: Dictionary={}
 var pose_name := "idle"
 var actor_index := 0
@@ -36,15 +47,21 @@ func build(index: int) -> void:
 	tapered(torso,.255,.255,.075,Vector3(0,.06,0),cloth,.74)
 	tapered(torso,.13,.17,.10,Vector3(0,.605,0),cloth,.72)
 	head=joint(torso,"Head",Vector3(0,.68,0))
-	round_piece(head,Vector3(.26,.32,.26),Vector3(0,.07,-.006),skin)
+	var face:=round_piece(head,Vector3(.26,.32,.26),Vector3(0,.07,-.006),skin)
+	face.mesh.radial_segments=24;face.mesh.rings=16
 	round_piece(head,Vector3(.32,.18,.30),Vector3(0,.255,.005),cloth)
 	for y in [.22,.25,.28]:
 		var band:=MeshInstance3D.new();var ring:=TorusMesh.new();ring.inner_radius=.13;ring.outer_radius=.159;ring.rings=12;ring.ring_segments=8
 		band.mesh=ring;band.scale=Vector3(1,.48,.94);band.position.y=y;band.material_override=surface(cloth.darkened(.12));head.add_child(band)
 	round_piece(head,Vector3(.06,.095,.075),Vector3(0,.055,-.139),skin.lightened(.05))
-	for x in [-.065,.065]:
-		var eye:=round_piece(head,Vector3(.035,.018,.018),Vector3(x,.102,-.130),Color("322c25"));eyes.append(eye);eye_origins.append(eye.position)
-		round_piece(head,Vector3(.049,.013,.018),Vector3(x,.135,-.124),Color("3f3427"))
+	for x in [-.055,.055]:
+		var eye:=round_piece(head,Vector3(.030,.014,.007),face_anchor(x,.102,.003),Color("322c25"));eyes.append(eye);eye_origins.append(eye.position);eye_scales.append(eye.scale)
+		var brow:=round_piece(head,Vector3(.050,.0045,.006),face_anchor(x,.135,.003),Color("3f3427"))
+		brows.append(brow);brow_origins.append(brow.position)
+	# A shallow three-part mouth. No new face asset or claimed historical likeness.
+	for x in [-.025,0.0,.025]:
+		var lip:=round_piece(head,Vector3(.027,.0045,.007),Vector3(x,.008,-.129),Color("6c4b3b"))
+		mouth.append(lip);mouth_origins.append(lip.position)
 	# Individual clothing accents, not religious/faction-rank uniforms.
 	if index==4: round_piece(torso,Vector3(.12,.57,.08),Vector3(-.16,.27,-.175),cloth)
 	for side in [-1,1]:
@@ -98,10 +115,38 @@ func sample(tick: int,speed: float,action: String,amount: float=0.0,speaking: bo
 		_:
 			if speaking:
 				head.rotation.z=.07*sin(float(tick)/13);shoulders[0].rotation.x=-.55;elbows[0].rotation.x=-.7
+	authored_head=head.rotation
+	gaze_rotation=Vector2.ZERO
+	apply_expression("neutral",0.0,0.0)
 
 func apply_attention(yaw: float,pitch: float,eye_offset: Vector2,blink_amount: float) -> void:
-	# Additive on the authored pose. The actor root/collider is never touched.
-	head.rotation.x+=clampf(pitch,-.22,.22);head.rotation.y+=clampf(yaw,-.46,.46)
+	gaze_rotation=Vector2(clampf(yaw,-.46,.46),clampf(pitch,-.22,.22))
+	blink_weight=clampf(blink_amount,0,1)
+	head.rotation=authored_head+Vector3(gaze_rotation.y,gaze_rotation.x,0)
 	for i in range(eyes.size()):
-		eyes[i].position=eye_origins[i]+Vector3(eye_offset.x,eye_offset.y,0)
-		eyes[i].scale.y=maxf(.12,1.0-.88*clampf(blink_amount,0,1))
+		var x:=eye_origins[i].x+clampf(eye_offset.x,-.006,.006)
+		var y:=eye_origins[i].y+clampf(eye_offset.y,-.003,.003)
+		eyes[i].position=face_anchor(x,y,.003)
+		eyes[i].rotation.y=-asin(clampf(x/.13,-.8,.8))
+		eyes[i].scale=eye_scales[i]*Vector3(1,maxf(.12,1.0-.88*blink_weight),1)
+
+func apply_expression(name: String,weight: float=1.0,nod: float=0.0) -> void:
+	var face:=FaceScore.controls(name,weight)
+	expression_name=face.name;speech_emphasis=clampf(nod,-.025,.025)
+	head.rotation=authored_head+Vector3(gaze_rotation.y+speech_emphasis,gaze_rotation.x,0)
+	for i in range(brows.size()):
+		brows[i].position=face_anchor(brow_origins[i].x,brow_origins[i].y+face.brow_lift[i],.003)
+		brows[i].rotation.y=-asin(clampf(brow_origins[i].x/.13,-.8,.8))
+		brows[i].rotation.z=face.brow_roll[i]
+	for i in range(mouth.size()):
+		var corner: float=face.mouth_corners.x if i==0 else face.mouth_corners.y if i==2 else 0.0
+		mouth[i].position=mouth_origins[i]+Vector3(0,corner*.5,0)
+		mouth[i].rotation.z=corner*25.0*(-1 if i==0 else 1)
+	for i in range(eyes.size()):
+		var closure:=maxf(blink_weight,float(face.lid_tension))
+		eyes[i].scale=eye_scales[i]*Vector3(1,maxf(.12,1.0-.88*closure),1)
+
+func face_anchor(x: float,y: float,lift: float) -> Vector3:
+	# Attach features to the original ellipsoid rather than floating in front of it.
+	var section:=maxf(.01,1.0-pow(x/.13,2)-pow((y-.07)/.16,2))
+	return Vector3(x,y,-.006-.13*sqrt(section)-lift)

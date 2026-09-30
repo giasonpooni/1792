@@ -17,7 +17,7 @@ func ok(error: String,label: String) -> void: check(error.is_empty(),label+": "+
 func frames(n:=4) -> void:
 	for _i in range(n): await physics_frame
 	await process_frame
-func invited_at(point: Vector3):
+func invited_at(point: Vector3) -> State:
 	var model:=State.new();ok(model.restore(Fixture.complete()),"completed inquiry fixture")
 	ok(Pose.pose(model,Supply.MARKET),"market fixture")
 	ok(model.begin_brawl(),"existing invitation")
@@ -25,7 +25,7 @@ func invited_at(point: Vector3):
 	return model
 func run() -> void:
 	var home:=Launch.make_world();var scene=home.get_node("ChildhoodChapter")
-	var model:=invited_at(WalkLines.ZONES[0].center)
+	var model: State=invited_at(WalkLines.ZONES[0].center)
 	ok(scene.model.restore(model.snapshot()),"restore invited approach fixture")
 	root.add_child(home);await frames(8)
 	var approach: Node3D=scene.bazaar_performance.inhabited_approach

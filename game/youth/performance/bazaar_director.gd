@@ -13,6 +13,7 @@ const Departure := preload("res://youth/performance/bazaar_departure.gd")
 const InhabitedApproach := preload("res://youth/performance/bazaar_inhabited_approach.gd")
 const WalkLines := preload("res://youth/performance/bazaar_walk_lines.gd")
 const Attention := preload("res://youth/performance/bazaar_attention.gd")
+const FaceScore := preload("res://youth/performance/bazaar_expression.gd")
 var chapter: Node3D
 var figures: Array[Node3D]=[]
 var sounds: Array[AudioStreamPlayer3D]=[]
@@ -101,7 +102,11 @@ func receive(event: Dictionary,ledger: Dictionary) -> void:
 	var kind: String=event.kind
 	if kind in ["challenge","stand","leave","regroup","report"]:
 		queue.clear();speech.clear();walk_pending.clear()
-	for line in Dialogue.lines(kind,ledger.outcome): queue.append({"actor":line[0],"text":line[1],"expires":int(event.tick)+780})
+	var lines: Array=Dialogue.lines(kind,ledger.outcome)
+	for line_index in range(lines.size()):
+		var line: Array=lines[line_index]
+		queue.append({"actor":line[0],"text":line[1],"expires":int(event.tick)+780,
+			"performance_beat":"%s:%s:%d"%[kind,ledger.outcome,line_index]})
 	if kind in ["parry","hit","counter"]: play("check" if kind=="parry" else "impact",int(event.index),int(event.tick))
 	if kind=="report": report_until=int(event.tick)+480
 func sample(allow_edges: bool=true) -> void:
@@ -158,10 +163,7 @@ func sample(allow_edges: bool=true) -> void:
 				var d: Vector3=chapter.avatar.global_position-chapter.youths[i].global_position;figures[i].rotation.y=atan2(-d.x,-d.z)-chapter.youths[i].rotation.y
 			else: figures[i].rotation.y=0
 		figures[i].sample(tick,Vector2(chapter.youths[i].velocity.x,chapter.youths[i].velocity.z).length(),action,amount,speech.get("actor",-1)==i)
-		var gaze_target: Variant=Attention.figure_target(i,phase,speech,chapter.youths,chapter.avatar.global_position,b)
-		var gaze:=Vector2.ZERO
-		if gaze_target is Vector3: gaze=Attention.angles(figures[i].global_transform,gaze_target)
-		figures[i].apply_attention(gaze.x,gaze.y,Attention.eyes(gaze),Attention.blink(tick,i+1))
+
 	if chapter._paused or not enabled:
 		for sound in sounds: sound.stop()
 		if is_instance_valid(ambience): ambience.stop()
@@ -187,9 +189,10 @@ func sample(allow_edges: bool=true) -> void:
 		while speech.is_empty() and not queue.is_empty():
 			var candidate: Dictionary=queue.pop_front()
 			if tick>candidate.expires or not audible(int(candidate.actor)): continue
-			candidate.until=tick+int(candidate.get("duration",210));speech=candidate
+			candidate.started=tick;candidate.until=tick+int(candidate.get("duration",210));speech=candidate
 			heard.append({"actor":candidate.actor,"tick":tick,"text":candidate.text})
 			if heard.size()>32: heard.pop_front()
+	_perform_faces(b,phase,tick)
 	_pose_hero(b,tick)
 	layout(phase,b,tick)
 	# The retained courtyard HUD samples its labels during costume retargeting.
@@ -198,9 +201,36 @@ func sample(allow_edges: bool=true) -> void:
 		chapter.guard_visual.hide() # Unarmed encounter: hands, not the earlier training-shield proxy.
 		for actor in chapter.youths: actor.caption.hide()
 	last_tick=tick
+func gaze_clear(observer: Vector3,target: Variant,reach: float=7.5) -> bool:
+	if not (target is Vector3) or observer.distance_to(target)>reach: return false
+	# Geometry check is visual admission only. It writes no perception receipt.
+	var query:=PhysicsRayQueryParameters3D.create(observer,target,1,[chapter.avatar.get_rid(),chapter.horse.get_rid()])
+	return chapter.get_world_3d().direct_space_state.intersect_ray(query).is_empty()
+
+func _perform_faces(b: Dictionary,phase: String,tick: int) -> void:
+	var line: Dictionary=FaceScore.delivery(speech,tick)
+	for i in range(figures.size()):
+		var figure: Node3D=figures[i]
+		if not figure.visible: continue
+		# Measure eye-line from the neutral head joint, not the character's feet or
+		# yesterday's gaze. Repeated render sampling cannot feed its result back in.
+		var frame: Transform3D=figure.torso.global_transform*Transform3D(Basis.IDENTITY,figure.head.position)
+		var target: Variant=Attention.figure_target(i,phase,speech,chapter.youths,chapter.avatar.global_position,b) if active else null
+		var clear:=gaze_clear(frame.origin,target)
+		var gaze:=Attention.angles(frame,target) if clear else Vector2.ZERO
+		figure.apply_attention(gaze.x,gaze.y,Attention.eyes(gaze),Attention.blink(tick,i+1))
+		var down: bool=i<3 and not b.is_empty() and b.ledger.down[i]
+		var outcome:=String(b.get("ledger",{}).get("outcome",""))
+		var name:=FaceScore.choose(i,phase,outcome,down,figure.pose_name,speech)
+		if not active: name="neutral"
+		var emphasis: float=line.nod if line.speaker==i and clear else 0.0
+		# Stillness has a job: the speaker gets one restrained emphasis, the listener
+		# a held response. These are acting directions, not simulated psychology.
+		figure.apply_expression(name,.85 if active else 0.0,emphasis)
+
 func _pose_hero(b: Dictionary,tick: int) -> void:
 	var phase: String=chapter.model.brawl_phase()
-	var target: Variant=Attention.hero_target(phase,speech,chapter.youths,b,chapter.avatar.global_position)
+	var target: Variant=Attention.hero_target(phase,speech,chapter.youths,b,chapter.avatar.global_position) if active else null
 	var fighting: bool=active and not b.is_empty() and b.ledger.phase=="fighting"
 	if not fighting and not (target is Vector3) and _hero_restore.is_empty(): return
 	var proxy: Node3D=chapter.art._hero_proxy
@@ -221,14 +251,17 @@ func _pose_hero(b: Dictionary,tick: int) -> void:
 			if elapsed<0 or elapsed>20: continue
 			if event.kind=="counter": rotations={"upper_armR":Vector3(-1.4,.2,0),"forearmR":Vector3(-.05,0,0),"spine":Vector3(0,.30*sin(PI*float(elapsed)/20),0)}
 			elif event.kind=="hit": rotations["spine"]=Vector3(-.17*sin(PI*float(elapsed)/20),0,0)
-	if target is Vector3:
-		var hero_gaze: Vector2=Attention.angles(proxy.global_transform,target)
-		rotations["head"]=Vector3(hero_gaze.y,hero_gaze.x,0)
+	var head_bone:=rig.find_bone("head")
+	if head_bone>=0 and target is Vector3:
+		var frame: Transform3D=rig.global_transform*rig.get_bone_global_pose(head_bone)
+		if gaze_clear(frame.origin,target):
+			var hero_gaze:=Attention.angles(frame,target)
+			rotations["head"]=Vector3(hero_gaze.y,hero_gaze.x,0)
 	for id in rotations:
 		var bone:=rig.find_bone(id)
 		if bone<0: continue
 		_hero_restore[id]=rig.get_bone_pose_rotation(bone)
-		rig.set_bone_pose_rotation(bone,Quaternion.from_euler(rotations[id]))
+		rig.set_bone_pose_rotation(bone,_hero_restore[id]*Quaternion.from_euler(rotations[id]) if id=="head" else Quaternion.from_euler(rotations[id]))
 	if is_instance_valid(chapter.art.detail): chapter.art.detail.sample(tick)
 
 func layout(phase: String,b: Dictionary,tick: int) -> void:
