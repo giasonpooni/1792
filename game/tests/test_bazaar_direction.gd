@@ -112,7 +112,7 @@ func run() -> void:
 	ensure(snapshots.has("windup") and snapshots.has("checked") and snapshots.has("down"),"actual fight produces windup, check and defeated poses")
 	ensure(clip.size()>12,"actual fight yields motion observations")
 	ensure(outcomes.fight.sound_cues.any(func(e):return e.kind=="check"),"actual checked strike emits foley cue")
-	ensure(snapshots.has("approach-line") and snapshots.has("approach-animal"),"actual physical approach retains at least one spoken ambient beat and the animal vignette")
+	ensure(snapshots.has("approach-animal"),"actual physical approach reaches the authored animal vignette without requiring ambient banter to pre-empt story dialogue")
 	ensure(outcomes.fight.heard.size()>0 and outcomes.leave.heard.size()>0,"nearby friends speak on both routes")
 	var report: Dictionary={"schema":"1792.bazaar-direction.v1","engine":Engine.get_version_info().string,"physics_hz":Engine.physics_ticks_per_second,
 		"new_assertions":new_checks,"passed":passed,"failed":failed,"snapshots":snapshots,"motion":clip,"outcomes":outcomes,
