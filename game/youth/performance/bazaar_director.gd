@@ -14,7 +14,6 @@ const InhabitedApproach := preload("res://youth/performance/bazaar_inhabited_app
 const WalkLines := preload("res://youth/performance/bazaar_walk_lines.gd")
 const Attention := preload("res://youth/performance/bazaar_attention.gd")
 const GazeTrack := preload("res://youth/performance/bazaar_gaze_track.gd")
-const MaterialMemory := preload("res://youth/performance/bazaar_material_memory.gd")
 var gaze_tracks: Array=[]
 var hero_gaze=GazeTrack.new()
 var chapter: Node3D
@@ -24,7 +23,6 @@ var market_stage: Node3D
 var ambience: AudioStreamPlayer3D
 var departure: Node3D
 var inhabited_approach: Node3D
-var material_memory: Node3D
 var walk_seen: Dictionary={}
 var walk_pending: Dictionary={}
 var decompression: Dictionary={}
@@ -55,7 +53,6 @@ func build(owner_chapter: Node3D) -> void:
 	market_stage=MarketStage.new();chapter.add_child(market_stage);market_stage.build()
 	departure=Departure.new();chapter.add_child(departure);departure.build()
 	inhabited_approach=InhabitedApproach.new();chapter.add_child(inhabited_approach);inhabited_approach.build()
-	material_memory=MaterialMemory.new();chapter.add_child(material_memory);material_memory.build()
 	ambience=AudioStreamPlayer3D.new();ambience.name="OriginalBazaarAmbience";ambience.stream=Ambience.make();ambience.volume_db=-22
 	ambience.max_distance=18;ambience.unit_size=5;ambience.position=preload("res://youth/brawl_rules.gd").RING+Vector3(0,1,0);chapter.add_child(ambience)
 	for i in range(5):
@@ -309,6 +306,3 @@ func toggle_sound() -> void:
 	if is_instance_valid(ambience): ambience.stop()
 	sample(false)
 
-func material_detail(position: Vector3) -> Dictionary:
-	if not is_instance_valid(material_memory): return {}
-	return material_memory.nearest(position)
