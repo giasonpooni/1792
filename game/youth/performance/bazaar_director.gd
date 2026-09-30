@@ -12,6 +12,7 @@ const Decompression := preload("res://youth/performance/bazaar_decompression.gd"
 const Departure := preload("res://youth/performance/bazaar_departure.gd")
 const InhabitedApproach := preload("res://youth/performance/bazaar_inhabited_approach.gd")
 const WalkLines := preload("res://youth/performance/bazaar_walk_lines.gd")
+const Attention := preload("res://youth/performance/bazaar_attention.gd")
 var chapter: Node3D
 var figures: Array[Node3D]=[]
 var sounds: Array[AudioStreamPlayer3D]=[]
@@ -157,6 +158,10 @@ func sample(allow_edges: bool=true) -> void:
 				var d: Vector3=chapter.avatar.global_position-chapter.youths[i].global_position;figures[i].rotation.y=atan2(-d.x,-d.z)-chapter.youths[i].rotation.y
 			else: figures[i].rotation.y=0
 		figures[i].sample(tick,Vector2(chapter.youths[i].velocity.x,chapter.youths[i].velocity.z).length(),action,amount,speech.get("actor",-1)==i)
+		var gaze_target: Variant=Attention.figure_target(i,phase,speech,chapter.youths,chapter.avatar.global_position,b)
+		var gaze:=Vector2.ZERO
+		if gaze_target is Vector3: gaze=Attention.angles(figures[i].global_transform,gaze_target)
+		figures[i].apply_attention(gaze.x,gaze.y,Attention.eyes(gaze),Attention.blink(tick,i+1))
 	if chapter._paused or not enabled:
 		for sound in sounds: sound.stop()
 		if is_instance_valid(ambience): ambience.stop()
@@ -194,28 +199,38 @@ func sample(allow_edges: bool=true) -> void:
 		for actor in chapter.youths: actor.caption.hide()
 	last_tick=tick
 func _pose_hero(b: Dictionary,tick: int) -> void:
-	if (not active or b.is_empty() or b.ledger.phase!="fighting") and _hero_restore.is_empty(): return
+	var phase: String=chapter.model.brawl_phase()
+	var target: Variant=Attention.hero_target(phase,speech,chapter.youths,b,chapter.avatar.global_position)
+	var fighting: bool=active and not b.is_empty() and b.ledger.phase=="fighting"
+	if not fighting and not (target is Vector3) and _hero_restore.is_empty(): return
 	var proxy: Node3D=chapter.art._hero_proxy
 	if not is_instance_valid(proxy): return
 	var rig: Skeleton3D=proxy.skeleton
 	if not _hero_restore.is_empty():
-		for id in _hero_restore: rig.set_bone_pose_rotation(rig.find_bone(id),_hero_restore[id])
+		for id in _hero_restore:
+			var restore_bone:=rig.find_bone(id)
+			if restore_bone>=0: rig.set_bone_pose_rotation(restore_bone,_hero_restore[id])
 		_hero_restore.clear()
 	proxy.sample_tick(tick)
-	if not active or b.is_empty() or b.ledger.phase!="fighting":
-		if is_instance_valid(chapter.art.detail): chapter.art.detail.sample(tick)
-		return
 	var rotations: Dictionary={}
-	if _guard:
+	if fighting and _guard:
 		rotations={"upper_armL":Vector3(-1.4,0,-.22),"forearmL":Vector3(-1.05,0,0),"upper_armR":Vector3(-1.0,0,.20),"forearmR":Vector3(-1.2,0,0)}
-	for event in b.events:
-		var elapsed:=tick-int(event.tick)
-		if elapsed<0 or elapsed>20: continue
-		if event.kind=="counter": rotations={"upper_armR":Vector3(-1.4,.2,0),"forearmR":Vector3(-.05,0,0),"spine":Vector3(0,.30*sin(PI*float(elapsed)/20),0)}
-		elif event.kind=="hit": rotations["spine"]=Vector3(-.17*sin(PI*float(elapsed)/20),0,0)
+	if fighting:
+		for event in b.events:
+			var elapsed:=tick-int(event.tick)
+			if elapsed<0 or elapsed>20: continue
+			if event.kind=="counter": rotations={"upper_armR":Vector3(-1.4,.2,0),"forearmR":Vector3(-.05,0,0),"spine":Vector3(0,.30*sin(PI*float(elapsed)/20),0)}
+			elif event.kind=="hit": rotations["spine"]=Vector3(-.17*sin(PI*float(elapsed)/20),0,0)
+	if target is Vector3:
+		var hero_gaze: Vector2=Attention.angles(proxy.global_transform,target)
+		rotations["head"]=Vector3(hero_gaze.y,hero_gaze.x,0)
 	for id in rotations:
-		var bone:=rig.find_bone(id);_hero_restore[id]=rig.get_bone_pose_rotation(bone);rig.set_bone_pose_rotation(bone,Quaternion.from_euler(rotations[id]))
+		var bone:=rig.find_bone(id)
+		if bone<0: continue
+		_hero_restore[id]=rig.get_bone_pose_rotation(bone)
+		rig.set_bone_pose_rotation(bone,Quaternion.from_euler(rotations[id]))
 	if is_instance_valid(chapter.art.detail): chapter.art.detail.sample(tick)
+
 func layout(phase: String,b: Dictionary,tick: int) -> void:
 	var ending: bool=enabled and phase=="reported" and tick<report_until
 	canvas.visible=(active or ending) and not chapter._paused

@@ -8,6 +8,8 @@ var shoulders: Array[Node3D]=[]
 var elbows: Array[Node3D]=[]
 var hips: Array[Node3D]=[]
 var knees: Array[Node3D]=[]
+var eyes: Array[MeshInstance3D]=[]
+var eye_origins: Array[Vector3]=[]
 var palette: Dictionary={}
 var pose_name := "idle"
 var actor_index := 0
@@ -17,9 +19,9 @@ func surface(color: Color) -> StandardMaterial3D:
 	var key:=color.to_html()
 	if palette.has(key): return palette[key]
 	var m:=StandardMaterial3D.new();m.albedo_color=color;m.roughness=.96;palette[key]=m;return m
-func round_piece(parent: Node3D,size: Vector3,p: Vector3,color: Color) -> void:
+func round_piece(parent: Node3D,size: Vector3,p: Vector3,color: Color) -> MeshInstance3D:
 	var mesh:=MeshInstance3D.new();var sphere:=SphereMesh.new();sphere.radius=.5;sphere.height=1;sphere.radial_segments=12;sphere.rings=6
-	mesh.mesh=sphere;mesh.scale=size;mesh.position=p;mesh.material_override=surface(color);parent.add_child(mesh)
+	mesh.mesh=sphere;mesh.scale=size;mesh.position=p;mesh.material_override=surface(color);parent.add_child(mesh);return mesh
 func tapered(parent: Node3D,top: float,bottom: float,height: float,p: Vector3,color: Color,depth: float=1.0) -> void:
 	var mesh:=MeshInstance3D.new();var c:=CylinderMesh.new();c.top_radius=top;c.bottom_radius=bottom;c.height=height;c.radial_segments=12
 	mesh.mesh=c;mesh.position=p;mesh.scale.z=depth;mesh.material_override=surface(color);parent.add_child(mesh)
@@ -41,7 +43,7 @@ func build(index: int) -> void:
 		band.mesh=ring;band.scale=Vector3(1,.48,.94);band.position.y=y;band.material_override=surface(cloth.darkened(.12));head.add_child(band)
 	round_piece(head,Vector3(.06,.095,.075),Vector3(0,.055,-.139),skin.lightened(.05))
 	for x in [-.065,.065]:
-		round_piece(head,Vector3(.035,.018,.018),Vector3(x,.102,-.130),Color("322c25"))
+		var eye:=round_piece(head,Vector3(.035,.018,.018),Vector3(x,.102,-.130),Color("322c25"));eyes.append(eye);eye_origins.append(eye.position)
 		round_piece(head,Vector3(.049,.013,.018),Vector3(x,.135,-.124),Color("3f3427"))
 	# Individual clothing accents, not religious/faction-rank uniforms.
 	if index==4: round_piece(torso,Vector3(.12,.57,.08),Vector3(-.16,.27,-.175),cloth)
@@ -96,3 +98,10 @@ func sample(tick: int,speed: float,action: String,amount: float=0.0,speaking: bo
 		_:
 			if speaking:
 				head.rotation.z=.07*sin(float(tick)/13);shoulders[0].rotation.x=-.55;elbows[0].rotation.x=-.7
+
+func apply_attention(yaw: float,pitch: float,eye_offset: Vector2,blink_amount: float) -> void:
+	# Additive on the authored pose. The actor root/collider is never touched.
+	head.rotation.x+=clampf(pitch,-.22,.22);head.rotation.y+=clampf(yaw,-.46,.46)
+	for i in range(eyes.size()):
+		eyes[i].position=eye_origins[i]+Vector3(eye_offset.x,eye_offset.y,0)
+		eyes[i].scale.y=maxf(.12,1.0-.88*clampf(blink_amount,0,1))
