@@ -33,7 +33,15 @@ it does not advance Buddh's biography or replace a story chapter.
 
 Import `game/project.godot` in standard **Godot 4.5.1** and press **F5**.
 No .NET SDK, Python service, Bevy process or NET server is required to play.
-Choose **1792 · Buddh Singh · Home territory** for the integrated home chapter.
+Choose **Start a new Gujranwala run** for **Gujranwala Vertical Slice 0.1**.
+It starts the actual childhood lessons and provides an optional route through the
+household inquiry, two water trips, smith commission and friends' bazaar outing.
+**O** opens the route. **Continue** restores the whole visit between sessions;
+periodic and save-and-menu persistence retain the existing common clock, agents,
+custody and received memories. **F5/F9** use a separate manual slot for each run.
+The existing **1792 · Buddh Singh · Home territory** entry remains available.
+
+[Slice walkthrough, persistence, identities and qualification](docs/GUJRANWALA_SLICE_V01.md)
 
 Learn the yard, hear a letter read, ride, train, follow traces, survive an authored
 ambush, investigate and report home. After the inquiry, administer a limited
