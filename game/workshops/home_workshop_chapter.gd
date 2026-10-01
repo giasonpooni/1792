@@ -5,12 +5,28 @@ const WorkshopState := preload("res://workshops/workshop_state.gd")
 const Craft := preload("res://workshops/workshop_rules.gd")
 const CourtyardEnvelope := preload("res://reconstruction/courtyard_envelope.gd")
 const WorkshopView := preload("res://workshops/workshop_world.gd")
+const BazaarPerformance := preload("res://youth/performance/bazaar_director.gd")
+var bazaar_performance: Node
 var workplace: Node3D
 var _workshop_action := ""
 var _workshop_choices: Array[String]=[]
 
 func _init() -> void:
 	model=WorkshopState.new();save_path=WorkshopState.WORKSHOP_SAVE
+
+func _ready() -> void:
+	super._ready()
+	bazaar_performance=BazaarPerformance.new();bazaar_performance.name="BazaarPerformance";add_child(bazaar_performance);bazaar_performance.build(self)
+	_refresh()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_F6 and is_instance_valid(bazaar_performance):
+		bazaar_performance.toggle_sound();get_viewport().set_input_as_handled();return
+	super._unhandled_input(event)
+
+func _show_dialog(title: String,body: String,actions: Array) -> void:
+	super._show_dialog(title,body,actions)
+	if is_instance_valid(bazaar_performance): bazaar_performance.sample(false)
 
 func _build_world() -> void:
 	super._build_world()
@@ -103,6 +119,7 @@ func _sync_water() -> void:
 
 func _apply() -> void:
 	super._apply();_sync_workshop()
+	if is_instance_valid(bazaar_performance): bazaar_performance.rehydrate()
 
 func workshop_hint() -> String:
 	return {"unassigned":"Ask the quartermaster about the smith's commission.","fuel":"Carry the fuel/payment to the smith in the western courtyard [E].",
@@ -111,13 +128,16 @@ func workshop_hint() -> String:
 
 func _refresh() -> void:
 	super._refresh();_sync_workshop()
-	if not is_instance_valid(_hud) or not model.has_economy(): return
+	if not is_instance_valid(_hud) or not model.has_economy():
+		if is_instance_valid(bazaar_performance): bazaar_performance.sample()
+		return
 	if model.workshop_phase() in ["fuel","working","ready","tools"] and not model.brawl_busy():
 		var ledger: Dictionary=model.economy().ledger
 		_hud.text="1792 · BUDDH SINGH · HOME COURTYARD\n\nSMITH'S COMMISSION · "+workshop_hint()+"\nHousehold coffers %d · timber %d · stored tools %d · personal purse %d" % [ledger.treasury,ledger.stock.timber,ledger.stock.tools,ledger.purse]
 		_hud.text+="\nE speak · B supplies · J journal · F5/F9 save/load · F7 visual comparison"
 	else: _hud.text+="\nWORKSHOP · "+workshop_hint()
 	if is_instance_valid(art) and is_instance_valid(art.detail) and is_instance_valid(art.detail.hud): art.detail.hud.sample()
+	if is_instance_valid(bazaar_performance): bazaar_performance.sample()
 
 func _account_text() -> String:
 	var text:=super._account_text()
