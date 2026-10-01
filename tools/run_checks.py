@@ -47,6 +47,8 @@ def main() -> int:
         "childhood", "CHILDHOOD_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_gate_passage_direction.gd"],
         "gate-passage-direction", "GATE_PASSAGE_DIRECTION_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_gate_material_continuity.gd"],
+        "gate-material-continuity", "GATE_MATERIAL_CONTINUITY_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_aftermath.gd"],
         "aftermath", "AFTERMATH_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_fixed_interlude.gd"],

@@ -1,0 +1,25 @@
+{
+  "schema": "1792.gate-material-continuity.v1",
+  "id": "household-gate-threshold-wear",
+  "anchor": "childhood_state.GATES[2]",
+  "classification": "direct-craft static material continuity, not historical reconstruction",
+  "detail_budget": {
+    "mesh_instances": 4,
+    "animated_meshes": 0,
+    "collision_bodies": 0,
+    "navigation_bodies": 0
+  },
+  "marks": [
+    {"id": "packed_earth_threshold", "meaning": "broad shallow compression tying repeated passage to the threshold"},
+    {"id": "cart_wheel_scuff_outer", "meaning": "restrained wheel abrasion near the tucked-cart side"},
+    {"id": "cart_wheel_scuff_inner", "meaning": "paired but imperfect wheel abrasion rather than a procedural track"},
+    {"id": "cart_rest_abrasion", "meaning": "small resting patch under the already-staged cart"}
+  ],
+  "invariants": [
+    "all marks are presentation-only MeshInstance3D geometry",
+    "no collision, navigation, route, save, economy, rank, witness or reputation state",
+    "marks remain fixed across foot, mounted and caught social phases",
+    "wear suggests repeated material contact without claiming measured 1792 Gujranwala traffic evidence",
+    "detail count is fixed and bounded rather than spawned from player motion"
+  ]
+}

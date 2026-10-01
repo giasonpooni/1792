@@ -10,6 +10,11 @@ var porter_base := Vector3.ZERO
 var cart_root: Node3D
 var pack_root: Node3D
 var marker_cloth: Node3D
+var wear_root: Node3D
+var threshold_wear: MeshInstance3D
+var wheel_scuff_outer: MeshInstance3D
+var wheel_scuff_inner: MeshInstance3D
+var cart_rest_wear: MeshInstance3D
 var records: Array[Dictionary]=[]
 var _materials: Dictionary={}
 
@@ -136,6 +141,19 @@ func build(at: Vector3) -> void:
 	box(marker_cloth,"Cloth",Vector3(.42,.62,.035),Vector3.ZERO,Color("8b6649"))
 	remember("cloth_marker",marker_cloth,"A small cloth marker gives the threshold wind response without implying a royal standard.")
 
+	# Static threshold wear: bounded presentation geometry only.
+	wear_root=Node3D.new()
+	wear_root.name="ThresholdWearStudy"
+	wear_root.set_meta("classification","static-material-continuity")
+	wear_root.set_meta("gameplay_authority",false)
+	wear_root.set_meta("historical_claim",false)
+	wear_root.set_meta("detail_budget_meshes",4)
+	add_child(wear_root)
+	threshold_wear=box(wear_root,"PackedEarthThreshold",Vector3(3.70,.018,1.70),Vector3(0,.012,.18),Color("75634e"))
+	wheel_scuff_outer=box(wear_root,"CartWheelScuffOuter",Vector3(.13,.012,2.05),Vector3(3.10,.016,.05),Color("55483a"))
+	wheel_scuff_inner=box(wear_root,"CartWheelScuffInner",Vector3(.11,.011,1.72),Vector3(2.56,.015,.17),Color("5f5141"))
+	cart_rest_wear=box(wear_root,"CartRestAbrasion",Vector3(1.48,.010,.82),Vector3(3.34,.014,1.08),Color("655442"))
+
 func _planar_distance(a: Vector3,b: Vector3) -> float:
 	return Vector2(a.x,a.z).distance_to(Vector2(b.x,b.z))
 
@@ -166,7 +184,11 @@ func passage_state() -> Dictionary:
 		"porter_position":porter_root.position if is_instance_valid(porter_root) else Vector3.ZERO,
 		"cart_position":cart_root.position if is_instance_valid(cart_root) else Vector3.ZERO,
 		"pack_position":pack_root.position if is_instance_valid(pack_root) else Vector3.ZERO,
-		"cloth_rotation":marker_cloth.rotation if is_instance_valid(marker_cloth) else Vector3.ZERO
+		"cloth_rotation":marker_cloth.rotation if is_instance_valid(marker_cloth) else Vector3.ZERO,
+		"threshold_wear_position":threshold_wear.position if is_instance_valid(threshold_wear) else Vector3.ZERO,
+		"wheel_scuff_outer_position":wheel_scuff_outer.position if is_instance_valid(wheel_scuff_outer) else Vector3.ZERO,
+		"wheel_scuff_inner_position":wheel_scuff_inner.position if is_instance_valid(wheel_scuff_inner) else Vector3.ZERO,
+		"cart_rest_wear_position":cart_rest_wear.position if is_instance_valid(cart_rest_wear) else Vector3.ZERO
 	}
 
 func central_lane_clear(local_position: Vector3) -> bool:
