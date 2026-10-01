@@ -18,12 +18,18 @@ func ensure(value: bool,label: String) -> void:
 func snapshot_view(scene: Node3D) -> Dictionary:
 	var d: Node=scene.bazaar_performance
 	return {"state":scene.model.snapshot(),"velocity":Base.coords(scene.avatar.velocity),"camera_pivot":Base.coords(scene.avatar.pivot.rotation),
-		"message":scene._message,"speech":d.speech.duplicate(true),"guard":d._guard,"report_until":d.report_until,
+		"attention":d.capture_attention(),"message":scene._message,"speech":d.speech.duplicate(true),"guard":d._guard,"report_until":d.report_until,
 		"prompt":d.prompt.text,"phase":scene.model.brawl_phase(),"tick":int(scene.model.progress().tick)}
 func record_frame() -> void:
 	if not is_instance_valid(current_chapter) or not is_instance_valid(current_chapter.bazaar_performance): return
 	var scene:=current_chapter;var d: Node=scene.bazaar_performance
 	if scene._paused or not scene.model.has_brawl(): return
+	if not d.speech.is_empty():
+		var speaking_actor: int=int(d.speech.actor)
+		if speaking_actor==4 and d.gaze_tracks[3].head.length()>.08 and not snapshots.has("listener-mela"):
+			snapshots["listener-mela"]=snapshot_view(scene)
+		if speaking_actor==3 and d.gaze_tracks[4].head.length()>.08 and not snapshots.has("listener-jiva"):
+			snapshots["listener-jiva"]=snapshot_view(scene)
 	if not d.speech.is_empty() and not snapshots.has("friends-walking"): snapshots["friends-walking"]=snapshot_view(scene)
 	if not d.speech.is_empty():
 		var text: String=String(d.speech.text)

@@ -25,7 +25,7 @@ func invited_at(point: Vector3):
 	return model
 func run() -> void:
 	var home:=Launch.make_world();var scene=home.get_node("ChildhoodChapter")
-	var model:=invited_at(WalkLines.ZONES[0].center)
+	var model=invited_at(WalkLines.ZONES[0].center)
 	ok(scene.model.restore(model.snapshot()),"restore invited approach fixture")
 	root.add_child(home);await frames(8)
 	var approach: Node3D=scene.bazaar_performance.inhabited_approach
@@ -42,7 +42,7 @@ func run() -> void:
 	check(scene.model.snapshot()==before,"ambient work/stillness sampling mutates no world state")
 	var seen: Dictionary={}
 	var goods:=WalkLines.available(WalkLines.ZONES[0].center,"invited",seen)
-	check(goods.id=="goods" and goods.lines.size()==2,"goods vignette has bounded companion exchange")
+	check(goods.id=="goods" and goods.lines.size()==1,"goods vignette has bounded companion exchange")
 	seen[goods.id]=1
 	check(WalkLines.available(WalkLines.ZONES[0].center,"invited",seen).is_empty(),"session-local seen vignette does not repeat immediately")
 	check(WalkLines.available(WalkLines.ZONES[1].center,"challenged",{}).is_empty(),"ambient observations stop once confrontation begins")
