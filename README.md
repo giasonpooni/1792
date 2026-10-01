@@ -10,6 +10,11 @@ later public names follow the [naming policy](docs/CHARACTER_NAMES.md).
 
 **Playable greybox in development, not a finished city or historical survey.**
 
+**Visual target:** grounded, high-fidelity historical realism. Current character,
+horse and environment proxies are not the intended finished style.
+[Street, interior and roofscape reference targets](docs/VISUAL_REFERENCE_TARGETS.md)
+apply to the existing childhood benchmark, not a new engine or copied setting.
+
 ## Current foundation work: movement before more content
 
 The existing stories remain intact. A new **Movement qualification** menu entry
@@ -139,8 +144,8 @@ A test suite passing is not human playtesting or verification of historical trut
 ```text
 game/       Game, state authority, original meshes, source-bound layout and tests
 data/       Design fixtures and historical source index
-schemas/    Retained world-state contract
 docs/       Player guide, research, design, architecture and rights
+schemas/    Retained world-state contract
 tools/      Offline and native verification runner
 archive/    Earlier disconnected layout study, not an active world
 ```
@@ -200,3 +205,29 @@ python tools/capture_home_art.py --profile workshop --godot /path/to/godot --out
 The default Home-art capture profile, F7 comparison, full-envelope atlas and active
 Ranjit childhood priority remain. The five workshop views come from an executed
 input journey and native Godot rendering, not concept-art generation.
+
+## Courtyard: authored asset and walking-view increment
+
+The existing Home now loads a Blender-authored bay kit and a fitted childhood
+costume study, with attributed CC0 dirt/plaster samples and explicit post
+collision. F7 also compares the earlier study, close/original walking camera and
+compact/original task HUD. The same smith commission, clock and saves remain.
+This is a prototype improvement, not the completed high-fidelity visual target.
+
+[Implementation, source assets and qualification](docs/COURTYARD_AUTHORED.md) ·
+[New references and Ranjit's uncovered/plain-cloth direction](docs/REFERENCE_BATCH_20260929.md)
+
+```sh
+python tools/capture_home_art.py --profile courtyard --godot /path/to/godot --output /existing-parent/new-run
+```
+
+The courtyard profile renders retained observations of real input-driven walking
+through the existing player camera; its video is not a physical-GPU FPS claim.
+
+## A Short Walk — bazaar direction (this branch)
+
+The existing Bhangi Bazaar Brawl now gives Mela and Jiva distinct dialogue, an optional
+pre-decision exchange, articulated supporting figures, visible guard/counter reactions,
+local nonvocal foley, compact action cues and outcome-specific homecoming text. The
+three original outcomes, timing, player/companion collision, money and saves remain.
+This is direct game content, not another terminal feature. [Play and limits](docs/BAZAAR_DIRECTION.md).

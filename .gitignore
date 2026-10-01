@@ -21,3 +21,7 @@ __pycache__/
 
 # Generated test evidence (retained by CI artifacts instead)
 test-results/
+
+# Generated Godot identity sidecars; current scenes use explicit res:// paths.
+*.gd.uid
+*.gdshader.uid

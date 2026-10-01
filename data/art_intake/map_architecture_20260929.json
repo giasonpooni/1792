@@ -1,0 +1,455 @@
+{
+  "schema": "1792.map-architecture-intake.v1",
+  "recorded_date": "2026-09-29",
+  "status": "reference_and_static_archive_inspection_only",
+  "scope": "Five map files, six facade image files and two ZIPs physically inspected; repeated presentations do not create additional content identities. Two later caption-only historical leads are separately recorded, not counted as inspected image files.",
+  "base_repository_commit": "780548cb6d288c1511784c18fcb11f22ecf1d6f1",
+  "sources": [
+    {
+      "id": "AS01",
+      "url": "https://uzairbaig.artstation.com/projects/xKqY4",
+      "kind": "creator_portfolio",
+      "checked": "2026-09-29",
+      "finding": "Walled City of Lahore by Uzair Baig. No model reuse licence or survey date established. Supplied filename association, not a remote pixel-hash match."
+    },
+    {
+      "id": "AS02",
+      "url": "https://blendswap.com/blend/12913",
+      "kind": "creator_distribution_page",
+      "checked": "2026-09-29",
+      "finding": "Arab Village by mawais. CC0 listing and creator clarification; uploaded archive notice instead says CC BY 3.0. Retain credit and both records."
+    },
+    {
+      "id": "AS03",
+      "url": "https://blendswap.com/blend/3497",
+      "kind": "creator_distribution_page",
+      "checked": "2026-09-29",
+      "finding": "Grassy Field by metalix; CC-BY listing. Background foliage/textures expressly excluded; comments about learning techniques do not silently replace the bundled licence."
+    },
+    {
+      "id": "AS04",
+      "url": "https://creativecommons.org/licenses/by/3.0/",
+      "kind": "licence_deed",
+      "checked": "2026-09-29",
+      "finding": "Commercial adaptation allowed subject to applicable terms, attribution, licence link and modification notice; no added restrictions on licensed material. Not a warranty for all embedded third-party images."
+    },
+    {
+      "id": "AS05",
+      "url": "https://archive.blender.org/www/development/architecture/blender-file-format/index.html",
+      "kind": "official_format_documentation",
+      "checked": "2026-09-29",
+      "finding": "Legacy BLENDER header, file-block headers, SDNA and ENDB. Parser is a bounded subset, not Blender validation."
+    },
+    {
+      "id": "AS06",
+      "url": "https://dsal.uchicago.edu/reference/gaz_atlas_1909/",
+      "kind": "library_catalogue",
+      "checked": "2026-09-29",
+      "finding": "1909 Imperial Gazetteer atlas collection. Possible source collection for the 1823 plate; exact plate match/publication provenance not established in this intake."
+    },
+    {
+      "id": "AS07",
+      "url": "https://www.britishmuseum.org/collection/object/A_1925-0406-0-2",
+      "kind": "holding_museum_catalogue",
+      "checked": "2026-09-29",
+      "finding": "Indexed catalogue text supports circa-1840 Punjab Hills painting and object 1925,0406,0.2. Direct open failed; supplied image pixels not matched. Digital reproduction permission not decided."
+    },
+    {
+      "id": "AS08",
+      "url": "https://www.metmuseum.org/art/collection/search/287666",
+      "kind": "holding_museum_catalogue",
+      "checked": "2026-09-29",
+      "finding": "Photograph 2005.100.491.1 (66): unknown artist, albumen silver print, 1858-61. Met marks its version Public Domain and offers Open Access. No image downloaded or exact uploaded-file match claimed."
+    },
+    {
+      "id": "AS09",
+      "url": "https://jalandhar.nic.in/places-of-interest/",
+      "kind": "district_history",
+      "checked": "2026-09-29",
+      "finding": "Phillaur subsection gives sarai-to-fort conversion between 1809 and 1812 under Mokham Chand, and later British military use. Architect attribution and broader narrative not independently verified."
+    },
+    {
+      "id": "AS10",
+      "url": "https://www.wallacecollection.org/explore/explore-in-depth/the-sikh-empire/the-lahore-durbar-the-court-of-lahore/anglo-sikh-wars/",
+      "kind": "museum_interpretive_history",
+      "checked": "2026-09-29",
+      "finding": "1839 as Ranjit death year; reproduces matching Phillaur photo title and Met accession. Limited context, not wholesale historical verification."
+    }
+  ],
+  "images": [
+    {
+      "filename": "e18fea5475a630ff6a95d68d4f3911fe.jpg",
+      "sha256": "bc6caafd9c70832d9fa16596d8db66700e54803914e29faa2c6f2e4d0976c4c1",
+      "bytes": 172857,
+      "pixels": [
+        1080,
+        1283
+      ],
+      "id": "MAP01",
+      "title_as_supplied": "India in the time of Warren Hastings",
+      "reference_kind": "historical_overview_undated_edition",
+      "depicted_year": null,
+      "publication_year": null,
+      "publication_date_verified": false,
+      "source_ids": [],
+      "observation": "Approximate boundaries and a religion-based legend are visible. Preserve author categories as source metadata, not game faction or population classes. Not a precise 1792 snapshot.",
+      "georeferenced": false,
+      "geometry_admitted": false,
+      "rights": "not_established",
+      "raw_file_committed": false
+    },
+    {
+      "filename": "249a063596e6ddf2c9a7693ca9e39e8a.jpg",
+      "sha256": "68ab368a15559614e74696693028293b3f632ddd7b11089f7a78cdb285ef0818",
+      "bytes": 220355,
+      "pixels": [
+        835,
+        1200
+      ],
+      "id": "MAP02",
+      "title_as_supplied": "India in 1823",
+      "reference_kind": "retrospective_atlas_plate",
+      "depicted_year": 1823,
+      "publication_year": null,
+      "publication_date_verified": false,
+      "source_ids": [
+        "AS06"
+      ],
+      "observation": "Plate 22, Justus Perthes, Gotha visible. Depicted year is not publication date. British Territory and British Protected States use different legend fills. Not a surveyed 1792 boundary.",
+      "georeferenced": false,
+      "geometry_admitted": false,
+      "rights": "not_established",
+      "raw_file_committed": false
+    },
+    {
+      "filename": "7e565fc2cd4193acdab37a6409c6c41c.jpg",
+      "sha256": "a8e43ad7ff0e81c8dbd75692a9afc8f3d8bb7cc5890b120f9b3ce77641c96408",
+      "bytes": 691657,
+      "pixels": [
+        1034,
+        2048
+      ],
+      "id": "MAP03",
+      "title_as_supplied": "Uncaptioned outline on a modern Google basemap",
+      "reference_kind": "modern_annotated_basemap",
+      "depicted_year": null,
+      "publication_year": null,
+      "publication_date_verified": false,
+      "source_ids": [],
+      "observation": "No legend establishing meanings of coloured outlines. Do not infer a maximal empire, an agreed game polygon, current territorial position or historic transport from these lines.",
+      "georeferenced": false,
+      "geometry_admitted": false,
+      "rights": "not_established",
+      "raw_file_committed": false
+    },
+    {
+      "filename": "8ec5e59da35c70b57318522dc85d132f.jpg",
+      "sha256": "fd8308989a6a0251e0d13b6dd25568a9d040881ca92f3e255c626bd477111fcf",
+      "bytes": 158439,
+      "pixels": [
+        960,
+        777
+      ],
+      "id": "MAP04",
+      "title_as_supplied": "Empire of the Lahore Durbar, greatest extent circa 1844",
+      "reference_kind": "modern_historical_interpretation",
+      "depicted_year": 1844,
+      "publication_year": 2015,
+      "publication_date_verified": false,
+      "source_ids": [],
+      "observation": "Visible author credit Navtej Singh Heer, 2015. Hatched earlier-control claim is distinct from the main extent claim. Attribution and meaning recorded, historical geometry not admitted.",
+      "georeferenced": false,
+      "geometry_admitted": false,
+      "rights": "not_established",
+      "raw_file_committed": false
+    },
+    {
+      "filename": "feb413017ed67853149980cf427d1613.jpg",
+      "sha256": "96cb5d42930bb2d870b9e61d75586a3b58affcd4594e3414d014e0846ac1c5b2",
+      "bytes": 88184,
+      "pixels": [
+        800,
+        633
+      ],
+      "id": "MAP05",
+      "title_as_supplied": "The Sikh Empire in 1839",
+      "reference_kind": "modern_historical_locator",
+      "depicted_year": 1839,
+      "publication_year": null,
+      "publication_date_verified": false,
+      "source_ids": [],
+      "observation": "Legend distinguishes locations in present-day Pakistan/India. Modern names including Faisalabad are visible. Do not backdate a modern label or city footprint; source edition and control claims unresolved.",
+      "georeferenced": false,
+      "geometry_admitted": false,
+      "rights": "not_established",
+      "raw_file_committed": false
+    },
+    {
+      "filename": "uzair-baig-1.jpg",
+      "sha256": "5a8620edfbee2ea1eee15a7caa7bf5de70fdae3beec052aa1a9de0d6edc47dd5",
+      "bytes": 16123,
+      "pixels": [
+        600,
+        450
+      ],
+      "id": "FACADE01",
+      "title_as_supplied": "Single projecting domed window with a lower shopfront",
+      "reference_kind": "modern_digital_architecture_study",
+      "source_ids": [
+        "AS01"
+      ],
+      "creator": "Uzair Baig (filename attribution; related creator portfolio located)",
+      "depicted_year": null,
+      "publication_year": null,
+      "observation": "Visible component/assembly reference only. Not a measured building, a period admission, or model geometry acquired from this image.",
+      "geometry_admitted": false,
+      "rights": "not_established",
+      "raw_file_committed": false
+    },
+    {
+      "filename": "uzair-baig-2.jpg",
+      "sha256": "4fd867428feada75cee2e716ca96e85f371fb37b85ac1d2cd7406bbe512b52a6",
+      "bytes": 26444,
+      "pixels": [
+        600,
+        450
+      ],
+      "id": "FACADE02",
+      "title_as_supplied": "Close detail of projecting window, lattice and small columns",
+      "reference_kind": "modern_digital_architecture_study",
+      "source_ids": [
+        "AS01"
+      ],
+      "creator": "Uzair Baig (filename attribution; related creator portfolio located)",
+      "depicted_year": null,
+      "publication_year": null,
+      "observation": "Visible component/assembly reference only. Not a measured building, a period admission, or model geometry acquired from this image.",
+      "geometry_admitted": false,
+      "rights": "not_established",
+      "raw_file_committed": false
+    },
+    {
+      "filename": "uzair-baig-3.jpg",
+      "sha256": "e9a1fa437802be3f28dcdc39da8ebe443c9473c471d69a84d6e1bedbb60167d3",
+      "bytes": 34138,
+      "pixels": [
+        600,
+        450
+      ],
+      "id": "FACADE03",
+      "title_as_supplied": "Bracketed balcony, railing and overhead joinery",
+      "reference_kind": "modern_digital_architecture_study",
+      "source_ids": [
+        "AS01"
+      ],
+      "creator": "Uzair Baig (filename attribution; related creator portfolio located)",
+      "depicted_year": null,
+      "publication_year": null,
+      "observation": "Visible component/assembly reference only. Not a measured building, a period admission, or model geometry acquired from this image.",
+      "geometry_admitted": false,
+      "rights": "not_established",
+      "raw_file_committed": false
+    },
+    {
+      "filename": "uzair-baig-5.jpg",
+      "sha256": "45ebcee63a8db21f39156d39cedc201004989febccb7d46b56d5caad5b4b0eec",
+      "bytes": 21476,
+      "pixels": [
+        600,
+        450
+      ],
+      "id": "FACADE04",
+      "title_as_supplied": "Vertically combined balcony and window facade",
+      "reference_kind": "modern_digital_architecture_study",
+      "source_ids": [
+        "AS01"
+      ],
+      "creator": "Uzair Baig (filename attribution; related creator portfolio located)",
+      "depicted_year": null,
+      "publication_year": null,
+      "observation": "Visible component/assembly reference only. Not a measured building, a period admission, or model geometry acquired from this image.",
+      "geometry_admitted": false,
+      "rights": "not_established",
+      "raw_file_committed": false
+    },
+    {
+      "filename": "uzair-baig-6.jpg",
+      "sha256": "26f33af17663cc6e5364ec21ae76a71546babb859a5a359c7bd32407035feb2f",
+      "bytes": 28568,
+      "pixels": [
+        600,
+        450
+      ],
+      "id": "FACADE05",
+      "title_as_supplied": "Shopfront ensemble with projecting upper-floor elements",
+      "reference_kind": "modern_digital_architecture_study",
+      "source_ids": [
+        "AS01"
+      ],
+      "creator": "Uzair Baig (filename attribution; related creator portfolio located)",
+      "depicted_year": null,
+      "publication_year": null,
+      "observation": "Visible component/assembly reference only. Not a measured building, a period admission, or model geometry acquired from this image.",
+      "geometry_admitted": false,
+      "rights": "not_established",
+      "raw_file_committed": false
+    },
+    {
+      "filename": "uzair-baig-9.jpg",
+      "sha256": "cace639bc26486b16e126e0570048b69469500c8d0ca65e6ce4a34b0463d1aee",
+      "bytes": 84475,
+      "pixels": [
+        600,
+        450
+      ],
+      "id": "FACADE06",
+      "title_as_supplied": "Repeated component families assembled along a narrow street",
+      "reference_kind": "modern_digital_architecture_study",
+      "source_ids": [
+        "AS01"
+      ],
+      "creator": "Uzair Baig (filename attribution; related creator portfolio located)",
+      "depicted_year": null,
+      "publication_year": null,
+      "observation": "Visible component/assembly reference only. Not a measured building, a period admission, or model geometry acquired from this image.",
+      "geometry_admitted": false,
+      "rights": "not_established",
+      "raw_file_committed": false
+    }
+  ],
+  "archives": [
+    {
+      "filename": "Arab Village.zip",
+      "sha256": "c14627ce09f1c8a804e82b89bcffc424f3b3f9c015f41a55f2ed2909bc39ad51",
+      "bytes": 8255213,
+      "id": "PACK01",
+      "creator": "mawais",
+      "source_ids": [
+        "AS02",
+        "AS04"
+      ],
+      "bundled_licence": "CC BY 3.0",
+      "legacy_listing_url": "http://www.blendswap.com/blends/view/74512",
+      "web_listing_licence": "CC0",
+      "inspection_report": "archive_reports/arab_20260929.json",
+      "inspection_report_sha256": "744ec3dfdff0d35ed3e0ed13563f4608ad9a9aa24fe72452da6799f5a650709a",
+      "decision": "Proceed to component review retaining mawais credit and bundled CC BY 3.0 obligations. Embedded texture chain and actual runtime conversion not yet qualified.",
+      "local_upload_acquired": true,
+      "raw_file_committed": false,
+      "render_qualified": false,
+      "runtime_admitted": false,
+      "historical_scene_admitted": false
+    },
+    {
+      "filename": "Grassy Field.zip",
+      "sha256": "e0d0697fac64a8239f699449e734a85b6ff56ebe4ecebda45b29e1f6192d4a95",
+      "bytes": 24168941,
+      "id": "PACK02",
+      "creator": "metalix",
+      "source_ids": [
+        "AS03",
+        "AS04"
+      ],
+      "bundled_licence": "CC BY 3.0",
+      "legacy_listing_url": "http://www.blendswap.com/blends/view/18419",
+      "web_listing_licence": "CC-BY",
+      "inspection_report": "archive_reports/grass_20260929.json",
+      "inspection_report_sha256": "97efe9b08a9d14bc2fde322ae90ec48870127d802d71e95d3302b38832cde38f",
+      "decision": "CC BY 3.0 credit retained; incomplete linked content must be replaced or separately supplied/licensed. Do not reconstruct the advertised whole scene as if all files were present.",
+      "local_upload_acquired": true,
+      "raw_file_committed": false,
+      "render_qualified": false,
+      "runtime_admitted": false,
+      "historical_scene_admitted": false
+    }
+  ],
+  "distinctions": [
+    "Map depiction date, publication date and capture date differ.",
+    "Historical geography, influence/tribute, effective control and modern reference labels differ.",
+    "Political boundary and game acquisition envelope differ.",
+    "Attractive architecture and evidence of a specific building in 1792 differ.",
+    "Legal permission, source completeness and runtime suitability differ."
+  ],
+  "protected_scope": {
+    "full_envelope_retained": true,
+    "terrain_cells_promoted": 0,
+    "new_campaigns": 0,
+    "religious_sites": "exterior_only",
+    "religious_figures": "not_embodied",
+    "sada_kaur_and_adina_beg": "not_playable",
+    "production": "Ranjit childhood to Lahore prelude, then full life before DLC"
+  },
+  "inspector": {
+    "path": "tools/art/inspect_asset_archive.py",
+    "sha256": "ea4d774731cc34f5d4aa24badf07a063107bdf7d37fa8f038abacf1684d387cd",
+    "executes_source_files": false,
+    "extracts_members": false,
+    "supports": "Uncompressed legacy Blender file headers 2.50-4.99 inside stored/deflated ZIPs; limited SDNA fields; unsupported input is refused.",
+    "does_not_certify": [
+      "Blender import",
+      "topology",
+      "complete packed media",
+      "usable shaders",
+      "licence ownership",
+      "historical truth",
+      "visual quality"
+    ]
+  },
+  "caption_leads": [
+    {
+      "id": "CAPTION01",
+      "supplied_title": "The funeral of Ranjit Singh, Sikh Painting, 1840",
+      "source_ids": [
+        "AS07",
+        "AS10"
+      ],
+      "catalogue_candidate": "British Museum 1925,0406,0.2",
+      "depicted_event_year": 1839,
+      "artwork_date": {
+        "year": 1840,
+        "qualifier": "circa"
+      },
+      "production_place_catalogued": "Punjab Hills (historic)",
+      "pixels_matched": false,
+      "source_image_acquired": false,
+      "sha256": null,
+      "digital_reproduction_permission": "not_established_for_supplied_version",
+      "proposed_use": "Late-life ending research, not active childhood production. Catalogue explicitly depicts sati; retain context, distinguish depiction from confirmed event details.",
+      "historical_scene_admitted": false,
+      "runtime_admitted": false
+    },
+    {
+      "id": "CAPTION02",
+      "supplied_title": "Fort of Philoor on the Sutlej River, Built by Runjeet Singh, 1858-61. Phillaur",
+      "supplied_url": "https://sukerchakia.com/wp-content/uploads/2024/12/Fort-of-Philoor-on-the-Sutlej-River-1.jpg",
+      "supplied_thumbnail_url": "https://sukerchakia.com/wp-content/uploads/2024/12/Fort-of-Philoor-on-the-Sutlej-River-1-300x226.jpg",
+      "supplied_credit": "Heritage Art/Heritage Images via Getty Images; caption only",
+      "supplied_url_access": "attempted_not_retrievable",
+      "source_ids": [
+        "AS08",
+        "AS09"
+      ],
+      "catalogue_candidate": "Met 287666 / 2005.100.491.1 (66)",
+      "photograph_date": {
+        "from": 1858,
+        "through": 1861
+      },
+      "fort_conversion_date_source_reported": {
+        "from": 1809,
+        "through": 1812
+      },
+      "earlier_phase": "Mughal sarai; date/extent not newly independently verified",
+      "pixels_matched": false,
+      "source_image_acquired": false,
+      "sha256": null,
+      "digital_reproduction_permission": "Met version labelled Public Domain; no ruling on the supplied intermediary image",
+      "proposed_use": "Later surviving building fabric. Separate pre-fort sarai, fortification and later alterations. No 1:1 geometry or earlier-period state inferred.",
+      "georeferenced": false,
+      "historical_scene_admitted": false,
+      "runtime_admitted": false
+    }
+  ],
+  "attachment_limitations": [
+    "Later image-only interruption messages supplied placeholders without distinct retrievable attachment records in this inspection. They have not been visually inspected, hashed, deduplicated or counted as new assets. Caption-based catalogue candidates are not pixel matches."
+  ]
+}

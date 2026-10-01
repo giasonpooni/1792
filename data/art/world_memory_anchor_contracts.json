@@ -1,0 +1,48 @@
+{
+  "schema": "1792.world-memory-anchor-contracts.v1",
+  "principle": "generated abundance may surround an anchor; it may not erase the authored exception that gives the place memory",
+  "defaults": {
+    "randomizable": false,
+    "historical_claim": false,
+    "gameplay_authority": false,
+    "minimum_retention": "near/hero presentation LOD until a human art review explicitly replaces the anchor"
+  },
+  "anchors": [
+    {
+      "id": "threshold_hand_polish",
+      "meaning": "the same side of a raised threshold has been touched and crossed enough to polish differently",
+      "future_generation": "threshold variants may change around it; preserve the local wear asymmetry"
+    },
+    {
+      "id": "screen_repair",
+      "meaning": "one upper screen slat was replaced in visibly different wood rather than perfectly matched",
+      "future_generation": "screen family may be regenerated; retain one deliberate replacement"
+    },
+    {
+      "id": "drain_replacement",
+      "meaning": "one short drain segment was repaired in a different stone/material age",
+      "future_generation": "drain topology may be optimized; preserve the replacement contrast"
+    },
+    {
+      "id": "tether_groove",
+      "meaning": "repeated rope contact has cut a localized groove into an edge post",
+      "future_generation": "animal props may vary; retain the worn tether point"
+    },
+    {
+      "id": "measuring_notches",
+      "meaning": "repeated measuring at one shop edge has left a small sequence of unequal notches",
+      "future_generation": "counter/threshold variants may change; retain the local hand-made marks"
+    },
+    {
+      "id": "plaster_patch",
+      "meaning": "one upper bay carries a repair patch that does not perfectly match the surrounding finish",
+      "future_generation": "facade materials may vary; keep a visibly later repair layer"
+    }
+  ],
+  "forbidden": [
+    "turning anchors into collectibles, loot or automatic codex entries",
+    "procedurally distributing every anchor to every street",
+    "promoting fictional placement into documented 1792 fact",
+    "randomizing the exception after it has been deliberately placed"
+  ]
+}
