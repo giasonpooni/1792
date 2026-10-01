@@ -1,0 +1,30 @@
+{
+  "schema": "1792.art-reference-direction.v1",
+  "id": "ranjit-singh-adult-user-reference-20260929",
+  "subject_label": "Ranjit Singh (user-supplied identification)",
+  "reference_sha256": "51c3ed8924da92f2ee3dae702006338bc27f01cf441540654f55ec502296bb4b",
+  "binary_embedded": false,
+  "redistribution": "not_performed",
+  "rights_status": "unknown; reference image remains outside repository",
+  "use": "adult-life art direction only; not historical authentication or a childhood costume template",
+  "visible_motifs": [
+    "light/ivory layered clothing",
+    "wrapped headwear with compact silhouette",
+    "dark facial hair",
+    "restrained necklace/jewelry compared with later princely portraiture",
+    "visible curved sword/scabbard",
+    "upright but untheatrical standing posture"
+  ],
+  "direction": {
+    "childhood": "practical cloth, minimal ornament, movement-first silhouette; do not copy adult facial hair or adult court dress",
+    "young_leader": "better weapon/tack and clearer sash/waist organization while retaining field practicality",
+    "lahore_ruler": "increasingly rich environment and entourage; protagonist remains comparatively restrained",
+    "mature_maharaja": "recognizable adult silhouette, facial hair and sword; allow court richness to exceed personal ornament",
+    "late_life": "preserve identity through face, posture, headwear and habitual objects rather than maximal costume display"
+  },
+  "limitations": [
+    "single visual reference cannot establish exact date, fabric, color, cut, jewelry provenance or court etiquette",
+    "visible studio/photographic context is not a 1792 environment reference",
+    "period-nearer sources are still required before final historical costume approval"
+  ]
+}

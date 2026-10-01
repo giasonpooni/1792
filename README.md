@@ -223,3 +223,11 @@ python tools/capture_home_art.py --profile courtyard --godot /path/to/godot --ou
 
 The courtyard profile renders retained observations of real input-driven walking
 through the existing player camera; its video is not a physical-GPU FPS claim.
+
+## A Short Walk — bazaar direction (this branch)
+
+The existing Bhangi Bazaar Brawl now gives Mela and Jiva distinct dialogue, an optional
+pre-decision exchange, articulated supporting figures, visible guard/counter reactions,
+local nonvocal foley, compact action cues and outcome-specific homecoming text. The
+three original outcomes, timing, player/companion collision, money and saves remain.
+This is direct game content, not another terminal feature. [Play and limits](docs/BAZAAR_DIRECTION.md).

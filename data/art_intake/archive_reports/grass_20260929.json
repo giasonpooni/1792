@@ -1,0 +1,105 @@
+{
+  "schema": "1792.asset-archive-inspection.v1",
+  "archive_name": "Grassy Field.zip",
+  "archive_bytes": 24168941,
+  "archive_sha256": "e0d0697fac64a8239f699449e734a85b6ff56ebe4ecebda45b29e1f6192d4a95",
+  "expanded_bytes": 63253832,
+  "members": [
+    {
+      "name": "BLENDSWAP_LICENSE.txt",
+      "bytes": 3164,
+      "sha256": "3dddba8ee04b40e5dbf7c3993ff5725b51b8866a4a73141f1e376029097dc451",
+      "crc_checked": true
+    },
+    {
+      "name": "grass.blend",
+      "bytes": 63250668,
+      "sha256": "042bdd05695e8b636b12c6df3e3c981896329dce25a9c50cea12eacab2f41a7d",
+      "crc_checked": true,
+      "blend": {
+        "inspection": "static_binary_metadata_only",
+        "saved_version_header": "2.57",
+        "pointer_bytes": 8,
+        "endianness": "little",
+        "stored_blocks_by_code": {
+          "AC": 3,
+          "BR": 30,
+          "CA": 1,
+          "DATA": 82364,
+          "DNA1": 1,
+          "ENDB": 1,
+          "GLOB": 1,
+          "GR": 1,
+          "ID": 26,
+          "IM": 5,
+          "LA": 2,
+          "LI": 2,
+          "MA": 11,
+          "ME": 7,
+          "OB": 21,
+          "PA": 3,
+          "REND": 1,
+          "SC": 1,
+          "SN": 7,
+          "TE": 9,
+          "TEST": 1,
+          "WM": 1,
+          "WO": 1
+        },
+        "stored_datablocks": {
+          "objects": 21,
+          "meshes": 7,
+          "materials": 11,
+          "images": 5,
+          "libraries": 2,
+          "particle_settings": 3,
+          "text_blocks": 0,
+          "actions": 3
+        },
+        "libraries": [
+          {
+            "basename": "Shrubs6.blend",
+            "resolved": false
+          },
+          {
+            "basename": "Boulders.blend",
+            "resolved": false
+          }
+        ],
+        "images": [
+          {
+            "basename": "bark.jpg",
+            "legacy_packedfile_pointer_nonzero": false
+          },
+          {
+            "basename": "IMG_3048 copy.jpg",
+            "legacy_packedfile_pointer_nonzero": false
+          },
+          {
+            "basename": "IMG_3048 copy.jpg",
+            "legacy_packedfile_pointer_nonzero": true
+          },
+          {
+            "basename": "result.png",
+            "legacy_packedfile_pointer_nonzero": false
+          },
+          {
+            "basename": null,
+            "legacy_packedfile_pointer_nonzero": false
+          }
+        ],
+        "mesh_totals_saved_not_evaluated": {
+          "totvert": 41425,
+          "totedge": 82199,
+          "totface": 40810,
+          "totpoly": null
+        },
+        "limits": "Counts include stored/orphan datablocks, not evaluated visible objects or render triangles. Packed pointers do not certify complete textures. Library paths are basename-only; no files resolved. No Blender import, drivers, topology, rig, materials, measurements or render qualified."
+      }
+    }
+  ],
+  "source_files_executed": false,
+  "files_extracted": false,
+  "runtime_admission": false,
+  "licence_decision": "not_inferred_by_inspector"
+}
