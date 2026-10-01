@@ -10,6 +10,11 @@ later public names follow the [naming policy](docs/CHARACTER_NAMES.md).
 
 **Playable greybox in development, not a finished city or historical survey.**
 
+**Visual target:** grounded, high-fidelity historical realism. Current character,
+horse and environment proxies are not the intended finished style.
+[Street, interior and roofscape reference targets](docs/VISUAL_REFERENCE_TARGETS.md)
+apply to the existing childhood benchmark, not a new engine or copied setting.
+
 ## Current foundation work: movement before more content
 
 The existing stories remain intact. A new **Movement qualification** menu entry
@@ -139,8 +144,8 @@ A test suite passing is not human playtesting or verification of historical trut
 ```text
 game/       Game, state authority, original meshes, source-bound layout and tests
 data/       Design fixtures and historical source index
-schemas/    Retained world-state contract
 docs/       Player guide, research, design, architecture and rights
+schemas/    Retained world-state contract
 tools/      Offline and native verification runner
 archive/    Earlier disconnected layout study, not an active world
 ```
@@ -168,3 +173,61 @@ F2 extends the Gujranwala research notebook with distinct person/household/Misl
 records and source limitations. These two local errands are original fiction,
 not a completed regional Misl simulation. No main merge or other draft merge is
 implied by this branch. [Rules, research, controls and checks](docs/SUKERCHAKIA_SERVICE.md).
+
+### Home visual study — same childhood entry
+
+The Home entry now includes an original material/mesh study for its courtyard,
+stable and market. **F7** opens paused comparison controls (retained greybox,
+daylight, golden hour, evening); it does not change the calendar or saved world.
+The visual kit retains original collision, missions, horse and state authority.
+The scenery and characters remain development reconstructions/proxies, not a
+surveyed 1:1 Gujranwala or finished production art.
+
+See [the implementation and native capture command](docs/HOME_VISUAL_STUDY.md).
+
+## Inhabited courtyard: integrated smith commission
+
+The current Home entry now brings PR #21's finite workshop recipe into the visual,
+youth, water and service build, without importing the older town/remount branch.
+After the inquiry and allowance, speak to the quartermaster, carry fuel/payment to
+the west courtyard smith, collect the finished tools, and physically return them
+to household stock. This is an original fictional errand and prototype workplace,
+not a surveyed historical building or completed production art. F5/F9 use a new
+workshop-aware whole-run slot; the earlier youth save is an explicit journal import.
+
+See [the integrated workshop guide](docs/HOME_WORKSHOP_INTEGRATION.md) for the
+finite recipe, shared-clock/replay boundaries and qualification methods.
+
+```sh
+python tools/capture_home_art.py --profile workshop --godot /path/to/godot --output /existing-parent/new-run
+```
+
+The default Home-art capture profile, F7 comparison, full-envelope atlas and active
+Ranjit childhood priority remain. The five workshop views come from an executed
+input journey and native Godot rendering, not concept-art generation.
+
+## Courtyard: authored asset and walking-view increment
+
+The existing Home now loads a Blender-authored bay kit and a fitted childhood
+costume study, with attributed CC0 dirt/plaster samples and explicit post
+collision. F7 also compares the earlier study, close/original walking camera and
+compact/original task HUD. The same smith commission, clock and saves remain.
+This is a prototype improvement, not the completed high-fidelity visual target.
+
+[Implementation, source assets and qualification](docs/COURTYARD_AUTHORED.md) ·
+[New references and Ranjit's uncovered/plain-cloth direction](docs/REFERENCE_BATCH_20260929.md)
+
+```sh
+python tools/capture_home_art.py --profile courtyard --godot /path/to/godot --output /existing-parent/new-run
+```
+
+The courtyard profile renders retained observations of real input-driven walking
+through the existing player camera; its video is not a physical-GPU FPS claim.
+
+## A Short Walk — bazaar direction (this branch)
+
+The existing Bhangi Bazaar Brawl now gives Mela and Jiva distinct dialogue, an optional
+pre-decision exchange, articulated supporting figures, visible guard/counter reactions,
+local nonvocal foley, compact action cues and outcome-specific homecoming text. The
+three original outcomes, timing, player/companion collision, money and saves remain.
+This is direct game content, not another terminal feature. [Play and limits](docs/BAZAAR_DIRECTION.md).

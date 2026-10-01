@@ -1,0 +1,92 @@
+{
+  "schema": "1792.surface-study.v1",
+  "acquired_utc": "2026-09-29T08:43:54.177987+00:00",
+  "files": [
+    {
+      "file": "dirt_diff_1k.png",
+      "sha256": "95324326812021f88a5668709572e16beb9fbb1c275576c45de09bc7da8cafa5",
+      "upstream_sha256": "5368432e1458424c3da3a9962db54941ed75d926eced7527f38f9f63ffad6ae9",
+      "upstream_bytes": 12098794,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/dirt/dirt_diff_4k.jpg",
+      "asset_page": "https://polyhaven.com/a/dirt",
+      "author": "Charlotte Baglioni",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "source_width_m": 2,
+      "adaptation": "4096 JPEG to 1024 PNG; diffuse RGB, height/roughness grayscale",
+      "historical_evidence": false
+    },
+    {
+      "file": "dirt_disp_1k.png",
+      "sha256": "4606f5caae5c5fec439bda201efb8d2c091adf83830b76029bcb90cd1e5fff47",
+      "upstream_sha256": "74944590d41370b1a06903d79891e26fea97b9a8cdc85be26f07ec9d5ee2fcf5",
+      "upstream_bytes": 3677777,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/dirt/dirt_disp_4k.jpg",
+      "asset_page": "https://polyhaven.com/a/dirt",
+      "author": "Charlotte Baglioni",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "source_width_m": 2,
+      "adaptation": "4096 JPEG to 1024 PNG; diffuse RGB, height/roughness grayscale",
+      "historical_evidence": false
+    },
+    {
+      "file": "dirt_rough_1k.png",
+      "sha256": "80b15fd46b37b7a0b42c8d48fb7e8f3f6eaa7f3d4733dad0b289aa26936312e4",
+      "upstream_sha256": "41be39b60e63dee25f42fd6049e9c51ea3f868440c16f3fee38162004c5ba72a",
+      "upstream_bytes": 3565704,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/dirt/dirt_rough_4k.jpg",
+      "asset_page": "https://polyhaven.com/a/dirt",
+      "author": "Charlotte Baglioni",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "source_width_m": 2,
+      "adaptation": "4096 JPEG to 1024 PNG; diffuse RGB, height/roughness grayscale",
+      "historical_evidence": false
+    },
+    {
+      "file": "plastered_wall_diff_1k.png",
+      "sha256": "aac9d7a52df68b8a3282eff140ad485a05d51b6e53123512c7d2c32439a52986",
+      "upstream_sha256": "e1c04a26f6d0718bdd8471d91ca6722345ed771348ceb48171a51127900b909d",
+      "upstream_bytes": 9029403,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/plastered_wall/plastered_wall_diff_4k.jpg",
+      "asset_page": "https://polyhaven.com/a/plastered_wall",
+      "author": "Amal Kumar",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "source_width_m": 2,
+      "adaptation": "4096 JPEG to 1024 PNG; diffuse RGB, height/roughness grayscale",
+      "historical_evidence": false
+    },
+    {
+      "file": "plastered_wall_disp_1k.png",
+      "sha256": "47af13bc6815b196a8f1e1b8101ceef04edb6b98bf0ac5b6df4d2acbe29fa62a",
+      "upstream_sha256": "30f3c5e9a040cd12bd861d83cb7a7e5c329fd70c3b893286f334f617aef76b1c",
+      "upstream_bytes": 8104065,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/plastered_wall/plastered_wall_disp_4k.jpg",
+      "asset_page": "https://polyhaven.com/a/plastered_wall",
+      "author": "Amal Kumar",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "source_width_m": 2,
+      "adaptation": "4096 JPEG to 1024 PNG; diffuse RGB, height/roughness grayscale",
+      "historical_evidence": false
+    },
+    {
+      "file": "plastered_wall_rough_1k.png",
+      "sha256": "f1f392869baf81a1ec622c277a3d8e4ecf5b7bb685b4d1c26744b7e07948699e",
+      "upstream_sha256": "e274e1c5a53c63cdfd52d56c68f97d1cd051a8d30cfa3f566d19c57ee85afe6a",
+      "upstream_bytes": 5190864,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/plastered_wall/plastered_wall_rough_4k.jpg",
+      "asset_page": "https://polyhaven.com/a/plastered_wall",
+      "author": "Amal Kumar",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "source_width_m": 2,
+      "adaptation": "4096 JPEG to 1024 PNG; diffuse RGB, height/roughness grayscale",
+      "historical_evidence": false
+    }
+  ],
+  "license": "CC0-1.0",
+  "historical_evidence": false
+}

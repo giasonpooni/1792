@@ -1,0 +1,57 @@
+{
+  "schema": "1792.home-art.v1",
+  "id": "home-material-study.v1",
+  "frame": "gujranwala-compressed-local-metres",
+  "year": 1792,
+  "georeferenced": false,
+  "classification": "original-authoring-study",
+  "seed": 179207,
+  "evidence_ref": "res://data/gujranwala_reconstruction.v1.json",
+  "presets": {
+    "daylight": {
+      "sun_rotation": [
+        -48,
+        -35,
+        0
+      ],
+      "sun_energy": 0.72,
+      "sun_color": "fff3df",
+      "ambient": 0.32,
+      "sky_top": "789eb1",
+      "sky_horizon": "ddd7bd",
+      "fog": "c6cebd"
+    },
+    "golden_hour": {
+      "sun_rotation": [
+        -24,
+        -65,
+        0
+      ],
+      "sun_energy": 0.9,
+      "sun_color": "ffd6a1",
+      "ambient": 0.38,
+      "sky_top": "799ba4",
+      "sky_horizon": "e6c9a4",
+      "fog": "d8c8a7"
+    },
+    "evening": {
+      "sun_rotation": [
+        -8,
+        36,
+        0
+      ],
+      "sun_energy": 0.43,
+      "sun_color": "ffb58b",
+      "ambient": 0.42,
+      "sky_top": "526777",
+      "sky_horizon": "bda897",
+      "fog": "91999a"
+    }
+  },
+  "limits": [
+    "No surveyed Gujranwala footprint or verified 1792 garment is inferred.",
+    "A lighting preset is authoring presentation, not a world clock or weather operation.",
+    "New geometry is noncolliding dressing; inherited physical geometry and all agents remain authoritative.",
+    "No imported museum image, scan, purchased mesh, named relic or religious figure is present."
+  ]
+}

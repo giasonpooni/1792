@@ -30,3 +30,16 @@ Bevy, Blender, and Notations Engineering Terminal are architecture or tool refer
 For each incoming third-party component, record the exact repository paths, upstream source, pinned revision or version, actual copyright holder, licence identifier and text, modifications, and release obligations. Retain permission evidence privately where necessary. Follow [asset intake](docs/ASSET_LICENSING.md) for media and [contribution review](CONTRIBUTING.md) for externally authored code.
 
 Unresolved rights are not cleared by this inventory. Preserve applicable upstream terms and obtain review before combining licences that could conflict with the intended distribution.
+
+## Courtyard surface samples (2026-09-29 increment)
+
+`game/assets/surfaces/dirt_*_1k.png`: Dirt by Charlotte Baglioni, Poly Haven.
+`game/assets/surfaces/plastered_wall_*_1k.png`: Plastered Wall by Amal Kumar,
+Poly Haven. These retain **CC0-1.0**; the proprietary game notice does not apply
+to them. See the [surface inventory](game/assets/surfaces/README.md) and accompanying
+`sources.json` for source URLs, licence links, upstream/output hashes and resizing.
+They are generic material samples, not evidence for a historical building/site.
+
+Blender is an external build tool, not a bundled engine dependency. Original
+script-generated geometry and source code remain project material. User-supplied
+reference images and `desert_cavalier(1).stl` were not redistributed or imported.
