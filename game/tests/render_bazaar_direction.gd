@@ -21,7 +21,11 @@ func apply(item: Dictionary) -> void:
 	scene.set_physics_process(false);scene.avatar.set_physics_process(false)
 	var director: Node=scene.bazaar_performance
 	director.sound_enabled=false;director.speech=item.speech.duplicate(true);director._guard=item.guard;director.report_until=int(item.report_until)
+	check(director.restore_attention(item.attention),"retained gaze state restores without advancing the game")
+	# JSON parses scalar numbers as float64; snapshot after validated float32 reconstruction.
+	var restored_attention: Dictionary=director.capture_attention()
 	scene._refresh();director._guard=item.guard;director.sample(false)
+	check(director.capture_attention()==restored_attention,"observation playback does not advance retained eye-line")
 func capture(name: String,check_ui: bool=true) -> void:
 	await frames(1)
 	scene.bazaar_performance.sample(false);await RenderingServer.frame_post_draw
@@ -41,7 +45,9 @@ func run() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
 	home=Launch.make_world();root.add_child(home);scene=home.get_node("ChildhoodChapter")
 	scene.set_physics_process(false);scene.avatar.set_physics_process(false);await frames(8)
-	for name in ["friends-walking","windup","checked","down","ending-fight","ending-leave"]:
+	var observed: Array=["approach-animal","friends-walking","windup","checked","down","ending-fight","ending-leave"]
+	if input.snapshots.has("approach-line"): observed.push_front("approach-line")
+	for name in observed:
 		apply(input.snapshots[name]);await capture(name)
 	# Optional dialogue uses its actual captured pre-decision state and the actual shipped panel.
 	apply(input.snapshots["friends-dialogue"])

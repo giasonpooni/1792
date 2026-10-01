@@ -3,6 +3,7 @@ extends "res://tests/test_youth_brawl.gd"
 ## Reuse the three actual input-driven journeys; additional checks are presentation-only.
 const Direction := preload("res://youth/performance/bazaar_director.gd")
 const Dialogue := preload("res://youth/performance/bazaar_script.gd")
+const WalkLines := preload("res://youth/performance/bazaar_walk_lines.gd")
 var current_chapter: Node3D
 var snapshots: Dictionary={}
 var clip: Array=[]
@@ -17,13 +18,28 @@ func ensure(value: bool,label: String) -> void:
 func snapshot_view(scene: Node3D) -> Dictionary:
 	var d: Node=scene.bazaar_performance
 	return {"state":scene.model.snapshot(),"velocity":Base.coords(scene.avatar.velocity),"camera_pivot":Base.coords(scene.avatar.pivot.rotation),
-		"message":scene._message,"speech":d.speech.duplicate(true),"guard":d._guard,"report_until":d.report_until,
+		"attention":d.capture_attention(),"message":scene._message,"speech":d.speech.duplicate(true),"guard":d._guard,"report_until":d.report_until,
 		"prompt":d.prompt.text,"phase":scene.model.brawl_phase(),"tick":int(scene.model.progress().tick)}
 func record_frame() -> void:
 	if not is_instance_valid(current_chapter) or not is_instance_valid(current_chapter.bazaar_performance): return
 	var scene:=current_chapter;var d: Node=scene.bazaar_performance
 	if scene._paused or not scene.model.has_brawl(): return
+	if not d.speech.is_empty():
+		var speaking_actor: int=int(d.speech.actor)
+		if speaking_actor==4 and d.gaze_tracks[3].head.length()>.08 and not snapshots.has("listener-mela"):
+			snapshots["listener-mela"]=snapshot_view(scene)
+		if speaking_actor==3 and d.gaze_tracks[4].head.length()>.08 and not snapshots.has("listener-jiva"):
+			snapshots["listener-jiva"]=snapshot_view(scene)
 	if not d.speech.is_empty() and not snapshots.has("friends-walking"): snapshots["friends-walking"]=snapshot_view(scene)
+	if not d.speech.is_empty():
+		var text: String=String(d.speech.text)
+		var ambient_lines: Array=[]
+		for zone in WalkLines.ZONES:
+			for line in zone.lines: ambient_lines.append(String(line[1]))
+		if text in ambient_lines and not snapshots.has("approach-line"): snapshots["approach-line"]=snapshot_view(scene)
+	if scene.model.brawl_phase()=="invited" and not snapshots.has("approach-animal"):
+		var animal_zone: Dictionary=WalkLines.ZONES[1]
+		if scene.avatar.global_position.distance_to(animal_zone.center)<=float(animal_zone.radius): snapshots["approach-animal"]=snapshot_view(scene)
 	if route_name=="fight" and scene.model.brawl_phase()=="fighting":
 		for i in range(3):
 			var pose: String=d.figures[i].pose_name
@@ -102,6 +118,7 @@ func run() -> void:
 	ensure(snapshots.has("windup") and snapshots.has("checked") and snapshots.has("down"),"actual fight produces windup, check and defeated poses")
 	ensure(clip.size()>12,"actual fight yields motion observations")
 	ensure(outcomes.fight.sound_cues.any(func(e):return e.kind=="check"),"actual checked strike emits foley cue")
+	ensure(snapshots.has("approach-animal"),"actual physical approach reaches the authored animal vignette without requiring ambient banter to pre-empt story dialogue")
 	ensure(outcomes.fight.heard.size()>0 and outcomes.leave.heard.size()>0,"nearby friends speak on both routes")
 	var report: Dictionary={"schema":"1792.bazaar-direction.v1","engine":Engine.get_version_info().string,"physics_hz":Engine.physics_ticks_per_second,
 		"new_assertions":new_checks,"passed":passed,"failed":failed,"snapshots":snapshots,"motion":clip,"outcomes":outcomes,
