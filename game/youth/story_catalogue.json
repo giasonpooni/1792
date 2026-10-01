@@ -1,0 +1,581 @@
+{
+  "schema": "1792.youth-stories.v1",
+  "policy": "All entries are required playable campaign work, not codex-only substitutes. Inclusion does not assert historicity.",
+  "actor_id": "ranjit_singh",
+  "display_name": "Buddh Singh",
+  "sources": [
+    {
+      "id": "user_brief",
+      "kind": "creative_brief",
+      "consulted": "User-supplied AI conversation, 2026-09-28",
+      "url": null,
+      "supports": "Inclusion and desired dramatization only. No independent corroboration."
+    },
+    {
+      "id": "ebsco_early",
+      "kind": "secondary_reference",
+      "consulted": "Early Life and opening Life’s Work sections, 2026-09-28",
+      "url": "https://www.ebsco.com/research-starters/history/ranjit-singh",
+      "supports": "Broad youth, Sodhran, regency and naming context; not all dramatic details."
+    },
+    {
+      "id": "spn_youth",
+      "kind": "forum_reproduction",
+      "consulted": "Opening youth paragraphs, 2026-09-28",
+      "url": "https://www.sikhphilosophy.net/threads/maharaja-ranjit-singh.34168/",
+      "supports": "A reproduced account of Sodhran, Hashmat, swimming and 20,000 practice rounds. Underlying cited works not directly consulted."
+    },
+    {
+      "id": "sikhnet_throne",
+      "kind": "modern_storytelling",
+      "consulted": "Full story text, not recording, 2026-09-28",
+      "url": "https://sikhnet.com/stories/audio/throne-lahore",
+      "supports": "Maan Singh is spared and recruited by a ruler already at Lahore. Contradicts teenage execution version."
+    },
+    {
+      "id": "encyclopedia_early",
+      "kind": "secondary_reference",
+      "consulted": "Early career through Lahore, and Jhang/Kasur discussion, 2026-09-28",
+      "url": "https://www.thesikhencyclopedia.com/ranjit-singh/",
+      "supports": "General chronology and a 1797 Ramnagar episode; does not establish the supplied age-15 Chatha version."
+    }
+  ],
+  "variant_groups": [
+    {
+      "id": "maan_singh_endings",
+      "members": [
+        "throne_lahore_pardon",
+        "maan_singh_lethal"
+      ],
+      "rule": "Mutually exclusive tellings, with separate temporal frames. Do not kill and recruit the same actor."
+    },
+    {
+      "id": "sodhran_naming_accounts",
+      "members": [
+        "sodhran_command",
+        "sodhran_naming"
+      ],
+      "rule": "Victory-message naming is requested lore. References instead connect renaming with the father’s victory. No automatic stable-ID or public-name migration."
+    },
+    {
+      "id": "regency_accounts",
+      "members": [
+        "end_regency",
+        "palace_purge",
+        "raj_kaur_mystery"
+      ],
+      "rule": "Management changes, murder allegations and motives are distinct claims. No default omniscient guilt."
+    }
+  ],
+  "chronology_notes": [
+    "Requested ages are not verified release dates. The active home cell remains its declared compressed 1792 frame.",
+    "The supplied Jhang/Kasur night encounters remain youth adaptations, not backdated later conquests.",
+    "Shah Muhammad remains a retrospective narrator; these original scenes are not quotations from him."
+  ],
+  "stories": [
+    {
+      "id": "bhangi_market_brawl",
+      "title": "The Bhangi Bazaar Brawl",
+      "required_playable": true,
+      "era_policy": "childhood",
+      "source_id": "user_brief",
+      "evidence_status": "supplied_lore_unverified",
+      "implementation": "playable_greybox",
+      "player_actions": "Walk with two friends into a challenge; guard, counter and get everyone out.",
+      "completion": "Return together, then give the household your account.",
+      "fallout": "Local trouble, remembered conduct and household concern.",
+      "dependencies": [
+        "companions",
+        "melee",
+        "local_knowledge"
+      ],
+      "runtime_entry": "home_market"
+    },
+    {
+      "id": "hashmat_ladewali",
+      "title": "The Hunt at Ladewali / Hashmat Khan",
+      "required_playable": true,
+      "era_policy": "youth",
+      "source_id": "spn_youth",
+      "evidence_status": "source_attributed_details_unverified",
+      "implementation": "existing_seed",
+      "player_actions": "Track quarry, become separated, survive the mounted ambush and fight back.",
+      "completion": "Resolve the encounter and physically rejoin the party.",
+      "fallout": "Injury, witnesses and rival-household repercussions.",
+      "dependencies": [
+        "tracking",
+        "mounted_combat",
+        "survival"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "sodhran_command",
+      "title": "The Child at Sodhran",
+      "required_playable": true,
+      "era_policy": "earlier_retrospective",
+      "source_id": "ebsco_early",
+      "evidence_status": "source_attributed_details_unverified",
+      "implementation": "planned",
+      "player_actions": "Keep a camp supplied as Mahan falls ill; scout and command against relief forces.",
+      "completion": "Complete the siege episode inside the fixed Mahan endpoint.",
+      "fallout": "Command experience and inherited obligations, not an alternate survival timeline.",
+      "dependencies": [
+        "command",
+        "supply",
+        "fixed_interlude"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "throne_lahore_pardon",
+      "title": "The Throne of Lahore: Pardon",
+      "required_playable": true,
+      "era_policy": "later_retelling",
+      "source_id": "sikhnet_throne",
+      "evidence_status": "source_attributed_details_unverified",
+      "implementation": "planned",
+      "player_actions": "Travel incognito, duel Maan Singh, bring him alive to Lahore and reveal identity.",
+      "completion": "Conclude with pardon and an offer of service.",
+      "fallout": "A former adversary can become an ally.",
+      "dependencies": [
+        "disguise",
+        "duel",
+        "recruitment"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "regency_escape",
+      "title": "Out of the Regents’ Sight",
+      "required_playable": true,
+      "era_policy": "childhood",
+      "source_id": "user_brief",
+      "evidence_status": "supplied_lore_unverified",
+      "implementation": "planned",
+      "player_actions": "Slip out of household supervision and meet companions without a remote alert.",
+      "completion": "Return or face the household response after witnesses report.",
+      "fallout": "Attendance, household suspicion and personal independence.",
+      "dependencies": [
+        "stealth",
+        "observers",
+        "household"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "ammunition_rebellion",
+      "title": "The Inherited Ammunition",
+      "required_playable": true,
+      "era_policy": "youth",
+      "source_id": "spn_youth",
+      "evidence_status": "source_attributed_details_unverified",
+      "implementation": "planned",
+      "player_actions": "Obtain access to ammunition, practise with friends and account for spent stock.",
+      "completion": "Finish a bounded shooting outing with its actual supply cost.",
+      "fallout": "Skill practice competes with household military reserves.",
+      "dependencies": [
+        "marksmanship",
+        "inventory",
+        "companions"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "river_races",
+      "title": "Across the River",
+      "required_playable": true,
+      "era_policy": "youth",
+      "source_id": "spn_youth",
+      "evidence_status": "source_attributed_details_unverified",
+      "implementation": "planned",
+      "player_actions": "Read the bank and current, swim or ride a crossing and stay with companions.",
+      "completion": "Reach the far bank and recover the whole party.",
+      "fallout": "Route familiarity, fatigue and remembered assistance.",
+      "dependencies": [
+        "swimming",
+        "currents",
+        "rescue"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "end_regency",
+      "title": "Taking the Reins",
+      "required_playable": true,
+      "era_policy": "late_youth",
+      "source_id": "ebsco_early",
+      "evidence_status": "source_attributed_details_unverified",
+      "implementation": "planned",
+      "player_actions": "Hear conflicting accounts, secure support and assume administration.",
+      "completion": "Complete an explicit authority transfer without omniscient motives.",
+      "fallout": "New obligations and changed household relationships.",
+      "dependencies": [
+        "dialogue",
+        "alliances",
+        "authority_transfer"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "boar_hunt",
+      "title": "The Great Boar Hunt",
+      "required_playable": true,
+      "era_policy": "youth",
+      "source_id": "user_brief",
+      "evidence_status": "supplied_lore_unverified",
+      "implementation": "planned",
+      "player_actions": "Track a boar, manage a frightened horse and evade or meet its charge.",
+      "completion": "Resolve the hunt and return with the party.",
+      "fallout": "Horsemanship, injury and the story companions tell.",
+      "dependencies": [
+        "animal_ai",
+        "mounted_combat",
+        "tracking"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "nihang_camp",
+      "title": "A Night in the Nihang Camp",
+      "required_playable": true,
+      "era_policy": "youth",
+      "source_id": "user_brief",
+      "evidence_status": "supplied_lore_unverified",
+      "implementation": "planned",
+      "player_actions": "Enter a dera without royal ceremony, join its kitchen work, listen and train.",
+      "completion": "Earn situated hospitality and leave with what was actually heard.",
+      "fallout": "Personal ties rather than automatic command over a community.",
+      "dependencies": [
+        "social_access",
+        "camp",
+        "oral_accounts"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "bazaar_revelry",
+      "title": "Nights in the Bazaar",
+      "required_playable": true,
+      "era_policy": "youth",
+      "source_id": "user_brief",
+      "evidence_status": "supplied_lore_unverified",
+      "implementation": "planned",
+      "player_actions": "Attend a celebration, choose company, wagers or drinking and interpret talk.",
+      "completion": "Return from the gathering with attributed, fallible accounts.",
+      "fallout": "Expense, fatigue, friendships and exposure; no magical truth drink.",
+      "dependencies": [
+        "festival",
+        "dialogue",
+        "condition"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "afghan_raiders",
+      "title": "Against the Afghan Advance",
+      "required_playable": true,
+      "era_policy": "late_youth",
+      "source_id": "encyclopedia_early",
+      "evidence_status": "source_attributed_details_unverified",
+      "implementation": "planned",
+      "player_actions": "Scout movements, protect villages and disrupt a military supply route.",
+      "completion": "Withdraw or return after a bounded raid with the actual party.",
+      "fallout": "Supplies, witnesses, retaliation and regional alliances.",
+      "dependencies": [
+        "scouting",
+        "raids",
+        "cavalry"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "pocket_money_companions",
+      "title": "A Pouch for the Playground",
+      "required_playable": true,
+      "era_policy": "childhood",
+      "source_id": "user_brief",
+      "evidence_status": "supplied_lore_unverified",
+      "implementation": "planned",
+      "player_actions": "Choose whom to share personal coins with, play together and reciprocate help.",
+      "completion": "Complete a shared outing without buying guaranteed obedience.",
+      "fallout": "Specific friendships, obligations and an actual purse debit.",
+      "dependencies": [
+        "companions",
+        "personal_purse",
+        "reciprocity"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "captured_falcon",
+      "title": "The Falcon in Another Courtyard",
+      "required_playable": true,
+      "era_policy": "youth",
+      "source_id": "user_brief",
+      "evidence_status": "supplied_lore_unverified",
+      "implementation": "planned",
+      "player_actions": "Follow a missing bird, enter a rival court and confront its keeper.",
+      "completion": "Recover the falcon by the selected negotiation or standoff.",
+      "fallout": "A local grievance, witnesses and custody of the animal.",
+      "dependencies": [
+        "falconry",
+        "trespass",
+        "negotiation"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "unwritten_king",
+      "title": "The Unwritten King",
+      "required_playable": true,
+      "era_policy": "childhood",
+      "source_id": "ebsco_early",
+      "evidence_status": "source_attributed_details_unverified",
+      "implementation": "existing_seed",
+      "player_actions": "Evade or attend lessons, hear accounts aloud and reconstruct a discrepancy.",
+      "completion": "Give an oral answer based on received information.",
+      "fallout": "Memory and trust without instantly granting literacy or infallibility.",
+      "dependencies": [
+        "oral_accounts",
+        "investigation",
+        "household"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "sodhran_naming",
+      "title": "The Day Budh Singh Became Ranjit",
+      "required_playable": true,
+      "era_policy": "earlier_retrospective",
+      "source_id": "user_brief",
+      "evidence_status": "supplied_lore_unverified",
+      "implementation": "planned",
+      "player_actions": "Play the victory-message and father-son naming tradition as a declared variant.",
+      "completion": "Conclude the retrospective without renaming the stable actor key.",
+      "fallout": "Viewer story experience; preserve the existing public-name convention.",
+      "dependencies": [
+        "fixed_interlude",
+        "messenger",
+        "naming"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "ancestral_mare",
+      "title": "Budha Singh and Desi",
+      "required_playable": true,
+      "era_policy": "ancestral_retelling",
+      "source_id": "user_brief",
+      "evidence_status": "supplied_lore_unverified",
+      "implementation": "planned",
+      "player_actions": "Hear the ancestral horse story, then play its crossing and a later riding challenge.",
+      "completion": "Finish each perspective with separate inventory and memories.",
+      "fallout": "Inherited aspiration, not a proven causal diagnosis of character.",
+      "dependencies": [
+        "horses",
+        "river_crossing",
+        "perspective"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "jhang_night_raids",
+      "title": "The Fighting at Jhang",
+      "required_playable": true,
+      "era_policy": "youth_adaptation",
+      "source_id": "user_brief",
+      "evidence_status": "supplied_lore_unverified",
+      "implementation": "planned",
+      "player_actions": "Reconnoitre approaches, manage ammunition and fight or withdraw in close quarters.",
+      "completion": "Return with surviving companions and conserved supply records.",
+      "fallout": "Local retaliation and logistics, not free territory.",
+      "dependencies": [
+        "raids",
+        "ammunition",
+        "melee"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "gujranwala_skirmishes",
+      "title": "The Village Alarm",
+      "required_playable": true,
+      "era_policy": "youth",
+      "source_id": "user_brief",
+      "evidence_status": "supplied_lore_unverified",
+      "implementation": "planned",
+      "player_actions": "Hear a local alarm, gather companions and intercept a livestock or crop raid.",
+      "completion": "Recover the party and resolve the disputed goods.",
+      "fallout": "Protection obligations, losses and witness accounts.",
+      "dependencies": [
+        "mustering",
+        "cavalry",
+        "custody"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "palace_purge",
+      "title": "Keys to the Household",
+      "required_playable": true,
+      "era_policy": "late_youth",
+      "source_id": "user_brief",
+      "evidence_status": "supplied_lore_unverified",
+      "implementation": "planned",
+      "player_actions": "Investigate a court threat, choose allies and contest access to administration.",
+      "completion": "Resolve the selected palace-conspiracy adaptation.",
+      "fallout": "Authority and persistent antagonism; accusations remain attributed.",
+      "dependencies": [
+        "intrigue",
+        "access",
+        "authority_transfer"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "maan_singh_lethal",
+      "title": "The King of Thieves: Lethal Variant",
+      "required_playable": true,
+      "era_policy": "youth_adaptation",
+      "source_id": "user_brief",
+      "evidence_status": "supplied_lore_unverified",
+      "implementation": "planned",
+      "player_actions": "Use a small retinue as bait and duel the bandit leader on the road.",
+      "completion": "Resolve the requested lethal ending and survivors’ surrender.",
+      "fallout": "A distinct adaptation, never the same history as the pardon ending.",
+      "dependencies": [
+        "duel",
+        "ambush",
+        "recruitment"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "kasur_night",
+      "title": "Night Encounter near Kasur",
+      "required_playable": true,
+      "era_policy": "youth_adaptation",
+      "source_id": "user_brief",
+      "evidence_status": "supplied_lore_unverified",
+      "implementation": "planned",
+      "player_actions": "Follow a raid through rain and navigate a low-visibility interception.",
+      "completion": "Extract the party or force the raiders back.",
+      "fallout": "Visibility, wet equipment, wounds and disputed accounts.",
+      "dependencies": [
+        "weather",
+        "melee",
+        "raids"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "raj_kaur_mystery",
+      "title": "Raj Kaur: Conflicting Accounts",
+      "required_playable": true,
+      "era_policy": "late_youth",
+      "source_id": "user_brief",
+      "evidence_status": "supplied_lore_unverified",
+      "implementation": "planned",
+      "player_actions": "Play the requested dark household story through an explicitly chosen telling.",
+      "completion": "Resolve that telling without converting allegations into universal facts.",
+      "fallout": "Family rupture and conflicting testimony; no automatic guilt revelation.",
+      "dependencies": [
+        "intrigue",
+        "testimony",
+        "variant_perspective"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "ramnagar_cavalry",
+      "title": "The Clash at Ramnagar",
+      "required_playable": true,
+      "era_policy": "late_youth",
+      "source_id": "encyclopedia_early",
+      "evidence_status": "source_attributed_details_unverified",
+      "implementation": "planned",
+      "player_actions": "Read an approaching charge, hold formation or break into the clash.",
+      "completion": "Rally and physically extract the party.",
+      "fallout": "Command costs and recognition; identities/date remain versioned.",
+      "dependencies": [
+        "cavalry",
+        "formation",
+        "rescue"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "brick_kilns",
+      "title": "The Battle of the Brick Kilns",
+      "required_playable": true,
+      "era_policy": "youth_adaptation",
+      "source_id": "user_brief",
+      "evidence_status": "supplied_lore_unverified",
+      "implementation": "planned",
+      "player_actions": "Locate pinned companions, draw attention and manoeuvre around kiln walls.",
+      "completion": "Recover them or break the opposing position.",
+      "fallout": "Local losses, attention and a remembered risk.",
+      "dependencies": [
+        "cover",
+        "cavalry",
+        "squad_orders"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "hound_confrontation",
+      "title": "The Hounds in the Courtyard",
+      "required_playable": true,
+      "era_policy": "youth_adaptation",
+      "source_id": "user_brief",
+      "evidence_status": "supplied_lore_unverified",
+      "implementation": "planned",
+      "player_actions": "Respond to an insult, command the hounds and choose when to recall them.",
+      "completion": "End the confrontation with all actors’ condition retained.",
+      "fallout": "Fear, grievance and household reaction, not a free obedience bonus.",
+      "dependencies": [
+        "animal_commands",
+        "dialogue",
+        "social_field"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "bazaar_arrest",
+      "title": "The Unrecognized Heir",
+      "required_playable": true,
+      "era_policy": "youth_adaptation",
+      "source_id": "user_brief",
+      "evidence_status": "supplied_lore_unverified",
+      "implementation": "planned",
+      "player_actions": "Enter incognito, join a dice dispute, face the watch and navigate detention.",
+      "completion": "Resolve recognition, release and the response to the watchmen.",
+      "fallout": "Disguise can fail locally; knowledge travels through witnesses.",
+      "dependencies": [
+        "disguise",
+        "brawl",
+        "detention"
+      ],
+      "runtime_entry": null
+    },
+    {
+      "id": "sialkot_tribute",
+      "title": "The Sialkot Tribute Raid",
+      "required_playable": true,
+      "era_policy": "youth_adaptation",
+      "source_id": "user_brief",
+      "evidence_status": "supplied_lore_unverified",
+      "implementation": "planned",
+      "player_actions": "Scout a collection post, muster a finite party and carry captured goods home.",
+      "completion": "Extract, settle custody and face a rival’s response.",
+      "fallout": "Grain, money, casualties and retaliation remain conserved.",
+      "dependencies": [
+        "raids",
+        "cargo",
+        "retaliation"
+      ],
+      "runtime_entry": null
+    }
+  ]
+}

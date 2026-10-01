@@ -1,0 +1,36 @@
+{
+  "schema": "1792.threshold-occupation-contracts.v1",
+  "principle": "edge occupation should make the street inhabited without converting every visual habit into persistent agent state",
+  "habits": [
+    {
+      "id": "shade_mender",
+      "persistent": false,
+      "interactive": false,
+      "meaning": "repair work chooses shade and edge space"
+    },
+    {
+      "id": "cooling_water_place",
+      "persistent": false,
+      "interactive": false,
+      "meaning": "objects can imply repeated use without an NPC present"
+    },
+    {
+      "id": "counting_edge",
+      "persistent": false,
+      "interactive": false,
+      "meaning": "manual work occupies one edge while leaving circulation free"
+    },
+    {
+      "id": "empty_waiting_mat",
+      "persistent": false,
+      "interactive": false,
+      "meaning": "an unexplained prepared place may remain empty"
+    }
+  ],
+  "rules": [
+    "habits never enter campaign saves, journals, economy or knowledge",
+    "ambient figures are presentation studies, not authoritative NPCs or witnesses",
+    "challenged/fighting phases may reduce visible work without creating a remembered reaction",
+    "future crowd/occupation generators may surround these habits but not clone them uniformly"
+  ]
+}
