@@ -175,7 +175,7 @@ static func blank_merchant() -> Dictionary:
 	return {"id":CARAVAN_ID,"position":Base.coords(MARKET+Vector3(1,0,0)),
 		"yaw":0.0,"velocity":[0.0,0.0,0.0]}
 
-static func validate(value: Variant, tick: int) -> String:
+static func validate(value: Variant, tick: int, reducer: Callable = Callable()) -> String:
 	if not value is Dictionary or value.size()!=7: return "Malformed home economy."
 	for key in ["schema","cell_id","seed","origin_tick","events","ledger","merchant"]:
 		if not value.has(key): return "Missing home-economy field."
@@ -194,7 +194,7 @@ static func validate(value: Variant, tick: int) -> String:
 		if e.kind == "watch":
 			if e.tick != next_watch: return "Upkeep occurred on the wrong tick."
 		elif e.tick >= next_watch: return "Missing due upkeep before transaction."
-		var error := apply(replay,e.kind,e.arg)
+		var error: String = reducer.call(replay,e.kind,e.arg) if reducer.is_valid() else apply(replay,e.kind,e.arg)
 		if not error.is_empty(): return "Invalid retained economic action: "+error
 		prior = int(e.tick)
 		seq += 1
@@ -234,9 +234,11 @@ static func _equal(a: Variant,b: Variant) -> bool:
 	if typeof(a) in [TYPE_INT,TYPE_FLOAT]: return finite_number(b) and a==b
 	return typeof(a)==typeof(b) and a==b
 
-static func replay(events: Array) -> Dictionary:
+static func replay(events: Array, reducer: Callable = Callable()) -> Dictionary:
 	var s := initial()
-	for e in events: apply(s,e.kind,e.arg)
+	for e in events:
+		if reducer.is_valid(): reducer.call(s,e.kind,e.arg)
+		else: apply(s,e.kind,e.arg)
 	return s
 
 static func forecast(s: Dictionary) -> Dictionary:

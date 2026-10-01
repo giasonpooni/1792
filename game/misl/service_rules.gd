@@ -70,7 +70,7 @@ static func valid_motion(value: Variant,slot: int) -> bool:
 	if not fields(value,["id","position","yaw","velocity"]) or value.id!=identity(slot): return false
 	return Base.valid_point(value.position) and Supply.valid_velocity(value.velocity) and Supply.finite_number(value.yaw) and absf(value.yaw)<=PI and Vector2(value.velocity[0],value.velocity[2]).length()<=SPEED+0.01
 
-static func replay(value: Variant, supply: Dictionary, now: int) -> Dictionary:
+static func replay(value: Variant, supply: Dictionary, now: int, reducer: Callable=Callable()) -> Dictionary:
 	if not fields(value,["schema","origin_tick","events","ledger","agent"]) or value.schema!=VERSION: return {"error":"Unsupported service record."}
 	if not Supply.whole(value.origin_tick,int(supply.origin_tick),now) or not value.events is Array or value.events.is_empty() or value.events.size()>MAX_EVENTS:
 		return {"error":"Invalid service start/event budget."}
@@ -78,7 +78,7 @@ static func replay(value: Variant, supply: Dictionary, now: int) -> Dictionary:
 	var economies: Array=[Supply.initial()]
 	for receipt in supply.events:
 		var next: Dictionary=economies[-1].duplicate(true)
-		var error:=Supply.apply(next,receipt.kind,receipt.arg)
+		var error: String=reducer.call(next,receipt.kind,receipt.arg) if reducer.is_valid() else Supply.apply(next,receipt.kind,receipt.arg)
 		if not error.is_empty(): return {"error":error}
 		economies.append(next)
 	var state:=initial()

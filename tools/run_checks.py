@@ -63,6 +63,20 @@ def main() -> int:
     run([sys.executable, "tools/check_youth.py"], "youth-catalogue")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_youth_brawl.gd"],
         "youth-brawl", "YOUTH_BRAWL_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_locomotion.gd"],
+        "locomotion", "LOCOMOTION_TESTS:")
+    run([sys.executable, "tools/check_locomotion_rates.py", "--godot", args.godot], "locomotion-rates")
+    run([sys.executable, "tools/check_world_atlas.py"], "world-atlas-contracts")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_world_atlas.gd"],
+        "world-atlas", "WORLD_ATLAS_TESTS:")
+    run([sys.executable, "tools/check_home_art.py"], "home-art-contracts")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_home_art.gd"],
+        "home-art", "HOME_ART_TESTS:")
+    run([sys.executable, "tools/check_home_workshop.py"], "home-workshop-contracts")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_home_workshop.gd"],
+        "home-workshop", "HOME_WORKSHOP_TESTS:")
+    run([sys.executable,"tools/check_courtyard.py"],"courtyard-contracts")
+    run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_courtyard.gd"],"courtyard","COURTYARD_TESTS:")
     return 0
 
 

@@ -1,0 +1,251 @@
+{
+  "schema": "1792.world-reference-corpus.v1",
+  "id": "user-visual-corpus-20260930-a",
+  "binaries_embedded": false,
+  "redistribution": "not_performed",
+  "source_status": "user-supplied visual references; filenames/claims are not independently authenticated here",
+  "tiers": {
+    "A": "source-authenticated near-period/direct evidence; may constrain historical reconstruction within its documented scope",
+    "B": "later continuity photograph/object/building reference; may constrain durable spatial/material grammar, not silently backdate later alterations",
+    "C": "painting/genre/secondary visual-language reference; may guide composition, silhouette, occupation and material relationships, not exact fact",
+    "D": "modern/studio/concept motif-only; may inspire visual mechanics or presentation but supplies no historical fact"
+  },
+  "rules": [
+    "every generated asset or layout must inherit the reference tier and allowed-influence fields",
+    "C/D references cannot satisfy historical-authentication gates",
+    "later vehicles, restoration, studio staging and modern ornament never backdate automatically",
+    "religious/monumental references may guide exterior approach and threshold composition without creating enterable interiors"
+  ],
+  "entries": [
+    {
+      "id": "water-edge-daily-life",
+      "file": "images (22).jpg",
+      "sha256": "31ece0e21dff9d8461c938ac4b2735fed1f2011159b0ac57746b6e80afe5ac1d",
+      "tier": "C",
+      "allowed": [
+        "water-edge occupation",
+        "seated/standing activity mix",
+        "vessel/carry silhouette",
+        "crowd spacing",
+        "color relationships"
+      ],
+      "forbidden": [
+        "exact dress dating",
+        "literal ritual choreography",
+        "named-person identity"
+      ]
+    },
+    {
+      "id": "axial-courtyard-water",
+      "file": "images (23).jpg",
+      "sha256": "677370eb20a6a357d23283de93ff72364c673e2603b521ecbaf2aac5ef376a23",
+      "tier": "B",
+      "allowed": [
+        "courtyard axis",
+        "water-channel proportion",
+        "arcade enclosure",
+        "garden-room sequencing"
+      ],
+      "forbidden": [
+        "automatic 1792 planting palette",
+        "restoration-era surface as original"
+      ]
+    },
+    {
+      "id": "arched-threshold-light",
+      "file": "images (24).jpg",
+      "sha256": "46bb5aba337b1b4e298643f115bc37140368623c231e4cdbc3094749430d98ea",
+      "tier": "B",
+      "allowed": [
+        "deep threshold",
+        "shade-to-light reveal",
+        "panel rhythm",
+        "arched opening hierarchy"
+      ],
+      "forbidden": [
+        "exact decorative program without site/date verification"
+      ]
+    },
+    {
+      "id": "long-interior-sequence",
+      "file": "images (25).jpg",
+      "sha256": "84fb94234e8d19ace97f834171bd00a1b4d58630d9eac4768def0c82781a70fc",
+      "tier": "B",
+      "allowed": [
+        "room-to-room sightline",
+        "repeated arch rhythm",
+        "daylight endpoint",
+        "floor/ceiling proportion"
+      ],
+      "forbidden": [
+        "later furnishing as period fact"
+      ]
+    },
+    {
+      "id": "later-palace-furnishing",
+      "file": "images (26).jpg",
+      "sha256": "9d732776968fc2848e7fa842f60226005b51f8083bb1a90f99e21fb162d7748e",
+      "tier": "B",
+      "allowed": [
+        "furniture density",
+        "negative space",
+        "window light",
+        "court room asymmetry"
+      ],
+      "forbidden": [
+        "later chair/furnishing styles backdated to 1792"
+      ]
+    },
+    {
+      "id": "reflective-ornamented-hall",
+      "file": "images (27).jpg",
+      "sha256": "28a6b25bf7b73fb897e41b12bc30e105430c45fd910711948a3d4b454e5e2557",
+      "tier": "B",
+      "allowed": [
+        "surface reflectance contrast",
+        "arcade opening rhythm",
+        "night/day light contrast",
+        "ceremonial emptiness"
+      ],
+      "forbidden": [
+        "literal ornament transfer without site evidence"
+      ]
+    },
+    {
+      "id": "pavilion-garden-massing",
+      "file": "images (28).jpg",
+      "sha256": "a8513ea99be87da158b1227d3e6a9bd8eb65dd7cd88eb1203b4345deaf952ac6",
+      "tier": "B",
+      "allowed": [
+        "two-storey pavilion massing",
+        "garden separation",
+        "roof chhatri accent",
+        "weathering layers"
+      ],
+      "forbidden": [
+        "restored lawn treatment as period fact"
+      ]
+    },
+    {
+      "id": "shield-and-hilt-object",
+      "file": "images (29).jpg",
+      "sha256": "476c8c0b1177966f8a335f0c7ec56a007f16ff215b4d044f650935ddedbb47ab",
+      "tier": "C",
+      "allowed": [
+        "metal/ivory contrast",
+        "guard/hilt silhouette",
+        "shield-boss spacing",
+        "ornament density"
+      ],
+      "forbidden": [
+        "provenance/date attribution until museum/source record is attached"
+      ]
+    },
+    {
+      "id": "modern-ruler-miniature",
+      "file": "images (30).jpg",
+      "sha256": "688661354a35ba8f2e3ad200b018dc5664283eb7ff3ce1f7659231062d419a08",
+      "tier": "D",
+      "allowed": [
+        "seated silhouette",
+        "footrest composition",
+        "weapon/chair relationship",
+        "lighting study"
+      ],
+      "forbidden": [
+        "costume",
+        "armor",
+        "chair",
+        "face",
+        "material as historical evidence"
+      ]
+    },
+    {
+      "id": "lahore-fort-view",
+      "file": "Lahore_Fort_view_from_Baradari.jpg",
+      "sha256": "0e4ea68a1d22cfed8af1ce59bf43a69e4de02e52d9f0b97c06b7085dc082d1c4",
+      "tier": "B",
+      "allowed": [
+        "fort/court sightline",
+        "garden-to-wall scale",
+        "layered enclosure"
+      ],
+      "forbidden": [
+        "undated alteration treated as Ranjit-period original"
+      ]
+    },
+    {
+      "id": "ranjit-palace-later-photo",
+      "file": "Ranjit_Singh's_palace_in_the_Lahore_Fort_compound,_in_a_photo_from_the_early_1890's.jpg",
+      "sha256": "0a461c52153c8a0fcd33914fd1b86b445c89c299cb1ee3eee137e3f74efe314e",
+      "tier": "B",
+      "allowed": [
+        "surviving massing",
+        "arcade/projection vocabulary",
+        "weathering/repair"
+      ],
+      "forbidden": [
+        "1890s condition copied wholesale into earlier scenes"
+      ]
+    },
+    {
+      "id": "summer-palace-reference",
+      "file": "Summer_Palace_of_Maharaja_Ranjit_Singh,_Amritsar,_Punjab,India.jpg",
+      "sha256": "61f49f611ad4b2f63d16d37694620d0d8e4327bcf0a7bd3d66a595cfaabac784",
+      "tier": "B",
+      "allowed": [
+        "pavilion/facade proportion",
+        "window/arch rhythm",
+        "garden relationship"
+      ],
+      "forbidden": [
+        "modern restoration finishes as original"
+      ]
+    },
+    {
+      "id": "court-painting-1864",
+      "file": "Painting_of_the_the_court_of_Maharaja_Ranjit_Singh,_ca.1864.jpg",
+      "sha256": "6dbce01c8066769e883bf253776898c7df1907c4909725555a09bda3d6aa7cd4",
+      "tier": "C",
+      "allowed": [
+        "court density",
+        "seating hierarchy",
+        "weapon distribution",
+        "textile color grouping",
+        "attendant spacing"
+      ],
+      "forbidden": [
+        "exact portrait likeness/costume fact without corroboration"
+      ]
+    },
+    {
+      "id": "darbar-painting",
+      "file": "painting-of-the-darbar-royal-court-of-maharaja-ranjit-singh-ca1850-7b2379-1024.jpg",
+      "sha256": "89a5729c74398a0abdd202825d568829092f52e68ef84a8623bae4bf1d66a48c",
+      "tier": "C",
+      "allowed": [
+        "court blocking",
+        "central negative space",
+        "scribal/document occupation",
+        "horse/elephant edge presence"
+      ],
+      "forbidden": [
+        "literal spatial reconstruction without architectural evidence"
+      ]
+    },
+    {
+      "id": "ranjit-sword-reference",
+      "file": "RanjitSword-d.jpg",
+      "sha256": "becd1ab4298738bae32e2c9b6f0008cb349c2e7132578f3c2a04afc83511c9f8",
+      "tier": "C",
+      "allowed": [
+        "hilt/scabbard ornament vocabulary",
+        "material contrast",
+        "object wear questions"
+      ],
+      "forbidden": [
+        "ownership/provenance/date claim until source record is attached"
+      ]
+    }
+  ]
+}

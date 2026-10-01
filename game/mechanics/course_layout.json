@@ -1,0 +1,251 @@
+{
+  "schema": "locomotion-course.v1",
+  "authoring": "original_metric_graybox_not_historical_geometry",
+  "spawn": [
+    0,
+    0.04,
+    7.5
+  ],
+  "boxes": [
+    {
+      "id": "lower_floor",
+      "size": [
+        38,
+        0.5,
+        64
+      ],
+      "at": [
+        0,
+        -2.25,
+        -8
+      ],
+      "traversable": false,
+      "rotate_x_degrees": 0
+    },
+    {
+      "id": "start_ground",
+      "size": [
+        32,
+        0.4,
+        20
+      ],
+      "at": [
+        0,
+        -0.2,
+        3.5
+      ],
+      "traversable": false,
+      "rotate_x_degrees": 0
+    },
+    {
+      "id": "exit_ground",
+      "size": [
+        32,
+        0.4,
+        19
+      ],
+      "at": [
+        0,
+        -0.2,
+        -18.5
+      ],
+      "traversable": false,
+      "rotate_x_degrees": 0
+    },
+    {
+      "id": "left_alley",
+      "size": [
+        0.35,
+        2.8,
+        7
+      ],
+      "at": [
+        -2.0,
+        1.4,
+        2.5
+      ],
+      "traversable": false,
+      "rotate_x_degrees": 0
+    },
+    {
+      "id": "right_alley",
+      "size": [
+        0.35,
+        2.8,
+        7
+      ],
+      "at": [
+        2.0,
+        1.4,
+        2.5
+      ],
+      "traversable": false,
+      "rotate_x_degrees": 0
+    },
+    {
+      "id": "vault_rail",
+      "size": [
+        3,
+        0.7,
+        0.5
+      ],
+      "at": [
+        0,
+        0.35,
+        0
+      ],
+      "traversable": true,
+      "rotate_x_degrees": 0
+    },
+    {
+      "id": "mantle_block",
+      "size": [
+        3,
+        1.4,
+        3
+      ],
+      "at": [
+        0,
+        0.7,
+        -5
+      ],
+      "traversable": true,
+      "rotate_x_degrees": 0
+    },
+    {
+      "id": "landing_block",
+      "size": [
+        3,
+        1.4,
+        4
+      ],
+      "at": [
+        0,
+        0.7,
+        -11
+      ],
+      "traversable": true,
+      "rotate_x_degrees": 0
+    },
+    {
+      "id": "gate_left",
+      "size": [
+        0.5,
+        3.5,
+        1
+      ],
+      "at": [
+        -2.0,
+        1.75,
+        -18
+      ],
+      "traversable": false,
+      "rotate_x_degrees": 0
+    },
+    {
+      "id": "gate_right",
+      "size": [
+        0.5,
+        3.5,
+        1
+      ],
+      "at": [
+        2.0,
+        1.75,
+        -18
+      ],
+      "traversable": false,
+      "rotate_x_degrees": 0
+    },
+    {
+      "id": "gate_lintel",
+      "size": [
+        4.5,
+        0.4,
+        1
+      ],
+      "at": [
+        0,
+        3.5,
+        -18
+      ],
+      "traversable": false,
+      "rotate_x_degrees": 0
+    },
+    {
+      "id": "ceiling",
+      "size": [
+        5,
+        0.3,
+        5
+      ],
+      "at": [
+        -9,
+        2.05,
+        3
+      ],
+      "traversable": false,
+      "rotate_x_degrees": 0
+    },
+    {
+      "id": "ceiling_post",
+      "size": [
+        0.3,
+        2.0,
+        0.3
+      ],
+      "at": [
+        -11,
+        1,
+        5
+      ],
+      "traversable": false,
+      "rotate_x_degrees": 0
+    },
+    {
+      "id": "unmarked_wall",
+      "size": [
+        3,
+        1.0,
+        0.5
+      ],
+      "at": [
+        9,
+        0.5,
+        6
+      ],
+      "traversable": false,
+      "rotate_x_degrees": 0
+    },
+    {
+      "id": "too_tall",
+      "size": [
+        3,
+        2.4,
+        2
+      ],
+      "at": [
+        9,
+        1.2,
+        0
+      ],
+      "traversable": true,
+      "rotate_x_degrees": 0
+    },
+    {
+      "id": "ramp",
+      "size": [
+        3,
+        0.3,
+        6
+      ],
+      "at": [
+        9,
+        1.5,
+        -4
+      ],
+      "traversable": false,
+      "rotate_x_degrees": 30
+    }
+  ]
+}

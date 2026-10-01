@@ -3,9 +3,12 @@ extends "res://misl/service_chapter.gd"
 ## The same home entry and physics executor, extended with a local youth encounter.
 const YouthState := preload("res://youth/brawl_state.gd")
 const Brawl := preload("res://youth/brawl_rules.gd")
+const Dialogue := preload("res://youth/performance/bazaar_script.gd")
 const Catalogue := preload("res://youth/catalogue.gd")
+const MaterialMemory := preload("res://youth/performance/bazaar_material_memory.gd")
 var youths: Array[CharacterBody3D]=[]
 var youth_rigs: Array[Node3D]=[]
+var material_memory: Node3D
 var _youth_action := ""
 func _init() -> void:
 	model=YouthState.new();save_path=YouthState.BRAWL_SAVE
@@ -33,6 +36,7 @@ func _build_world() -> void:
 	var sign:=Label3D.new();sign.text="Bazaar approach · an authored youth tale"
 	sign.position=Brawl.RING+Vector3(0,3.2,-3);sign.billboard=BaseMaterial3D.BILLBOARD_ENABLED
 	sign.font_size=20;sign.pixel_size=0.002;add_child(sign)
+	material_memory=MaterialMemory.new();material_memory.name="HandWorkedLives";add_child(material_memory);material_memory.build()
 	_sync_youth(true)
 func _apply() -> void:
 	super._apply();_sync_youth(true)
@@ -79,12 +83,23 @@ func _open_journal() -> void:
 	if FileAccess.file_exists(ServiceState.SERVICE_SAVE): _youth_button("Import prior household-service save (replaces this run)","import")
 func _interact() -> void:
 	var phase: String=model.brawl_phase()
+	if phase=="invited" and is_instance_valid(material_memory):
+		var detail: Dictionary=material_memory.nearest(model.position())
+		if not detail.is_empty():
+			if model.mounted(): _message="Dismount before stopping to inspect the market detail.";return
+			if not _seen(detail.focus,2.8): _message="Step closer and face the object in clear sight.";return
+			var together: bool=_contact(youths[3]) and _contact(youths[4]) and Model.distance(model.position(),youths[3].global_position)<5 and Model.distance(model.position(),youths[4].global_position)<5
+			var body: String=String(detail.description)
+			if together: body+="\n\n"+String(detail.with_friends)
+			body+="\n\nOriginal fictional micro-detail. No reward, codex unlock or historical authentication."
+			_show_dialog("HAND-WORKED LIVES · "+String(detail.title),body,[["Continue","resume"]])
+			return
 	if phase in ["invited","challenged"] and Model.distance(model.position(),youths[0].global_position)<3.2:
 		if not _seen(youths[0].global_position+Vector3.UP*1.4,4.5): _message="Face the challenger in clear sight.";return
 		if phase=="invited":
 			var error: String=model.brawl_action("challenge")
 			if not error.is_empty(): _message=error;return
-		_show_dialog("AT THE BAZAAR · A CHALLENGE","Challenger · The Sukerchakia heir? One eye and two playmates. This is Bhangi company. Your name does not clear our road.\n\nMela · We came together, Buddh. Whatever you choose, do not leave one of us behind.\n\nStand your ground: face raised blows with Q, then counter with left click. Or leave together. Bring both friends to the household approach; stay close enough for them to see you.",[["Stand with my friends","youth:stand"],["Walk away together","youth:leave"],["Consider the challenge","resume"]])
+		_show_dialog("AT THE BAZAAR · A SHORT WALK",Dialogue.CHALLENGE,[["Stand with my friends","youth:stand"],["Walk away together","youth:leave"],["Hear Mela and Jiva","youth:listen"],["Consider the challenge","resume"]])
 		return
 	if phase in ["fighting","leaving"]:
 		_message="Get both friends to the open household approach. Fight with Q and left click, or make distance.";return
@@ -97,6 +112,12 @@ func _youth_access(kind: String) -> String:
 func _physics_process(delta: float) -> void:
 	if not _youth_action.is_empty():
 		var kind:=_youth_action;_youth_action=""
+		if kind in ["listen","answer"]:
+			if model.brawl_phase()!="challenged" or not _youth_access(kind).is_empty() or not _contact(youths[3]) or not _contact(youths[4]) or Model.distance(model.position(),youths[3].global_position)>5 or Model.distance(model.position(),youths[4].global_position)>5:
+				_message="Bring both friends close enough to speak, in sight of the challenger.";_resume();return
+			if kind=="answer": _interact()
+			else: _show_dialog("BETWEEN FRIENDS",Dialogue.FRIENDS,[["Stand with my friends","youth:stand"],["Walk away together","youth:leave"],["Back to the challenger","youth:answer"]])
+			return
 		if kind=="import": _load(ServiceState.SERVICE_SAVE);return
 		if kind=="retry": _retry_bazaar();return
 		var error:=_youth_access(kind)
@@ -104,7 +125,7 @@ func _physics_process(delta: float) -> void:
 			# A full-world sidecar, not progress/resource merging or a second live state.
 			error=model.save_to(save_path+".bazaar-retry.json")
 		if error.is_empty(): error=model.begin_brawl() if kind=="invite" else model.brawl_action(kind)
-		_message=error if not error.is_empty() else {"invite":"Mela · Come with us to the open ground southeast of the stall. Stay close.","stand":"Buddh · Stay together. Q guards a faced strike; left click counters it. The home approach is our way out.","leave":"Buddh · We leave together. Let them talk.","report":"Quartermaster · I have heard your account. Your friends returned with you."}.get(kind,"Account received.")
+		_message=error if not error.is_empty() else {"invite":Dialogue.INVITE,"stand":Dialogue.STAND,"leave":Dialogue.LEAVE,"report":Dialogue.REPORT.get(model.brawl().ledger.outcome,"")}.get(kind,"Account received.")
 		_sync_youth(true);_resume();return
 	if model.brawl_phase()=="caught":
 		if _load_requested: _load_requested=false;_load();return

@@ -1,0 +1,45 @@
+name: Asset archive and reference intake qualification
+on:
+  push:
+    paths:
+      - tools/art/inspect_asset_archive.py
+      - tools/art/test_inspect_asset_archive.py
+      - data/art_intake/map_architecture_20260929.json
+      - data/art_intake/archive_reports/**
+      - docs/MAP_ARCHITECTURE_INTAKE.md
+      - .github/workflows/asset-intake.yml
+permissions:
+  contents: read
+jobs:
+  offline-intake:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Offline fixtures and retained-record consistency
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p test-results/asset-intake
+          python3 --version | tee test-results/asset-intake/python.txt
+          python3 tools/art/test_inspect_asset_archive.py -v 2>&1 | tee test-results/asset-intake/tests.log
+          git diff --exit-code
+      - name: Retain exact source identity
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p test-results/asset-intake
+          git rev-parse HEAD > test-results/asset-intake/commit.txt
+          git rev-parse HEAD^{tree} > test-results/asset-intake/tree.txt
+          git archive --format=tar HEAD > test-results/asset-intake/source.tar
+          sha256sum tools/art/inspect_asset_archive.py data/art_intake/archive_reports/*.json > test-results/asset-intake/observations.sha256
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: asset-intake-evidence
+          path: test-results/asset-intake/
+          retention-days: 14
