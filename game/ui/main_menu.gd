@@ -27,6 +27,7 @@ func _ready() -> void:
 	_add_button(panel, "Living politics + one-eye vision (extended home chapter)", "res://world/political_home.tscn")
 	_add_button(panel, "Lahore · Command story (separate 1801 sandbox)", "res://world/command_sandbox.tscn")
 	_add_button(panel, "Lahore · Houses and rivals (riding / companions / house politics)", "res://world/house_sandbox.tscn")
+	_add_button(panel, "Movement qualification · shared motor / no story progress", "res://mechanics/course.tscn")
 	var note := Label.new()
 	note.text = "WASD: move · Shift: run · Mouse: look\nE interact · F5 save · F9 load · F1 menu · H houses · F mount · G companions (Houses and rivals)\nThe sandbox captain, missions and geography are fictional placeholders."
 	panel.add_child(note)
