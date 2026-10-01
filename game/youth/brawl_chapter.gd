@@ -5,8 +5,10 @@ const YouthState := preload("res://youth/brawl_state.gd")
 const Brawl := preload("res://youth/brawl_rules.gd")
 const Dialogue := preload("res://youth/performance/bazaar_script.gd")
 const Catalogue := preload("res://youth/catalogue.gd")
+const MaterialMemory := preload("res://youth/performance/bazaar_material_memory.gd")
 var youths: Array[CharacterBody3D]=[]
 var youth_rigs: Array[Node3D]=[]
+var material_memory: Node3D
 var _youth_action := ""
 func _init() -> void:
 	model=YouthState.new();save_path=YouthState.BRAWL_SAVE
@@ -34,6 +36,7 @@ func _build_world() -> void:
 	var sign:=Label3D.new();sign.text="Bazaar approach · an authored youth tale"
 	sign.position=Brawl.RING+Vector3(0,3.2,-3);sign.billboard=BaseMaterial3D.BILLBOARD_ENABLED
 	sign.font_size=20;sign.pixel_size=0.002;add_child(sign)
+	material_memory=MaterialMemory.new();material_memory.name="HandWorkedLives";add_child(material_memory);material_memory.build()
 	_sync_youth(true)
 func _apply() -> void:
 	super._apply();_sync_youth(true)
@@ -80,6 +83,17 @@ func _open_journal() -> void:
 	if FileAccess.file_exists(ServiceState.SERVICE_SAVE): _youth_button("Import prior household-service save (replaces this run)","import")
 func _interact() -> void:
 	var phase: String=model.brawl_phase()
+	if phase=="invited" and is_instance_valid(material_memory):
+		var detail: Dictionary=material_memory.nearest(model.position())
+		if not detail.is_empty():
+			if model.mounted(): _message="Dismount before stopping to inspect the market detail.";return
+			if not _seen(detail.focus,2.8): _message="Step closer and face the object in clear sight.";return
+			var together: bool=_contact(youths[3]) and _contact(youths[4]) and Model.distance(model.position(),youths[3].global_position)<5 and Model.distance(model.position(),youths[4].global_position)<5
+			var body: String=String(detail.description)
+			if together: body+="\n\n"+String(detail.with_friends)
+			body+="\n\nOriginal fictional micro-detail. No reward, codex unlock or historical authentication."
+			_show_dialog("HAND-WORKED LIVES · "+String(detail.title),body,[["Continue","resume"]])
+			return
 	if phase in ["invited","challenged"] and Model.distance(model.position(),youths[0].global_position)<3.2:
 		if not _seen(youths[0].global_position+Vector3.UP*1.4,4.5): _message="Face the challenger in clear sight.";return
 		if phase=="invited":

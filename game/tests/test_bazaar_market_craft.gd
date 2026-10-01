@@ -6,6 +6,7 @@ const Base:=preload("res://childhood/childhood_state.gd")
 const Market:=preload("res://youth/performance/bazaar_market_stage.gd")
 const Choreo:=preload("res://youth/performance/bazaar_choreography.gd")
 const Decompression:=preload("res://youth/performance/bazaar_decompression.gd")
+const Attention:=preload("res://youth/performance/bazaar_attention.gd")
 var passed:=0
 var failed:=0
 func _initialize() -> void: run.call_deferred()
@@ -42,7 +43,26 @@ func run() -> void:
 	check(Choreo.friend_pose(counter_events,410,4).action=="urge","counter has distinct friend reaction")
 	stage.sample(110,true,beat)
 	check(scene.model.snapshot()==before,"market witness-like reaction creates no testimony or state")
+	var attention_angle:=Attention.angles(Transform3D(Basis.IDENTITY,Vector3.ZERO),Vector3(8,4,-1))
+	check(absf(attention_angle.x)<=Attention.MAX_HEAD_YAW and absf(attention_angle.y)<=Attention.MAX_HEAD_PITCH,"head attention stays inside authored angular limits")
+	var eye_shift:=Attention.eyes(attention_angle)
+	check(absf(eye_shift.x)<=Attention.MAX_EYE_YAW and absf(eye_shift.y)<=Attention.MAX_EYE_PITCH,"eye-line stays inside prototype face limits")
+	var independent_blinks: bool=false
+	for blink_tick in range(300):
+		if not is_equal_approx(Attention.blink(blink_tick,1),Attention.blink(blink_tick,4)): independent_blinks=true
+	check(independent_blinks,"blink phase is not globally synchronized across a complete cycle")
 	var figure: Node3D=scene.bazaar_performance.figures[0]
+	check(figure.eyes.size()==2,"supporting face exposes two bounded eye presentation points")
+	var actor_transform: Transform3D=scene.youths[0].global_transform
+	figure.sample(200,0,"idle",0,false)
+	var neutral_head: Vector3=figure.head.rotation
+	var neutral_eye: Vector3=figure.eyes[0].position
+	figure.apply_attention(.30,-.12,Vector2(.025,.01),.8)
+	check(figure.head.rotation!=neutral_head and figure.eyes[0].position!=neutral_eye,"attention visibly changes head and eye-line")
+	check(scene.youths[0].global_transform==actor_transform,"attention never rotates or moves authoritative actor root")
+	figure.sample(200,0,"idle",0,false);figure.apply_attention(0,0,Vector2.ZERO,0)
+	check(figure.eyes[0].position==figure.eye_origins[0],"attention returns eye presentation to neutral")
+
 	var offsets: Dictionary={}
 	for action in ["windup","strike","checked","recover"]:
 		figure.sample(200,0,action,.8,false)
@@ -56,14 +76,24 @@ func run() -> void:
 		check(friend_figure.position==Vector3.ZERO,"friend reaction never becomes root motion "+str(friend_index))
 	var outcomes: Dictionary={}
 	for outcome in ["stood_ground","withdrew","walked_away"]:
-		var beat: Dictionary=Decompression.beat(outcome,30);outcomes[outcome]=beat
-		check(not beat.is_empty() and beat.amount>0,"post-conflict beat exists for "+outcome)
+		var outcome_beat: Dictionary=Decompression.beat(outcome,30);outcomes[outcome]=outcome_beat
+		check(not outcome_beat.is_empty() and outcome_beat.amount>0,"post-conflict beat exists for "+outcome)
 	check(outcomes.stood_ground.caption!=outcomes.withdrew.caption and outcomes.withdrew.caption!=outcomes.walked_away.caption,"three outcomes decompress differently")
 	check(Decompression.beat("stood_ground",Decompression.WINDOW+1).is_empty(),"decompression expires instead of becoming persistent state")
 	check(Decompression.latest_regroup([{"kind":"invite","tick":1},{"kind":"regroup","tick":40}])==40,"decompression anchors to authoritative regroup receipt")
 	check(scene.bazaar_performance.departure.marks.size()==5,"five visual road-wear marks connect encounter and home approach")
 	check(scene.bazaar_performance.departure.find_children("*","CollisionShape3D",true,false).is_empty(),"departure dressing adds no collision")
 	check(scene.model.snapshot()==before,"decompression and departure dressing create no world state")
+	var target: Variant=Attention.figure_target(3,"challenged",{},scene.youths,scene.avatar.global_position,scene.model.brawl())
+	check(target is Vector3,"challenged friend receives transient spatial attention target")
+	var journal_before: Array=scene.model.journal()
+	var world_before: Dictionary=scene.model.snapshot()
+	for i in range(scene.bazaar_performance.figures.size()):
+		var gaze_target: Variant=Attention.figure_target(i,"challenged",{},scene.youths,scene.avatar.global_position,scene.model.brawl())
+		if gaze_target is Vector3:
+			var a:=Attention.angles(scene.bazaar_performance.figures[i].global_transform,gaze_target)
+			scene.bazaar_performance.figures[i].apply_attention(a.x,a.y,Attention.eyes(a),Attention.blink(123,i+1))
+	check(scene.model.snapshot()==world_before and scene.model.journal()==journal_before,"attention creates no perception, memory or saved fact")
 	check(scene.bazaar_performance.ambience.stream is AudioStreamWAV,"market ambience uses local generated WAV")
 	var audio: AudioStreamWAV=scene.bazaar_performance.ambience.stream
 	check(audio.loop_mode==AudioStreamWAV.LOOP_FORWARD and audio.mix_rate==22050 and not audio.stereo,"ambience is bounded looping mono PCM")
