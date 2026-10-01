@@ -72,6 +72,11 @@ def main() -> int:
     run([sys.executable, "tools/check_home_art.py"], "home-art-contracts")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_home_art.gd"],
         "home-art", "HOME_ART_TESTS:")
+    run([sys.executable, "tools/check_home_workshop.py"], "home-workshop-contracts")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_home_workshop.gd"],
+        "home-workshop", "HOME_WORKSHOP_TESTS:")
+    run([sys.executable,"tools/check_courtyard.py"],"courtyard-contracts")
+    run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_courtyard.gd"],"courtyard","COURTYARD_TESTS:")
     return 0
 
 

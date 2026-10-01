@@ -1,0 +1,166 @@
+{
+  "schema": "1792.asset-archive-inspection.v1",
+  "archive_name": "Arab Village.zip",
+  "archive_bytes": 8255213,
+  "archive_sha256": "c14627ce09f1c8a804e82b89bcffc424f3b3f9c015f41a55f2ed2909bc39ad51",
+  "expanded_bytes": 11308562,
+  "members": [
+    {
+      "name": "arab village.blend",
+      "bytes": 11300504,
+      "sha256": "551c18a91e0302c87a5da4db3945309020d4a25025079b7927db04b8d53152c7",
+      "crc_checked": true,
+      "blend": {
+        "inspection": "static_binary_metadata_only",
+        "saved_version_header": "2.70",
+        "pointer_bytes": 8,
+        "endianness": "little",
+        "stored_blocks_by_code": {
+          "BR": 32,
+          "CA": 1,
+          "DATA": 2599,
+          "DNA1": 1,
+          "ENDB": 1,
+          "GLOB": 1,
+          "IM": 22,
+          "LA": 2,
+          "LS": 1,
+          "MA": 8,
+          "ME": 142,
+          "OB": 145,
+          "REND": 1,
+          "SC": 1,
+          "SN": 9,
+          "TE": 7,
+          "TEST": 1,
+          "WM": 1,
+          "WO": 1
+        },
+        "stored_datablocks": {
+          "objects": 145,
+          "meshes": 142,
+          "materials": 8,
+          "images": 22,
+          "libraries": 0,
+          "particle_settings": 0,
+          "text_blocks": 0,
+          "actions": 0
+        },
+        "libraries": [],
+        "images": [
+          {
+            "basename": "153.JPG",
+            "legacy_packedfile_pointer_nonzero": true
+          },
+          {
+            "basename": "154.JPG",
+            "legacy_packedfile_pointer_nonzero": true
+          },
+          {
+            "basename": "154.JPG",
+            "legacy_packedfile_pointer_nonzero": true
+          },
+          {
+            "basename": "154.JPG",
+            "legacy_packedfile_pointer_nonzero": true
+          },
+          {
+            "basename": "154.JPG",
+            "legacy_packedfile_pointer_nonzero": true
+          },
+          {
+            "basename": "165.JPG",
+            "legacy_packedfile_pointer_nonzero": true
+          },
+          {
+            "basename": "168.JPG",
+            "legacy_packedfile_pointer_nonzero": true
+          },
+          {
+            "basename": "172.JPG",
+            "legacy_packedfile_pointer_nonzero": true
+          },
+          {
+            "basename": "176.JPG",
+            "legacy_packedfile_pointer_nonzero": true
+          },
+          {
+            "basename": "176.JPG",
+            "legacy_packedfile_pointer_nonzero": true
+          },
+          {
+            "basename": "182.JPG",
+            "legacy_packedfile_pointer_nonzero": true
+          },
+          {
+            "basename": "189.JPG",
+            "legacy_packedfile_pointer_nonzero": true
+          },
+          {
+            "basename": "191.JPG",
+            "legacy_packedfile_pointer_nonzero": true
+          },
+          {
+            "basename": "196.JPG",
+            "legacy_packedfile_pointer_nonzero": true
+          },
+          {
+            "basename": "196.JPG",
+            "legacy_packedfile_pointer_nonzero": true
+          },
+          {
+            "basename": "5sqtunnelroaddark2.jpg",
+            "legacy_packedfile_pointer_nonzero": true
+          },
+          {
+            "basename": "BVB.jpg",
+            "legacy_packedfile_pointer_nonzero": true
+          },
+          {
+            "basename": "IMG_3878.JPG",
+            "legacy_packedfile_pointer_nonzero": true
+          },
+          {
+            "basename": "qubodup-light_wood.png.preview.jpg",
+            "legacy_packedfile_pointer_nonzero": true
+          },
+          {
+            "basename": null,
+            "legacy_packedfile_pointer_nonzero": false
+          },
+          {
+            "basename": "t2.jpg",
+            "legacy_packedfile_pointer_nonzero": true
+          },
+          {
+            "basename": null,
+            "legacy_packedfile_pointer_nonzero": false
+          }
+        ],
+        "mesh_totals_saved_not_evaluated": {
+          "totvert": 25853,
+          "totedge": 44208,
+          "totface": 0,
+          "totpoly": 19640
+        },
+        "limits": "Counts include stored/orphan datablocks, not evaluated visible objects or render triangles. Packed pointers do not certify complete textures. Library paths are basename-only; no files resolved. No Blender import, drivers, topology, rig, materials, measurements or render qualified."
+      }
+    },
+    {
+      "name": "74512 - Arab Village - License.html",
+      "bytes": 5251,
+      "sha256": "9b6e7ff662352105f848f50f6c8a983b94be69570b080dc35b277ef2731d165c",
+      "crc_checked": true
+    },
+    {
+      "name": "preview_74512.jpg",
+      "bytes": 2807,
+      "sha256": "4e6e24445a56bbf48bfd5b34dcaedc6781a55ed9624a212b912eb7cd77993535",
+      "crc_checked": true
+    }
+  ],
+  "source_files_executed": false,
+  "files_extracted": false,
+  "runtime_admission": false,
+  "licence_decision": "not_inferred_by_inspector"
+}

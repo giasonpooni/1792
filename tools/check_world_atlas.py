@@ -112,7 +112,9 @@ class WorldAtlasTests(unittest.TestCase):
         launch=(w.ROOT/'game/childhood/home_launch.gd').read_text()
         adapter=(w.ROOT/'game/geography/atlas_chapter.gd').read_text()
         self.assertIn('res://world/home_territory.tscn',launch)
-        self.assertIn('const Chapter := preload("res://presentation/art_chapter.gd")',launch)
+        self.assertIn('const Chapter := preload("res://workshops/home_workshop_chapter.gd")',launch)
+        self.assertIn('extends "res://presentation/art_chapter.gd"',
+                      (w.ROOT / "game/workshops/home_workshop_chapter.gd").read_text())
         visual=(w.ROOT/'game/presentation/art_chapter.gd').read_text()
         self.assertIn('extends "res://geography/atlas_chapter.gd"',visual.splitlines())
         self.assertIn('super._ready()',visual)

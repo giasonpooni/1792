@@ -1,0 +1,24 @@
+{
+  "schema": "1792.blender-courtyard.v1",
+  "classification": "original-authoring-study",
+  "historically_verified": false,
+  "georeferenced": false,
+  "blender": "4.0.2",
+  "generator_sha256": "9722dfe237c5432fc154cebfbe67567c21bdf8af37d7b824bac8e0ad1845e65a",
+  "assets": [
+    {
+      "file": "courtyard_bay.glb",
+      "sha256": "196ee691fe7dc05759a8e5372a9e3938777ddac24278d870753fa9e272dbb1e0",
+      "mesh_objects": 1,
+      "triangles": 21872,
+      "blend_sha256": "7594f157a90bbab6432c1a25d86dd8e6edef1e26bbb002aae662c1bf84e50e73"
+    },
+    {
+      "file": "childhood_costume.glb",
+      "sha256": "26462a9eba66eb872f94639c3d961f0b2517cd42c10beefaab3634c8caefac70",
+      "mesh_objects": 1,
+      "triangles": 7120,
+      "blend_sha256": "04d286575f7c4b5a99666242f1c3fdf0c19451fe0ef7a8dde7d4565676bdd5bb"
+    }
+  ]
+}

@@ -80,7 +80,7 @@ func validate(value: Variant) -> String:
 	var error:=super.validate(base)
 	if not error.is_empty() or not value.has("service"): return error
 	if not value.has("misl"): return "Service without household supply authority."
-	return Service.replay(value.service,value.misl,int(value.childhood.tick)).error
+	return Service.replay(value.service,value.misl,int(value.childhood.tick),_ledger_apply).error
 
 func restore(value: Variant) -> String:
 	var error:=super.restore(value)
@@ -88,5 +88,5 @@ func restore(value: Variant) -> String:
 		var s: Dictionary=_state.service;s.origin_tick=int(s.origin_tick)
 		for e in s.events:
 			e.seq=int(e.seq);e.tick=int(e.tick);e.economy_seq=int(e.economy_seq)
-		s.ledger=Service.replay(s,_state.misl,int(_state.childhood.tick)).ledger
+		s.ledger=Service.replay(s,_state.misl,int(_state.childhood.tick),_ledger_apply).ledger
 	return error
