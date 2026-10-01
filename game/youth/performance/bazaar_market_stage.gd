@@ -74,13 +74,17 @@ func build() -> void:
 		var ember:=MeshInstance3D.new();var sphere:=SphereMesh.new();sphere.radius=.055;sphere.height=.11;sphere.radial_segments=8;sphere.rings=4
 		ember.mesh=sphere;ember.material_override=mat(Color("8f552f"),.8,Color("ff9e54"),1.7);lamp.add_child(ember)
 
-func sample(tick: int,active: bool) -> void:
+func sample(tick: int,active: bool,reaction: Dictionary={}) -> void:
 	var t:=float(tick)/60.0
 	for i in range(awnings.size()):
 		awnings[i].rotation.z=sin(t*.78+i*.61)*.018
 	for i in range(hanging.size()):
 		hanging[i].rotation.z=sin(t*1.15+i*.7)*.035
+	var reaction_amount: float=float(reaction.get("amount",0.0))
 	for i in range(vendor_roots.size()):
-		vendor_roots[i].rotation.y=sin(t*.20+i*1.8)*.08
+		var idle:=sin(t*.20+i*1.8)*.08
+		var turn:=(-.28 if i==0 else .24 if i==1 else -.16)*reaction_amount
+		vendor_roots[i].rotation.y=idle+turn
 		vendor_roots[i].position.y=sin(t*1.3+i)*.006
+		vendor_roots[i].scale=Vector3.ONE* (1.0-.018*reaction_amount if reaction.get("kind","")=="hit" else 1.0)
 	for lamp in lamps: lamp.light_energy=(.50 if active else .36)+sin(t*3.1+lamp.position.x)*.025

@@ -1,4 +1,4 @@
-"""Run the original game suites, then authored bazaar direction/craft native checks."""
+"""Run inherited game suites and the direct bazaar craft checks."""
 from __future__ import annotations
 import argparse
 from pathlib import Path
@@ -17,10 +17,17 @@ def main() -> int:
         print('Godot unavailable; gameplay checks NOT RUN.', file=sys.stderr)
         return 2
     subprocess.run([sys.executable, '-u', 'tools/run_checks.py', '--godot', args.godot], cwd=ROOT, check=True)
-    run([args.godot, '--headless', '--fixed-fps', '60', '--path', 'game', '--script',
-         'res://tests/test_bazaar_direction.gd'], 'bazaar-direction', 'BAZAAR_DIRECTION_TESTS:')
-    run([args.godot, '--headless', '--fixed-fps', '60', '--path', 'game', '--script',
-         'res://tests/test_bazaar_market_craft.gd'], 'bazaar-market-craft', 'BAZAAR_MARKET_CRAFT_TESTS:')
+    for script, name, marker in [
+        ('res://tests/test_bazaar_direction.gd','bazaar-direction','BAZAAR_DIRECTION_TESTS:'),
+        ('res://tests/test_bazaar_market_craft.gd','bazaar-market-craft','BAZAAR_MARKET_CRAFT_TESTS:'),
+        ('res://tests/test_bazaar_inhabited_approach.gd','bazaar-inhabited-approach','BAZAAR_INHABITED_APPROACH_TESTS:'),
+        ('res://tests/test_bazaar_listening.gd','bazaar-listening','BAZAAR_LISTENING_TESTS:'),
+        ('res://tests/test_hand_worked_lives.gd','hand-worked-lives','HAND_WORKED_LIVES_TESTS:'),
+        ('res://tests/test_world_reference_grammar.gd','world-reference-grammar','WORLD_REFERENCE_GRAMMAR_TESTS:'),
+        ('res://tests/test_world_memory_anchors.gd','world-memory-anchors','WORLD_MEMORY_ANCHOR_TESTS:'),
+        ('res://tests/test_threshold_occupation.gd','threshold-occupation','THRESHOLD_OCCUPATION_TESTS:'),
+    ]:
+        run([args.godot,'--headless','--fixed-fps','60','--path','game','--script',script],name,marker)
     return 0
 
 if __name__ == '__main__':

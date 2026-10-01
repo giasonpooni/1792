@@ -1,12 +1,18 @@
 # Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 extends Node3D
 ## Original articulated supporting-character study; all transforms are visual only.
+const Attention := preload("res://youth/performance/bazaar_attention.gd")
+const Choreo := preload("res://youth/performance/bazaar_choreography.gd")
 var torso: Node3D
 var head: Node3D
 var shoulders: Array[Node3D]=[]
 var elbows: Array[Node3D]=[]
 var hips: Array[Node3D]=[]
 var knees: Array[Node3D]=[]
+var eyes: Array[MeshInstance3D]=[]
+var eye_origins: Array[Vector3]=[]
+var eye_scales: Array[Vector3]=[]
+var authored_head_rotation:=Vector3.ZERO
 var palette: Dictionary={}
 var pose_name := "idle"
 var actor_index := 0
@@ -16,9 +22,9 @@ func surface(color: Color) -> StandardMaterial3D:
 	var key:=color.to_html()
 	if palette.has(key): return palette[key]
 	var m:=StandardMaterial3D.new();m.albedo_color=color;m.roughness=.96;palette[key]=m;return m
-func round_piece(parent: Node3D,size: Vector3,p: Vector3,color: Color) -> void:
+func round_piece(parent: Node3D,size: Vector3,p: Vector3,color: Color) -> MeshInstance3D:
 	var mesh:=MeshInstance3D.new();var sphere:=SphereMesh.new();sphere.radius=.5;sphere.height=1;sphere.radial_segments=12;sphere.rings=6
-	mesh.mesh=sphere;mesh.scale=size;mesh.position=p;mesh.material_override=surface(color);parent.add_child(mesh)
+	mesh.mesh=sphere;mesh.scale=size;mesh.position=p;mesh.material_override=surface(color);parent.add_child(mesh);return mesh
 func tapered(parent: Node3D,top: float,bottom: float,height: float,p: Vector3,color: Color,depth: float=1.0) -> void:
 	var mesh:=MeshInstance3D.new();var c:=CylinderMesh.new();c.top_radius=top;c.bottom_radius=bottom;c.height=height;c.radial_segments=12
 	mesh.mesh=c;mesh.position=p;mesh.scale.z=depth;mesh.material_override=surface(color);parent.add_child(mesh)
@@ -40,7 +46,7 @@ func build(index: int) -> void:
 		band.mesh=ring;band.scale=Vector3(1,.48,.94);band.position.y=y;band.material_override=surface(cloth.darkened(.12));head.add_child(band)
 	round_piece(head,Vector3(.06,.095,.075),Vector3(0,.055,-.139),skin.lightened(.05))
 	for x in [-.065,.065]:
-		round_piece(head,Vector3(.035,.018,.018),Vector3(x,.102,-.130),Color("322c25"))
+		var eye:=round_piece(head,Vector3(.035,.018,.018),Vector3(x,.102,-.130),Color("322c25"));eyes.append(eye);eye_origins.append(eye.position);eye_scales.append(eye.scale)
 		round_piece(head,Vector3(.049,.013,.018),Vector3(x,.135,-.124),Color("3f3427"))
 	# Individual clothing accents, not religious/faction-rank uniforms.
 	if index==4: round_piece(torso,Vector3(.12,.57,.08),Vector3(-.16,.27,-.175),cloth)
@@ -64,28 +70,30 @@ func sample(tick: int,speed: float,action: String,amount: float=0.0,speaking: bo
 		hips[i].position.y=.81
 		hips[i].rotation=Vector3(wave*(1 if i==0 else -1),0,0);knees[i].rotation=Vector3(maxf(0,-hips[i].rotation.x)*.5,0,0)
 		shoulders[i].rotation=Vector3(-hips[i].rotation.x*.6,0,.08 if i==0 else -.08);elbows[i].rotation=Vector3(-.15,0,0)
+	var choreo: Dictionary=Choreo.opponent(action,amount)
+	if not choreo.is_empty():
+		position=choreo.offset;torso.rotation=choreo.torso;head.rotation=choreo.head
+		hips[0].rotation.x=choreo.hip_l;hips[1].rotation.x=choreo.hip_r
+		knees[0].rotation.x=choreo.knee_l;knees[1].rotation.x=choreo.knee_r
 	match action:
 		"windup":
-			# The visible body settles over the rear foot before the existing strike window.
-			position=Vector3(-.04*amount,0,.10*amount)
-			hips[0].rotation.x=.35*amount;hips[1].rotation.x=-.22*amount
-			knees[0].rotation.x=.22*amount;knees[1].rotation.x=.42*amount
-			torso.rotation=Vector3(.06*amount,-.38*amount,-.04*amount);shoulders[1].rotation=Vector3(-.8-1.9*amount,-.35, -.25);elbows[1].rotation.x=-.8
+			shoulders[1].rotation=Vector3(-.8-1.9*Choreo.smooth(amount),-.35,-.25);elbows[1].rotation.x=-.8
 			shoulders[0].rotation.x=-.7;elbows[0].rotation.x=-.6
 		"strike":
-			# Visual-only step-through; the authoritative CharacterBody remains untouched.
-			position=Vector3(.03*amount,0,-.18*amount)
-			hips[0].rotation.x=-.42*amount;hips[1].rotation.x=.30*amount;knees[0].rotation.x=.52*amount
-			torso.rotation=Vector3(.15,.40*amount,-.05);shoulders[1].rotation=Vector3(-2.7+1.45*amount,.3,0);elbows[1].rotation.x=-.7+.6*amount
+			shoulders[1].rotation=Vector3(-2.7+1.45*Choreo.smooth(amount),.3,0);elbows[1].rotation.x=-.7+.6*Choreo.smooth(amount)
 			shoulders[0].rotation.x=-.8
 		"checked":
-			position=Vector3(0,0,.08)
-			hips[0].rotation.x=-.18;hips[1].rotation.x=.22;knees[1].rotation.x=.28
-			torso.rotation=Vector3(-.14,-.24,.06);shoulders[1].rotation.x=-1.3;elbows[1].rotation.x=-1.05;head.rotation.y=.18
+			shoulders[1].rotation.x=-1.3;elbows[1].rotation.x=-1.05
 		"recover":
-			position=Vector3(0,0,-.06*(1-amount))
-			hips[0].rotation.x=-.18*(1-amount);hips[1].rotation.x=.12*(1-amount)
-			torso.rotation.y=.25*(1-amount);shoulders[1].rotation.x=-1.2*(1-amount)
+			shoulders[1].rotation.x=-1.2*(1-Choreo.smooth(amount))
+		"brace":
+			torso.rotation=Vector3(-.08*amount,.16*amount,0);head.rotation=Vector3(.03,-.20*amount,.06*amount)
+			shoulders[0].rotation.x=-.55*amount;shoulders[1].rotation.x=-.7*amount;elbows[1].rotation.x=-.6*amount
+		"watch":
+			head.rotation.y=.28*amount;torso.rotation.y=.08*amount;shoulders[0].rotation.x=-.35*amount
+		"urge":
+			torso.rotation=Vector3(.05,-.12*amount,0);head.rotation.y=-.18*amount
+			shoulders[0].rotation=Vector3(-.75*amount,0,-.12);elbows[0].rotation.x=-.85*amount
 		"down":
 			# A seated/crouched defeated figure, not a squashed capsule or ragdoll.
 			torso.position.y=.55;torso.rotation.x=.42;head.rotation.x=.18
@@ -93,3 +101,18 @@ func sample(tick: int,speed: float,action: String,amount: float=0.0,speaking: bo
 		_:
 			if speaking:
 				head.rotation.z=.07*sin(float(tick)/13);shoulders[0].rotation.x=-.55;elbows[0].rotation.x=-.7
+
+	authored_head_rotation=head.rotation
+
+func attention_frame() -> Transform3D:
+	var frame: Transform3D=head.get_parent().global_transform*Transform3D(Basis.from_euler(authored_head_rotation),head.position)
+	frame.origin=frame*Vector3(0,.102,-.13)
+	return frame
+
+func apply_attention(yaw: float,pitch: float,eye_offset: Vector2,blink_amount: float) -> void:
+	# Apply from the latest authored pose, never add again to last refresh's gaze.
+	head.rotation=authored_head_rotation+Vector3(clampf(pitch,-.22,.22),clampf(yaw,-.46,.46),0)
+	var shift:=Vector2(clampf(eye_offset.x,-Attention.MAX_EYE_YAW,Attention.MAX_EYE_YAW),clampf(eye_offset.y,-Attention.MAX_EYE_PITCH,Attention.MAX_EYE_PITCH))
+	for i in range(eyes.size()):
+		eyes[i].position=eye_origins[i]+Vector3(shift.x,shift.y,0)
+		eyes[i].scale=eye_scales[i]*Vector3(1,maxf(.12,1.0-.88*clampf(blink_amount,0,1)),1)
