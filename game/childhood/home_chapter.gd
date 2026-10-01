@@ -1,6 +1,7 @@
 extends Node3D
 ## Home tutorial controller. Reuses the original player and horse physics.
 ## No Lahore clock/order execution runs while this chapter is loaded.
+const Perspective := preload("res://childhood/perspective_view.gd")
 const Model := preload("res://childhood/childhood_state.gd")
 const Horse := preload("res://mounts/horse.tscn")
 const Names := preload("res://characters/character_names.gd")
@@ -287,6 +288,7 @@ func _open_journal() -> void:
 	for memory in model.journal():
 		text += "[%s · %s · %.1fs]\n%s\n\n" % [memory.channel,memory.source_id,memory.received_tick/60.0,memory.text]
 	if model.journal().is_empty(): text += "No reports have reached me.\n\n"
+	text += "WORKING IMPRESSION\n" + Perspective.impression(Perspective.project(model.journal(), int(model.progress().tick))) + "\n\n"
 	text += "An account is not its confirmation. The readable text here represents remembered speech and experience, not Buddh reading a document.\n\nSOURCE PROFILE: Latif's History of the Panjab (1891), selected passages; the lessons, dialogue, map and escape outcome are authored. Eye loss is already present; F4 changes only subjective framing. There is no historically established progressive-blindness schedule here."
 	text += "\n\n" + _checkpoint_note + "\nRestoring a checkpoint replaces this whole chapter state, including memories and decisions."
 	_panel_text.text = text

@@ -231,3 +231,13 @@ pre-decision exchange, articulated supporting figures, visible guard/counter rea
 local nonvocal foley, compact action cues and outcome-specific homecoming text. The
 three original outcomes, timing, player/companion collision, money and saves remain.
 This is direct game content, not another terminal feature. [Play and limits](docs/BAZAAR_DIRECTION.md).
+
+## Childhood preservation production slice
+
+The existing input-driven childhood journey now exports game-owned observations
+for NET Foundry verification: briefing, riding, sparring, tracking, escape and
+save/reload. A read-only journal-derived working impression uses received memories
+without omniscient state access. Likelihoods remain explicit authored gameplay
+tuning. See [scope and qualification](docs/CHILDHOOD_FOUNDRY_PRESERVATION.md).
+This adds no second game-state owner and does not certify historical truth or
+human playability.
