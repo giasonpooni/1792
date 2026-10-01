@@ -1,0 +1,154 @@
+{
+  "schema": "1792.world-reference-corpus-supplement.v1",
+  "id": "user-visual-corpus-20261001-b",
+  "parent_corpus": "data/art/world_reference_corpus_20260930.json",
+  "binaries_embedded": false,
+  "redistribution": "not_performed",
+  "source_status": "user-supplied visual references; content hashes verified against conversation uploads, historical identity/date not independently authenticated here",
+  "entries": [
+    {
+      "id": "ornate-screened-interior-supplement",
+      "file": "2b371ecc-3875-44ab-a6ed-c59a19636947_1020x1019(1).jpg",
+      "sha256": "3988919cb54cb803cd8ab67329d9cdb86ee4b5a89b384e9cef73f471928003f8",
+      "tier": "B",
+      "allowed": [
+        "ornament-density hierarchy",
+        "screened opening composition",
+        "layered arch framing",
+        "painted/panel field relationships",
+        "interior-to-garden visual reveal"
+      ],
+      "forbidden": [
+        "exact site/date attribution",
+        "literal 1792 decorative transfer",
+        "restored surface treated as original"
+      ]
+    },
+    {
+      "id": "ornate-windowed-room-supplement",
+      "file": "d65f844b-2089-4a41-bf82-23f4aaf9ef7d_2998x3346.webp",
+      "sha256": "42bea411ed795122a9caa7d908bdbe5059ec2a2894c6129f2590b40cd8470a85",
+      "tier": "B",
+      "allowed": [
+        "ceiling/wall ornament layering",
+        "window-bay daylight",
+        "negative-space planning",
+        "later room wear",
+        "room-to-garden relationship"
+      ],
+      "forbidden": [
+        "later fireplace/furnishing backdated to 1792",
+        "exact material/date attribution without source record"
+      ]
+    },
+    {
+      "id": "arcaded-courtyard-supplement",
+      "file": "1942653-whatsappimageatpm-1554263510.jpeg",
+      "sha256": "ba264d972b9685a48cda5a8d8c28704e8bb5bbfe562ac6fa92a1302f923642a9",
+      "tier": "B",
+      "allowed": [
+        "long courtyard axis",
+        "central water/drain line",
+        "arcade occupation",
+        "shade/open-court contrast",
+        "threshold hierarchy"
+      ],
+      "forbidden": [
+        "modern paving/restoration assumed original",
+        "current visitor behavior backdated as historical fact"
+      ]
+    },
+    {
+      "id": "ath-dara-pavilion-supplement",
+      "file": "the-ath-dara-pavilion-of-the-lahore-fort-where-maharaja-v0-duuc9xkgfc3h1.webp",
+      "sha256": "34ed47ed6e0aa18f567b265c8dd6901625513434457c74f939af5e9258688019",
+      "tier": "B",
+      "allowed": [
+        "arcade depth",
+        "screen/parapet rhythm",
+        "shade edge",
+        "projection/bracket vocabulary",
+        "weathering questions"
+      ],
+      "forbidden": [
+        "current condition treated as exact Ranjit-period state",
+        "site label accepted without separate source verification"
+      ]
+    },
+    {
+      "id": "modern-armored-ruler-rear",
+      "file": "maharaja-ranjit-singh-the-founder-of-the-sikh-empire-v0-ygu2dy5c1i7h1.webp",
+      "sha256": "2c05037e48584dfe30566c1d0f9b01afd65fe1bdc57a3fb536272311647bc005",
+      "tier": "D",
+      "allowed": [
+        "rear seated silhouette study",
+        "chair-to-body scale",
+        "armor/chair overlap questions",
+        "studio-lighting study"
+      ],
+      "forbidden": [
+        "Ranjit likeness",
+        "armor history",
+        "chair history",
+        "costume/date/material claims"
+      ]
+    },
+    {
+      "id": "modern-armored-ruler-profile",
+      "file": "rpqp3s2c1i7h1.png",
+      "sha256": "801e8a8e841f7b074715aef0a1c08115c1381591f6020419055f3c1735936615",
+      "tier": "D",
+      "allowed": [
+        "profile seated silhouette",
+        "footrest relationship",
+        "hand/sword/chair blocking",
+        "decorative density contrast"
+      ],
+      "forbidden": [
+        "historical costume",
+        "historical armor",
+        "Ranjit facial likeness",
+        "weapon/throne provenance"
+      ]
+    },
+    {
+      "id": "modern-armored-ruler-closeup",
+      "file": "vjlopd7c1i7h1.png",
+      "sha256": "f0a80dc1d6e0594ba145a7b728c821e6b224fe22912859e012fa10c0fcc3837b",
+      "tier": "D",
+      "allowed": [
+        "close material contrast",
+        "chain/plate read at conversational distance",
+        "beard/helmet lighting study",
+        "ornament-vs-face focal balance"
+      ],
+      "forbidden": [
+        "Ranjit face reference",
+        "armor authenticity",
+        "helmet authenticity",
+        "historical beard/color claim"
+      ]
+    },
+    {
+      "id": "conversation-contact-sheet",
+      "file": "reference_contact.jpg",
+      "sha256": "329b853d675bfab464e2f0484c5e20c71541f1f79559c21ab486ab6b1b8f4f30",
+      "tier": "D",
+      "allowed": [
+        "internal visual-review convenience only"
+      ],
+      "forbidden": [
+        "independent evidentiary use",
+        "historical inference",
+        "asset-generation conditioning unless original component refs are also supplied"
+      ],
+      "derived_contact_sheet": true
+    }
+  ],
+  "rules": [
+    "supplement entries inherit the same A/B/C/D authority semantics as the parent corpus",
+    "D-tier armored-ruler imagery is presentation/motif only and must never override the adult Ranjit reference direction",
+    "contact sheets are not independent evidence and cannot raise confidence",
+    "image binaries remain outside the repository"
+  ]
+}
