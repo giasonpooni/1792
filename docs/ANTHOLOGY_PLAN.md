@@ -43,3 +43,13 @@ Baba Farid’s era frames the opening; the 1873 institutional epilogue frames th
 Each chapter must distinguish observed evidence, attributed chronicle, oral tradition, disputed variants and original connective fiction. Lore is retained as lore, not excluded or falsely certified. Religious sites remain exterior-only. The original youth-story catalogue remains the binding childhood content inventory.
 
 Architecture, clothing, language, kinship, trade routes, canals, river channels, land cover and allegiance must vary by place and time. A reusable mesh does not prove historical presence. Current catalogue entries are research scheduling records, not loaded scenes or DLC launchers.
+
+## Late-period research supplement
+
+See [Late Punjab research intake, 1848–1873](LATE_PUNJAB_RESEARCH_INTAKE.md)
+for the supplied resistance/outlaw leads, checked chronology distinctions, source
+limits and deferred story proposals. Mulraj is a proposed additional viewpoint,
+not a newly approved protagonist. Wazir Singh's alleged biography and Jeona Morh's
+pre-1873 placement remain unverified. Colonial legal labels, community identity
+and individual conduct must remain separate. This supplement does not change the
+31-module runtime registry, activate DLC production, or extend the 1873 endpoint.

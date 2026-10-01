@@ -142,3 +142,19 @@ reversible material/mesh/lighting pass and F7 comparison controls in the same
 childhood entry. It includes an actual native capture command and runtime
 invariant checks. This is a prototype art study, not completion of the proposed
 production-standard street, final character work or a measured AAA content rate.
+
+## Supplied visual benchmarks
+
+The [three-image visual reference intake](VISUAL_REFERENCE_TARGETS.md) translates
+the supplied street, interior and roofscape references into a high-fidelity
+historical-realism target for the same childhood benchmark. The current proxies
+are not the shipping aesthetic. This intake is an art-production brief, not new
+meshes, enabled roof traversal, historical admission or a claim of visual parity.
+
+## Authored courtyard implementation
+
+The [authored courtyard increment](COURTYARD_AUTHORED.md) now loads two Blender
+exports, integrates attributed CC0 materials, and replays input-driven walking
+observations for visual inspection. The visual target remains unapproved;
+new military and landscape images are [reference intake](REFERENCE_BATCH_20260929.md),
+not production content or archaeological admission.

@@ -1,0 +1,39 @@
+name: Courtyard Blender source export
+on:
+  push:
+    branches: [feat/courtyard-authored-v1-20260929]
+    paths: [tools/art/build_courtyard.py, tools/art/acquire_surface_study.py, .github/workflows/courtyard-assets.yml]
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Install and identify Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends blender python3-numpy python3-pil
+          blender --version
+      - name: Execute original authored asset recipe
+        env:
+          PYTHONPATH: /usr/lib/python3/dist-packages
+        run: |
+          mkdir -p export-evidence
+          set -o pipefail
+          blender --background --factory-startup --python tools/art/build_courtyard.py -- --output export-evidence/assets 2>&1 | tee export-evidence/build.log
+          test -f export-evidence/assets/build.json
+          git archive --format=tar HEAD > export-evidence/source.tar
+          git rev-parse HEAD > export-evidence/source-commit.txt
+          sha256sum tools/art/build_courtyard.py > export-evidence/generator.sha256
+          dpkg-query -W blender python3-numpy python3-pil > export-evidence/blender-package.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: courtyard-blender-export
+          path: export-evidence/
+          retention-days: 14
