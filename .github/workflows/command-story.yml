@@ -36,6 +36,9 @@ jobs:
           LIBGL_ALWAYS_SOFTWARE: '1'
         run: |
           set -euo pipefail
+          # Preserve reached native captures and saves even if a later renderer
+          # fails or times out before its normal evidence-copy boundary.
+          trap 'mkdir -p test-results/native-user-data; if [ -d "$HOME/.local/share/godot/app_userdata/1792" ]; then cp -a "$HOME/.local/share/godot/app_userdata/1792/." test-results/native-user-data/; fi' EXIT
           sudo apt-get update -qq
           sudo apt-get install --yes --no-install-recommends xvfb xauth libgl1-mesa-dri
           timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
@@ -108,7 +111,7 @@ jobs:
             exit 1
           fi
           grep -q 'WATER_ROUND_RENDER: 5 captures; 0 failures' test-results/water-round-render.log
-          timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+          timeout 240 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
             --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy \
             --script res://tests/render_horsecraft_study.gd 2>&1 | tee test-results/horsecraft-render.log
           if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/horsecraft-render.log; then
@@ -148,10 +151,15 @@ jobs:
           grep -Eq '^BEGINNING_SEQUENCE_RENDER: 11 captures; [1-9][0-9]* checks; 0 failures$' test-results/beginning-sequence-render.log
           cp -r "$HOME/.local/share/godot/app_userdata/1792/beginning-sequence-images" test-results/
           python3 -m unittest discover -s tools -p 'test_qualify_opening.py'
-          python3 tools/qualify_opening.py \
-            --godot "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
-            --evidence-dir test-results/opening-qualified --xvfb --timeout 240
-          python3 tools/qualify_opening.py --evidence-dir test-results/opening-qualified --verify-only
+          for choice in household_escort independent_inquiry; do
+            python3 tools/qualify_opening.py \
+              --godot "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+              --evidence-dir "test-results/opening-qualified-$choice" \
+              --inquiry-choice "$choice" --xvfb --timeout 240
+            python3 tools/qualify_opening.py \
+              --evidence-dir "test-results/opening-qualified-$choice" \
+              --inquiry-choice "$choice" --verify-only
+          done
           mkdir -p test-results/screenshots
           cp "$HOME/.local/share/godot/app_userdata/1792/"command-*.png test-results/screenshots/
           cp "$HOME/.local/share/godot/app_userdata/1792/"house-*.png test-results/screenshots/

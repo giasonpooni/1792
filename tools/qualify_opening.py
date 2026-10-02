@@ -27,6 +27,8 @@ from check_gujranwala_beauty_capture import decode_png
 
 ROOT = Path(__file__).resolve().parents[1]
 OPERATION = "1792.opening-household-inquiry.v1"
+OPERATIONS = {"household_escort": OPERATION,
+              "independent_inquiry": "1792.opening-independent-inquiry.v1"}
 SCRIPT = "res://tests/render_opening_chapter.gd"
 CAPTURES = (
     "family-opening", "riding-ready", "first-gate", "single-standing",
@@ -38,6 +40,8 @@ CAPTURES = (
 SKILLS = ["single_standing", "paired_standing", "mounted_matchlock"]
 MEMORIES = ["return_steward", "return_courier", "protection_offer",
             "household_escort", "bend_trace", "oral_return"]
+UNDEPLOYED_GUARD = {"id": "fictional_household_guard", "active": False, "instruction": "hold",
+                    "position": [-9, 0.14000000059604645, 8], "yaw": 0, "velocity": [0, 0, 0]}
 
 
 def require(value: bool, message: str) -> None:
@@ -134,7 +138,7 @@ def receipt_check(receipt: dict) -> None:
     require(sha(encoded) == receipt["completion_sha256"], "Riding completion proof hash mismatch")
 
 
-def snapshot_check(value: dict, receipt: dict, phase: str) -> None:
+def snapshot_check(value: dict, receipt: dict, phase: str, choice: str) -> None:
     child, after = value["childhood"], value["aftermath"]
     require(value["player"]["character_id"] == "ranjit_singh"
             and child["ambush"]["status"] == "escaped" and child["ambush"]["hits"] < 3
@@ -142,9 +146,10 @@ def snapshot_check(value: dict, receipt: dict, phase: str) -> None:
             and child["tracks"] == 3 and child["quarry_seen"] is True,
             "Incomplete or nonliving native opening endpoint")
     require(value["riding_skills"]["lesson_receipts"] == [receipt], "Earned receipt was lost or replaced")
-    require(after["decision"] == "household_escort" and after["heard"] == MEMORIES[:2]
+    require(choice in OPERATIONS and after["decision"] == choice and after["heard"] == MEMORIES[:2]
             and after["offer_heard"] is True, "Missing actual household agreement")
-    expected = MEMORIES if phase == "complete" else MEMORIES[:-1]
+    memories = [*MEMORIES[:3], choice, *MEMORIES[4:]]
+    expected = memories if phase == "complete" else memories[:-1]
     require([item["id"] for item in after["memories"]] == expected,
             "Missing, duplicated or reordered household memory")
     require(all(whole(after[key]) for key in ("decision_tick", "clue_tick"))
@@ -158,15 +163,20 @@ def snapshot_check(value: dict, receipt: dict, phase: str) -> None:
                 and after["escort"]["velocity"] == [0, 0, 0]
                 and "unidentified" in after["memories"][-1]["text"], "Incomplete observed report/escort retirement")
     else:
-        require(after["reported_tick"] == -1 and after["escort"]["active"] is True,
+        require(after["reported_tick"] == -1 and after["escort"]["active"] is (choice == "household_escort"),
                 "Midreturn save does not preserve the pending witnessed report")
+    if choice == "independent_inquiry":
+        require(native_save_projection({"aftermath": after})["aftermath"]["escort"] == UNDEPLOYED_GUARD,
+                "Independent inquiry moved or deployed a household guard")
 
 
-def check_manifest(folder: Path, checkpoint: Path, final_save: Path) -> dict:
+def check_manifest(folder: Path, checkpoint: Path, final_save: Path, choice: str = "household_escort") -> dict:
     manifest = json_read(folder / "manifest.json")
     require(manifest.get("schema") == "1792.opening-chapter-render.v2"
             and type(manifest.get("failures")) is int and manifest["failures"] == 0
             and whole(manifest.get("checks"), 1), "Failed or unsupported opening manifest")
+    require(choice in OPERATIONS and manifest.get("inquiry_choice") == choice,
+            "Requested inquiry choice differs from recorded route")
     for field in ("progress_seeded", "capability_receipt_seeded", "camera_pose_injected",
                   "startup_save_seeded", "human_playtest", "historical_authentication"):
         require(manifest.get(field) is False, "Unsupported qualification claim: " + field)
@@ -192,19 +202,41 @@ def check_manifest(folder: Path, checkpoint: Path, final_save: Path) -> dict:
         require(sha(data) == record["sha256"] and sha(pixels) == record["pixel_sha256"]
                 and (width, height) == (record["width"], record["height"]), "PNG byte/pixel mismatch: " + name)
         require(pixels != pixels[:4] * (width * height), "Blank production frame: " + name)
+    if choice == "independent_inquiry":
+        expected_guard = {"visible": False, "collision_layer": 0,
+                          "position": UNDEPLOYED_GUARD["position"], "yaw": 0, "velocity": [0, 0, 0]}
+        require(manifest.get("route") and all(item.get("escort_observation") == expected_guard
+                for item in [*records, *manifest["route"]]),
+                "Independent route has a visible, colliding or moved native guard")
+        refusal = manifest["independent_guard_refusal"]
+        before, after = refusal["before_aftermath"], refusal["after_aftermath"]
+        require(before == after and before["decision"] == choice
+                and before["escort"] == UNDEPLOYED_GUARD
+                and refusal["before_guard"] == refusal["after_guard"] == expected_guard
+                and refusal["message"] == "No deployed household escort."
+                and refusal["world_paused"] is False
+                and whole(refusal["before_tick"]) and whole(refusal["after_tick"])
+                and refusal["after_tick"] > refusal["before_tick"],
+                "Independent guard refusal changed authority or stopped the ordinary clock")
+        positions = [refusal[field] for field in ("before_player_position", "after_player_position")]
+        require(all(isinstance(position, list) and len(position) == 3
+                    and all(type(item) in (int, float) and math.isfinite(item) for item in position)
+                    for position in positions)
+                and math.hypot(positions[1][0]-positions[0][0], positions[1][2]-positions[0][2]) < .001,
+                "Independent guard refusal displaced the stationary player")
     receipt = manifest["earned_training_receipt"]
     receipt_check(receipt)
     shots = manifest["native_shot_observations"]
     require([item["slot"] for item in shots] == [0, 1, 2, 3]
             and len({item["shot_id"] for item in shots}) == 4, "Missing distinct native weapon discharges")
     final = manifest["final_snapshot"]
-    snapshot_check(final, receipt, "complete")
+    snapshot_check(final, receipt, "complete", choice)
     persistence = manifest["midreturn_persistence"]
     saved, restored = persistence["saved_snapshot"], persistence["restored_snapshot"]
     progressed = persistence["progressed_snapshot"]
-    snapshot_check(saved, receipt, "return")
-    snapshot_check(restored, receipt, "return")
-    snapshot_check(progressed, receipt, "complete")
+    snapshot_check(saved, receipt, "return", choice)
+    snapshot_check(restored, receipt, "return", choice)
+    snapshot_check(progressed, receipt, "complete", choice)
     require(persistence.get("declared_saved_pose_restored") is True and saved == restored
             and progressed["childhood"]["tick"] > saved["childhood"]["tick"]
             and persistence["saved_tick"] == saved["childhood"]["tick"]
@@ -219,7 +251,7 @@ def check_manifest(folder: Path, checkpoint: Path, final_save: Path) -> dict:
     require(sha(final_save.read_bytes()) == manifest["final_manual_save"]["sha256"]
             and native_save_projection(saved_final) == native_save_projection(manifest["final_manual_save"]["snapshot"]),
             "Final manual save digest or whole authority mismatch")
-    snapshot_check(saved_final, receipt, "complete")
+    snapshot_check(saved_final, receipt, "complete", choice)
     require(saved_final["childhood"]["tick"] <= final["childhood"]["tick"]
             and native_save_projection(saved_final)["aftermath"] == native_save_projection(final)["aftermath"]
             and saved_final["riding_skills"] == final["riding_skills"],
@@ -229,12 +261,16 @@ def check_manifest(folder: Path, checkpoint: Path, final_save: Path) -> dict:
             and envelope["schema"] == "1792.chapter-checkpoint.v1" and envelope["reason"] == "courtyard_return"
             and envelope["snapshot"]["childhood"]["ambush"]["status"] == "escaped"
             and envelope["snapshot"]["aftermath"]["memories"] == []
+            and envelope["snapshot"]["aftermath"]["decision"] == ""
+            and envelope["snapshot"]["aftermath"]["heard"] == []
+            and envelope["snapshot"]["aftermath"]["offer_heard"] is False
+            and envelope["snapshot"]["aftermath"]["escort"] == UNDEPLOYED_GUARD
             and envelope["snapshot"]["riding_skills"]["lesson_receipts"] == [receipt],
             "Production courtyard checkpoint digest or earned-state mismatch")
     return {"captures": len(records), "native_checks": manifest["checks"],
             "manifest_sha256": sha((folder / "manifest.json").read_bytes()),
             "earned_receipt_sha256": receipt["completion_sha256"],
-            "native_midreturn_rollback_verified": True, "final_phase": "complete", "decision": "household_escort",
+            "native_midreturn_rollback_verified": True, "final_phase": "complete", "decision": choice,
             "native_save_comparison": "exact decoded authority except binary32 equality for physical guard position/velocity/yaw; exact bytes independently hashed"}
 
 
@@ -270,10 +306,15 @@ def archive_tree(path: Path) -> tuple[str, dict[str, bytes]]:
     return tree(entries).hex(), files
 
 
-def verify_execution(folder: Path) -> dict:
+def verify_execution(folder: Path, source_commit: str | None = None, source_tree: str | None = None) -> dict:
     execution = json_read(folder / "execution.json")
+    require(not source_commit or execution.get("source", {}).get("commit") == source_commit,
+            "Requested source commit differs from retained execution")
+    require(not source_tree or execution.get("source", {}).get("tree") == source_tree,
+            "Requested source tree differs from retained execution")
+    choice = execution["operation"]["parameters"]["inquiry_choice"]
     require(execution.get("schema") == "1792.opening-qualification-execution.v1"
-            and execution["operation"]["id"] == OPERATION
+            and choice in OPERATIONS and execution["operation"]["id"] == OPERATIONS[choice]
             and execution["operation"]["script"] == SCRIPT
             and execution["execution"]["exit_code"] == 0, "Failed or unsupported qualification execution")
     uuid.UUID(execution["execution"]["id"])
@@ -305,19 +346,20 @@ def verify_execution(folder: Path) -> dict:
             and re.match(r"^4\.5\.1[.-]stable", runtime["version"]), "Unqualified or changed Godot runtime identity")
     command = execution["execution"]["command"]
     expected_command = [runtime["executable"], "--fixed-fps", "60", "--path", "game", "--rendering-method",
-                        "gl_compatibility", "--audio-driver", "Dummy", "--script", SCRIPT]
+                        "gl_compatibility", "--audio-driver", "Dummy", "--script", SCRIPT,
+                        "--", "--inquiry-choice=" + choice]
     require(command == expected_command or command == ["xvfb-run", "-a", *expected_command],
             "Retained command does not identify the qualified opening operation")
     log = (folder / "renderer.log").read_bytes()
     require(sha(log) == execution["execution"]["log_sha256"]
             and not re.search(rb"(?m)^(?:SCRIPT ERROR|SHADER ERROR|ERROR):", log), "Renderer errors or log digest mismatch")
-    result = check_manifest(folder / "opening-chapter-images", folder / "courtyard-checkpoint.json", folder / "final-manual-save.json")
+    result = check_manifest(folder / "opening-chapter-images", folder / "courtyard-checkpoint.json", folder / "final-manual-save.json", choice)
     require(result["manifest_sha256"] == execution["execution"]["manifest_sha256"], "Stale or replaced execution manifest")
     require(re.search(rb"(?m)^OPENING_CHAPTER_RENDER: 18 captures; " + str(result["native_checks"]).encode()
                       + rb" checks; 0 failures$", log) is not None, "Renderer did not reach the exact qualification marker")
     return {"schema": "1792.opening-qualification-verification.v1", "status": "passed",
             "verification_id": str(uuid.uuid4()), "verified_at": datetime.now(timezone.utc).isoformat(),
-            "execution_id": execution["execution"]["id"], "operation_id": OPERATION,
+            "execution_id": execution["execution"]["id"], "operation_id": OPERATIONS[choice],
             "source_commit": source["commit"], "source_tree": source["tree"],
             "runtime_sha256": runtime["sha256"], "execution_sha256": sha((folder / "execution.json").read_bytes()),
             "verifier_sha256": sha((ROOT / "tools/qualify_opening.py").read_bytes()),
@@ -351,7 +393,8 @@ def execute(args) -> dict:
     data_dir = folder / "isolated-user-data"
     data_dir.mkdir()
     command = [str(godot), "--fixed-fps", "60", "--path", "game", "--rendering-method",
-               "gl_compatibility", "--audio-driver", "Dummy", "--script", SCRIPT]
+               "gl_compatibility", "--audio-driver", "Dummy", "--script", SCRIPT,
+               "--", "--inquiry-choice=" + args.inquiry_choice]
     if args.xvfb:
         require(shutil.which("xvfb-run") is not None, "xvfb-run is unavailable")
         command = ["xvfb-run", "-a", *command]
@@ -392,7 +435,8 @@ def execute(args) -> dict:
                             "commit_object_sha256": sha(commit_object)},
                  "runtime": {"executable": str(godot), "bytes": len(runtime_bytes), "sha256": sha(runtime_bytes),
                              "after_sha256": sha(godot.read_bytes()), "version": version},
-                 "operation": {"id": OPERATION, "script": SCRIPT,
+                 "operation": {"id": OPERATIONS[args.inquiry_choice], "script": SCRIPT,
+                               "parameters": {"inquiry_choice": args.inquiry_choice},
                                "script_sha256": sha((ROOT / "game/tests/render_opening_chapter.gd").read_bytes())},
                  "execution": {"id": str(uuid.uuid4()), "command": command, "started_at": started,
                                "ended_at": datetime.now(timezone.utc).isoformat(), "exit_code": code,
@@ -413,11 +457,14 @@ def main() -> int:
     parser.add_argument("--xvfb", action="store_true")
     parser.add_argument("--timeout", type=int, default=240)
     parser.add_argument("--verify-only", action="store_true")
+    parser.add_argument("--inquiry-choice", choices=tuple(OPERATIONS), default="household_escort")
     args = parser.parse_args()
     try:
         require(args.verify_only or args.godot is not None, "--godot is required for execution")
         require(1 <= args.timeout <= 600, "Execution timeout must be 1–600 seconds")
-        result = verify_execution(args.evidence_dir.resolve()) if args.verify_only else execute(args)
+        result = verify_execution(args.evidence_dir.resolve(), args.source_commit, args.source_tree) if args.verify_only else execute(args)
+        require(result["decision"] == args.inquiry_choice,
+                "Verified inquiry choice differs from caller's requested qualification")
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0
     except (OSError, ValueError, KeyError, TypeError, OverflowError, struct.error, zlib.error,

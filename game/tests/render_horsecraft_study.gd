@@ -7,8 +7,10 @@ var scene: Node3D
 var inspection: Camera3D
 var captures: Array[Dictionary]=[]
 var failures:=0
+var started_ms: int=0
 
 func _initialize() -> void:
+	started_ms=Time.get_ticks_msec()
 	_run.call_deferred()
 
 func check(value: bool,message: String) -> void:
@@ -34,7 +36,12 @@ func click() -> void:
 func digest(bytes: PackedByteArray) -> String:
 	var hash:=HashingContext.new();hash.start(HashingContext.HASH_SHA256);hash.update(bytes);return hash.finish().hex_encode()
 
+func capture_progress(id: String,boundary: String) -> void:
+	print("HORSECRAFT_CAPTURE: %s %s tick=%d native_physics_frame=%d elapsed_wall_ms=%d"%
+		[id,boundary,scene.model.snapshot().tick,Engine.get_physics_frames(),Time.get_ticks_msec()-started_ms])
+
 func capture(id: String,purpose: String,offset: Vector3=Vector3(8,4.6,7.0)) -> void:
+	capture_progress(id,"start")
 	scene.set_paused(true)
 	var before: Dictionary=scene.model.snapshot()
 	var left_pose: Transform3D=scene.left.global_transform
@@ -61,6 +68,7 @@ func capture(id: String,purpose: String,offset: Vector3=Vector3(8,4.6,7.0)) -> v
 		"camera_position":[inspection.global_position.x,inspection.global_position.y,inspection.global_position.z],
 		"target":[target.x,target.y,target.z],"fov":inspection.fov,"camera_kind":"explicit-mechanics-inspection",
 		"gameplay_camera":false,"motion_source":"shared horse motors with actual game input actions","campaign_admission":false})
+	capture_progress(id,"end")
 
 func _run() -> void:
 	root.content_scale_size=Vector2i.ZERO;root.size=Vector2i(1280,720)

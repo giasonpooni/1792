@@ -11,19 +11,40 @@ var learned_receipt: Dictionary={}
 var shot_records: Array=[]
 var midreturn_persistence: Dictionary={}
 var final_manual_save: Dictionary={}
+var inquiry_choice:="household_escort"
+var independent_guard_refusal: Dictionary={}
+
+func _configure_inquiry_choice() -> bool:
+	var supplied:=false
+	for argument in OS.get_cmdline_user_args():
+		if not argument.begins_with("--inquiry-choice="):
+			return check(false,"unknown opening qualification argument: "+argument)
+		if supplied: return check(false,"duplicate opening inquiry-choice argument")
+		supplied=true
+		var value:=argument.trim_prefix("--inquiry-choice=")
+		if value not in ["household_escort","independent_inquiry"]:
+			return check(false,"unsupported opening inquiry choice: "+value)
+		inquiry_choice=value
+	return check(inquiry_choice in ["household_escort","independent_inquiry"],"opening qualification binds a whitelisted inquiry choice: "+inquiry_choice)
 
 func note(id: String) -> void:
 	super.note(id)
 	var item: Dictionary=route.back()
 	item.aftermath_phase=chapter.model.aftermath_phase()
+	item.inquiry_choice=inquiry_choice
 	item.aftermath=chapter.model.aftermath()
 	item.escort_physical_position=point(chapter.escort.global_position)
+	item.escort_observation=_escort_observation()
 	item.journal_ids=chapter.model.journal().map(func(memory): return memory.id)
 	item.riding_skills=chapter.model.snapshot().riding_skills
 	item.avatar_velocity=point(chapter.avatar.velocity)
 	item.avatar_global_rotation=point(chapter.avatar.global_rotation)
 	item.camera_pivot_local_rotation=point(chapter.avatar.pivot.rotation)
 	item.camera_pivot_global_rotation=point(chapter.avatar.pivot.global_rotation)
+
+func _escort_observation() -> Dictionary:
+	return {"visible":chapter.escort.visible,"collision_layer":chapter.escort.collision_layer,
+		"position":point(chapter.escort.global_position),"yaw":chapter.escort.rotation.y,"velocity":point(chapter.escort.velocity)}
 
 func look_toward(target: Vector3) -> void:
 	var offset: Vector3=target-chapter.avatar.global_position
@@ -122,7 +143,9 @@ func capture(id: String,purpose: String,visit: Node=null) -> void:
 		"hud":hud_observation(),"capabilities":chapter.model.capabilities(),"home_execution_suspended_for_capture":true,
 		"input_mouse_mode":Input.mouse_mode,"home_avatar_input_enabled":chapter.avatar.input_enabled,
 		"aftermath_phase":chapter.model.aftermath_phase(),"aftermath":before.aftermath,
+		"inquiry_choice":inquiry_choice,"escort_visible":chapter.escort.visible,"escort_collision_layer":chapter.escort.collision_layer,
 		"escort_physical_position":point(chapter.escort.global_position),
+		"escort_observation":_escort_observation(),
 		"escort_pose_frozen_for_capture":true,"journal_ids":chapter.model.journal().map(func(memory): return memory.id),
 		"objective_marker":{"visible":chapter._marker.visible,"text":chapter._marker.text,"position":point(chapter._marker.global_position)}}
 	if visit!=null:
@@ -148,12 +171,13 @@ func capture(id: String,purpose: String,visit: Node=null) -> void:
 func finish() -> void:
 	physical_key(KEY_Q,false);physical_key(KEY_C,false);controls()
 	var checkpoint: String=chapter.checkpoint_path() if is_instance_valid(chapter) else SAVE+".checkpoint.json"
-	var manifest:={"schema":"1792.opening-chapter-render.v2","captures":captures,"route":route,"failures":failures,"checks":checks,
+	var manifest:={"schema":"1792.opening-chapter-render.v2","inquiry_choice":inquiry_choice,"captures":captures,"route":route,"failures":failures,"checks":checks,
 		"engine":Engine.get_version_info().string,"renderer":RenderingServer.get_current_rendering_method(),"device":RenderingServer.get_video_adapter_name(),
 		"physics_hz":Engine.physics_ticks_per_second,"entry":"actual HomeLaunch.enter","entry_state_sha256":_binding_sha,
 		"human_playtest":false,"camera_pose_injected":false,"progress_seeded":false,"saved_pose_restored":not midreturn_persistence.is_empty(),"startup_save_seeded":false,"capability_receipt_seeded":false,
 		"save_restore_route":"actual F5/F9 after freshly earned clue and report; no startup save seed",
 		"midreturn_persistence":midreturn_persistence,"final_manual_save":final_manual_save,
+		"independent_guard_refusal":independent_guard_refusal,
 		"input_source":"native routed mouse/key events, physically held guard/quiet keys, ordinary game actions and actual dialog controls",
 		"between_capture_3d_rendering_disabled":true,"historical_authentication":false,"earned_training_receipt":learned_receipt,
 		"native_shot_observations":shot_records,"final_snapshot":chapter.model.snapshot() if is_instance_valid(chapter) else {},
@@ -340,12 +364,22 @@ func _wait_for_guard(target: Vector3,radius: float) -> bool:
 		await frames(1)
 	return check(false,"native household guard did not reach %s within %s; actual=%s; %s"%[target,radius,chapter.escort.global_position,chapter._message])
 
+func _guard_undeployed(boundary: String) -> bool:
+	var guard: Dictionary=chapter.model.aftermath().escort
+	return check(guard.id=="fictional_household_guard" and not guard.active and guard.instruction=="hold"
+		and Base.point(guard.position)==Aftermath.ESCORT_HOME and guard.yaw==0.0 and Base.point(guard.velocity)==Vector3.ZERO
+		and not chapter.escort.visible and chapter.escort.collision_layer==0
+		and chapter.escort.global_position==Aftermath.ESCORT_HOME and chapter.escort.rotation.y==0.0 and chapter.escort.velocity==Vector3.ZERO,
+		"independent inquiry retains the existing undeployed guard at its unchanged home pose: "+boundary)
+
 func _return_to_raj() -> bool:
 	for target in [Vector3(3,.14,-8),Vector3(2,.14,1),Aftermath.MOTHER+Vector3(0,0,-1.8)]:
 		if not await walk_to(target): return false
-	if not await _wait_for_guard(Aftermath.MOTHER,6.5): return false
+	if inquiry_choice=="household_escort":
+		if not await _wait_for_guard(Aftermath.MOTHER,6.5): return false
+	elif not _guard_undeployed("physical return to Raj Kaur"): return false
 	await look_toward(Aftermath.MOTHER);key(KEY_E);await frames(3)
-	return check(chapter._paused and chapter._panel_text.text.begins_with("RAJ KAUR · THE ACCOUNT YOU BRING BACK"),"actual returned player and guard open Raj Kaur's spoken-report dialogue")
+	return check(chapter._paused and chapter._panel_text.text.begins_with("RAJ KAUR · THE ACCOUNT YOU BRING BACK"),"actual returned player and guard open Raj Kaur's spoken-report dialogue" if inquiry_choice=="household_escort" else "actual independently returned player opens Raj Kaur's spoken-report dialogue")
 
 func _native_reload_boundary(saved_snapshot: Dictionary) -> bool:
 	# Observe the ordinary F9 load after native processing, before a resumed
@@ -363,7 +397,8 @@ func _native_reload_boundary(saved_snapshot: Dictionary) -> bool:
 			midreturn_persistence.restored_state_sha256=chapter.model.present_sha256()
 			var exact:=check(restored==saved_snapshot,"actual F9 restores the exact whole saved Home at its native load boundary")
 			check(chapter.avatar.global_position.is_equal_approx(Base.point(restored.player.position)) and chapter.escort.global_position.is_equal_approx(Base.point(restored.aftermath.escort.position)),"actual F9 applies saved player and household guard poses to the same existing native bodies")
-			check(restored.aftermath.reported_tick==-1 and restored.aftermath.escort.active and chapter.model.aftermath_phase()=="return" and chapter.model.journal().back().id=="bend_trace","F9 removes the later spoken-report knowledge and restores the outstanding escort obligation")
+			check(restored.aftermath.reported_tick==-1 and restored.aftermath.decision==inquiry_choice and restored.aftermath.escort.active==(inquiry_choice=="household_escort") and chapter.model.aftermath_phase()=="return" and chapter.model.journal().back().id=="bend_trace","F9 removes the later spoken-report knowledge and restores the outstanding escort obligation" if inquiry_choice=="household_escort" else "F9 removes later report knowledge and preserves the independent agreement without deploying a guard")
+			if inquiry_choice=="independent_inquiry": exact=_guard_undeployed("exact native F9 load boundary") and exact
 			check(restored.riding_skills.lesson_receipts==[learned_receipt] and chapter.model.capabilities()=={"single_standing":true,"paired_standing":true,"mounted_matchlock":true},"whole-state rollback preserves the genuinely earned horsecraft receipt and all learned capabilities")
 			home.process_mode=prior_process
 			note("midreturn-native-reload")
@@ -397,22 +432,46 @@ func _household_inquiry() -> bool:
 	await look_toward(Aftermath.MOTHER);key(KEY_E);await frames(3)
 	if not check(chapter._paused and chapter.model.aftermath_phase()=="choice" and chapter._panel_text.text.begins_with("RAJ KAUR · PROTECTION AND ITS PRICE"),"physically reached Raj Kaur offers the original household protection choice"): return false
 	note("household-offer-earned");await capture("household-offer","Actual Raj Kaur protection offer after two returned accounts")
-	if not await _dialog_click("Accept the household guard"): return false
-	if not check(chapter.model.aftermath().decision=="household_escort" and chapter.model.aftermath().escort.active and chapter.escort.visible,"actual displayed acceptance deploys one existing physical household guard"): return false
-	await frames(50);key(KEY_G);await frames(3)
-	if not check(chapter.model.aftermath().escort.instruction=="hold","actual nearby G commands the agreed guard to hold"): return false
-	var held_position: Vector3=chapter.escort.global_position
-	if not await walk_to(Vector3(-1,.14,3)): return false
-	if not check(Base.distance(chapter.escort.global_position,held_position)<.001,"actual walking does not move a held household guard"): return false
-	if not await walk_to(Vector3(-4,.14,5)): return false
-	key(KEY_G);await frames(3)
-	if not check(chapter.model.aftermath().escort.instruction=="follow","actual nearby G regroups the same held guard"): return false
+	if not await _dialog_click("Accept the household guard" if inquiry_choice=="household_escort" else "Insist on an independent inquiry"): return false
+	if inquiry_choice=="household_escort":
+		if not check(chapter.model.aftermath().decision=="household_escort" and chapter.model.aftermath().escort.active and chapter.escort.visible,"actual displayed acceptance deploys one existing physical household guard"): return false
+		await frames(50);key(KEY_G);await frames(3)
+		if not check(chapter.model.aftermath().escort.instruction=="hold","actual nearby G commands the agreed guard to hold"): return false
+		var held_position: Vector3=chapter.escort.global_position
+		if not await walk_to(Vector3(-1,.14,3)): return false
+		if not check(Base.distance(chapter.escort.global_position,held_position)<.001,"actual walking does not move a held household guard"): return false
+		if not await walk_to(Vector3(-4,.14,5)): return false
+		key(KEY_G);await frames(3)
+		if not check(chapter.model.aftermath().escort.instruction=="follow","actual nearby G regroups the same held guard"): return false
+	else:
+		if not check(chapter.model.aftermath().decision=="independent_inquiry" and chapter.model.household_disposition()=="Strained independence","actual displayed independent choice earns its original household consequence"): return false
+		if not _guard_undeployed("actual independent agreement"): return false
+		var before_refusal: Dictionary=chapter.model.aftermath()
+		var before_tick: int=chapter.model.progress().tick
+		var before_position: Vector3=chapter.avatar.global_position
+		var before_guard: Dictionary=_escort_observation()
+		controls();key(KEY_G);await frames(3)
+		independent_guard_refusal={"input":"actual native G after the independent agreement","before_aftermath":before_refusal,
+			"after_aftermath":chapter.model.aftermath(),"before_tick":before_tick,"after_tick":chapter.model.progress().tick,
+			"before_player_position":point(before_position),"after_player_position":point(chapter.avatar.global_position),
+			"before_guard":before_guard,"after_guard":_escort_observation(),"message":chapter._message,"world_paused":chapter._paused}
+		if not check(chapter._message=="No deployed household escort." and chapter.model.aftermath()==before_refusal
+			and _escort_observation()==before_guard and Base.distance(chapter.avatar.global_position,before_position)<.001
+			and chapter.model.progress().tick>before_tick and not chapter._paused,
+			"actual G refuses an undeployed guard without changing the independent aftermath while the ordinary world clock runs"): return false
+		if not _guard_undeployed("actual refused G input"): return false
+		note("independent-guard-order-refused")
 	for target in [Vector3(2,.14,-2),Vector3(3,.14,-12),Aftermath.CLUE+Vector3(0,0,2)]:
 		if not await walk_to(target): return false
-	if not await _wait_for_guard(Aftermath.CLUE,5.5): return false
+	if inquiry_choice=="household_escort":
+		if not await _wait_for_guard(Aftermath.CLUE,5.5): return false
+	else:
+		if not _guard_undeployed("independent arrival at the bend"): return false
+		if not check(Base.distance(chapter.escort.global_position,Aftermath.CLUE)>6.0,"independent bend inspection has no household guard within the existing witness radius"): return false
 	await look_toward(Aftermath.CLUE);key(KEY_E);await frames(3)
-	if not check(chapter.model.aftermath_phase()=="return" and chapter.model.journal().back().id=="bend_trace","actual facing and E observe the bend with the agreed physical witness present"): return false
-	note("bend-trace-earned");await capture("bend-observed","Actually examined bend and physically attending household guard")
+	if not check(chapter.model.aftermath_phase()=="return" and chapter.model.journal().back().id=="bend_trace","actual facing and E observe the bend with the agreed physical witness present" if inquiry_choice=="household_escort" else "actual facing and E independently observe the bend without a household witness"): return false
+	if inquiry_choice=="independent_inquiry" and not _guard_undeployed("earned independent bend observation"): return false
+	note("bend-trace-earned");await capture("bend-observed","Actually examined bend and physically attending household guard" if inquiry_choice=="household_escort" else "Actually examined bend without a household guard")
 	key(KEY_F5);await frames(3)
 	var saved_authority=chapter.model.get_script().new()
 	if not check(saved_authority.load_from(SAVE).is_empty(),"actual F5 writes a production-validated complete Home save during the inquiry return"): return false
@@ -424,12 +483,14 @@ func _household_inquiry() -> bool:
 	midreturn_persistence={"file":SAVE,"retained_file":"midreturn-save.json","save_sha256":FileAccess.get_sha256(SAVE),
 		"saved_snapshot":saved_snapshot,"saved_tick":saved_snapshot.childhood.tick,"saved_state_sha256":saved_authority.present_sha256(),
 		"declared_saved_pose_restored":true,"input":"actual native F5 and F9 after unseeded earned progress"}
-	if not check(saved_snapshot.aftermath.clue_tick>=saved_snapshot.aftermath.decision_tick and saved_snapshot.aftermath.reported_tick==-1 and saved_snapshot.riding_skills.lesson_receipts==[learned_receipt],"midreturn save retains causal clue knowledge, outstanding report, attending guard and exact earned horsecraft receipt"): return false
+	if not check(saved_snapshot.aftermath.clue_tick>=saved_snapshot.aftermath.decision_tick and saved_snapshot.aftermath.reported_tick==-1 and saved_snapshot.aftermath.decision==inquiry_choice and saved_snapshot.aftermath.escort.active==(inquiry_choice=="household_escort") and saved_snapshot.riding_skills.lesson_receipts==[learned_receipt],"midreturn save retains causal clue knowledge, outstanding report, attending guard and exact earned horsecraft receipt" if inquiry_choice=="household_escort" else "midreturn save retains the independent choice, clue knowledge and learned receipt without a free guard"): return false
+	if inquiry_choice=="independent_inquiry" and not _guard_undeployed("actual independent midreturn save"): return false
 	note("midreturn-native-save")
 	if not await _return_to_raj(): return false
-	note("observed-report-offered");await capture("household-report","Actual spoken-report dialogue after the player and guard return to Raj Kaur")
+	note("observed-report-offered");await capture("household-report","Actual spoken-report dialogue after the player and guard return to Raj Kaur" if inquiry_choice=="household_escort" else "Actual spoken-report dialogue after the player's independent return")
 	if not await _dialog_click("Give the observed account"): return false
-	if not check(chapter.model.aftermath_phase()=="complete" and chapter.model.journal().back().id=="oral_return" and not chapter.model.aftermath().escort.active,"first actually spoken report completes the inquiry and retires its guard obligation"): return false
+	if not check(chapter.model.aftermath_phase()=="complete" and chapter.model.journal().back().id=="oral_return" and not chapter.model.aftermath().escort.active,"first actually spoken report completes the inquiry and retires its guard obligation" if inquiry_choice=="household_escort" else "first actually spoken independent report completes the inquiry without deploying a guard"): return false
+	if inquiry_choice=="independent_inquiry" and not _guard_undeployed("first actual independent report"): return false
 	midreturn_persistence.progressed_snapshot=chapter.model.snapshot()
 	if not check(FileAccess.get_sha256(SAVE)==midreturn_persistence.save_sha256,"later earned reporting leaves the independent manual save unchanged"): return false
 	note("first-report-earned-before-reload")
@@ -437,8 +498,9 @@ func _household_inquiry() -> bool:
 	if not await _return_to_raj(): return false
 	if not await _dialog_click("Give the observed account"): return false
 	var final_snapshot: Dictionary=chapter.model.snapshot()
-	if not check(chapter.model.aftermath_phase()=="complete" and final_snapshot.aftermath.memories.map(func(memory): return memory.id)==["return_steward","return_courier","protection_offer","household_escort","bend_trace","oral_return"],"replayed physical return completes exactly one report after the whole knowledge rollback"): return false
+	if not check(chapter.model.aftermath_phase()=="complete" and final_snapshot.aftermath.memories.map(func(memory): return memory.id)==["return_steward","return_courier","protection_offer",inquiry_choice,"bend_trace","oral_return"],"replayed physical return completes exactly one report after the whole knowledge rollback"): return false
 	if not check(not final_snapshot.aftermath.escort.active and final_snapshot.aftermath.escort.instruction=="hold" and Base.point(final_snapshot.aftermath.escort.velocity)==Vector3.ZERO,"completed inquiry retires and holds the same household guard without a duplicate actor"): return false
+	if inquiry_choice=="independent_inquiry" and not _guard_undeployed("replayed independent report"): return false
 	if not check(chapter.model.validate(final_snapshot).is_empty() and final_snapshot.riding_skills.lesson_receipts==[learned_receipt] and not chapter.model.has_economy(),"completed unseeded beginning validates with its earned skills and no premature household allowance"): return false
 	if not check(FileAccess.get_sha256(chapter.checkpoint_path())==checkpoint_sha,"inquiry, actual manual save and native reload preserve the original pre-inquiry automatic checkpoint"): return false
 	key(KEY_J);await frames(3)
@@ -447,6 +509,7 @@ func _household_inquiry() -> bool:
 	await frames(15)
 	if not check(chapter._paused and chapter._panel.visible and not chapter.art.detail.hud.visible and chapter._panel_text.text.contains(Aftermath.AFTER_ACCOUNTS.oral_return.text),"actual final journal presents the earned spoken report and suppresses compact world guidance"): return false
 	if not check(chapter.model.snapshot()==journal_snapshot and chapter.escort.global_transform==journal_guard,"completed inquiry journal freezes whole knowledge, clock and physical guard"): return false
+	if inquiry_choice=="independent_inquiry" and not _guard_undeployed("actual completed independent journal"): return false
 	key(KEY_ESCAPE);await frames(3)
 	var final_hud: Dictionary=hud_observation()
 	if not check(final_hud.compact_visible and final_hud.task=="Speak to the quartermaster" and not final_hud.legacy_visible and chapter._marker.visible and chapter._marker.global_position.is_equal_approx(TerritoryRules.QUARTERMASTER+Vector3.UP*2.1),"completed inquiry continues with compact guidance and the actual quartermaster objective"): return false
@@ -469,6 +532,7 @@ func _household_inquiry() -> bool:
 	if not check(final_authority.aftermath_phase()=="complete","final native manual save validates as a completed household inquiry"): return false
 	if not check(_after_save_projection(saved_final.aftermath)==_after_save_projection(chapter.model.aftermath()),"final native manual save retains exact inquiry knowledge and the same binary32 physical guard pose"): return false
 	if not check(saved_final.riding_skills.lesson_receipts==[learned_receipt],"final native manual save preserves the exact earned horsecraft receipt"): return false
+	if inquiry_choice=="independent_inquiry" and not _guard_undeployed("actual final independent save"): return false
 	final_manual_save.comparison={"exact_fields":"all aftermath identity, decision, knowledge and event fields; earned receipt",
 		"physical_fields":"escort.position, escort.velocity, escort.yaw reconcile by native binary32 equality",
 		"raw_save_bytes_modified":false}
@@ -476,6 +540,7 @@ func _household_inquiry() -> bool:
 	return check(captures.size()==18,"complete fresh opening retains exactly eighteen production-camera boundaries")
 
 func _run() -> void:
+	if not _configure_inquiry_choice(): quit(2);return
 	root.content_scale_size=Vector2i.ZERO;root.size=Vector2i(1280,720)
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OPENING_OUTPUT))
 	if not await _beginning(): await finish();return

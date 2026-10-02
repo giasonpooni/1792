@@ -331,7 +331,9 @@ func _physics_process(delta: float) -> void:
 	if not _escort_order_requested.is_empty():
 		var instruction := _escort_order_requested
 		_escort_order_requested = ""
-		_message = model.order_escort(instruction) if _escort_audible() else "Move within sight and calling distance of the guard."
+		# An independent agreement has no deployed guard to approach. Let the
+		# existing authority supply that refusal before testing audible range.
+		_message = model.order_escort(instruction) if not model.aftermath().escort.active or _escort_audible() else "Move within sight and calling distance of the guard."
 		if _message.is_empty(): _message = "Guard · " + ("I will follow." if instruction == "follow" else "I will hold here.")
 		_refresh()
 	if _load_requested:

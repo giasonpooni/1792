@@ -12,7 +12,7 @@ import tempfile
 import unittest
 import zlib
 
-from qualify_opening import CAPTURES, MEMORIES, SKILLS, archive_tree, check_manifest, native_save_projection, sha
+from qualify_opening import CAPTURES, MEMORIES, SKILLS, UNDEPLOYED_GUARD, archive_tree, check_manifest, native_save_projection, sha, verify_execution
 
 
 def chunk(kind: bytes, content: bytes) -> bytes:
@@ -50,11 +50,14 @@ class OpeningEvidenceChecks(unittest.TestCase):
         final = self.snapshot(True, 60)
         checkpoint_state = copy.deepcopy(saved)
         checkpoint_state["aftermath"]["memories"] = []
+        checkpoint_state["aftermath"].update(decision="", heard=[], offer_heard=False,
+                                              escort=copy.deepcopy(UNDEPLOYED_GUARD))
         self.write(self.checkpoint, {"schema": "1792.chapter-checkpoint.v1", "reason": "courtyard_return",
                                      "snapshot": checkpoint_state})
         self.write(self.final_save, final)
         self.write(self.images / "midreturn-save.json", saved)
         self.manifest = {"schema": "1792.opening-chapter-render.v2", "failures": 0, "checks": 200,
+                         "inquiry_choice": "household_escort",
                          "progress_seeded": False, "capability_receipt_seeded": False, "camera_pose_injected": False,
                          "startup_save_seeded": False, "human_playtest": False, "historical_authentication": False,
                          "saved_pose_restored": True, "physics_hz": 60, "entry": "actual HomeLaunch.enter",
@@ -98,6 +101,73 @@ class OpeningEvidenceChecks(unittest.TestCase):
 
     def verify(self):
         return check_manifest(self.images, self.checkpoint, self.final_save)
+
+    def independent(self):
+        self.manifest["inquiry_choice"] = "independent_inquiry"
+        snapshots = [self.manifest["final_snapshot"], self.manifest["final_manual_save"]["snapshot"],
+                     *[self.manifest["midreturn_persistence"][field]
+                       for field in ("saved_snapshot", "restored_snapshot", "progressed_snapshot")]]
+        for snapshot in snapshots:
+            after = snapshot["aftermath"]
+            after["decision"] = "independent_inquiry"
+            after["escort"] = copy.deepcopy(UNDEPLOYED_GUARD)
+            after["memories"][3]["id"] = "independent_inquiry"
+        observed = {"visible": False, "collision_layer": 0,
+                    "position": UNDEPLOYED_GUARD["position"], "yaw": 0, "velocity": [0, 0, 0]}
+        for record in self.manifest["captures"]:
+            record["escort_observation"] = copy.deepcopy(observed)
+        self.manifest["route"] = [{"escort_observation": copy.deepcopy(observed)}]
+        refusal_after = copy.deepcopy(self.manifest["midreturn_persistence"]["saved_snapshot"]["aftermath"])
+        self.manifest["independent_guard_refusal"] = {
+            "before_aftermath": refusal_after, "after_aftermath": copy.deepcopy(refusal_after),
+            "before_guard": copy.deepcopy(observed), "after_guard": copy.deepcopy(observed),
+            "message": "No deployed household escort.", "world_paused": False,
+            "before_tick": 10, "after_tick": 13,
+            "before_player_position": [-5, .1, 7], "after_player_position": [-5, .1, 7]}
+        self.write(self.final_save, self.manifest["final_manual_save"]["snapshot"])
+        self.manifest["final_manual_save"]["sha256"] = sha(self.final_save.read_bytes())
+        self.write(self.images / "midreturn-save.json", self.manifest["midreturn_persistence"]["saved_snapshot"])
+        self.manifest["midreturn_persistence"]["save_sha256"] = sha((self.images / "midreturn-save.json").read_bytes())
+        self.update()
+
+    def test_requested_choice_cannot_be_relabelled(self):
+        self.manifest["inquiry_choice"] = "independent_inquiry"
+        self.update()
+        with self.assertRaisesRegex(ValueError, "Requested inquiry choice"):
+            self.verify()
+
+    def test_explicit_verification_source_commit_cannot_be_ignored(self):
+        self.write(self.folder / "execution.json", {"source": {"commit": "a" * 40, "tree": "b" * 40}})
+        with self.assertRaisesRegex(ValueError, "Requested source commit"):
+            verify_execution(self.folder, source_commit="c" * 40)
+
+    def test_explicit_verification_source_tree_cannot_be_ignored(self):
+        self.write(self.folder / "execution.json", {"source": {"commit": "a" * 40, "tree": "b" * 40}})
+        with self.assertRaisesRegex(ValueError, "Requested source tree"):
+            verify_execution(self.folder, source_tree="c" * 40)
+
+    def test_independent_consistency_and_no_free_guard(self):
+        self.independent()
+        result = check_manifest(self.images, self.checkpoint, self.final_save, "independent_inquiry")
+        self.assertEqual(result["decision"], "independent_inquiry")
+        self.manifest["captures"][-1]["escort_observation"]["collision_layer"] = 1
+        self.update()
+        with self.assertRaisesRegex(ValueError, "native guard"):
+            check_manifest(self.images, self.checkpoint, self.final_save, "independent_inquiry")
+
+    def test_independent_branch_cannot_gain_deployed_guard(self):
+        self.independent()
+        self.manifest["final_snapshot"]["aftermath"]["escort"]["active"] = True
+        self.update()
+        with self.assertRaisesRegex(ValueError, "report/escort retirement"):
+            check_manifest(self.images, self.checkpoint, self.final_save, "independent_inquiry")
+
+    def test_independent_refusal_cannot_grant_knowledge_or_stop_time(self):
+        self.independent()
+        self.manifest["independent_guard_refusal"]["after_tick"] = 10
+        self.update()
+        with self.assertRaisesRegex(ValueError, "guard refusal changed authority"):
+            check_manifest(self.images, self.checkpoint, self.final_save, "independent_inquiry")
 
     def test_valid_recorded_consistency(self):
         result = self.verify()

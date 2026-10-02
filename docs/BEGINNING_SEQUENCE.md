@@ -37,6 +37,19 @@ Its eighteen production frames include the paired hold, distinct spent weapons, 
 
 `tools/qualify_opening.py` runs this route from a clean committed tree with isolated save paths and a real display. It retains a source archive and raw commit object, independently recomputes their Git identities, binds the actual Godot executable, command, operation and execution, decodes and hashes PNG/RGBA pixels, and checks the earned receipt, complete inquiry, native rollback and save/checkpoint bytes. The guard's staged JSON pose is compared only at the native Vector3 binary32 representation to reconcile measured one-double-ULP parsing differences; knowledge, events, receipts, clock and other authority remain exact. Original snapshots remain distinct and byte-bound. The verifier proves recorded execution consistency, not authenticated history, OS-level input automation or human playtesting.
 
-Run `python3 tools/qualify_opening.py --godot /path/to/Godot --evidence-dir test-results/opening-qualified --xvfb`, then `python3 tools/qualify_opening.py --evidence-dir test-results/opening-qualified --verify-only`. The independent inquiry choice still needs a separate fresh opening route; inherited aftermath fixtures cover its domain rules but do not supply that new-game qualification.
+The independent route selects the existing **Insist on an independent inquiry** control in a separate fresh journey. It makes the same earned observation and oral report, preserves its own decision through F5/F9, and proves the original guard stays hidden, collision-disabled and at its undeployed home pose throughout. Pressing G now returns the authority's actual “No deployed household escort.” refusal, rather than directing the independent player to find a nonexistent deployment. The refusal changes no aftermath authority or guard pose while the ordinary clock continues. Neither route invents a culprit or accepts the allowance automatically.
 
-CI runs the guidance suite and both input journeys under Xvfb, checks engine errors, and retains their frames beside the four opening and six training frames. The full headless runner retains the original childhood, riding, save, art, workshop and father-interlude checks.
+Qualify each choice in a separate empty destination:
+
+```sh
+for choice in household_escort independent_inquiry; do
+  python3 tools/qualify_opening.py --godot /path/to/Godot \
+    --evidence-dir "test-results/opening-qualified-$choice" --inquiry-choice "$choice" --xvfb
+  python3 tools/qualify_opening.py --evidence-dir "test-results/opening-qualified-$choice" \
+    --inquiry-choice "$choice" --verify-only
+done
+```
+
+The requested choice is bound in the actual renderer command, operation parameters, manifest, memory sequence and independent verification. Unknown/duplicate renderer arguments and mismatched choices are refused. The operation identities are `1792.opening-household-inquiry.v1` and `1792.opening-independent-inquiry.v1`. The independent verifier additionally checks every retained native guard observation and the refused G input; inherited fixtures alone are not new-game evidence.
+
+CI runs the guidance suite, the first incomplete-lesson journey and both complete inquiry choices under Xvfb. It checks engine errors and retains their frames beside the four opening and six training frames, including reached native user data when an inherited smoke fails. The full headless runner retains the original childhood, riding, save, art, workshop and father-interlude checks. Observe exact published-head results; configured CI is not a passed execution.

@@ -145,3 +145,53 @@ These corrections require a new committed-source qualification and fresh exact-
 head hosted results. The earlier failed runs remain failed and provide no hosted
 opening-journey qualification. Inspect the next run and its retained artifact
 before claiming hosted success. The branch remains draft and unmerged.
+
+## Checkpoint: independent choice and inherited smoke budget
+
+Published corrected head `72d6f8027289742cea80869dda837459c916f792`, tree
+`f1967db812741bae43dbe8149b418095741f4c4f`, passed eight of nine hosted workflows.
+Courtyard run `37013167972` passed, including 613 intro lifecycle checks and the
+strict active audio pause trace. Command run `37013168289` passed the native
+suites, reconstruction and water-round captures, then hit exit 124 after exactly
+120 seconds in standalone horsecraft rendering. Opening qualification was not
+reached. The earlier failed runs remain failed.
+
+A native standalone horsecraft probe completed five captures without failures.
+The diagnostic run took **167.033 seconds** of engine wall time under concurrent
+software-rendering CPU load, completing exactly **992 native model ticks**. Its
+capture model ticks were 5, 123, 123, 228 and 992; capture pauses took about
+3.33 seconds. Advancing inter-capture ticks rule out a capture draw stall in that
+observed run. Rendering, physics, inputs and assertions remain unchanged; the
+inherited CI budget is now bounded at 240 seconds, and phase traces plus reached
+native user data survive failures. This does not qualify physical-GPU performance.
+
+The separate fresh independent opening probe earned **18 production frames,
+229 checks, zero failures**. Actual Insist input selected strained independence;
+the original guard stayed undeployed through refused G, bend observation, F5/F9,
+both oral reports, journal and final save. Saved/restored whole state was tick
+4,263; final resumed observation was tick 4,650. The only runtime repair uses the
+existing escort authority to say “No deployed household escort.” on refused G;
+the aftermath suite passes 166 checks. Thirteen adversarial evidence tests pass,
+including route relabelling, a free physical guard and a stopped refusal clock.
+
+The two inquiry operations now bind their requested choice in command, parameters,
+manifest and verification, use separate fresh destinations and preserve the
+original undeployed pre-inquiry checkpoint. These are probe results; commit the
+bounded source and run both strict wrappers before publishing. The latest draft
+PR and retained execution/verification must identify the resulting exact source
+and hosted status. Remaining: reconcile fresh CI/artifacts, improve demonstrated
+first-task onboarding/presentation defects, then qualify the household allowance
+and first responsibility without seeded progress or premature grants.
+
+The strict committed-source wrappers and independent audit subsequently passed
+both choices on local source `c6d60ca2678db85cb76d247106d4eac63d37c0a2`, tree
+`354702a5d62eefa69f66cd2b5768452762ea3f75`: escort 18/225/0, independent 18/229/0.
+Executions were `06c8d411-2162-43cf-ba59-af3b7e8dd300` and
+`e19d28ad-b849-4892-9f6e-f92540382265`; respective manifest SHA-256 identities are
+`fbc2b3008664fb3b0df7b5e7d41f94d1439a20cdef704eb7c7f951088b5a4de5` and
+`b00bca177a2c1aa3e736e6b52fbd8cb51707babb3a287a662586c02a213db1b3`.
+No blocking runtime or framing defect was found. An audit also found explicit
+`--source-commit`/`--source-tree` expectations were ignored by `--verify-only`;
+they now refuse mismatches, with two additional adversarial checks. That verifier
+and checkpoint correction require a fresh source binding before publication;
+the source named here remains the earlier observed execution, not the new head.
