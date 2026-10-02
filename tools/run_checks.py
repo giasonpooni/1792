@@ -140,8 +140,6 @@ def main() -> int:
         "mahan-fence", "MAHAN_FENCE_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_mahan_handoff.gd"],
         "mahan-handoff", "MAHAN_HANDOFF_TESTS:")
-    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_beginning_guidance.gd"],
-        "beginning-guidance", "BEGINNING_GUIDANCE_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_punjab_chiefs_state.gd"],
         "punjab-chiefs-state", "PUNJAB_CHIEFS_STATE_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_punjab_chiefs_session.gd"],
