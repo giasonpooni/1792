@@ -231,3 +231,10 @@ pre-decision exchange, articulated supporting figures, visible guard/counter rea
 local nonvocal foley, compact action cues and outcome-specific homecoming text. The
 three original outcomes, timing, player/companion collision, money and saves remain.
 This is direct game content, not another terminal feature. [Play and limits](docs/BAZAAR_DIRECTION.md).
+
+
+## Gujranwala beauty pass
+
+The existing Home visual study now adds a reversible beauty layer over the authored courtyard: shallow plaster/ochre accents, dark jali depth, six garden pockets, clustered market pottery/textiles, a low reflective basin and warm practical lights for the existing golden-hour/evening F7 presets. It changes presentation only; collision, navigation, water gameplay, economy, saves and historical authority remain unchanged.
+
+See [the beauty-pass scope and limits](docs/GUJRANWALA_BEAUTY_PASS.md).
