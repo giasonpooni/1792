@@ -240,3 +240,10 @@ The existing Home visual study now adds a reversible beauty layer over the autho
 See [the beauty-pass scope and limits](docs/GUJRANWALA_BEAUTY_PASS.md).
 
 A second reversible depth/patina pass extends the composition beyond the immediate courtyard with wall-top rhythm, peripheral pavilion silhouettes, selective plaster aging, high household cloth, distant foliage and warm evening opening glows. See [the depth/patina scope and limits](docs/GUJRANWALA_DEPTH_PATINA.md).
+
+
+### Arms-craft material study
+
+A reversible non-functional household arms-craft niche now uses the user-supplied reference corpus to study material hierarchy: dark steel/wood fields, localized warm-metal fittings, pale grip contrast, scabbard mounts, paired display composition and visible repair wrapping. The niche adds no usable weapon mechanics, inventory, collision or historical ownership claims.
+
+See [the arms-craft scope and limits](docs/GUJRANWALA_ARMS_CRAFT.md).
