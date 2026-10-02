@@ -11,11 +11,12 @@ concurrency:
 jobs:
   godot:
     runs-on: ubuntu-24.04
-    timeout-minutes: 12
+    timeout-minutes: 18
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Install pinned reference Godot
         shell: bash
         run: |
@@ -40,53 +41,117 @@ jobs:
           timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
             --path game --rendering-method gl_compatibility --audio-driver Dummy \
             --script res://tests/render_smoke.gd 2>&1 | tee test-results/render.log
-          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/render.log; then
+            exit 1
+          fi
           grep -q 'RENDER_SMOKE: 4 captures attempted; 0 failures' test-results/render.log
           timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
             --path game --rendering-method gl_compatibility --audio-driver Dummy \
             --script res://tests/render_house_conflict.gd 2>&1 | tee test-results/house-render.log
-          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/house-render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/house-render.log; then
+            exit 1
+          fi
           grep -q 'HOUSE_RENDER: 5 captures; 0 failures' test-results/house-render.log
           timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
             --path game --rendering-method gl_compatibility --audio-driver Dummy \
             --script res://tests/render_riding.gd 2>&1 | tee test-results/riding-render.log
-          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/riding-render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/riding-render.log; then
+            exit 1
+          fi
           grep -q 'RIDING_RENDER: 5 captures; 0 failures' test-results/riding-render.log
           timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
             --path game --rendering-method gl_compatibility --audio-driver Dummy \
             --script res://tests/render_companions.gd 2>&1 | tee test-results/companion-render.log
-          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/companion-render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/companion-render.log; then
+            exit 1
+          fi
           grep -q 'COMPANION_RENDER: 6 captures; 0 failures' test-results/companion-render.log
           timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
             --path game --rendering-method gl_compatibility --audio-driver Dummy \
             --script res://tests/render_character_names.gd 2>&1 | tee test-results/character-names-render.log
-          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/character-names-render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/character-names-render.log; then
+            exit 1
+          fi
           grep -q 'CHARACTER_NAMES_RENDER: 3 captures; 0 failures' test-results/character-names-render.log
           timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
             --path game --rendering-method gl_compatibility --audio-driver Dummy \
             --script res://tests/render_childhood.gd 2>&1 | tee test-results/childhood-render.log
-          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/childhood-render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/childhood-render.log; then
+            exit 1
+          fi
           grep -q 'CHILDHOOD_RENDER: 4 captures; 0 failures' test-results/childhood-render.log
           timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
             --path game --rendering-method gl_compatibility --audio-driver Dummy \
             --script res://tests/render_aftermath.gd 2>&1 | tee test-results/aftermath-render.log
-          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/aftermath-render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/aftermath-render.log; then
+            exit 1
+          fi
           grep -q 'AFTERMATH_RENDER: 5 captures; 0 failures' test-results/aftermath-render.log
           timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
             --path game --rendering-method gl_compatibility --audio-driver Dummy \
             --script res://tests/render_gujranwala.gd 2>&1 | tee test-results/gujranwala-render.log
-          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/gujranwala-render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/gujranwala-render.log; then
+            exit 1
+          fi
           grep -q 'GUJRANWALA_RENDER: 6 captures; 0 failures' test-results/gujranwala-render.log
           timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
             --path game --rendering-method gl_compatibility --audio-driver Dummy \
             --script res://tests/render_reconstruction.gd 2>&1 | tee test-results/reconstruction-render.log
-          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/reconstruction-render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/reconstruction-render.log; then
+            exit 1
+          fi
           grep -q 'RECONSTRUCTION_RENDER: 4 captures; 0 failures' test-results/reconstruction-render.log
           timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
             --path game --rendering-method gl_compatibility --audio-driver Dummy \
             --script res://tests/render_water_round.gd 2>&1 | tee test-results/water-round-render.log
-          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/water-round-render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/water-round-render.log; then
+            exit 1
+          fi
           grep -q 'WATER_ROUND_RENDER: 5 captures; 0 failures' test-results/water-round-render.log
+          timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_horsecraft_study.gd 2>&1 | tee test-results/horsecraft-render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/horsecraft-render.log; then
+            exit 1
+          fi
+          grep -q 'HORSECRAFT_RENDER: 5 captures; 0 failures' test-results/horsecraft-render.log
+          cp -r "$HOME/.local/share/godot/app_userdata/1792/horsecraft-study-images" test-results/
+          timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_riding_training.gd 2>&1 | tee test-results/riding-training-render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/riding-training-render.log; then
+            exit 1
+          fi
+          grep -q 'RIDING_TRAINING_RENDER: 6 captures; 0 failures' test-results/riding-training-render.log
+          cp -r "$HOME/.local/share/godot/app_userdata/1792/riding-training-images" test-results/
+          timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_charat_campaign_intro.gd 2>&1 | tee test-results/charat-intro-render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/charat-intro-render.log; then
+            exit 1
+          fi
+          grep -q 'CHARAT_INTRO_RENDER: 4 captures; 0 failures' test-results/charat-intro-render.log
+          cp -r "$HOME/.local/share/godot/app_userdata/1792/charat-intro-images" test-results/
+          timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/test_beginning_guidance.gd 2>&1 | tee test-results/beginning-guidance.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/beginning-guidance.log; then
+            exit 1
+          fi
+          grep -Eq '^BEGINNING_GUIDANCE_TESTS: [1-9][0-9]* passed, 0 failed$' test-results/beginning-guidance.log
+          timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_beginning_sequence.gd 2>&1 | tee test-results/beginning-sequence-render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/beginning-sequence-render.log; then
+            exit 1
+          fi
+          grep -Eq '^BEGINNING_SEQUENCE_RENDER: 11 captures; [1-9][0-9]* checks; 0 failures$' test-results/beginning-sequence-render.log
+          cp -r "$HOME/.local/share/godot/app_userdata/1792/beginning-sequence-images" test-results/
+          python3 -m unittest discover -s tools -p 'test_qualify_opening.py'
+          python3 tools/qualify_opening.py \
+            --godot "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --evidence-dir test-results/opening-qualified --xvfb --timeout 240
+          python3 tools/qualify_opening.py --evidence-dir test-results/opening-qualified --verify-only
           mkdir -p test-results/screenshots
           cp "$HOME/.local/share/godot/app_userdata/1792/"command-*.png test-results/screenshots/
           cp "$HOME/.local/share/godot/app_userdata/1792/"house-*.png test-results/screenshots/

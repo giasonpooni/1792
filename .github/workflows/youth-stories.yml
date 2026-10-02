@@ -40,7 +40,9 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install --yes --no-install-recommends xvfb xauth libgl1-mesa-dri
           timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy --script res://tests/render_youth_brawl.gd 2>&1 | tee test-results/youth-render.log
-          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/youth-render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/youth-render.log; then
+            exit 1
+          fi
           grep -q 'YOUTH_BRAWL_RENDER: 4 captures; 0 failures' test-results/youth-render.log
           mkdir -p test-results/screenshots
           cp "$HOME/.local/share/godot/app_userdata/1792/"youth-*.png test-results/screenshots/

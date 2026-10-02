@@ -1,0 +1,59 @@
+{
+  "schema": "1792.gujranwala-material-fidelity.v1",
+  "classification": "original-material-and-procedural-mesh-study",
+  "historical_authentication": false,
+  "georeferenced": false,
+  "gameplay_authority": false,
+  "extends": [
+    "gujranwala-beauty-pass.v1",
+    "gujranwala-depth-patina.v1",
+    "gujranwala-microdetail.v1"
+  ],
+  "finishes": {
+    "plaster": "Existing generic CC0 microrelief/roughness maps, authored pigment retained",
+    "timber": "Object-local analytic directional grain",
+    "earthenware": "Object-local turning bands and UV pore appearance",
+    "cloth": "Derivative-filtered object-local weave"
+  },
+  "projection": {
+    "declared_existing_meshes": 222,
+    "added_meshes": 0,
+    "bump_only": true,
+    "vertex_displacement": false,
+    "clock": null,
+    "original_material_references_restored": true
+  },
+  "vessels": {
+    "beauty_market": 6,
+    "microdetail_storage": 6,
+    "variants": 3,
+    "radial_segments": 24,
+    "triangles_per_vessel": 3120,
+    "vertices_per_vessel": 1727,
+    "geometry": "Hollow turned shell, connected annular lip, interior floor, closed underside",
+    "envelope": "Contained by each previous cylinder radius and height at the same transform",
+    "legacy_rims": "Six pre-existing duplicate rim nodes retained with layers=0"
+  },
+  "surface_sources": [
+    {
+      "file": "game/assets/surfaces/plastered_wall_disp_1k.png",
+      "sha256": "47af13bc6815b196a8f1e1b8101ceef04edb6b98bf0ac5b6df4d2acbe29fa62a",
+      "provenance": "game/assets/surfaces/sources.json",
+      "license": "CC0-1.0",
+      "historical_evidence": false
+    },
+    {
+      "file": "game/assets/surfaces/plastered_wall_rough_1k.png",
+      "sha256": "f1f392869baf81a1ec622c277a3d8e4ecf5b7bb685b4d1c26744b7e07948699e",
+      "provenance": "game/assets/surfaces/sources.json",
+      "license": "CC0-1.0",
+      "historical_evidence": false
+    }
+  ],
+  "verification": {
+    "engine_snapshots": "Before/after runtime checks",
+    "independent_png_check": "Byte and decoded pixel integrity plus renderer-reported camera/state metadata consistency",
+    "hardware_performance_qualified": false,
+    "human_art_approval": false
+  }
+}

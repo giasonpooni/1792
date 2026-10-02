@@ -8,6 +8,15 @@ var camera: Camera3D
 var failures:=0
 var records: Array[Dictionary]=[]
 const OUTPUT:="user://gujranwala-beauty-images"
+const COURTYARD_POSITION:=Vector3(0,4.7,-3.0)
+const COURTYARD_TARGET:=Vector3(0,1.65,10.2)
+const COURTYARD_FOV:=52.0
+
+func bytes_sha256(data: PackedByteArray) -> String:
+	var context:=HashingContext.new()
+	context.start(HashingContext.HASH_SHA256)
+	context.update(data)
+	return context.finish().hex_encode()
 
 func _initialize() -> void:
 	run.call_deferred()
@@ -30,8 +39,8 @@ func prepare_camera(at: Vector3,target: Vector3,fov: float=48.0) -> void:
 
 func capture(id: String,preset: String,at: Vector3,target: Vector3,fov: float=48.0) -> void:
 	var before: Dictionary=scene.model.snapshot()
-	scene.art.set_enabled(true)
-	scene.art.set_refinement(true)
+	if not scene.art.enabled: scene.art.set_enabled(true)
+	if not scene.art.refinement_enabled: scene.art.set_refinement(true)
 	var error: String=scene.art.set_preset(preset)
 	check(error.is_empty(),"preset "+preset+": "+error)
 	prepare_camera(at,target,fov)
@@ -44,6 +53,9 @@ func capture(id: String,preset: String,at: Vector3,target: Vector3,fov: float=48
 	var path:=OUTPUT.path_join(id+".png")
 	check(not image.is_empty(),"image exists "+id)
 	check(image.get_width()==1280 and image.get_height()==720,"expected 1280x720 "+id)
+	# A canonical decoded-pixel digest distinguishes light changes from PNG metadata.
+	image.clear_mipmaps()
+	image.convert(Image.FORMAT_RGBA8)
 	check(image.save_png(path)==OK,"write "+id)
 	check(scene.model.snapshot()==before,"render freezes game state "+id)
 	records.append({
@@ -51,6 +63,13 @@ func capture(id: String,preset: String,at: Vector3,target: Vector3,fov: float=48
 		"preset":preset,
 		"file":id+".png",
 		"sha256":FileAccess.get_sha256(path),
+		"pixel_sha256":bytes_sha256(image.get_data()),
+		"pixel_format":"rgba8",
+		"width":image.get_width(),
+		"height":image.get_height(),
+		"tick":int(scene.model.progress().tick),
+		"campaign_snapshot_sha256":bytes_sha256(JSON.stringify(before,"",true,true).to_utf8_buffer()),
+		"frozen_state":scene.model.snapshot()==before,
 		"camera_position":[at.x,at.y,at.z],
 		"target":[target.x,target.y,target.z],
 		"fov":fov,
@@ -69,6 +88,7 @@ func run() -> void:
 	# Freeze gameplay scripts; keep the renderer and art presentation alive.
 	for node in home.find_children("*","Node",true,false):
 		node.set_physics_process(false)
+		node.set_process(false)
 	scene.set_physics_process(false)
 	scene.avatar.set_physics_process(false)
 	camera=Camera3D.new()
@@ -76,18 +96,22 @@ func run() -> void:
 	camera.far=220.0
 	home.add_child(camera)
 
-	await capture("courtyard-daylight","daylight",Vector3(0,4.7,-3.0),Vector3(0,1.65,10.2),52.0)
-	await capture("courtyard-golden","golden_hour",Vector3(0,4.7,-3.0),Vector3(0,1.65,10.2),52.0)
+	await capture("courtyard-daylight","daylight",COURTYARD_POSITION,COURTYARD_TARGET,COURTYARD_FOV)
+	await capture("courtyard-golden","golden_hour",COURTYARD_POSITION,COURTYARD_TARGET,COURTYARD_FOV)
 	await capture("veranda-close","golden_hour",Vector3(-7.4,2.75,5.2),Vector3(-8.2,1.75,11.1),42.0)
-	await capture("market-close","golden_hour",Vector3(-19.7,3.2,-11.8),Vector3(-24.0,1.45,-17.75),45.0)
+	# Approach the counter directly; the former east approach inspected the store wall.
+	await capture("market-close","golden_hour",Vector3(-24.0,2.2,-14.5),Vector3(-24.0,1.25,-17.8),58.0)
 	await capture("skyline-evening","evening",Vector3(0,5.0,-8.5),Vector3(0,4.2,27.0),54.0)
+	await capture("courtyard-evening","evening",COURTYARD_POSITION,COURTYARD_TARGET,COURTYARD_FOV)
 
-	check(records.size()==5,"five art-inspection captures")
-	if records.size()==5:
-		check(records[0].sha256!=records[1].sha256,"daylight and golden-hour frames differ")
-		check(records[1].sha256!=records[4].sha256,"golden-hour and evening frames differ")
+	check(records.size()==6,"six art-inspection captures")
+	if records.size()==6:
+		var lighting: Array[Dictionary]=[records[0],records[1],records[5]]
+		for i in range(lighting.size()):
+			for j in range(i):
+				check(lighting[i].pixel_sha256!=lighting[j].pixel_sha256,"same-camera lighting pixels differ: "+lighting[i].id+" / "+lighting[j].id)
 	var report:={
-		"schema":"1792.gujranwala-beauty-render.v1",
+		"schema":"1792.gujranwala-beauty-render.v2",
 		"captures":records,
 		"failures":failures,
 		"engine":Engine.get_version_info().string,
@@ -105,5 +129,8 @@ func run() -> void:
 		failures+=1
 	print("GUJRANWALA_BEAUTY_RENDER: %d captures; %d failures"%[records.size(),failures])
 	home.queue_free()
-	await frames(2)
+	home=null
+	scene=null
+	camera=null
+	await frames(8)
 	quit(1 if failures else 0)

@@ -1,0 +1,1250 @@
+{
+  "schema": "1792.charat-campaign-intro-research.v1",
+  "research_date": "2026-10-02",
+  "scope": "Editorial research for an authored father-and-child opening about Charat Singh; no source establishes the conversation itself",
+  "identities": {
+    "narrator": "mahan_singh",
+    "listener": "ranjit_singh",
+    "campaign_subject": "charat_singh",
+    "relationship": "Charat Singh is Maha Singh's father and Ranjit Singh's grandfather",
+    "narrator_is_campaign_subject": false
+  },
+  "editorial": {
+    "conversation_date": null,
+    "conversation_placement": "Very early childhood, before the existing 1792 playable Home; exact year and child age are unspecified",
+    "dialogue_status": "original-authored-dialogue",
+    "historical_conversation_authenticated": false,
+    "campaigns_playable_reconstruction": false,
+    "father_death_contract_changed": false,
+    "riding_skill_grants": [],
+    "inventory_grants": [],
+    "historical_authority_grants": [],
+    "separate_from": [
+      "Childhood horsecraft training and its completed-lesson capability receipt",
+      "Fixed pre-Lahore father retrospective"
+    ],
+    "treatment": "A family recollection of courage, coalition, loss, restraint and responsibility; invented lessons belong to the authored narrator, not to a historical quotation"
+  },
+  "sources": [
+    {
+      "id": "wikipedia-charat-1374738767",
+      "kind": "user-supplied-secondary-entry",
+      "title": "Charat Singh: Military campaigns",
+      "url": "https://en.wikipedia.org/w/index.php?title=Charat_Singh&oldid=1374738767",
+      "accessed_url": "https://en.wikipedia.org/wiki/Charat_Singh",
+      "inspection": "Opened article and followed cited bibliography on 2026-10-02",
+      "role": "Requested episode scope and reference discovery; chronology is checked against the cited books",
+      "limitations": [
+        "Combines the earlier Sarbuland capture/ransom with the later Jhelum/Rohtas sequence",
+        "Gives a more categorical 1765 defeat summary than the inspected cited narrative"
+      ],
+      "binary_imported": false
+    },
+    {
+      "id": "gupta-sikhs-ii-2007",
+      "kind": "modern-secondary-history",
+      "author": "Hari Ram Gupta",
+      "title": "History of the Sikhs, Vol. II: Evolution of Sikh Confederacies (1707-69)",
+      "edition_year": 2007,
+      "url": "https://archive.org/details/HistoryOfTheSikhsVol.IiEvolutionOfSikhConfederacies1707-69",
+      "inspected_text_url": "https://archive.org/stream/HistoryOfTheSikhsVol.IiEvolutionOfSikhConfederacies1707-69/HistoryOfTheSikhsVol.IiEvolutionOfSikhConfederacies1707-69_djvu.txt",
+      "locators": [
+        "printed pp. 171-173",
+        "printed pp. 179-184",
+        "printed pp. 213-214",
+        "printed pp. 221-225",
+        "printed pp. 152-153",
+        "printed pp. 196-198"
+      ],
+      "inspection": "Relevant OCR passages read; page numbers are printed pagination, not reader frame numbers",
+      "limitations": [
+        "Retrospective synthesis; attributed early sources were not all independently inspected",
+        "OCR requires scan verification before quoting"
+      ],
+      "binary_imported": false
+    },
+    {
+      "id": "gupta-sikhs-iv-2007",
+      "kind": "modern-secondary-history",
+      "author": "Hari Ram Gupta",
+      "title": "History of the Sikhs, Vol. IV: The Sikh Commonwealth or Rise and Fall of Sikh Misls",
+      "edition_year": 2007,
+      "url": "https://archive.org/details/HistoryOfTheSikhsVol.IvTheSikhCommonwealthOrRiseAndFallOfSikh",
+      "inspected_text_url": "https://archive.org/stream/HistoryOfTheSikhsVol.IvTheSikhCommonwealthOrRiseAndFallOfSikh/HistoryOfTheSikhsVol.IvTheSikhCommonwealthOrRiseAndFallOfSikhMisls_djvu.txt",
+      "locators": [
+        "printed pp. 295-300",
+        "printed pp. 300-304",
+        "printed pp. 294-295",
+        "printed pp. 304-305"
+      ],
+      "inspection": "Charat Singh chapter read in OCR, including separate May 1767 Jhelum and final Rohtas capture sections",
+      "limitations": [
+        "Same author as Vol. II; not an independent corroborating witness",
+        "Uses administrative geography and later descriptions which must not be treated as exact 1760s art measurements"
+      ],
+      "binary_imported": false
+    },
+    {
+      "id": "teja-ganda-short-history-2006",
+      "kind": "modern-secondary-history",
+      "authors": [
+        "Teja Singh",
+        "Ganda Singh"
+      ],
+      "title": "A Short History of the Sikhs, Vol. One (1469-1765)",
+      "edition_year": 2006,
+      "publisher": "Punjabi University, Patiala",
+      "url": "https://library.gurmat.info/download/a-short-history-of-the-sikhs-volume-one-1469-1765-teja-singh-ganda-singh.pdf",
+      "locators": [
+        "printed p. 160",
+        "printed pp. 162-163",
+        "printed p. 167",
+        "printed pp. 170-171",
+        "printed pp. 175-176"
+      ],
+      "inspection": "Digitized PDF relevant text read",
+      "limitations": [
+        "Also draws upon several of the early accounts used by Gupta",
+        "Rohtas commander attribution differs from Gupta Vol. II"
+      ],
+      "binary_imported": false
+    },
+    {
+      "id": "tahmas-khan-memoirs-1782-translated-2001",
+      "kind": "translated-period-participant-memoir",
+      "author": "Tahmas Khan",
+      "completion_year": 1782,
+      "title": "Tahmasnama selections, Text 16 in Sikh History from Persian Sources",
+      "translator": "Irfan Habib",
+      "editors": [
+        "J. S. Grewal",
+        "Irfan Habib"
+      ],
+      "publication_year": 2001,
+      "url": "https://archive.org/details/SikhHistoryFromPersianSources",
+      "inspected_text_url": "https://archive.org/stream/SikhHistoryFromPersianSources/SikhHistoryFromPersianSources_djvu.txt",
+      "locator": "printed pp. 179-181, Text 16 subsection E; February 1762 section cites original edited pp. 254-257 and Subhanullah MS ff. 64a-65b",
+      "inspection": "Translated Gujranwala collapse and February 1762 campaign sections read; original Persian manuscript not inspected",
+      "supports": [
+        "The governor's army was dispersed and its leader fled to Lahore",
+        "Participant's February 1762 pursuit and probable death estimate"
+      ],
+      "limitations": [
+        "Recollection completed about twenty years after these events",
+        "A participant's view from the opposing force; estimate is explicitly probable",
+        "Explicitly names Charhat in the siege passage; does not independently date it to September"
+      ],
+      "binary_imported": false
+    },
+    {
+      "id": "nur-muhammad-jangnama-1765-translated-2001",
+      "kind": "translated-contemporary-campaign-account",
+      "author": "Qazi Nur Muhammad",
+      "composition_year": 1765,
+      "title": "Jangnama selections, Text 18 in Sikh History from Persian Sources",
+      "translator": "Iqtidar Alam Khan",
+      "editors": [
+        "J. S. Grewal",
+        "Irfan Habib"
+      ],
+      "publication_year": 2001,
+      "url": "https://archive.org/details/SikhHistoryFromPersianSources",
+      "inspected_text_url": "https://archive.org/stream/SikhHistoryFromPersianSources/SikhHistoryFromPersianSources_djvu.txt",
+      "locator": "printed pp. 203-210; introduction and translation; Rohtas holdings pp. 209-210; note 4 p. 210",
+      "inspection": "Translated selections and editorial notes read; original Persian manuscript not inspected",
+      "supports": [
+        "Charat Singh's control of Rohtas was reported by 1765",
+        "Contemporary account of Sikh mounted military practice"
+      ],
+      "limitations": [
+        "Author accompanied the opposing campaign and uses hostile rhetoric",
+        "The collection translates selected portions, not the entire seven-day battle narrative",
+        "Mounted firing is a translator/editor inference from a galloping expression, not verification of a named two-horse four-matchlock feat"
+      ],
+      "binary_imported": false
+    },
+    {
+      "id": "cunningham-history-1849-intro-context",
+      "kind": "nineteenth-century-retrospective-history",
+      "author": "Joseph Davey Cunningham",
+      "title": "A History of the Sikhs: From the Origin of the Nation to the Battles of the Sutlej",
+      "publication_year": 1849,
+      "url": "https://archive.org/stream/historyofsikhsfr01cunn/historyofsikhsfr01cunn_djvu.txt",
+      "locator": "Chapter IV, printed pp. 107-110; Chapter V, printed p. 122",
+      "inspection": "Gujranwala defence and 1762 campaign passages read; Jammu succession and bursting matchlock passage read",
+      "limitations": [
+        "Dates the Gujranwala siege to early 1762 rather than September 1761; use the later specialist synthesis for the episode caption",
+        "Retrospective, not an eyewitness of these campaigns"
+      ],
+      "binary_imported": false
+    },
+    {
+      "id": "punjabi-university-charhat-entry",
+      "kind": "signed-specialist-encyclopedia-entry",
+      "author": "Sardar Singh Bhatia",
+      "title": "Charhat Singh (d. 1770), Encyclopaedia of Sikhism",
+      "publisher": "Punjabi University, Patiala",
+      "url": "https://eos.learnpunjabi.org/CHARHAT%20SINGH%20(D.%201770).html",
+      "inspection": "Complete signed entry and bibliography read on 2026-10-02",
+      "supports": [
+        "Naudh Singh relationship and youthful military participation",
+        "1756 Desan marriage and combined family resources",
+        "Named Charat participation at Kasur and Sialkot in 1763",
+        "Jammu succession involvement and death from his own bursting gun"
+      ],
+      "limitations": [
+        "Retrospective synthesis, not a contemporary family record",
+        "1770 death chronology differs from Gupta IV and Cunningham",
+        "Does not establish ten horsemen, a defector speech, or a named mounted four-matchlock feat"
+      ],
+      "binary_imported": false
+    },
+    {
+      "id": "punjabi-university-desan-entry",
+      "kind": "signed-specialist-encyclopedia-entry",
+      "author": "J. S. Khurana",
+      "title": "Desan Mai (d. 1778), Encyclopaedia of Sikhism",
+      "publisher": "Punjabi University, Patiala",
+      "url": "https://eos.learnpunjabi.org/DESAN%20MAI%20(D.%201778).html",
+      "inspection": "Complete signed entry and bibliography read on 2026-10-02",
+      "supports": [
+        "Amir Singh parentage and 1756 marriage",
+        "Management of chiefship during Maha Singh minority",
+        "Fort rebuilding and family alliances"
+      ],
+      "limitations": [
+        "Charat death date 1770 differs from Gupta IV 1774",
+        "Desan death date 1778 differs from Wikipedia 1794",
+        "Minor son age and biological mother relationship differ from Gupta IV; opening avoids deciding these details"
+      ],
+      "binary_imported": false
+    },
+    {
+      "id": "wikipedia-desan-1369992159",
+      "kind": "secondary-entry-used-for-variant-discovery",
+      "title": "Desan Kaur",
+      "url": "https://en.wikipedia.org/w/index.php?title=Desan_Kaur&oldid=1369992159",
+      "accessed_url": "https://en.wikipedia.org/wiki/Desan_Kaur",
+      "inspection": "Entry and cited bibliography read on 2026-10-02",
+      "role": "Record conflicting Desan life dates without adopting the entry as authority",
+      "limitations": [
+        "1794 death date differs from signed Punjabi University entry 1778",
+        "Exact date variants are not resolved by repeating the infobox"
+      ],
+      "binary_imported": false
+    },
+    {
+      "id": "ganda-jassa-ahluwalia-1990",
+      "kind": "modern-secondary-history-with-reported-anecdote",
+      "author": "Ganda Singh",
+      "translator": "Sant Singh Bal",
+      "title": "Sardar Jassa Singh Ahluwalia",
+      "publication_year": 1990,
+      "publisher": "Publication Bureau, Punjabi University, Patiala",
+      "url": "https://archive.org/details/PunjabHeroes-SardarJassaSinghAhluwalia",
+      "inspected_text_url": "https://archive.org/stream/PunjabHeroes-SardarJassaSinghAhluwalia/PunjabHeroes-SardarJassaSinghAhluwalia_djvu.txt",
+      "metadata_inspected_url": "https://www.scribd.com/document/355595282/Books-Ganda-Singh-Sardar-Jassa-Sngh-Ahluwalia",
+      "locators": [
+        "Chapter 22, printed pp. 141-142: Rohtas and captive exchange",
+        "Chapter 23, printed pp. 143-145: Charat and Afghan advance guard"
+      ],
+      "inspection": "Digitized book OCR passages read; title, translation and edition checked against digitized front matter",
+      "limitations": [
+        "Captive conversation is a later reported anecdote, not an authenticated contemporary transcript",
+        "Names Sarbuland as fort commander, unlike Gupta II Sarfaraz-first sequence",
+        "Cites Ganesh Das, Umdat II p.12 and Prachin Panth Prakash pp.496-498; these underlying passages were not independently inspected here"
+      ],
+      "binary_imported": false
+    },
+    {
+      "id": "user-ai-mode-intake-053807",
+      "kind": "user-uploaded-ai-generated-candidate-intake",
+      "title": "Pasted text(20261002-053807).txt",
+      "local_filename": "Pasted text(20261002-053807).txt",
+      "byte_count": 10473,
+      "sha256": "44733f300e6045538d56c185d2ff954927a8828bd021ff5b6287ba7e86813775",
+      "inspection": "Uploaded AI Mode conversation read on 2026-10-02; cumulative overlapping narrative and appended candidate scenes",
+      "authority": "candidate-intake-only",
+      "historical_authenticity_established": false,
+      "bibliographic_urls_present": false,
+      "limitations": [
+        "AI-generated claims and source labels are not source verification",
+        "Purported exhaustive coverage and all-undisputed assertions are unsupported",
+        "Cinematic actions, invented direct speech and precise numbers require their own located source passages"
+      ],
+      "binary_imported": false
+    },
+    {
+      "id": "user-ai-mode-intake-054121",
+      "kind": "user-uploaded-ai-generated-candidate-intake",
+      "title": "Pasted text(20261002-054121).txt",
+      "local_filename": "Pasted text(20261002-054121).txt",
+      "byte_count": 16277,
+      "sha256": "c90f475cfe8ad36839d4f052847be59f055b4a27b09261c5abc563eb344063f5",
+      "inspection": "Uploaded AI Mode conversation read on 2026-10-02; cumulative overlapping narrative and appended candidate scenes",
+      "authority": "candidate-intake-only",
+      "historical_authenticity_established": false,
+      "bibliographic_urls_present": false,
+      "limitations": [
+        "AI-generated claims and source labels are not source verification",
+        "Purported exhaustive coverage and all-undisputed assertions are unsupported",
+        "Cinematic actions, invented direct speech and precise numbers require their own located source passages"
+      ],
+      "binary_imported": false
+    },
+    {
+      "id": "user-ai-mode-intake-054145",
+      "kind": "user-uploaded-ai-generated-candidate-intake",
+      "title": "Pasted text(20261002-054145).txt",
+      "local_filename": "Pasted text(20261002-054145).txt",
+      "byte_count": 21299,
+      "sha256": "66210a75c62cc45b0c7bfa514d59eefff5292a9a6f4520ab0faba390900c5f6d",
+      "inspection": "Uploaded AI Mode conversation read on 2026-10-02; cumulative overlapping narrative and appended candidate scenes",
+      "authority": "candidate-intake-only",
+      "historical_authenticity_established": false,
+      "bibliographic_urls_present": false,
+      "limitations": [
+        "AI-generated claims and source labels are not source verification",
+        "Purported exhaustive coverage and all-undisputed assertions are unsupported",
+        "Cinematic actions, invented direct speech and precise numbers require their own located source passages"
+      ],
+      "binary_imported": false
+    },
+    {
+      "id": "user-ai-mode-intake-054206",
+      "kind": "user-uploaded-ai-generated-candidate-intake",
+      "title": "Pasted text(20261002-054206).txt",
+      "local_filename": "Pasted text(20261002-054206).txt",
+      "byte_count": 26894,
+      "sha256": "73f32504afa55a75ade9e50642c1cd3334681f847564737b2bd7ab47e916f9cd",
+      "inspection": "Uploaded AI Mode conversation read on 2026-10-02; cumulative overlapping narrative and appended candidate scenes",
+      "authority": "candidate-intake-only",
+      "historical_authenticity_established": false,
+      "bibliographic_urls_present": false,
+      "limitations": [
+        "AI-generated claims and source labels are not source verification",
+        "Purported exhaustive coverage and all-undisputed assertions are unsupported",
+        "Cinematic actions, invented direct speech and precise numbers require their own located source passages"
+      ],
+      "binary_imported": false
+    }
+  ],
+  "episodes": [
+    {
+      "id": "family-frame",
+      "date": null,
+      "status": "authored-family-scene",
+      "summary": "Maha introduces his father Charat to his very young son.",
+      "source_ids": [
+        "wikipedia-charat-1374738767"
+      ],
+      "boundary": "Family relationship is historical; setting, words, gestures, objects and conversation are authored"
+    },
+    {
+      "id": "desan-household-1756",
+      "date": "1756",
+      "status": "signed-specialist-entry-attested",
+      "summary": "Charat married Desan, Amir Singh daughter, and the families joined resources at Gujranwala.",
+      "source_ids": [
+        "punjabi-university-charhat-entry",
+        "punjabi-university-desan-entry",
+        "gupta-sikhs-iv-2007"
+      ],
+      "locators": [
+        "Signed Charhat and Desan entries",
+        "Gupta IV p.295"
+      ],
+      "boundary": "A household recollection is authored; do not assert that Ranjit personally met Desan, or resolve the disputed mother/stepmother wording",
+      "authored_theme": "Remember household leadership alongside military command"
+    },
+    {
+      "id": "chenab-sialkot-1761",
+      "date": "1761-08",
+      "status": "secondary-source-attested",
+      "summary": "Charat and allied Sikhs stopped Nur-ud-din near the Chenab; Sialkot's surrendered garrison was permitted to leave.",
+      "source_ids": [
+        "gupta-sikhs-ii-2007",
+        "gupta-sikhs-iv-2007",
+        "teja-ganda-short-history-2006"
+      ],
+      "locators": [
+        "Gupta II pp. 171-172",
+        "Gupta IV pp. 295-296",
+        "Teja/Ganda p. 160"
+      ],
+      "authored_theme": "Strength includes restraint after surrender"
+    },
+    {
+      "id": "gujranwala-relief-1761",
+      "date": "1761-09",
+      "status": "secondary-source-attested-with-tactical-variants",
+      "summary": "Allied chiefs relieved Charat at Gujranwala; Abed's siege collapsed and weapons, animals and stores were abandoned.",
+      "source_ids": [
+        "gupta-sikhs-ii-2007",
+        "gupta-sikhs-iv-2007",
+        "teja-ganda-short-history-2006",
+        "tahmas-khan-memoirs-1782-translated-2001",
+        "cunningham-history-1849-intro-context"
+      ],
+      "locators": [
+        "Gupta II pp. 172-173",
+        "Gupta IV p. 296",
+        "Teja/Ganda p. 160",
+        "Cunningham p. 108"
+      ],
+      "authored_theme": "Gujranwala survived through coalition as well as its own fort",
+      "avoid": [
+        "An unqualified assertion that no fighting took place",
+        "Presenting the narrator as an adult participant in 1761"
+      ]
+    },
+    {
+      "id": "kup-ghalughara-1762",
+      "date": "1762-02-05",
+      "status": "event-source-attested-loss-estimates-variable",
+      "summary": "Durrani attacked the Sikhs and their families at Kup; Charat helped resist and protect the retreat amid devastating losses.",
+      "source_ids": [
+        "gupta-sikhs-iv-2007",
+        "teja-ganda-short-history-2006",
+        "tahmas-khan-memoirs-1782-translated-2001"
+      ],
+      "locators": [
+        "Gupta IV p. 296",
+        "Teja/Ganda pp. 162-163"
+      ],
+      "authored_theme": "Remember the people lost and the obligation to protect families",
+      "avoid": [
+        "A single casualty figure as an exact count",
+        "Calling the event a victory"
+      ]
+    },
+    {
+      "id": "kasur-1763",
+      "date": "1763",
+      "status": "named-participation-secondary-source-attested-month-variable",
+      "summary": "Charat supported Hari Singh Bhangi expedition to Kasur; the city was taken and plundered.",
+      "source_ids": [
+        "gupta-sikhs-ii-2007",
+        "teja-ganda-short-history-2006",
+        "punjabi-university-charhat-entry"
+      ],
+      "locators": [
+        "Gupta II pp.196-197",
+        "Teja/Ganda p.167",
+        "Signed Charhat entry"
+      ],
+      "authored_theme": "A campaign account includes the war carried into other towns",
+      "avoid": [
+        "An exact April or May attack date as settled",
+        "Presenting plunder as a bloodless relief or a documented private family lesson"
+      ]
+    },
+    {
+      "id": "sirhind-northwest-1764",
+      "date": "1764-01",
+      "status": "secondary-source-attested",
+      "summary": "Charat participated at Sirhind but directed his territorial ambition toward the northwest rather than claiming land there.",
+      "source_ids": [
+        "gupta-sikhs-iv-2007",
+        "teja-ganda-short-history-2006"
+      ],
+      "locators": [
+        "Gupta IV pp. 296-297",
+        "Teja/Ganda pp. 169-170"
+      ],
+      "authored_theme": "Military success and subsequent choices are separate"
+    },
+    {
+      "id": "sutlej-march-1765",
+      "date": "1765-03",
+      "status": "source-attested-engagements-outcome-summary-contested",
+      "summary": "Charat fought in repeated Sutlej engagements; Afghan formations resisted, and Sikh forces withdrew and renewed their attacks as Durrani continued homeward.",
+      "source_ids": [
+        "gupta-sikhs-ii-2007",
+        "gupta-sikhs-iv-2007",
+        "teja-ganda-short-history-2006"
+      ],
+      "locators": [
+        "Gupta II pp. 221-225",
+        "Gupta IV p. 297",
+        "Teja/Ganda pp. 175-176"
+      ],
+      "authored_theme": "Courage does not guarantee that an enemy's line will break",
+      "avoid": [
+        "A clean Sikh victory",
+        "A single conclusive annihilating defeat inferred from repeated tactical withdrawals",
+        "An exact Machhiwara location presented as certain"
+      ]
+    },
+    {
+      "id": "jhelum-rohtas-northwest-1767",
+      "date": "1767",
+      "status": "later-sequence-secondary-source-attested-earlier-control-also-attested",
+      "summary": "Charat and Gujar expanded into Jhelum and secured Rohtas; northwestern authority developed through conquest, local appointments and alliances.",
+      "source_ids": [
+        "gupta-sikhs-iv-2007",
+        "nur-muhammad-jangnama-1765-translated-2001"
+      ],
+      "locators": [
+        "Gupta IV pp. 299-304",
+        "Nur Muhammad selection pp. 209-210"
+      ],
+      "authored_theme": "Holding a place brings responsibility beyond taking its walls",
+      "avoid": [
+        "Treating 1767 as the first-ever control of Rohtas",
+        "Merging Sarbuland's earlier two-lakh ransom into the later 1767 siege",
+        "Claiming all northwestern territories changed hands simultaneously"
+      ]
+    },
+    {
+      "id": "jammu-loss-desan-regency",
+      "date": null,
+      "reported_death_years": [
+        1770,
+        1774
+      ],
+      "status": "event-attested-date-disputed",
+      "summary": "During Jammu succession fighting, Charat died when his own gun burst. Desan managed the chiefship while Maha was young.",
+      "source_ids": [
+        "punjabi-university-charhat-entry",
+        "punjabi-university-desan-entry",
+        "gupta-sikhs-iv-2007",
+        "cunningham-history-1849-intro-context"
+      ],
+      "locators": [
+        "Signed Charhat and Desan entries",
+        "Gupta IV pp.304-305",
+        "Cunningham Chapter V p.122"
+      ],
+      "authored_theme": "Loss brought a change of command and Desan carried its affairs",
+      "avoid": [
+        "Choosing a death year or exact age of the young heir",
+        "Claiming the weapon was overcharged or ornamented, a commander was targeted, or the gun was held in a particular posture",
+        "Inventing a mound, tent, skull wound, last stand or pre-battle camp scene as attested detail",
+        "Changing the fixed 1792 father-death contract"
+      ]
+    }
+  ],
+  "reported_quantities": [
+    {
+      "claim": "Nur-ud-din's force",
+      "reported_value": 12000,
+      "source_ids": [
+        "gupta-sikhs-iv-2007",
+        "teja-ganda-short-history-2006"
+      ],
+      "status": "historian-reported-force-size",
+      "intro_uses_exact_number": false
+    },
+    {
+      "claim": "Kup fatalities",
+      "reported_value": 25000,
+      "source_ids": [
+        "gupta-sikhs-iv-2007"
+      ],
+      "status": "historian-estimate",
+      "alternative_reports": [
+        "Gupta II p. 176 gives about 20,000",
+        "Teja/Ganda p. 163 gives a lowest estimate of about 10,000"
+      ],
+      "intro_uses_exact_number": false
+    },
+    {
+      "claim": "Sarbuland force in earlier sequence",
+      "reported_value": 12000,
+      "source_ids": [
+        "gupta-sikhs-ii-2007"
+      ],
+      "locator": "p. 213",
+      "status": "historian-reported-force-size",
+      "intro_uses_exact_number": false
+    },
+    {
+      "claim": "Sarbuland ransom in earlier sequence",
+      "reported_value_rupees": 200000,
+      "source_ids": [
+        "gupta-sikhs-ii-2007"
+      ],
+      "locator": "p. 214",
+      "status": "historian-reported-payment-not-1767-capture",
+      "intro_uses_exact_number": false
+    },
+    {
+      "claim": "Sarfaraz ransom in final Rohtas conquest",
+      "reported_value_rupees": 78000,
+      "source_ids": [
+        "gupta-sikhs-iv-2007"
+      ],
+      "locator": "p. 300",
+      "status": "historian-reported-payment-distinct-from-Sarbuland",
+      "intro_uses_exact_number": false
+    }
+  ],
+  "reconciliation_notes": [
+    {
+      "id": "rohtas-episodes",
+      "finding": "Gupta II places an earlier capture and Sarbuland ransom within its 1764 campaign sequence. Gupta IV separately describes the May 1767 Jhelum campaign and final Rohtas capture with Sarfaraz. Nur Muhammad's 1765 text independently reports Charat holding Rohtas. The supplied article joins elements from the two sequences.",
+      "resolution": "Preserve the separate reported episodes; the opening can mention 1767 Jhelum and Rohtas without attributing Sarbuland's ransom to that year."
+    },
+    {
+      "id": "gujranwala-tactics",
+      "finding": "Gupta IV says the governor fled without striking a blow. Gupta II and Teja/Ganda describe fighting, a proposed or actual night attack, and defections. Cunningham dates the relief later.",
+      "resolution": "Use coalition relief and enemy withdrawal; keep September 1761 as the later synthesis's editorial caption, with the variant retained here."
+    },
+    {
+      "id": "sutlej-outcome",
+      "finding": "The inspected cited Gupta II account includes failure to break lines, feigned retreat, renewed ambushes, both parties retiring at night and prolonged harassment. It also marks Machhiwara as probable and notes another historian's Rupar identification.",
+      "resolution": "Describe contested fighting and withdrawals while the Durrani army continued its march; do not convert the sequence into an uncomplicated victory or definitive destruction."
+    },
+    {
+      "id": "quantity-treatment",
+      "finding": "Army sizes, deaths and ransom amounts are reported historical quantities rather than audited measurements.",
+      "resolution": "Keep estimates in research metadata; the child's opening does not need numerical exposition."
+    },
+    {
+      "id": "charat-death-date",
+      "finding": "Signed Punjabi University entries use 1770; Gupta IV pp.304-305 and Cunningham p.122 use 1774. The common bounded event is a fatal burst of Charat own gun during the Jammu succession conflict.",
+      "resolution": "No exact death year or young Maha age in dialogue; fixed 1792 Maha death remains untouched."
+    },
+    {
+      "id": "desan-life-and-relationship",
+      "finding": "The signed Desan entry gives death 1778; Wikipedia gives 1794. Gupta IV p.305 calls her Maha stepmother, whereas the signed entry calls him their eldest son.",
+      "resolution": "Use grandmother as family role and chiefship management; avoid a claim that Ranjit personally knew her and avoid biological mother adjudication."
+    },
+    {
+      "id": "kasur-month",
+      "finding": "Named Charat participation is supported. Signed encyclopedia uses April 1763; Gupta II describes the May heat.",
+      "resolution": "Use only 1763 in opening, and retain taking and plunder rather than embellishing a bloodless rescue."
+    },
+    {
+      "id": "upload-cinematic-evidence",
+      "finding": "Cumulative AI conversations combine supported campaigns with highly specific unlocated action and direct speech. Some underlying episodes and one later-reported captive anecdote have inspected scholarly support.",
+      "resolution": "Retain each bounded claim and uncertainty in the candidate ledger; no automatic conversion to mission, inventory, animation, exact quotation or historical authority."
+    }
+  ],
+  "intake_policy": {
+    "upload_source_ids": [
+      "user-ai-mode-intake-053807",
+      "user-ai-mode-intake-054121",
+      "user-ai-mode-intake-054145",
+      "user-ai-mode-intake-054206"
+    ],
+    "purpose": "Retain user references and research candidates without expanding the ten-beat intro into an exhaustive campaign mission",
+    "coverage": "Selective audit, not a claim to enumerate every skirmish in Charat Singh life",
+    "all_claims_undisputed": false,
+    "source_labels_are_verified_citations": false,
+    "full_ai_text_copied_into_dialogue": false,
+    "runtime_historical_authority_grants": [],
+    "runtime_inventory_grants": [],
+    "runtime_mission_fact_grants": [],
+    "unlocated_means": "Not located in inspected evidence, not proof that an event could never have occurred",
+    "admission_rule": "Admit only the individually bounded historical claim; keep inferred choreography, purported quotations, quantities and identity-specific actions separate"
+  },
+  "candidate_claims": [
+    {
+      "id": "naudhs-lineage-early-service",
+      "candidate_claim": "Naudh Singh father, early warfare, wider family genealogy",
+      "intake_source_ids": [
+        "user-ai-mode-intake-053807",
+        "user-ai-mode-intake-054121",
+        "user-ai-mode-intake-054145",
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "core-relationship-attested-extra-genealogy-deferred",
+      "bounded_finding": "Charat as Naudh eldest son and early participation are attested; narrower ancestral details require separate checks.",
+      "evidence_source_ids": [
+        "punjabi-university-charhat-entry",
+        "gupta-sikhs-iv-2007"
+      ],
+      "locators": [
+        "Gupta IV pp.294-295"
+      ],
+      "deferred_details": [
+        "Mother Lali Kaur and grandfather initiation by Guru Gobind Singh",
+        "A fully enumerated 1740s-1752 campaign list"
+      ],
+      "intro_expansion_authorized": false,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "charat-birth-year",
+      "candidate_claim": "Exact birth in 1721 or 1733",
+      "intake_source_ids": [
+        "user-ai-mode-intake-053807",
+        "user-ai-mode-intake-054121",
+        "user-ai-mode-intake-054145",
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "source-variants-unresolved",
+      "bounded_finding": "Gupta IV gives 1729, adding another variant; no birth year is chosen.",
+      "evidence_source_ids": [
+        "wikipedia-charat-1374738767",
+        "gupta-sikhs-iv-2007"
+      ],
+      "locators": [
+        "Gupta IV p.295"
+      ],
+      "deferred_details": [
+        "Exact birth year and birthplace as settled"
+      ],
+      "intro_expansion_authorized": false,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "faizullapuria-split-150",
+      "candidate_claim": "Departure after father death with exactly 150 horsemen",
+      "intake_source_ids": [
+        "user-ai-mode-intake-053807",
+        "user-ai-mode-intake-054121",
+        "user-ai-mode-intake-054145",
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "split-attested-exact-force-unlocated",
+      "bounded_finding": "Signed entry attests leaving Faizullapuria after father death; exact 150 is not established by inspected specialist passage.",
+      "evidence_source_ids": [
+        "punjabi-university-charhat-entry",
+        "wikipedia-charat-1374738767"
+      ],
+      "locators": [],
+      "deferred_details": [
+        "150 as audited force size",
+        "Precise personal dispute or every intervening skirmish"
+      ],
+      "intro_expansion_authorized": false,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "desan-marriage-household",
+      "candidate_claim": "1756 marriage and family establishment at Gujranwala",
+      "intake_source_ids": [
+        "user-ai-mode-intake-053807",
+        "user-ai-mode-intake-054121",
+        "user-ai-mode-intake-054145",
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "admitted-bounded-intro-beat",
+      "bounded_finding": "1756 marriage and combined family resources are supported by signed entries.",
+      "evidence_source_ids": [
+        "punjabi-university-charhat-entry",
+        "punjabi-university-desan-entry",
+        "gupta-sikhs-iv-2007"
+      ],
+      "locators": [
+        "Gupta IV p.295"
+      ],
+      "deferred_details": [
+        "Uniform spelling and every sibling birth/death date"
+      ],
+      "intro_expansion_authorized": true,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "eminabad-ten-riders",
+      "candidate_claim": "Eminabad plea and personal eleven-rider charge in 1761",
+      "intake_source_ids": [
+        "user-ai-mode-intake-053807",
+        "user-ai-mode-intake-054121",
+        "user-ai-mode-intake-054145",
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "core-campaign-attested-number-and-choreography-unlocated",
+      "bounded_finding": "Signed Charhat entry attests attack, faujdar death and plunder; exact ten companions and infantry breakthrough are not established there.",
+      "evidence_source_ids": [
+        "punjabi-university-charhat-entry"
+      ],
+      "locators": [],
+      "deferred_details": [
+        "Exact year 1761 for this incident",
+        "Hand-picking ten finest horsemen",
+        "Direct personal kill, heavy infantry penetration and instantaneous rout"
+      ],
+      "intro_expansion_authorized": false,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "wazirabad-next-capture",
+      "candidate_claim": "Capture of Wazirabad after Eminabad",
+      "intake_source_ids": [
+        "user-ai-mode-intake-053807",
+        "user-ai-mode-intake-054121",
+        "user-ai-mode-intake-054145",
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "bounded-encyclopedia-attested-reference-backlog",
+      "bounded_finding": "Signed entry explicitly places Wazirabad after Eminabad.",
+      "evidence_source_ids": [
+        "punjabi-university-charhat-entry"
+      ],
+      "locators": [],
+      "deferred_details": [
+        "Precise siege dates and force sizes"
+      ],
+      "intro_expansion_authorized": false,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "1757-indus-harassment",
+      "candidate_claim": "Charat ambushed Durrani rear guard throughout retreat to Indus in 1757",
+      "intake_source_ids": [
+        "user-ai-mode-intake-053807",
+        "user-ai-mode-intake-054121",
+        "user-ai-mode-intake-054145",
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "specific-sequence-not-verified-in-this-audit",
+      "bounded_finding": "General youthful Afghan skirmishes are attested; exact named 1757 sequence remains a candidate.",
+      "evidence_source_ids": [
+        "punjabi-university-charhat-entry"
+      ],
+      "locators": [],
+      "deferred_details": [
+        "Every checkpoint and action on retreat to Indus"
+      ],
+      "intro_expansion_authorized": false,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "lahore-1759",
+      "candidate_claim": "June 1759 Fifth Battle Lahore: Charat, Jassa and Sabaji against Jahan and Timur",
+      "intake_source_ids": [
+        "user-ai-mode-intake-053807",
+        "user-ai-mode-intake-054121",
+        "user-ai-mode-intake-054145",
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "aggregate-event-attested-personal-role-unlocated",
+      "bounded_finding": "Gupta II reports Sabaji defeating Jahan with Sikh help in 1759; inspected passage does not establish the named Charat role or supplied battle label.",
+      "evidence_source_ids": [
+        "gupta-sikhs-ii-2007"
+      ],
+      "locators": [
+        "Gupta II pp.152-153"
+      ],
+      "deferred_details": [
+        "Exact June date",
+        "Charat and Jassa roles",
+        "Timur presence and Fifth Battle label"
+      ],
+      "intro_expansion_authorized": false,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "gujranwala-night-sallies",
+      "candidate_claim": "Night sallies against besiegers",
+      "intake_source_ids": [
+        "user-ai-mode-intake-054121",
+        "user-ai-mode-intake-054145",
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "bounded-tactic-attested-fine-actions-unlocated",
+      "bounded_finding": "Signed entry supports night sallies; other sources describe coalition, night assault and defections.",
+      "evidence_source_ids": [
+        "punjabi-university-charhat-entry",
+        "gupta-sikhs-ii-2007",
+        "tahmas-khan-memoirs-1782-translated-2001"
+      ],
+      "locators": [
+        "Gupta II pp.172-173",
+        "Tahmas selection pp.179-180"
+      ],
+      "deferred_details": [
+        "Every night personal silent strike teams",
+        "Sentry throat cutting, arson, stolen mounts and psychological intent"
+      ],
+      "intro_expansion_authorized": false,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "gujranwala-zamzama",
+      "candidate_claim": "Zamzama was abandoned at the 1761 Gujranwala siege",
+      "intake_source_ids": [
+        "user-ai-mode-intake-054121",
+        "user-ai-mode-intake-054145",
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "not-supported-by-inspected-siege-passages",
+      "bounded_finding": "Sources attest abandoned guns without identifying this famous cannon in this siege.",
+      "evidence_source_ids": [
+        "gupta-sikhs-ii-2007",
+        "gupta-sikhs-iv-2007"
+      ],
+      "locators": [
+        "Gupta II pp.172-173",
+        "Gupta IV p.296"
+      ],
+      "deferred_details": [
+        "Zamzama identification and siege-to-inventory transfer"
+      ],
+      "intro_expansion_authorized": false,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "kup-moving-defence",
+      "candidate_claim": "Kup moving protection of families; bloodied horse and dented armour",
+      "intake_source_ids": [
+        "user-ai-mode-intake-054145",
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "protective-role-attested-cinematic-costume-details-unlocated",
+      "bounded_finding": "Existing Kup beat can retain defensive role and devastating loss.",
+      "evidence_source_ids": [
+        "teja-ganda-short-history-2006",
+        "gupta-sikhs-iv-2007"
+      ],
+      "locators": [
+        "Teja/Ganda pp.162-163",
+        "Gupta IV p.296"
+      ],
+      "deferred_details": [
+        "40,000 noncombatants as exact count",
+        "Blood coating his horse",
+        "Musket-dented armour and repeated specific suicidal flanks"
+      ],
+      "intro_expansion_authorized": false,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "kasur-personal-role",
+      "candidate_claim": "Charat participation in Kasur 1763 sack",
+      "intake_source_ids": [
+        "user-ai-mode-intake-053807",
+        "user-ai-mode-intake-054121",
+        "user-ai-mode-intake-054145",
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "admitted-bounded-intro-beat",
+      "bounded_finding": "Named role is verified, not merely inferred from collective Sikh participation.",
+      "evidence_source_ids": [
+        "teja-ganda-short-history-2006",
+        "gupta-sikhs-ii-2007",
+        "punjabi-university-charhat-entry"
+      ],
+      "locators": [
+        "Teja/Ganda p.167",
+        "Gupta II pp.196-197"
+      ],
+      "deferred_details": [
+        "An exact April rather than May date"
+      ],
+      "intro_expansion_authorized": true,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "sialkot-1763-mounted-commander",
+      "candidate_claim": "Jahan Khan horse shot and rout; Charat dust/downwind charge",
+      "intake_source_ids": [
+        "user-ai-mode-intake-054145",
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "aggregate-horse-shot-attested-personal-tactics-unlocated",
+      "bounded_finding": "Gupta II reports the horse shot during Sialkot fighting; Teja/Ganda and signed entry establish Charat participation.",
+      "evidence_source_ids": [
+        "gupta-sikhs-ii-2007",
+        "teja-ganda-short-history-2006",
+        "punjabi-university-charhat-entry"
+      ],
+      "locators": [
+        "Gupta II p.198",
+        "Teja/Ganda p.168"
+      ],
+      "deferred_details": [
+        "Dust or aggressive wind",
+        "Deliberate focus of all horsemen fire on general mount",
+        "Charat personal spearhead and Jahan flight on foot"
+      ],
+      "intro_expansion_authorized": false,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "sialkot-family-safe-transfer",
+      "candidate_claim": "Captured Jahan family safely sent to Jammu",
+      "intake_source_ids": [
+        "user-ai-mode-intake-054145",
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "bounded-collective-humanity-attested",
+      "bounded_finding": "Gupta II reports Sikh forces safely conveyed Jahan family to Jammu; this does not authenticate a personal Charat order or speech.",
+      "evidence_source_ids": [
+        "gupta-sikhs-ii-2007"
+      ],
+      "locators": [
+        "Gupta II p.198"
+      ],
+      "deferred_details": [
+        "Royal status for every captive",
+        "Charat personal prohibition, guarded quarters and Sukerchakia-only escort",
+        "Khalsa fights armies not families as an authentic quotation",
+        "Neutral territory and exact return to general"
+      ],
+      "intro_expansion_authorized": false,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "early-rohtas-feigned-retreat",
+      "candidate_claim": "Earlier Rohtas feigned retreat with Sarbuland fort command",
+      "intake_source_ids": [
+        "user-ai-mode-intake-054121",
+        "user-ai-mode-intake-054145",
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "stratagem-reported-commander-sequence-varies",
+      "bounded_finding": "Gupta II distinguishes Sarfaraz fort capture from later Sarbuland arrival; Ganda names Sarbuland in its siege account.",
+      "evidence_source_ids": [
+        "gupta-sikhs-ii-2007",
+        "ganda-jassa-ahluwalia-1990"
+      ],
+      "locators": [
+        "Gupta II pp.213-214",
+        "Ganda Chapter 22 pp.141-142"
+      ],
+      "deferred_details": [
+        "Folding both sequences into 1767",
+        "A precisely timed war horn and perfect encircling formation",
+        "12,000 all pursuing out the fort gates"
+      ],
+      "intro_expansion_authorized": false,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "rohtas-captive-exchange",
+      "candidate_claim": "Captive offers service and argues release brings renown",
+      "intake_source_ids": [
+        "user-ai-mode-intake-054121",
+        "user-ai-mode-intake-054145",
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "retrospective-anecdote-located-not-authenticated-dialogue",
+      "bounded_finding": "Ganda reports dignified treatment, offered service, Khalsa royal authority and appeal to reputation; keep as attributed anecdote.",
+      "evidence_source_ids": [
+        "ganda-jassa-ahluwalia-1990",
+        "gupta-sikhs-ii-2007"
+      ],
+      "locators": [
+        "Ganda Chapter 22 pp.141-142",
+        "Gupta II p.214 ransom differs from farewell narrative"
+      ],
+      "deferred_details": [
+        "AI transcript exact quotation and philosophical intent",
+        "Combining ransom with Ganda farewell as one exact dialogue scene",
+        "Labeling retrospective speech a contemporary transcript"
+      ],
+      "intro_expansion_authorized": false,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "qarawal-late-1764",
+      "candidate_claim": "Late 1764 Charat attacks Afghan advance guard, kills two commanders and withdraws at night",
+      "intake_source_ids": [
+        "user-ai-mode-intake-053807",
+        "user-ai-mode-intake-054121",
+        "user-ai-mode-intake-054145",
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "engagement-reported-details-mixed",
+      "bounded_finding": "Ganda Chapter 23 reports Charat attack, deaths of Ahmed Khan and his son, and Nasir arrival; detail is not two identically ranked commanders.",
+      "evidence_source_ids": [
+        "ganda-jassa-ahluwalia-1990",
+        "gupta-sikhs-iv-2007"
+      ],
+      "locators": [
+        "Ganda Chapter 23 pp.143-145",
+        "Gupta IV p.297"
+      ],
+      "deferred_details": [
+        "Every force quantity or victory label",
+        "Treating advance-guard confrontation as identical to March 1765 Sutlej episode"
+      ],
+      "intro_expansion_authorized": false,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "salt-range-conquests",
+      "candidate_claim": "Territorial consolidation and forts in Salt Range",
+      "intake_source_ids": [
+        "user-ai-mode-intake-054145",
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "bounded-territory-attested-specific-raid-unlocated",
+      "bounded_finding": "Territorial expansion, garrisons and salt revenue are reported; the cinematic cliff raid was not located.",
+      "evidence_source_ids": [
+        "punjabi-university-charhat-entry",
+        "gupta-sikhs-ii-2007",
+        "gupta-sikhs-iv-2007"
+      ],
+      "locators": [
+        "Gupta II p.214",
+        "Gupta IV pp.300-304"
+      ],
+      "deferred_details": [
+        "Moonless personal foot climb",
+        "Mounts hidden miles away and silent cliff-top stronghold capture"
+      ],
+      "intro_expansion_authorized": false,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "bhangi-boundary-feuds",
+      "candidate_claim": "Bhangi rivalry from northwestern expansion",
+      "intake_source_ids": [
+        "user-ai-mode-intake-053807",
+        "user-ai-mode-intake-054121",
+        "user-ai-mode-intake-054145",
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "general-rivalry-attested-exhaustive-skirmishes-unverified",
+      "bounded_finding": "Signed entry supports growing hostility and opposite sides at Jammu.",
+      "evidence_source_ids": [
+        "punjabi-university-charhat-entry",
+        "gupta-sikhs-iv-2007"
+      ],
+      "locators": [
+        "Gupta IV pp.304-305"
+      ],
+      "deferred_details": [
+        "Named every 1770-1774 tax dispute or skirmish"
+      ],
+      "intro_expansion_authorized": false,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "chenab-strategic-flood",
+      "candidate_claim": "Pincer traps Nur army in mud during crossing",
+      "intake_source_ids": [
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "unlocated-embellishment",
+      "bounded_finding": "Inspected sources support checking advance near Chenab, not engineered flood or this choreography.",
+      "evidence_source_ids": [
+        "gupta-sikhs-ii-2007",
+        "gupta-sikhs-iv-2007"
+      ],
+      "locators": [
+        "Gupta II pp.171-172",
+        "Gupta IV pp.295-296"
+      ],
+      "deferred_details": [
+        "Strategic flood",
+        "Attack on both banks against split crossing column"
+      ],
+      "intro_expansion_authorized": false,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "defector-gold-shield",
+      "candidate_claim": "Charat exposes bribed scout and publicly excommunicates him with moral speech",
+      "intake_source_ids": [
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "unlocated-anecdote",
+      "bounded_finding": "No located source passage in this audit establishes the scout, shield, bribe or speech.",
+      "evidence_source_ids": [],
+      "locators": [],
+      "deferred_details": [
+        "All specific actions and purported direct speech"
+      ],
+      "intro_expansion_authorized": false,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "1757-thirty-rider-rescue",
+      "candidate_claim": "Thirty horsemen rescue foragers through sugarcane with three-way dusk charge",
+      "intake_source_ids": [
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "unlocated-anecdote",
+      "bounded_finding": "General Afghan resistance does not establish this named rescue scene.",
+      "evidence_source_ids": [],
+      "locators": [],
+      "deferred_details": [
+        "Thirty horsemen",
+        "Brick courtyard, sugarcane concealment and synchronized three-direction rescue"
+      ],
+      "intro_expansion_authorized": false,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "jammu-death-action",
+      "candidate_claim": "Gun bursts and kills Charat in Jammu succession conflict",
+      "intake_source_ids": [
+        "user-ai-mode-intake-053807",
+        "user-ai-mode-intake-054121",
+        "user-ai-mode-intake-054145",
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "admitted-core-event-disputed-year-cinematic-action-unlocated",
+      "bounded_finding": "Gunburst and succession setting are attested; narration leaves the year open.",
+      "evidence_source_ids": [
+        "punjabi-university-charhat-entry",
+        "gupta-sikhs-iv-2007",
+        "cunningham-history-1849-intro-context"
+      ],
+      "locators": [
+        "Gupta IV pp.304-305",
+        "Cunningham p.122"
+      ],
+      "deferred_details": [
+        "Exact 1770 or 1774",
+        "Before decisive battle in camp",
+        "Ornamented overcharged weapon, surveying mound, chosen Bhangi target",
+        "Instant skull shrapnel wound, collapse in tent and lines holding"
+      ],
+      "intro_expansion_authorized": true,
+      "runtime_authority_granted": false
+    },
+    {
+      "id": "desan-regency-life-dates",
+      "candidate_claim": "Desan governs while Maha young; conflicting death dates and biological relationship",
+      "intake_source_ids": [
+        "user-ai-mode-intake-053807",
+        "user-ai-mode-intake-054121",
+        "user-ai-mode-intake-054145",
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "admitted-bounded-regency-related-variants-unresolved",
+      "bounded_finding": "Chiefship management is supported; no claim that young Ranjit met her is adopted.",
+      "evidence_source_ids": [
+        "punjabi-university-desan-entry",
+        "gupta-sikhs-iv-2007",
+        "wikipedia-desan-1369992159"
+      ],
+      "locators": [
+        "Gupta IV p.305"
+      ],
+      "deferred_details": [
+        "Desan death 1778 versus 1794",
+        "Maha biological mother versus Gupta stepmother wording",
+        "Exact regency dates or heir age"
+      ],
+      "intro_expansion_authorized": true,
+      "runtime_authority_granted": false,
+      "intro_admitted_details": [
+        "Desan managed the chiefship while Maha was young"
+      ]
+    },
+    {
+      "id": "charat-samadhi-jalal",
+      "candidate_claim": "Charat samadhi associated with Jalal and later Ranjit visit",
+      "intake_source_ids": [
+        "user-ai-mode-intake-053807",
+        "user-ai-mode-intake-054121",
+        "user-ai-mode-intake-054145",
+        "user-ai-mode-intake-054206"
+      ],
+      "status": "secondary-reported-original-citation-not-inspected",
+      "bounded_finding": "Wikipedia cites Sohan Lal Suri Umdat, translated p.533, for a later visit near Jalal; original passage was not successfully inspected.",
+      "evidence_source_ids": [
+        "wikipedia-charat-1374738767"
+      ],
+      "locators": [
+        "Article reference 20: Suri translation p.533"
+      ],
+      "deferred_details": [
+        "Samadhi built immediately at death",
+        "Exact location, surviving art form or relocation into Gujranwala",
+        "Authenticating the 1838 visit without the original cited passage"
+      ],
+      "intro_expansion_authorized": false,
+      "runtime_authority_granted": false
+    }
+  ]
+}

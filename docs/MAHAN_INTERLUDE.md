@@ -70,6 +70,14 @@ No cause, exact place, final words or death scene is invented as established fac
 The 1797/1798 anchor belongs to Buddh's later narrative position, not Mahan's death.
 The selected Latif account and earlier historical research policies remain intact.
 
+The later fixed-ending retrospective is separate from the riding-training
+flashback added at the user's direction. During childhood riding instruction,
+Buddh can hear an attributed tale of Maha Singh and play a short horsecraft
+lesson. Its completion unlocks standing riding, paired standing riding and
+mounted matchlock handling in the existing Home skill record. It does not
+complete this retrospective, replay Mahan's death or open the Lahore gate.
+See [the horsecraft lesson and its evidence limits](HORSECRAFT_STUDY.md).
+
 Proposed mission authoring groups are: inheritance of command, the Ramgarhia
 alliance, Kanhaiya rivalry, and final orders. Their encounter maps, objectives,
 combat, dialogue and visual ending remain to be authored. The runtime beat names
@@ -102,8 +110,9 @@ routing must activate only the currently played world and pause the other.
 
 **The 1797–1798 world, father missions, playable reprise, historical scene/checkpoint
 routing and the actual Lahore transition are not implemented in this change.**
-No new menu preview, immediate-childhood trigger or disconnected playable demo is
-added. `allows_lahore_transition()` is a gate the future router must call, not a
+This fixed-ending contract adds no menu preview or immediate-childhood trigger.
+The separate riding lesson above has its own childhood trigger and skill receipt.
+`allows_lahore_transition()` is a gate the future router must call, not a
 claim that the current menu or map is already controlled by that router.
 
 ## Validation

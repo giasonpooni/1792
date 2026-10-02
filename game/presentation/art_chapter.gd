@@ -38,6 +38,10 @@ func _show_dialog(title: String, body: String, actions: Array) -> void:
 	super._show_dialog(title,body,actions)
 	if is_instance_valid(art) and is_instance_valid(art.detail) and is_instance_valid(art.detail.hud): art.detail.hud.sample()
 
+func _open_journal() -> void:
+	super._open_journal()
+	if is_instance_valid(art) and is_instance_valid(art.detail) and is_instance_valid(art.detail.hud): art.detail.hud.sample()
+
 func _menu_action(action: String) -> void:
 	if action.begins_with("art:"):
 		if not _art_open: return

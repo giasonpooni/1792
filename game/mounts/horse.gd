@@ -3,6 +3,7 @@ extends CharacterBody3D
 ## No separate campaign, clock, inventory, save or AI executor lives here.
 
 const Rules := preload("res://mounts/riding_rules.gd")
+const HorseVisual := preload("res://mounts/horse_visual.gd")
 const WALK := 3.0
 const TROT := 6.5
 const ACCELERATION := 4.5
@@ -14,6 +15,7 @@ var _rider: Node3D
 var _legs: Array[Node3D] = []
 var _stride := 0.0
 var _hull: CapsuleShape3D
+var _visual: Node3D
 
 func _ready() -> void:
 	floor_snap_length = 0.4
@@ -29,6 +31,18 @@ func _ready() -> void:
 	collider.shape = _hull
 	add_child(collider)
 	_build_blockout()
+	# Preserve legacy leg/rider handles; the visual adapter has no physics authority.
+	for node in get_children():
+		if node is MeshInstance3D:
+			node.hide()
+	for leg in _legs:
+		for node in leg.get_children():
+			if node is MeshInstance3D:
+				node.hide()
+	_visual = HorseVisual.new()
+	_visual.name = "HorseVisual"
+	add_child(_visual)
+	_visual.build()
 
 func apply_record(record: Dictionary) -> void:
 	global_position = Rules.position(record)
@@ -36,6 +50,8 @@ func apply_record(record: Dictionary) -> void:
 	speed = record.speed
 	velocity = -global_basis.z * speed + Vector3.UP * record.vertical_speed
 	_rider.visible = record.rider_id != ""
+	if is_instance_valid(_visual):
+		_visual.sample(speed, _stride)
 
 func step(delta: float, throttle: float, steering: float, canter: bool, walk: bool, brake: bool) -> Dictionary:
 	var maximum := minf(gait_speed_limit, Rules.MAX_SPEED if canter else WALK if walk else TROT)
@@ -56,8 +72,15 @@ func step(delta: float, throttle: float, steering: float, canter: bool, walk: bo
 	_stride += speed * delta * 2.2
 	for i in range(_legs.size()):
 		_legs[i].rotation.x = sin(_stride + (PI if i in [1, 2] else 0.0)) * minf(speed / 12.0, 0.55)
+	_visual.sample(speed, _stride)
 	return {"position": [global_position.x, global_position.y, global_position.z],
 		"yaw": rotation.y, "speed": speed, "vertical_speed": minf(0.0, velocity.y), "grounded": is_on_floor()}
+
+func saddle_support_point() -> Vector3:
+	return _visual.saddle_support_point()
+
+func bridle_points_world() -> Array[Vector3]:
+	return _visual.bridle_points_world()
 
 func clear_mount_path(avatar: CharacterBody3D) -> bool:
 	var ray := PhysicsRayQueryParameters3D.create(avatar.global_position + Vector3.UP,

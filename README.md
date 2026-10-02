@@ -15,6 +15,15 @@ horse and environment proxies are not the intended finished style.
 [Street, interior and roofscape reference targets](docs/VISUAL_REFERENCE_TARGETS.md)
 apply to the existing childhood benchmark, not a new engine or copied setting.
 
+**Begin in Gujranwala:** the focused Begin action opens Maha Singh's authored
+family recollection, then resumes the existing childhood Home. Learn the yard,
+hear the sealed message, ride and train, follow the hunting trail, return alive,
+hear the household, investigate the bend and give your observed account. Compact
+guidance then points to the quartermaster; hearing and accepting the allowance
+still uses the existing dialogue and world authority.
+[Opening sequence and qualification](docs/BEGINNING_SEQUENCE.md) ·
+[Current intro development window](docs/INTRO_BUILD_WINDOW.md)
+
 ## Current foundation work: movement before more content
 
 The existing stories remain intact. A new **Movement qualification** menu entry
@@ -242,3 +251,13 @@ See [the beauty-pass scope and limits](docs/GUJRANWALA_BEAUTY_PASS.md).
 A second reversible depth/patina pass extends the composition beyond the immediate courtyard with wall-top rhythm, peripheral pavilion silhouettes, selective plaster aging, high household cloth, distant foliage and warm evening opening glows. See [the depth/patina scope and limits](docs/GUJRANWALA_DEPTH_PATINA.md).
 
 A third reversible eye-level craft pass adds restrained trim, dark timber reveals, plinth accents, selective repair fields, sparse wall hardware and two quiet storage corners. See [the microdetail scope and limits](docs/GUJRANWALA_MICRODETAIL.md).
+
+The next increment improves the existing assets: metre-scaled plaster, directional timber grain, filtered cloth weave and twelve fitted hollow vessels inside their original envelopes. Six engine inspection views include a same-camera daylight/golden-hour/evening comparison with independent PNG verification. Explicit CI error guards and renderer cleanup address shutdown errors that previously escaped qualification. See [material fidelity, verification scope and limits](docs/GUJRANWALA_MATERIAL_FIDELITY.md).
+
+The main menu also offers a playable horsecraft study: the existing motor drives two independent horse bodies, with a supported standing stance, counterbalance, four separate matchlock charge slots and collision-checked target shots. It develops a candidate Maha Singh remembered feat while preserving the campaign, riding-save and father-interlude contracts. The specific two-horse/four-matchlock anecdote remains source-unlocated. [Controls, evidence and production limits](docs/HORSECRAFT_STUDY.md).
+
+The Home riding lesson now offers that tale through the stable trainer after the first riding gate. Its playable flashback teaches standing on one horse, standing across two horses and mounted matchlock handling; completing all three exercises unlocks those capabilities in the existing Home save. Older saves acquire no inferred skills. The Home remains parked in-tree during the lesson and resumes with its prior clock, pose, economy and memories. The later fixed-ending Mahan retrospective remains a separate story sequence.
+
+The production Home entry opens with Maha Singh telling a very young Buddh/Ranjit Singh about Charat Singh, his grandfather. Ten original dialogue pages cover the family in Gujranwala, Desan Kaur, the campaigns from 1761 to 1767, and Charat's death and succession. Next/Previous and Skip return to the retained Home before its playable childhood begins. The conversation has no asserted historical date or quotation and grants no skills or journal knowledge. Campaign claims, conflicting chronology, and the supplied cinematic research candidates are recorded in a separate source ledger. [Opening, controls and evidence](docs/CHARAT_CAMPAIGN_INTRO.md).
+
+The beginning presents one compact objective with actual progress and contextual controls through walking, conversations, riding, practice, tracking and the household inquiry. Named lesson markers remain visible when earned, the courier's interactions stay together, and the optional standing lesson appears after the first riding gate. Eleven production-camera frames cover the first standing exercise and its incomplete return. The extended eighteen-frame route earns the riding skills, completes the original lessons and return, hears the household, physically investigates with its guard, reports home and exercises declared native save rollback. Source, runtime, execution, PNG/RGBA, receipt, checkpoint and save evidence are independently verified. Exact observed status belongs to the draft PR and retained execution, not the frame count alone. [First-play sequence and verification](docs/BEGINNING_SEQUENCE.md).

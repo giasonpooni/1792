@@ -1,6 +1,7 @@
 # Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 extends Node3D
 ## Gujranwala eye-level craft detail. Presentation only; no collision, navigation or world-state authority.
+const VesselProfile := preload("res://presentation/vessel_profile.gd")
 var upper_borders: Array[MeshInstance3D]=[]
 var timber_reveals: Array[MeshInstance3D]=[]
 var plinth_accents: Array[MeshInstance3D]=[]
@@ -125,7 +126,8 @@ func _build_storage_corners() -> void:
 		add_child(root)
 		storage_roots.append(root)
 		for j in range(3):
-			cylinder(root,"StorageJar%d"%j,.15+.025*j,.30+.045*(j%2),Vector3(-.34+.32*j,.17,.02+.10*(j%2)),Color("8e6a4b") if (i+j)%2==0 else Color("7b6d5a"),14)
+			var vessel := cylinder(root,"StorageJar%d"%j,.15+.025*j,.30+.045*(j%2),Vector3(-.34+.32*j,.17,.02+.10*(j%2)),Color("8e6a4b") if (i+j)%2==0 else Color("7b6d5a"),14)
+			vessel.mesh = VesselProfile.build(.15+.025*j,.30+.045*(j%2),i*3+j)
 		var mat_roll:=box(root,"RolledMat",Vector3(.58,.15,.20),Vector3(.30,.12,-.30),Color("897252"))
 		mat_roll.rotation.y=.22 if i==0 else -.18
 		box(root,"FoldedCloth",Vector3(.45,.09,.32),Vector3(-.28,.12,-.33),Color("8b6557") if i==0 else Color("687a70"))
