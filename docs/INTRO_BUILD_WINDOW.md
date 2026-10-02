@@ -739,7 +739,8 @@ microdetail branch to `main`, at
 `8ae0e3a45a5137e4e1dcb92318297515f4b35ea9`. GitHub reports merge conflicts. PR #66
 remains open/unmerged at the original `d6d1739b68d77cd6fb7fa1d74db22545fd630b75`.
 The changed main base includes the separate PR #70 service-equipment merge.
-This pass did not retarget the PR, merge main, rebase or absorb those changes.
+At that reconciliation the opening source had not been rebased, merged or
+changed to absorb those unrelated main changes.
 The opening head remains the exact independently qualified source above.
 Hosted checkout explicitly tests the head SHA; its success does not qualify a
 conflicted merge with the newly changed base. **Integration remains pending.**
@@ -751,3 +752,26 @@ PR #71 draft/unmerged. Do not resolve integration by silently importing unrelate
 work during this window. Further base changes require separate reconciliation.
 Remaining human/controller/Windows/physical-GPU and production-art qualifications
 remain as stated above. At the authorized cutoff, reconcile read-only and stop.
+
+## Checkpoint: original stack restored for exact-head CI
+
+The documentation-only head `57012b474623b9623f9366b2d7b648d9f0ad6f96`, tree
+`6a1f5c09867935f876a5c298bd377b3d7af007ca`, had no PR-triggered workflow runs in
+the repeated exact-commit reads while the main base was conflicted. This absence
+is not a passing or failing qualification. GitHub's primary
+[workflow troubleshooting documentation](https://docs.github.com/en/actions/how-tos/troubleshoot-workflows)
+confirms that merge conflicts inhibit ordinary `pull_request` workflow triggers.
+
+The originally authorized microdetail branch was inspected and still existed at
+`d6d1739b68d77cd6fb7fa1d74db22545fd630b75`, with PR #66 open/unmerged. At
+17:24:58 UTC on 2 October, only PR #71's base metadata was restored to
+`feat/gujranwala-microdetail-v1-20261001`. The opening head stayed exactly
+`57012b474623b9623f9366b2d7b648d9f0ad6f96`, draft/open/unmerged. No source import,
+rebase, force-push or main merge was performed. This restores the original
+explicit stack rather than treating unrelated main changes as qualified.
+
+The runtime/verifier/test sources remain unchanged from the qualified strict
+source above. Publish this documentation correction, inspect the new exact-head
+workflow runs and both complete artifacts, and record their results separately
+from the absent 570 runs. Integration with current main remains pending outside
+this window's source qualification; preserve the original stack and draft.
