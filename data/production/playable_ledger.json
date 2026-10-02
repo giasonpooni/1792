@@ -2220,16 +2220,13 @@
     }
   ],
   "active_development": {
-    "branch": "feat/household-story-development-v1-20261002",
+    "branch": "feat/friends-horsecraft-story-v1-20261002",
     "ids": [
-      "HOME-008",
-      "HOME-009",
-      "HOME-010",
-      "HOME-011",
-      "HOME-012"
+      "HOME-013",
+      "HOME-014"
     ],
-    "guide": "docs/HOUSEHOLD_STORY_DEVELOPMENT.md",
+    "guide": "docs/FRIENDS_AND_HORSECRAFT_STORY.md",
     "plan": "docs/MISSION_DEVELOPMENT_PLAN.md",
-    "note": "Five household sequences receive original dialogue, procedural staging and responsibility-based guidance. Earlier opening and childhood increments remain included. These elaborate existing sequences; the inventoried total remains 33. Source guides stay pinned to their inspected revisions; this is not a refreshed census of every remote branch."
+    "note": "Bazaar friendship and the remembered horsecraft lesson receive new dialogue, recovery guidance and staged responses. Earlier HOME-001–012 increments remain included. The 33-sequence figure is the retained inventory snapshot, not a fresh census of later remote drafts. HOME-015–017 integration preconditions are recorded without claiming those branches are composed here."
   }
 }

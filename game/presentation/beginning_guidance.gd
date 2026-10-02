@@ -18,6 +18,9 @@ static func household_uncommitted(model) -> bool:
 
 static func read(chapter: Node3D, moving: bool = false) -> Dictionary:
 	var model=chapter.model
+	# An outing can be accepted before the household allowance. It owns the
+	# foreground regardless of whether an economy record has been opened.
+	if model.has_method("brawl_busy") and model.brawl_busy(): return {}
 	var state: Dictionary=model.progress()
 	var stage: String=model.stage()
 	# Secondary guidance returns as soon as the player stops on foot. This is a

@@ -36,6 +36,15 @@ jobs:
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install --yes --no-install-recommends xvfb xauth libgl1-mesa-dri ffmpeg
+          BAZAAR_GUIDANCE_RENDER=1 timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy --script res://tests/test_bazaar_guidance.gd 2>&1 | tee test-results/bazaar-guidance.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/bazaar-guidance.log; then exit 1; fi
+          grep -Eq '^BAZAAR_GUIDANCE_TESTS: [1-9][0-9]* passed, 0 failed; [1-9][0-9]* native captures$' test-results/bazaar-guidance.log
+          timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy --script res://tests/render_bazaar_story.gd 2>&1 | tee test-results/bazaar-story-render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/bazaar-story-render.log; then exit 1; fi
+          grep -Eq '^BAZAAR_STORY_RENDER: [1-9][0-9]* captures; 0 failures$' test-results/bazaar-story-render.log
+          mkdir -p test-results/friends-story-images
+          cp "$HOME/.local/share/godot/app_userdata/1792"/bazaar-guidance-*.png test-results/friends-story-images/
+          cp "$HOME/.local/share/godot/app_userdata/1792"/bazaar-story-*.png test-results/friends-story-images/
           timeout 300 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy --script res://tests/render_bazaar_direction.gd 2>&1 | tee test-results/bazaar-render.log
           if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/bazaar-render.log; then
             exit 1

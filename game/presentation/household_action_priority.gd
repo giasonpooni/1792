@@ -5,12 +5,15 @@ const Guidance := preload("res://presentation/household_guidance.gd")
 const Base := preload("res://childhood/childhood_state.gd")
 const Supply := preload("res://territory/misl_rules.gd")
 const Delivery := preload("res://territory/delivery_presentation.gd")
+const BazaarStory := preload("res://youth/performance/bazaar_story.gd")
 
 static func preferred(chapter: Node3D, speaker: String) -> String:
 	var model = chapter.model
 	if model.has_method("brawl_busy") and model.brawl_busy():
 		return "youth:report" if speaker == "home" and model.brawl_phase() == "returning" else "resume"
-	if not model.has_economy(): return "econ:begin" if speaker == "home" else "resume"
+	if not model.has_economy():
+		if speaker == "home": return "econ:begin"
+		return "youth:invite" if not model.has_brawl() else "resume"
 	var foreground: Dictionary = Guidance.read(chapter)
 	match str(foreground.get("kind", "")):
 		"caravan":
@@ -31,6 +34,7 @@ static func preferred(chapter: Node3D, speaker: String) -> String:
 static func briefing(chapter: Node3D, speaker: String, action: String) -> String:
 	var model = chapter.model
 	match action:
+		"youth:invite": return BazaarStory.INVITATION
 		"water:deposit":
 			return "Quartermaster · The second load. Set it beside the first; that will finish the round." if model.water_round().ledger.stored > 0 else "Quartermaster · Set the full vessel here. One load to count in, and one still to bring."
 		"smith:deliver": return "Quartermaster · Both tool bundles? Lay them here. We will count them into the household stock."

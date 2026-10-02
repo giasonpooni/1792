@@ -106,6 +106,12 @@ def main() -> int:
     run([sys.executable, "tools/check_youth.py"], "youth-catalogue")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_youth_brawl.gd"],
         "youth-brawl", "YOUTH_BRAWL_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_bazaar_story.gd"],
+        "bazaar-story", "BAZAAR_STORY_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_bazaar_regroup_cue.gd"],
+        "bazaar-regroup-cue", "BAZAAR_REGROUP_CUE_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_horsecraft_story.gd"],
+        "horsecraft-story", "HORSECRAFT_STORY_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_locomotion.gd"],
         "locomotion", "LOCOMOTION_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_ground_contact.gd"],

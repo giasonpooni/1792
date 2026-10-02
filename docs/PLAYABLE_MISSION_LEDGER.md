@@ -18,9 +18,9 @@ Snapshot: **2026-10-02**. Main: `cd3a473b6725872d4c03f190cd1b07ae940d72c9`.
 
 ## Active development
 
-HOME-008, HOME-009, HOME-010, HOME-011, HOME-012 on `feat/household-story-development-v1-20261002`. Five household sequences receive original dialogue, procedural staging and responsibility-based guidance. Earlier opening and childhood increments remain included. These elaborate existing sequences; the inventoried total remains 33. Source guides stay pinned to their inspected revisions; this is not a refreshed census of every remote branch.
+HOME-013, HOME-014 on `feat/friends-horsecraft-story-v1-20261002`. Bazaar friendship and the remembered horsecraft lesson receive new dialogue, recovery guidance and staged responses. Earlier HOME-001–012 increments remain included. The 33-sequence figure is the retained inventory snapshot, not a fresh census of later remote drafts. HOME-015–017 integration preconditions are recorded without claiming those branches are composed here.
 
-See [the active playable increment](HOUSEHOLD_STORY_DEVELOPMENT.md) and [development cards for every sequence](MISSION_DEVELOPMENT_PLAN.md).
+See [the active playable increment](FRIENDS_AND_HORSECRAFT_STORY.md) and [development cards for every sequence](MISSION_DEVELOPMENT_PLAN.md).
 
 ## Counting and maintenance
 

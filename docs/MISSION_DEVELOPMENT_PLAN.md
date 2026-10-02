@@ -2,7 +2,7 @@
 
 This is the working development plan for **1792: The Lotus Throne**. It turns the [playable ledger](PLAYABLE_MISSION_LEDGER.md) into **33 individual development cards**, plus a secondary queue and the remaining story backlog. The structured source is [mission_development.json](../data/production/mission_development.json).
 
-**Current increment:** HOME-008–012 are in development: delivery, carrier escort, the water round, the smith’s commission and household guard service. [This pass](HOUSEHOLD_STORY_DEVELOPMENT.md) develops distinct dramatic turns, repeated visual motifs, original dialogue and guidance for accepted responsibilities. The earlier [childhood arc](CHILDHOOD_ARC_DEVELOPMENT.md) and opening-message work remain included. The individual cards below retain their wider intended direction; the current-pass guide states the implemented subset.
+**Current increment:** HOME-013/014 are in development: the bazaar outing with Mela and Jiva and the remembered horsecraft lesson. [This pass](FRIENDS_AND_HORSECRAFT_STORY.md) develops friendship, the changing meaning of confidence, current-action guidance and responses to actual outcomes. The earlier [household](HOUSEHOLD_STORY_DEVELOPMENT.md), [childhood arc](CHILDHOOD_ARC_DEVELOPMENT.md) and opening work remain included. The cards retain their wider intended direction; current-pass guides state implemented scope.
 
 The first prototype pass is now implemented and locally verified: orientation lead-in, both optional message routes, physical reporting, remembered receipts and save/load. See [The Words Between Us](MESSAGE_FOLLOWUP.md) for the actual playable scope. The P0 cards remain in development for performance and visual polish; their cinematic ideas are not claims of completed animation.
 
@@ -23,11 +23,15 @@ The ledger records prototypes on different revisions and branches. These cards d
 | --- | --- | ---: | --- |
 | P0 | Opening decisions | 2 | In development |
 | P1 | Complete the childhood dramatic arc | 5 | In development |
-| P2 | Make Gujranwala relationships playable | 10 | HOME-008–012 in development; HOME-013–017 planned |
+| P2 | Make Gujranwala relationships playable | 10 | HOME-008–014 in development; HOME-015–017 await integration |
 | P3 | Individualize the historical recollections | 13 | Planned |
 | P4 | Connect command and the retrospective frame | 3 | Planned |
 
 These priorities group development work; they do not reorder historical events or force the player to play every recollection in sequence. Draft-branch integration is a prerequisite for using a card inside a continuous campaign.
+
+## Remaining childhood branch integration
+
+HOME-015–017 currently use older sibling chapter/state chains. Their structured cards now record inspected integration requirements. Bring **Borrowed Rope** into the current Home first, resolving its F7 conflict and preserving received-content digests; then fit **Missing Remounts** to the current district, and compose **Funded Instructor** with shared workshop/upkeep and camera ownership. These are concrete follow-up tasks, not newly integrated missions. See the active pass guide for the reviewed revisions.
 
 ## Sequence cards
 
@@ -211,7 +215,7 @@ These priorities group development work; they do not reorder historical events o
 
 ### HOME-013 · The Bhangi Bazaar Brawl
 
-**P2 · Planned**. Baseline: main prototype; 1792.
+**P2 · In development**. Baseline: main prototype; 1792.
 
 - **Dramatic question:** What kind of courage will the child’s friends remember: winning a public challenge or bringing everyone home?
 - **Playable objective:** Walk with Mela and Jiva to the bazaar confrontation, counter or withdraw together, then regroup and report Home.
@@ -223,9 +227,11 @@ These priorities group development work; they do not reorder historical events o
 
 **Historical treatment:** Original authored gameplay; historical setting does not authenticate the episode.
 
+**Implemented increment:** See [friends and horsecraft](FRIENDS_AND_HORSECRAFT_STORY.md) for the developed subset and verification limits.
+
 ### HOME-014 · Maha’s horsecraft lesson
 
-**P2 · Planned**. Baseline: main prototype; 1792.
+**P2 · In development**. Baseline: main prototype; 1792.
 
 - **Dramatic question:** Can showmanship be disciplined enough to become a useful mounted skill?
 - **Playable objective:** Complete moving single-horse balance, paired-horse balance, then mounted firing, reloading and withdrawal.
@@ -236,6 +242,8 @@ These priorities group development work; they do not reorder historical events o
 - **Acceptance criterion:** Each flag requires its own actual exercise, retrying one cannot complete another, and exiting the lesson returns Home with only earned capabilities.
 
 **Historical treatment:** Original authored gameplay; historical setting does not authenticate the episode.
+
+**Implemented increment:** See [friends and horsecraft](FRIENDS_AND_HORSECRAFT_STORY.md) for the developed subset and verification limits.
 
 ### HOME-015 · Missing remounts
 

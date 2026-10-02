@@ -10,18 +10,15 @@
     "backlog_entries": 40,
     "meaning": "These cards define the next development increment for inventoried prototypes. They do not add playable sequences or certify their new features as implemented.",
     "active_increment": [
-      "HOME-008",
-      "HOME-009",
-      "HOME-010",
-      "HOME-011",
-      "HOME-012"
+      "HOME-013",
+      "HOME-014"
     ],
     "status_policy": "development_status refers to the proposed increment only. baseline describes the ledger snapshot. implementation_receipt stays null until the increment has a concrete reviewed revision and verification.",
     "count_policy": "Child beats, alternate approaches, presentations, mechanics and source retellings are not extra missions. The 28-entry youth slate includes one implemented adaptation alias and 27 planned entries.",
     "history_policy": "Keep legends, miracles, conflicting allegations and dramatic invention. Preserve the ledger’s historical basis beside every card. Player choice may alter local care, communication or immediate outcomes without silently proving an allegation or overwriting a declared fixed historical endpoint.",
     "cinematic_policy": "Build cinema from playable approach, staging, sound, performance and consequential action. A proposed cinematic moment is not a claim that cinematics, voice, animation or finished art already exist.",
     "verification_policy": "The original authoring pass checked card coverage and consistency. Runtime increments record targeted local checks in their current_pass guides; the other draft branches have not all been freshly played or integrated.",
-    "narrative_direction_policy": "All 33 narrative_direction blocks retain original planned literary, staging and attention directions. Their acceptance statements are intended review conditions, not test receipts. Current runtime work develops HOME-008–012 and retains the earlier HOME-001–007 increments; current_pass records the implemented subset and remaining limits. This adds no sequences.",
+    "narrative_direction_policy": "All narrative_direction blocks retain original planned literary, staging and attention directions. Their acceptance statements are intended review conditions, not test receipts. Current runtime work develops HOME-013/014 and retains earlier HOME-001–012 increments. current_pass records the implemented subset and limits. Other prototype branches need explicit integration; this adds no sequences.",
     "attention_policy": "Prioritize the next meaningful action, protect imminent threat cues, reduce repeated prose, and leave recoverable quiet intervals. Never force attention with hidden failure timers, disable player control for a camera composition, or treat continued play time as evidence of narrative quality. Persistent objectives and reviewable information remain available."
   },
   "phases": [
@@ -707,7 +704,7 @@
       "id": "HOME-013",
       "title": "The Bhangi Bazaar Brawl",
       "phase_priority": "P2",
-      "development_status": "planned",
+      "development_status": "in_development",
       "baseline": {
         "kind": "playable_sequence",
         "delivery": "main",
@@ -739,13 +736,31 @@
         "recovery": "After the resolution, use an ordinary shared walk before the Home report. Silence may carry discomfort; do not fill every step with praise.",
         "agency": "Counter or withdraw with the group. Neither option sacrifices a companion offscreen to force a moral lesson.",
         "acceptance": "Both companions physically regroup, withdrawal receives authored completion, and the final exchange differs by resolution without making all Bhangi characters enemies."
+      },
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/FRIENDS_AND_HORSECRAFT_STORY.md",
+        "branch": "feat/friends-horsecraft-story-v1-20261002",
+        "behavior": "Optional outcome-specific conversation with the same Mela and Jiva on the return walk; current friend-recovery guidance, immediate combat-cue priority and a local wait gesture at regroup.",
+        "literary_technique": "The promised short walk becomes a story the three friends disagree about; the final exchange returns to their agreement to come Home together.",
+        "limits": "Original dialogue and procedural presentation; cinematic art, recorded performances and human comprehension/pacing tests remain future work. Existing world, evidence, combat and skill authorities remain in place.",
+        "verification": {
+          "guide": "docs/FRIENDS_AND_HORSECRAFT_STORY.md",
+          "tests": [
+            "game/tests/test_bazaar_story.gd",
+            "game/tests/test_bazaar_regroup_cue.gd",
+            "game/tests/test_bazaar_guidance.gd",
+            "game/tests/test_bazaar_direction.gd"
+          ],
+          "limits": "Targeted native checks and inspected views; no first-time human comprehension study or full-repository rerun."
+        }
       }
     },
     {
       "id": "HOME-014",
       "title": "Maha’s horsecraft lesson",
       "phase_priority": "P2",
-      "development_status": "planned",
+      "development_status": "in_development",
       "baseline": {
         "kind": "playable_sequence",
         "delivery": "main",
@@ -777,6 +792,22 @@
         "recovery": "Let horse and rider settle between demonstrations. A failed attempt returns to the current exercise rather than replaying all praise and instruction.",
         "agency": "The player chooses when to stand, settle and fire inside the actual maneuver; instructor performance never substitutes for their admitted action.",
         "acceptance": "A novice can state the current exercise without reading three instruction sets, retries preserve only earned capabilities, and standalone practice cannot write campaign rewards."
+      },
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/FRIENDS_AND_HORSECRAFT_STORY.md",
+        "branch": "feat/friends-horsecraft-story-v1-20261002",
+        "behavior": "Three original teaching motifs, a compact current-exercise demand, finite earned-milestone reactions and different completed, withdrawn and learned-practice returns.",
+        "literary_technique": "A repeated instruction to attend to the horse develops from individual balance to caring for a pair and ending a feat safely.",
+        "limits": "Original dialogue and procedural presentation; cinematic art, recorded performances and human comprehension/pacing tests remain future work. Existing world, evidence, combat and skill authorities remain in place.",
+        "verification": {
+          "guide": "docs/FRIENDS_AND_HORSECRAFT_STORY.md",
+          "tests": [
+            "game/tests/test_horsecraft_story.gd",
+            "game/tests/test_riding_training.gd"
+          ],
+          "limits": "Targeted native checks and inspected views; no first-time human comprehension study or full-repository rerun."
+        }
       }
     },
     {
@@ -815,6 +846,18 @@
         "recovery": "Provide an exit and a quiet walk to the quartermaster before the report so the player can distinguish discovery from inference.",
         "agency": "Choose how to approach and which observations to secure; crossing a boundary does not automatically authorize confiscation or settle theft.",
         "acceptance": "Players can explain their route, what each horse inspection established and how tally contents were learned; the report preserves those differences without adding a recovery reward."
+      },
+      "integration_preparation": {
+        "status": "read_only_branch_review_not_integrated",
+        "reviewed_commit": "06fccd1ededdfe203c8135efc4f844aeb78899d9",
+        "order_after": "HOME-016 current-Home integration",
+        "requirements": [
+          "Rebase remount operations above the current state and chapter chain instead of replacing home_launch with the old basic Gujranwala controller.",
+          "Remove obsolete architecture/gujranwala_fabric ownership; fit the private yard, ramp, messenger route and standing-space checks to current reconstruction/district_fabric.",
+          "Use current conversation offer scopes and physical contact checks; verify all three approaches, witnesses, interruption and whole-world restore.",
+          "Keep locating the same two horses distinct from confiscation, collection or a new reward."
+        ],
+        "staging_next": "Make the public introduction, service gap and raised observation route visually legible; the gate changes from an obstacle on approach to part of the witness account at report."
       }
     },
     {
@@ -853,6 +896,18 @@
         "recovery": "Leave a pause after the listener’s response. The disagreement can remain alive without a corrective narrator entering to settle it.",
         "agency": "Repeat a teller’s version with attribution or name the disagreement. Choosing what travels onward is the action, not solving the past.",
         "acceptance": "A player can distinguish the two moral emphases and identify whose words were passed on; the saved transmission never upgrades either version into canonical fact."
+      },
+      "integration_preparation": {
+        "status": "read_only_branch_review_not_integrated",
+        "reviewed_commit": "575b95f398059a8d26ca03c57c75a198eb1a8293",
+        "order_after": "HOME-013/014 story increment; preferred next additive integration",
+        "requirements": [
+          "Compose the optional oral_memory extension above current RidingSkillState and attach interactions without replacing the active Home chain.",
+          "Move recollection into the journal; the draft F7 binding conflicts with the current art-study control.",
+          "Preserve exact content digests and source-parent transmission receipts. Changing received text needs an explicit content-version/migration decision.",
+          "Validate one full physical hear/inspect/compare/retell journey and interrupted dialogs alongside prior workshop, service and riding receipts."
+        ],
+        "staging_next": "Introduce the worn loop as an ordinary object, let two tellers emphasize different parts of its story, and let the selected attributed retelling be the payoff. No flashback should silently settle either account."
       }
     },
     {
@@ -891,6 +946,18 @@
         "recovery": "When practice resumes, acknowledge the repaired condition once and let the drill continue without further interruption.",
         "agency": "The player decides when to commit and which practical deficiency to remedy; a paid signature alone never makes pupils trained.",
         "acceptance": "The player can explain why practice stopped from its immediate cue, restore that condition, and see eligible teaching time resume without duplicate fees or progress."
+      },
+      "integration_preparation": {
+        "status": "read_only_branch_review_not_integrated",
+        "reviewed_commit": "ae3dffe2e2182a7692e0d430393c1fc5955f6b06",
+        "order_after": "Borrowed Rope and current-district Missing Remounts integration",
+        "requirements": [
+          "Compose commission escrow/upkeep/replay with current workshop reduction rather than overwriting shared misl_rules.",
+          "Extend commitment checks to workshop custody and active riding/intro sessions.",
+          "Qualify secondary-view physics, attention, current actor movement and retained session ownership; retain the draft camera-transition fix.",
+          "Test commission/escort/signing order and mixed smith/instructor receipts, plus interruption, supplies, wages and no duplicate charge."
+        ],
+        "staging_next": "Give the instructor one practical concern at introduction, echo it at a visibly interrupted drill, and acknowledge the repaired condition once when teaching resumes."
       }
     },
     {

@@ -5,6 +5,8 @@ extends "res://mounts/horsecraft_study.gd"
 signal return_requested(completed: bool)
 
 const Names := preload("res://characters/character_names.gd")
+const Direction := preload("res://mounts/horsecraft_direction.gd")
+const Attention := preload("res://presentation/story_attention.gd")
 const LESSON_ID := "mahan-horsecraft-training.v1"
 const HOLD_TICKS := 60
 
@@ -20,6 +22,7 @@ var _entry_tick := 0
 var _returned := false
 var practice_mode := ""
 var _practice_capabilities: Dictionary = {}
+var _lesson_attention := Attention.new()
 
 func configure_binding(present_sha256: String, entry_tick: int) -> void:
 	# The host binds its suspended present before adding this scene to the tree.
@@ -75,10 +78,11 @@ func restart_study() -> void:
 	max_paired_hold_ticks = 0
 	milestones.clear()
 	_returned = false
+	_lesson_attention.reset(0)
 	super.restart_study()
 	_set_pair_active(lesson_phase != "single")
 	if practice_mode.is_empty():
-		message = "At the riding lesson, %s recalls a tale of his father, Maha Singh. Ride forward, rise on one saddle, and hold your balance." % Names.PLAYER_NAME
+		message = Direction.line("single")
 	else:
 		message = "%s practices the riding skills learned from his father's tale. These horses and matchlocks are borrowed for practice." % Names.PLAYER_NAME
 	_present(); _refresh()
@@ -105,21 +109,19 @@ func _physics_process(delta: float) -> void:
 		max_single_hold_ticks = maxi(max_single_hold_ticks, single_standing_ticks)
 		if single_standing_ticks >= HOLD_TICKS and not _has_milestone("single_standing"):
 			_stamp("single_standing")
-			message = "You held your balance on one moving horse. Press Enter to practice across a pair."
+			message = Direction.line("single_earned")
 	elif lesson_phase == "pair":
 		paired_standing_ticks = mini(paired_standing_ticks + 1, HOLD_TICKS) if supported_standing else 0
 		max_paired_hold_ticks = maxi(max_paired_hold_ticks, paired_standing_ticks)
 		if paired_standing_ticks >= HOLD_TICKS and not _has_milestone("paired_standing"):
 			_stamp("paired_standing")
-			message = "The pair stays together under your feet. Press Enter for mounted matchlock practice."
+			message = Direction.line("pair_earned")
 	elif lesson_phase == "weapons" and model.snapshot().stage == "complete":
 		var proof: Dictionary = _weapon_facts()
 		if proof.volley_slots == [0, 1, 2, 3] and proof.reloaded_slots.size() == 4:
 			lesson_phase = "complete"
 			_stamp("mounted_matchlock")
-			message = "Lesson complete. Press Enter to return to %s's riding lesson with these three skills." % Names.PLAYER_NAME
-	if lesson_phase == "complete":
-		message = "Lesson complete. Sit and stop both horses, then press Enter to return to %s's riding lesson." % Names.PLAYER_NAME
+			message = Direction.line("complete")
 	_refresh()
 
 func _has_milestone(id: String) -> bool:
@@ -140,11 +142,11 @@ func advance_lesson() -> void:
 		# the lesson clock and earned evidence remain monotonic across chapters.
 		super.restart_study()
 		_set_pair_active(true)
-		message = "Ride the two horses together. Rise across both saddles and hold balanced support while moving."
+		message = Direction.line("pair")
 		_present(); _refresh()
 	elif lesson_phase == "pair" and _has_milestone("paired_standing"):
 		lesson_phase = "weapons"
-		message = "Use each of the four separate matchlocks while standing. Slow the pair to reload each empty weapon, then sit and stop."
+		message = Direction.line("weapons")
 		_refresh()
 	elif lesson_phase == "complete":
 		if not _completion_ready():
@@ -197,6 +199,9 @@ func toggle_stance() -> void:
 			message = "This standing riding skill has not been learned."
 			_refresh(); return
 	super.toggle_stance()
+	if lesson_phase == "single" and model.stance() == "rising":
+		message = "Rise with the horse's step. Keep a steady line."
+		_refresh()
 
 func _has_practice_capability(id: String) -> bool:
 	return typeof(_practice_capabilities.get(id)) == TYPE_BOOL and _practice_capabilities[id]
@@ -249,22 +254,21 @@ func _refresh() -> void:
 			model.stance().to_upper(), support.get("mean_speed", 0.0), int(snapshot.balance * 100), " / ".join(slots), message]
 		return
 	var duration := float(HOLD_TICKS) / State.TICK_HZ
-	var movement := "W forward · A/D reins · S brake · Q/E balance · Space sit/stand"
-	var session_controls := "Ctrl walk · Backspace restart lesson · Esc pause · F1 leave"
-	var title := "1 / 3 · ONE MOVING HORSE · STANDING BALANCE"
+	var earned := _has_milestone("single_standing" if lesson_phase == "single" else "paired_standing")
+	var direction := Direction.read(lesson_phase, snapshot, support, earned)
+	var session_controls := "Esc pause / help · F1 leave: no new skills"
+	var title := "1 / 3 · ONE MOVING HORSE"
 	var progress := "Moving standing hold: %.1f / %.1f s" % [float(single_standing_ticks) / State.TICK_HZ, duration]
 	var detail := ""
 	if lesson_phase == "single" and _has_milestone("single_standing"):
 		progress = "Standing hold earned: %.1f / %.1f s" % [float(max_single_hold_ticks) / State.TICK_HZ, duration]
-		session_controls = "Enter next exercise · " + session_controls
 	if lesson_phase == "pair":
-		title = "2 / 3 · TWO MOVING HORSES · STANDING BALANCE"
+		title = "2 / 3 · TWO MOVING HORSES"
 		progress = "Moving standing hold: %.1f / %.1f s" % [float(paired_standing_ticks) / State.TICK_HZ, duration]
 		if _has_milestone("paired_standing"):
 			progress = "Standing hold earned: %.1f / %.1f s" % [float(max_paired_hold_ticks) / State.TICK_HZ, duration]
-			session_controls = "Enter mounted matchlocks · " + session_controls
 	elif lesson_phase == "weapons":
-		title = "3 / 3 · MOUNTED MATCHLOCKS · FIRE STANDING, RELOAD SLOWLY"
+		title = "3 / 3 · MOUNTED MATCHLOCKS"
 		var facts: Dictionary = _weapon_facts()
 		progress = "Standing shots: %d / 4 · Weapons reloaded: %d / 4" % [facts.volley_slots.size(), facts.reloaded_slots.size()]
 		var slots: Array[String] = []
@@ -273,14 +277,27 @@ func _refresh() -> void:
 		if snapshot.reload_slot >= 0:
 			detail += " · Reload %d: %.1f / %.1f s%s" % [snapshot.reload_slot + 1, float(snapshot.reload_ticks) / State.TICK_HZ,
 				float(State.RELOAD_TICKS) / State.TICK_HZ, " · paused: keep slow, aligned and steady" if snapshot.reload_paused else ""]
-		movement += "\nMouse aim · Left click fire · 1–4 select · R reload"
 	elif lesson_phase == "complete":
 		title = "RIDING LESSON COMPLETE"
 		progress = "Three skills earned · " + ("ready to return" if _completion_ready() else "sit and stop both horses")
-		movement = "Enter return to the riding lesson" if _completion_ready() else "S brake · Space sit"
-		session_controls = "Backspace restart lesson · Esc pause · F1 leave"
-	hud.text = "1792 · %s'S RIDING LESSON · A TALE OF MAHA SINGH\n%s · %s\n%s\n%s" % [Names.PLAYER_NAME.to_upper(), title, progress, movement, session_controls]
+		session_controls = "Esc pause / help · F1 leave without claiming skills"
+	if paused:
+		session_controls = "Esc resume · Backspace restart all three exercises · F1 leave without new skills\nRestart clears this attempt; leaving keeps your Home as it was."
+		direction.controls += "\nCtrl walk · Shift canter · Q/E balance"
+	hud.text = "%s · %s\n%s\n%s\n%s" % [title, progress, direction.task, direction.controls, session_controls]
 	status.text = ("PAUSED · " if paused else "") + "%s · %.1f m/s · balance %d%%\n" % [
 		model.stance().to_upper(), support.get("mean_speed", 0.0), int(snapshot.balance * 100)]
 	if not detail.is_empty(): status.text += detail + "\n"
-	status.text += message
+	# The base study refreshes completion text every tick. The authored payoff
+	# is offered once instead; it expires on the existing lesson clock.
+	var caption := message
+	if lesson_phase == "complete" and message == "Four weapons recharged and both horses stopped. Backspace retries the study.":
+		caption = Direction.line("complete")
+	_lesson_attention.offer(caption, lesson_tick, Attention.ACCOUNT)
+	var visible_caption := _lesson_attention.read(lesson_tick)
+	if direction.urgent:
+		status.text += direction.task
+	elif not visible_caption.is_empty():
+		status.text += visible_caption
+	elif paused:
+		status.text += "Remembered tale of Maha Singh · original lesson dialogue"
