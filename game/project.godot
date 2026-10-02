@@ -2,7 +2,9 @@
 config_version=5
 
 [application]
+; Stable storage identity: the public title is set on the main window and menu.
 config/name="1792"
+config/description="1792: The Lotus Throne"
 run/main_scene="res://ui/main_menu.tscn"
 
 [display]
