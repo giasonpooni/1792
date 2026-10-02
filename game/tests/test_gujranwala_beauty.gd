@@ -1,6 +1,7 @@
 # Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 extends SceneTree
 const Launch:=preload("res://childhood/home_launch.gd")
+const Model:=preload("res://childhood/childhood_state.gd")
 var passed:=0
 var failed:=0
 
@@ -31,6 +32,11 @@ func run() -> void:
 	check(beauty.accent_panels.size()==16 and beauty.screens.size()==8,"veranda has bounded accent and jali-depth inventory")
 	check(beauty.planters.size()==6 and beauty.practicals.size()==4,"six garden pockets and four practical lights")
 	check(beauty.pottery.size()==6 and beauty.textiles.size()==4,"market still-life inventory is bounded")
+	for planter in beauty.planters:
+		for site in Model.SITES.values():
+			check(Model.distance(planter.global_position,site)>3.0,"garden pocket stays clear of childhood lesson site")
+		for gate in Model.GATES:
+			check(Model.distance(planter.global_position,gate)>3.0,"garden pocket stays clear of riding gate")
 	check(beauty.find_children("*","CollisionShape3D",true,false).is_empty() and beauty.find_children("*","StaticBody3D",true,false).is_empty(),"beauty pass adds no collision or static physics")
 	check(beauty.find_children("*","NavigationRegion3D",true,false).is_empty(),"beauty pass adds no navigation authority")
 
@@ -50,11 +56,11 @@ func run() -> void:
 	var cloth_b: Vector3=beauty.textiles[0].rotation
 	check(cloth_a!=cloth_b,"textile motion samples the supplied chapter tick")
 
-	beauty.set_enabled(false)
-	check(not beauty.visible and beauty.practicals.all(func(l):return not l.visible),"beauty pass disables reversibly")
-	beauty.set_enabled(true)
+	art.set_refinement(false)
+	check(not beauty.visible and beauty.practicals.all(func(l):return not l.visible),"F7 authored-refinement disable removes beauty layer")
+	art.set_refinement(true)
 	beauty.set_preset("golden_hour")
-	check(beauty.visible,"beauty pass restores without touching world state")
+	check(beauty.visible,"F7 authored-refinement restore returns beauty layer")
 	check(scene.model.snapshot()==before and scene.model.journal()==journal_before,"beauty sampling changes no campaign state or journal")
 
 	home.queue_free()
