@@ -6,6 +6,15 @@ const Riding:=preload("res://mounts/riding_rules.gd")
 const Aftermath:=preload("res://childhood/aftermath_state.gd")
 const Household:=preload("res://territory/misl_rules.gd")
 
+static func household_uncommitted(model) -> bool:
+	# Match the existing workshop's custody exclusions without reserving anything.
+	if model.brawl_busy() or model.service_reserved(): return false
+	if model.has_water_round():
+		var water: Dictionary=model.water_round().ledger
+		if water.carried>0 or water.phase=="drawing": return false
+	var ledger: Dictionary=model.economy().ledger
+	return ledger.caravan!="active" and ledger.delivery!="outbound"
+
 static func read(chapter: Node3D) -> Dictionary:
 	var model=chapter.model
 	var state: Dictionary=model.progress()
@@ -113,12 +122,22 @@ static func read(chapter: Node3D) -> Dictionary:
 					if after.escort.active: result.progress+=" Bring the household guard with you."
 					result.target=Aftermath.MOTHER;result.marker="Raj Kaur · E"
 				"complete":
-					if not model.has_method("has_economy") or model.has_economy():
-						return {}
+					if not model.has_method("has_economy"): return {}
 					result.title="GUJRANWALA  /  HOUSEHOLD RESPONSIBILITY"
-					result.task="Speak to the quartermaster"
-					result.progress="You gave your observed account. The culprit remains unidentified.\nHear the quartermaster before accepting the household allowance."
-					result.controls="E  Speak     WASD  Walk     Mouse  Look     F5 / F9  Save / Load     J / Esc  Journal and menu"
+					if model.has_economy():
+						if not model.has_method("workshop_phase") or not household_uncommitted(model): return {}
+						match model.workshop_phase():
+							"unassigned":
+								result.task="Ask about the smith's commission"
+								result.progress="Ask the quartermaster about two tool bundles.\nThis optional errand uses 2 timber and 4 household coins. No order is placed until you choose it."
+							"complete":
+								result.task="First household responsibility complete"
+								result.progress="Both tool bundles were returned. The commission is settled. Speak to the quartermaster to choose another responsibility."
+							_: return {}
+					else:
+						result.task="Speak to the quartermaster"
+						result.progress="You gave your observed account. The culprit remains unidentified.\nHear the quartermaster before accepting the household allowance."
+					result.controls="E  Speak     WASD  Walk     Mouse  Look     B  Accounts     F5 / F9  Save / Load     J / Esc  Journal and menu"
 					result.target=Household.QUARTERMASTER;result.marker="Quartermaster · E"
 				_:
 					# The established workshop HUD takes over after the inquiry.

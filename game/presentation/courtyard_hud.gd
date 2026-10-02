@@ -2,6 +2,8 @@
 extends CanvasLayer
 ## Existing words and task state, in a reversible compact layout; no new knowledge.
 const Beginning:=preload("res://presentation/beginning_guidance.gd")
+const Craft:=preload("res://workshops/workshop_rules.gd")
+const Household:=preload("res://territory/misl_rules.gd")
 var compact := true
 var task: Label
 var words: Label
@@ -38,7 +40,7 @@ func sample() -> void:
 	if not is_instance_valid(_chapter): return
 	var beginning: Dictionary=Beginning.read(_chapter)
 	var childhood: bool=not beginning.is_empty()
-	var eligible: bool=compact and (childhood or (_chapter.model.has_economy() and _chapter.model.workshop_phase() in ["fuel","working","ready","tools"] and not _chapter.model.brawl_busy()))
+	var eligible: bool=compact and (childhood or (_chapter.model.has_economy() and _chapter.model.workshop_phase() in ["fuel","working","ready","tools"] and Beginning.household_uncommitted(_chapter.model)))
 	var active: bool=eligible and not _chapter._paused;visible=active
 	if eligible:
 		for r in _original:
@@ -59,6 +61,16 @@ func sample() -> void:
 			title.text="GUJRANWALA  /  HOUSEHOLD COMMISSION"
 			task.text=_chapter.workshop_hint().replace(" [E]","");narrator.text=_chapter._narrator_label.text
 			controls.text="E  Speak    B  Accounts    J  Journal    F5 / F9  Save / Load    F7  Visual controls"
+			# Project the existing custody destination onto the original lesson label.
+			# Working and ready point to the same speaker and reveal no remote result.
+			var carrying_tools: bool=_chapter.model.workshop_phase()=="tools"
+			_chapter._marker.position=(Household.QUARTERMASTER if carrying_tools else Craft.SITE)+Vector3.UP*2.1
+			_chapter._marker.text="Quartermaster · E" if carrying_tools else "Smith · E"
+			if _chapter.model.mounted() and _chapter.model.workshop_phase() in ["working","ready"]:
+				task.text="Stop and dismount to hear the smith"
+				controls.text="W  Forward     A / D  Steer     S / Space  Brake     F  Dismount when stopped"
+				_chapter._marker.text="Smith · dismount first"
+			_chapter._marker.visible=true
 		narrator.visible=not narrator.text.is_empty()
 		words.text=_chapter._message
 		bottom.position=Vector2((size.x-bottom.size.x)*.5,size.y-bottom.get_combined_minimum_size().y-18)

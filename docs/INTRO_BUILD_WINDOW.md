@@ -195,3 +195,332 @@ No blocking runtime or framing defect was found. An audit also found explicit
 they now refuse mismatches, with two additional adversarial checks. That verifier
 and checkpoint correction require a fresh source binding before publication;
 the source named here remains the earlier observed execution, not the new head.
+
+## Checkpoint: hosted inquiry qualified; first responsibility continuation
+
+Published head `e2f78fe7f702d02c0356df966bf4df9f77c09c86`, tree
+`8966e308cef0a1b49bfc05b58e65011b960e0496`, passed **all nine hosted workflows**.
+Exact-head Command run `37016336354` completed escort **18 frames / 225 checks /
+zero failures** and independent **18 / 229 / zero**, including both strict wrapper
+executions and verify-only checks. Hosted executions were
+`24795c54-634e-43fe-a9f7-327fef489907` and
+`86065688-315c-4bf4-b139-6cb2cf4bcd10`; respective manifest SHA-256 identities are
+`ec4cca71731cccca38108339d46f3e47f1e4f13357c068dbfb662faa08ddd929` and
+`6e4e9c4c6ac1d415adc15c39f4d1a1696755ca67e01953986ef56a2577412590`.
+The runtime hash remained `db07cae7de644278a1884d4552bdf2bca3f5d30131b18faf3a0c4d730080b199`.
+Inherited horsecraft completed 992 model ticks and five captures without failures
+in 129.702 seconds. Exact-head Courtyard run `37016336043` passed the corrected
+613-check audio lifecycle and 166-check aftermath suites. Historical failed runs
+remain failed; these successes belong to this newer head.
+
+Command artifact `11230557086` has ZIP digest
+`1bfe24abdcbe105af2201dd03eac0b02710e538e6526fca2e136beddadfe1061` and size
+144,251,596 bytes. It exceeds the available executor's 32 MiB transfer limit;
+direct artifact access also returned HTTP 403. Its hosted wrapper logs and artifact
+metadata were inspected, but its PNG/save bytes were **not independently downloaded
+and reverified locally**. Source artifact `11230542188`, ZIP digest
+`09254eaff284c38549801f1e2e01a1a4ce3a50381e3b4e7b96e56f9a67e2ef8e`, was downloaded:
+all 316 tracked source files matched the retained qualified source; six generated
+Python cache files are non-source entries. The next workflow retains each complete
+unique journey as its own artifact, excluding duplicate isolated-user-data copies
+while preserving source archive, raw commit, execution, verification, frames and
+all required native saves. A measured escorted 18-frame unique pack is 19,549,760
+ZIP bytes. The full combined failure-forensics artifact remains available.
+
+The next bounded source fixes the measured post-allowance HUD gap: compact
+guidance previously disappeared before a commission was assigned. It now offers
+the existing quartermaster's optional smith commission while respecting all
+existing competing custody commitments. Native display guidance passes **165
+checks**, including a separately declared completed-inquiry presentation fixture,
+actual allowance dialogue/pointer input, whole-state preservation and both
+800x600/1280x720 layouts. This fixture is not a fresh beginning claim. The affected
+inherited workshop suite passes **156 checks**. The independent evidence verifier
+passes **32 adversarial tests**, including native custody deadline, receipt clocks,
+carried fuel/tools, whole rollback, conserved allowance and retired guard checks.
+
+The optional `--through-household-task=smith-commission` operation extends the
+same fresh beginning, keeps its original 18 frames and adds five production
+boundaries. It must physically earn the allowance, reserve fuel/payment, hand it
+over, use actual F5/F9 to restore the carried-fuel whole save, hand over again,
+wait the existing 600-tick deadline, collect and physically return both tools.
+It retains the original inquiry save, the carried-fuel save and the final settled
+save, rather than seeding a completed task or capability. This checkpoint records
+implemented source and passed prerequisite checks; **the extended fresh task route
+still requires committed-source execution and visual audit before publication**.
+Its exact source/runtime/operation/execution/verification identities must appear
+in the retained evidence and draft PR when that qualification completes.
+
+Next: run both extended choices from distinct fresh destinations, inspect actual
+allowance/commission/collection/return frames, fix observed defects, publish the
+bounded qualified increment and independently download/verify each latest-head
+hosted journey artifact. Keep draft/unmerged and preserve the implementation cutoff.
+
+The first strict extended escorted execution passed on local source
+`e2c49215eede1c73d4cf42c666eb13aee8004c71`, tree
+`400d28e59b195d47022dd5b3c99153866061c74a`: **23 production frames, 322 checks,
+zero failures**. Execution `bc5799e8-5091-4eed-af90-95d5dbe3d40a` and independent
+wrapper verification `3e690f04-c5df-4409-8b93-d19e2c6c2255` retain manifest digest
+`f14ef570f9c8adc036ca8961b364153120f65320ff464915910712c0f21cc41e`.
+The fuel save restored exactly tick **4,988**; the first handover progressed to
+5,549, final resumed observation was 6,704, and actual final receipts were reserve
+4,986 / start 5,544 / ready 6,144 / collect 6,146 / deliver 6,699. Final coffers are
+116, personal purse 18, timber 6 and stored tools 4. The single learned riding
+receipt, completed inquiry, retired guard, native bodies and original checkpoint
+remain intact. This result belongs to that earlier committed source, not the
+subsequent presentation correction.
+
+Actual production-frame inspection found readable compact allowance and custody
+text, but no dynamic smith target in fuel/working/tools: the manifest records the
+objective hidden, rather than confusing nearby static actor captions with an
+objective. The final settled frame also fell back to the dense legacy HUD. The
+next correction projects actual smith/quartermaster targets and a compact settled
+first-responsibility handoff without changing authority, knowledge or the task.
+Working and ready must remain indistinguishable before a local conversation.
+Thirty-four adversarial verifier tests now include those presentation failures.
+Both fresh choices must rerun against the corrected committed source; the earlier
+successful pack and its archived verifier remain separate.
+
+The observed engine interval was **346.743 seconds** under concurrent native and
+software-rendering load. The extended journey has a measured 480-second execution
+bound and a 25-minute whole inherited-workflow bound; no assertion, input, physics
+or capture is suppressed to meet that budget. The complete unique 23-frame pack
+measures **24,501,331 ZIP bytes**, within the 32 MiB transfer limit. No physical-
+GPU performance qualification is implied.
+
+The corrected presentation's pinned native display test passed **383 checks /
+zero failures**. It covers actual allowance/commission pointer choices, native
+wheel press/release scrolling and observed pointer/button-signal journal Resume,
+all four existing custody phases, compact settled handoff, competing commitments,
+whole-state/journal/physics identity preservation and 800x600/1280x720 layouts.
+Unbalanced synthetic wheel presses caused five earlier Resume test misses; the
+balanced input passed without changing the production modal or pause authority.
+These separately declared presentation fixtures are not fresh journey evidence.
+Display log SHA-256 is
+`eed2ecebafbf05b4135c12e6fbc626dd2cfc0add31a189977ea42b4b99f8cb36`.
+Affected inherited native suites passed courtyard **123**, reconstruction **53**
+and household workshop **156** checks, each with zero failures. The 34 independent
+adversarial verifier tests also pass. Next qualification must execute both complete
+fresh inquiry/task choices against this committed presentation correction before
+publication, retaining the earlier source's separate 23-frame observation.
+
+Fresh escorted source `ef1caf2cd44945ba67e6cf21adc4f0f81896a9e5`, tree
+`f2cdd78c0438ce8967694723f29cd80c529042c8`, then passed **23 production frames /
+327 checks / zero failures**. Execution `208694b3-bcdc-4dcc-b5d3-7c242dbbc20d`,
+manifest `812bff11400edcd0d5c138e24497ab6d09ec6406353c8cd79643eda19398a561`
+and explicit-source verify-only audit `c2f9593b-35da-4360-976a-9545b3db1098`
+remain retained separately. All five household frames were visually inspected;
+the dynamic custody target and compact settled handoff were observed. This
+qualified the unmounted route, not every reachable workshop control state.
+
+Independent source audit found two bounded follow-ups before publication:
+hands-free working/ready permit mounting, so their compact Smith/E wording must
+instead show the existing brake/F dismount controls; and task capture mirrors
+must agree with their whole authority. The latter now binds clock, progress,
+economy, workshop phase/custody and aftermath, with **35 adversarial tests passed**.
+The earlier actual pack's six mirrors were consistent; the omission permitted
+tampered metadata, not an observed clock divergence. The mounted presentation
+must be reproduced and qualified through actual F/input on separately declared
+fixtures, then both fresh full choices must bind the final corrected source.
+
+The mounted working/ready reproduction passed 458 checks and failed exactly six
+prompt checks (task, controls and marker in each phase). Actual walking/F mounted
+the unchanged inherited household horse, actual E refused speech, and actual F
+dismounted. The E result matched a detached copy of the same authority advanced
+by the observed native clock delta; custody and journal stayed unchanged. Fixture
+player restoration is explicitly declared and is not a fresh travel claim.
+The four-line HUD correction uses the original brake/F wording and
+`Smith · dismount first` for both phases. Its pinned native display suite passed
+**464 checks / zero failures**, including both view sizes, modal/pointer behavior,
+whole-state/physics neutrality and identical received working/ready presentation.
+Reproduction log SHA-256:
+`c6041fbe5fe01c77b383730b11fab30c17cc286edc2a9e1b2e006627b66f3644`;
+qualified display log:
+`44d4e1e41384fa912915e8731a5b961d1b4bc83ffbd3148ae929b5e89c043fa8`.
+No motor, capsule, mount/dismount rule, conversation/pause authority or world clock
+changed. Both complete fresh inquiry/task routes still need final source binding.
+
+Source `2b66e1016cc53488eda331b4286375ea7f4f8c54`, tree
+`cf94fd7bb3ad69c56f0c5e8e32fb75f0e0e17c33`, then completed fresh escorted
+**23 frames / 327 checks / zero failures**, execution
+`14b66d34-5bd5-46b7-a3ac-70d32a385514`, independently verified as
+`6fec541b-6bed-41bb-8820-7abd8c385a99`. The separate independent execution
+`e47881ae-5126-4db6-889c-93f4cf42e60e` completed native **23 / 338 / zero**, but
+its strict wrapper **refused** the final save's decoded whole-authority comparison.
+That refused pack, source and original bytes remain retained; it is not qualified.
+
+Exact inspection found only three JSON parse differences: coherent player/hero x
+`2.9739980697631836` versus `2.973998069763183`, both native binary32 `403e55fc`,
+and derived display hour `7.030194444444445` versus `7.030194444444444`. Both saved
+ticks are exactly **6,522**; the original `7 + tick / 216000` derivation gives the
+first hour. Two independent audits confirmed Godot's cold decimal parse/re-emit
+drift; the actual clock advance and save authority are unchanged.
+
+The first proposed verifier correction extended the declared guard projection
+only to coherent player/hero native Vector3 positions. It validates year/day and
+integer tick against the existing childhood clock, accepts only the exact derived
+hour or either immediately adjacent IEEE binary64 parse representation, then
+projects that derived display field. Raw save bytes and original snapshots stay
+distinct and hashed; saved/restored rollback equality, receipts, knowledge,
+economy and all unrelated fields stay exact. **41 adversarial tests pass**,
+including wrong native poses, incoherent actors, malformed vectors, changed
+money/knowledge, invalid clock identity/ticks and two-ULP hour drift. This is no
+general numeric tolerance and does not replace any runtime state or persistence
+rule. That proposal was committed locally as
+`7357aaa9d856db9e5701182cd674acbab10604b8`, tree
+`01bfd738f965427ad149c9bd7fcb46a2f35919a7`, and the separate independent route
+completed native **23 frames / 338 checks / zero failures**, execution
+`f4b6642d-9686-47ec-9b97-0a0323e7c946`, manifest
+`060546a879a4b5fe98fb0a135e1424899c8ff457cce56455ab1c128a67e6b52e`.
+Its wrapper returned a pass, but the subsequent independent audit demonstrated
+that the adjacent-ULP rule also accepted an altered raw hour. **Publication was
+held; this candidate is not the final qualified verifier.** The original refused
+pack and this held candidate remain separate with their unchanged source/bytes.
+
+## Checkpoint: exact native JSON binding correction
+
+The replacement requires the raw saved year/day/hour to equal the existing
+integer-tick clock derivation exactly. It reconstructs every original numeric
+lexeme using the pinned Godot 4.5.1 `JSON::_get_token` / `String::to_float` /
+`built_in_strtod` operation sequence, then compares the complete predicted cold
+authority to the recorded cold-load snapshot. Only the previously declared
+escort position/velocity/yaw retain binary32 reconciliation. There is no player,
+hero, clock or generic epsilon/ULP tolerance. Raw saves, manifests and restored
+snapshots are not rewritten; their byte digests and exact rollback remain checked.
+
+The implementation retains the primary source tag/blob references and MIT notice
+in `tools/godot451_json.py`. Verification binds that parser's SHA-256 as well as
+the existing verifier/PNG decoder to the retained source archive. An independent
+read-only prototype passed nine focused tests and matched **34 native saves in
+12 separate retained packs** to their exact whole cold authority. Those are parser
+diagnostics, not retroactive qualification of refused or held executions. Both
+complete fresh choices must now run against the final committed correction in
+separate new evidence directories before publication; hosted qualification and
+separate downloaded artifacts must then bind the exact published head.
+
+A separate read-only lexer probe also compared **114 numeric tokens** directly
+against pinned native Godot binary64 bytes, including both drift lexemes, signed
+zero, leading fractional zeros, 18-digit truncation, exponent limits and 100
+deterministic coordinate samples. All 114 match exactly. The diagnostic binds
+runtime SHA-256 `db07cae7de644278a1884d4552bdf2bca3f5d30131b18faf3a0c4d730080b199`,
+parser `2716a711cc26735061c129a487631ce4f6998a33caf563b635ed4840e78525ab`,
+probe `34547284d363a81dbe606e5e3a1868bd198194632ef490f2205c9d6cbb08eebb`
+and log `422904aaa616dea07ac8c530a8f962ae212e6a0490767974980a2a0844e74704`.
+The probe checks the lexer only; it is not a new-game journey or clean-source
+qualification. Explicit malformed clock/childhood/escort shape guards fail closed.
+
+The integrated adversarial suite passes **46 tests**: the 35 existing authority
+cases remain, and eleven exact-parser cases replace the six proposed tolerance
+cases. They refuse either altered raw one-ULP clock neighbor, any different staged
+parser result, unrelated authority/Boolean drift, duplicate keys, nonfinite or
+malformed numbers/authority and bytes beyond the native 131,072-byte limit. The
+original full-precision drift lexemes reconstruct exactly. Synthetic test clocks
+now follow their declared tick; these fixtures are not gameplay evidence.
+
+Clean candidate `54e119255830925a8215702456434a253087bf34`, tree
+`30918bcde6ae35ebea38dd99ac2d1153b3d36bec`, then completed the fresh independent
+route and commission: **23 frames / 338 checks / zero failures**, execution
+`da9ca094-62ff-49cc-90d9-80728d89cc6b`, manifest
+`060546a879a4b5fe98fb0a135e1424899c8ff457cce56455ab1c128a67e6b52e`.
+Independent exact-source verify-only audit
+`94faacbe-d341-4554-b4e2-5bc96a5b70b2` passed. Its seven inspected current family,
+choice and task frames were readable, and all 23 PNGs matched the prior independent
+production bytes. This proves the parser correction on the actual route, without
+retroactively changing earlier refused/held results.
+
+That independent source audit also reproduced a separate verifier defect:
+Python's dictionary equality accepted a restored horse `grounded: 1` where the
+saved value was `true`. Whole recovery, mirrored authority, guard/marker visibility,
+ledger/custody/receipt comparisons now use exact typed semantic equality. Finite
+equal integer/float counters remain intentionally equivalent; Boolean aliases and
+nonfinite numbers are refused. Numeric slots/sequences/counters and clean-source
+flags retain their explicit types. No runtime, save authority, input, clock or
+physical body changes. The repeat 114-token native lexer probe still matches all
+binary64 bytes, now binding parser
+`36bc9ed359b8cdbfadf2b14661038da244c26055753dd13f8969a1c7451e4c89`.
+Both complete fresh choices must bind this final semantic hardening before
+publication, followed by exact-head hosted and downloaded-artifact verification.
+
+The integrated verifier now passes **56 adversarial tests**. The ten new semantic
+cases reproduce and reject both rollback aliases, capture/ledger/custody mirrors,
+guard/marker visibility, receipt/shot slots, counters and sequence aliases, while
+accepting finite equal integer/float counters. Native save bytes are unchanged by
+these metadata adversaries. The earlier 46 parser/authority tests remain intact.
+Candidate `150d3a748fd7894a8a21a2fec14cfaf382d4d1f6`, tree
+`2c03ebafd547514df6baf6e60212fa659723bfe0`, also completed fresh independent
+**23 / 338 / zero**, execution `039c3e55-f897-4d8b-8601-e88022ead793`, with the
+same unchanged production manifest bytes. The final audit found one remaining
+Boolean alias in the direct retired-guard zero-velocity array comparison; that
+array now uses the same strict semantic comparison. This is a recorded verifier
+adversary, not an observed moving or deployed guard. The added parser's MIT
+adaptation is inventoried in `THIRD_PARTY_NOTICES.md`. Both fresh choices must bind
+this last correction before publication.
+
+The explicit progressed-guard velocity adversary failed before this last fix and
+passes afterward with unchanged native save bytes. The final integrated verifier
+passes **57 tests / zero failures**; the mounted display suite remains **464 / zero**.
+
+## Checkpoint: final fresh household responsibility qualification
+
+Committed source `e37f2e74870726e09a161f451ef336e6474e01ba`, tree
+`bd0a1502ca176b9805c02361a0e4fc26a1c6f49c`, completed both separate fresh earned
+routes through the existing first smith commission. Both exact-source independent
+verify-only audits passed without changing the original evidence.
+
+| Choice | Native frames/checks/failures | Execution | Independent verification |
+| --- | --- | --- | --- |
+| Independent Insist | 23 / 338 / 0 | `af8d78f7-43d4-4e19-9a97-b1bfedc18c8f` | `e71574da-21ca-4b34-8ff0-e366e75e61ff` |
+| Household escort | 23 / 327 / 0 | `4450d7f4-ff21-442e-91e8-8312d2538fd7` | `3ee5121a-86bb-45c7-9a27-72a238b5b416` |
+
+The requested and actual choices bind their original responsibility operations
+`1792.opening-independent-responsibility.v1` and
+`1792.opening-household-responsibility.v1`. Runtime executable SHA-256 remains
+`db07cae7de644278a1884d4552bdf2bca3f5d30131b18faf3a0c4d730080b199`;
+verifier `85b5de7158041eda6421ca3d12facb718e256e2f3b4e08642aee60f849310de6`,
+parser `36bc9ed359b8cdbfadf2b14661038da244c26055753dd13f8969a1c7451e4c89`
+and PNG decoder `ddaaf2cf3a3fb4ddd3dc0be647bee235ee5a8f43adfc6a9826c9dc689b38b0d4`
+are retained and source-bound. Manifest SHA-256 is
+`060546a879a4b5fe98fb0a135e1424899c8ff457cce56455ab1c128a67e6b52e`
+for independent and
+`812bff11400edcd0d5c138e24497ab6d09ec6406353c8cd79643eda19398a561`
+for escorted. External independent-audit digests are
+`bb82b5e779a93877e3e8ae560ff01a06c4dea6f951057c6373236c7fb6e3eff8`
+and `6cd21f38a353a3dc6f775bfa01ab4b33d93f21cb83fe4824a2aa5e7229828d13`.
+
+Both declared recoveries restore the complete cold native saved authority:
+independent inquiry **4,263 -> 4,263**, carried fuel **4,809 -> 4,809**;
+escorted inquiry **4,442 -> 4,442**, carried fuel **4,988 -> 4,988**.
+Final independent observation/save ticks are **6,525 / 6,522**; escorted
+**6,704 / 6,701**. The native operation observes the same ten original bodies at
+initial, restored and final task boundaries, and preserves the original automatic
+courtyard checkpoint and earned horsecraft receipt. No recovery is called a
+never-restored journey. Original save bytes, source archive/raw commit object,
+commands, traces and production PNG/RGBA hashes remain separate and retained.
+
+All five current task frames were visually inspected for each route. Their
+objectives, costs, controls and completed handoff are readable without clipping.
+Dynamic targets follow Quartermaster -> Smith -> Smith -> Quartermaster ->
+Quartermaster at their actual sites; offscreen target bindings are metadata, not
+claims that an unseen label was visually prominent. All 23 current escorted PNGs
+match the prior 2b66 production bytes; independent matches 54e119. After reporting,
+the escorted guard is retired/holding with zero velocity while its physical node
+remains visible and colliding. The independent guard stays instantiated, hidden,
+collision-disabled and undeployed at its unchanged home pose throughout recorded
+route boundaries. No culprit is invented.
+
+The final adversarial suite passes **57 / zero**, the separately declared mounted
+UI fixtures **464 / zero**, and affected inherited native courtyard/reconstruction/
+workshop suites **123 / 53 / 156**, all zero failures. A complete unique independent
+pack measures **24,373,352 ZIP bytes**, 34 entries including all 23 frames, within
+the 32 MiB transfer bound. Separate hosted artifact paths retain the same evidence
+without duplicate isolated-user-data copies; the original combined forensic
+artifact remains available as well.
+
+Next: publish this bounded increment and this documentation-only checkpoint to
+same draft PR #71, then inspect the exact resulting published-head CI logs and
+independently download/digest/extract/reverify both complete hosted journey
+artifacts. Previously green `e2f78fe7f702d02c0356df966bf4df9f77c09c86` does not
+qualify the new head, and prior failures remain failures. This checkpoint records
+the executed source above; its added documentation has not been mislabelled as
+an already executed source tree. Keep draft/unmerged. Human/controller/Windows/
+physical-GPU qualification, production figures/animation/voice, authenticated
+historical dialogue and the full chronological campaign remain pending.

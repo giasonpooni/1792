@@ -7,16 +7,31 @@ const SAVE:="user://opening-chapter-render-only.json"
 const OpeningCheckpoint:=preload("res://childhood/checkpoint_store.gd")
 const Aftermath:=preload("res://childhood/aftermath_state.gd")
 const TerritoryRules:=preload("res://territory/misl_rules.gd")
+const HouseholdCraft:=preload("res://workshops/workshop_rules.gd")
+const HOUSEHOLD_CAPTURES:=["quartermaster-allowance","household-commission","smith-handover","smith-collection","household-task-complete"]
 var learned_receipt: Dictionary={}
 var shot_records: Array=[]
 var midreturn_persistence: Dictionary={}
 var final_manual_save: Dictionary={}
 var inquiry_choice:="household_escort"
 var independent_guard_refusal: Dictionary={}
+var household_task:="none"
+var household_task_persistence: Dictionary={}
+var _household_body_ids: Array=[]
+var _household_guard_observation: Dictionary={}
+var _household_checkpoint_sha:=""
 
 func _configure_inquiry_choice() -> bool:
 	var supplied:=false
+	var task_supplied:=false
 	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--through-household-task="):
+			if task_supplied: return check(false,"duplicate opening through-household-task argument")
+			task_supplied=true
+			var task_value:=argument.trim_prefix("--through-household-task=")
+			if task_value!="smith-commission": return check(false,"unsupported opening household task: "+task_value)
+			household_task=task_value
+			continue
 		if not argument.begins_with("--inquiry-choice="):
 			return check(false,"unknown opening qualification argument: "+argument)
 		if supplied: return check(false,"duplicate opening inquiry-choice argument")
@@ -41,10 +56,20 @@ func note(id: String) -> void:
 	item.avatar_global_rotation=point(chapter.avatar.global_rotation)
 	item.camera_pivot_local_rotation=point(chapter.avatar.pivot.rotation)
 	item.camera_pivot_global_rotation=point(chapter.avatar.pivot.global_rotation)
+	item.household_task=household_task
+	item.economy=chapter.model.economy()
+	item.workshop_phase=chapter.model.workshop_phase()
+	item.workshop=chapter.model.workshop()
+	item.workshop_observation=_workshop_observation()
 
 func _escort_observation() -> Dictionary:
 	return {"visible":chapter.escort.visible,"collision_layer":chapter.escort.collision_layer,
 		"position":point(chapter.escort.global_position),"yaw":chapter.escort.rotation.y,"velocity":point(chapter.escort.velocity)}
+
+func _workshop_observation() -> Dictionary:
+	return {"carried_visible":chapter.workplace.carried.visible,"tool_heads_visible":chapter.workplace.carried.get_node("ToolHeads").visible,
+		"bench_tools_visible":chapter.workplace.finished.visible,"coal_visible":chapter.workplace.coal.visible,
+		"external_speed_limit":chapter.avatar.external_speed_limit if is_finite(chapter.avatar.external_speed_limit) else "unbounded"}
 
 func look_toward(target: Vector3) -> void:
 	var offset: Vector3=target-chapter.avatar.global_position
@@ -148,6 +173,10 @@ func capture(id: String,purpose: String,visit: Node=null) -> void:
 		"escort_observation":_escort_observation(),
 		"escort_pose_frozen_for_capture":true,"journal_ids":chapter.model.journal().map(func(memory): return memory.id),
 		"objective_marker":{"visible":chapter._marker.visible,"text":chapter._marker.text,"position":point(chapter._marker.global_position)}}
+	record.household_task=household_task
+	record.economy=chapter.model.economy();record.workshop_phase=chapter.model.workshop_phase()
+	record.workshop=chapter.model.workshop();record.workshop_observation=_workshop_observation()
+	if id in HOUSEHOLD_CAPTURES: record.snapshot=before
 	if visit!=null:
 		record["separate_world_3d"]=viewport.own_world_3d
 		if visit.has_method("story_beats"):
@@ -171,12 +200,13 @@ func capture(id: String,purpose: String,visit: Node=null) -> void:
 func finish() -> void:
 	physical_key(KEY_Q,false);physical_key(KEY_C,false);controls()
 	var checkpoint: String=chapter.checkpoint_path() if is_instance_valid(chapter) else SAVE+".checkpoint.json"
-	var manifest:={"schema":"1792.opening-chapter-render.v2","inquiry_choice":inquiry_choice,"captures":captures,"route":route,"failures":failures,"checks":checks,
+	var manifest:={"schema":"1792.opening-chapter-render.v2","inquiry_choice":inquiry_choice,"household_task":household_task,"captures":captures,"route":route,"failures":failures,"checks":checks,
 		"engine":Engine.get_version_info().string,"renderer":RenderingServer.get_current_rendering_method(),"device":RenderingServer.get_video_adapter_name(),
 		"physics_hz":Engine.physics_ticks_per_second,"entry":"actual HomeLaunch.enter","entry_state_sha256":_binding_sha,
 		"human_playtest":false,"camera_pose_injected":false,"progress_seeded":false,"saved_pose_restored":not midreturn_persistence.is_empty(),"startup_save_seeded":false,"capability_receipt_seeded":false,
 		"save_restore_route":"actual F5/F9 after freshly earned clue and report; no startup save seed",
 		"midreturn_persistence":midreturn_persistence,"final_manual_save":final_manual_save,
+		"household_task_persistence":household_task_persistence,
 		"independent_guard_refusal":independent_guard_refusal,
 		"input_source":"native routed mouse/key events, physically held guard/quiet keys, ordinary game actions and actual dialog controls",
 		"between_capture_3d_rendering_disabled":true,"historical_authentication":false,"earned_training_receipt":learned_receipt,
@@ -539,6 +569,180 @@ func _household_inquiry() -> bool:
 	note("household-inquiry-complete");await capture("inquiry-complete","Complete earned inquiry with actual quartermaster handoff and native manual save")
 	return check(captures.size()==18,"complete fresh opening retains exactly eighteen production-camera boundaries")
 
+func _household_native_ids() -> Array:
+	return [home.get_instance_id(),chapter.get_instance_id(),chapter.avatar.get_instance_id(),chapter.horse.get_instance_id(),
+		chapter.attacker.get_instance_id(),chapter.escort.get_instance_id(),chapter.merchant.get_instance_id(),
+		chapter.service_agent.get_instance_id(),chapter.workplace.get_instance_id(),chapter.art.get_instance_id()]
+
+func _household_continuity(boundary: String) -> bool:
+	var value: Dictionary=chapter.model.snapshot()
+	var intact:=check(chapter.model.validate(value).is_empty() and value.riding_skills.lesson_receipts==[learned_receipt]
+		and chapter.model.capabilities()=={"single_standing":true,"paired_standing":true,"mounted_matchlock":true},"first household responsibility preserves the validated earned horsecraft receipt at "+boundary)
+	intact=check(_after_save_projection(value.aftermath)==_after_save_projection(household_task_persistence.inquiry_snapshot.aftermath)
+		and chapter.model.aftermath_phase()=="complete" and not value.aftermath.escort.active
+		and _escort_observation()==_household_guard_observation,"first household responsibility preserves the completed inquiry and the same stationary retired guard at "+boundary) and intact
+	intact=check(_household_native_ids()==_household_body_ids and FileAccess.get_sha256(chapter.checkpoint_path())==_household_checkpoint_sha,
+		"first household responsibility retains every native Home body and the original automatic checkpoint at "+boundary) and intact
+	if inquiry_choice=="independent_inquiry": intact=_guard_undeployed(boundary) and intact
+	return intact
+
+func _native_household_reload_boundary(saved_snapshot: Dictionary) -> bool:
+	controls();key(KEY_F9)
+	for _i in range(300):
+		await process_frame
+		if chapter._message!="Whole Home and riding skills restored.": continue
+		var prior_process: int=home.process_mode
+		home.process_mode=Node.PROCESS_MODE_DISABLED
+		var restored: Dictionary=chapter.model.snapshot()
+		household_task_persistence.restored_snapshot=restored
+		household_task_persistence.restored_tick=restored.childhood.tick
+		household_task_persistence.restored_state_sha256=chapter.model.present_sha256()
+		household_task_persistence.restored_native_body_ids=_household_native_ids()
+		var exact:=check(restored==saved_snapshot,"actual household F9 restores the exact whole carried-fuel save at its native load boundary")
+		exact=check(chapter.model.workshop_phase()=="fuel" and chapter.workplace.carried.visible and not chapter.workplace.carried.get_node("ToolHeads").visible
+			and chapter.avatar.external_speed_limit==HouseholdCraft.CARRY_SPEED and chapter.avatar.global_position.is_equal_approx(Base.point(restored.player.position)),
+			"actual household F9 restores fuel custody, its original speed cap and saved pose to the existing native player") and exact
+		exact=check(restored.misl.events.map(func(event): return event.kind)==["smith.reserve"]
+			and chapter.model.journal().back().id=="workshop_reserve","actual household F9 removes the later smith handover and its learned journal account") and exact
+		exact=_household_continuity("exact carried-fuel native F9 boundary") and exact
+		home.process_mode=prior_process
+		note("household-fuel-native-reload")
+		return exact
+	return check(false,"actual household F9 never exposed its successful whole-Home load boundary")
+
+func _walk_to_smith() -> bool:
+	for target in [Vector3(3,.14,1),Vector3(-15,.14,1),Vector3(-15,.14,5.7)]:
+		if not await walk_to(target): return false
+	await look_toward(HouseholdCraft.SITE);key(KEY_E);await frames(3)
+	if not check(chapter._paused and chapter._panel_text.text.begins_with("HOUSEHOLD SMITH"),"actual fuel carrier physically reaches and faces the original household smith through native E"): return false
+	var frozen: Dictionary=chapter.model.snapshot()
+	var guard: Transform3D=chapter.escort.global_transform
+	await frames(15)
+	return check(chapter.model.snapshot()==frozen and chapter.escort.global_transform==guard,
+		"actual smith conversation freezes household custody, common clock and retired guard before handover")
+
+func _household_objective(target: Vector3,label: String,boundary: String) -> bool:
+	var before: Dictionary=chapter.model.snapshot()
+	chapter.art.detail.hud.sample()
+	return check(chapter._marker.visible and chapter._marker.text==label
+		and chapter._marker.global_position.is_equal_approx(target+Vector3.UP*2.1)
+		and chapter.model.snapshot()==before,"read-only compact objective locates the actual speaker without changing household authority at "+boundary)
+
+func _first_household_responsibility() -> bool:
+	if not check(household_task=="smith-commission" and captures.size()==18 and not chapter.model.has_economy(),
+		"optional first household responsibility starts only after the complete freshly earned inquiry"): return false
+	var inquiry_bytes:=FileAccess.get_file_as_bytes(SAVE)
+	var retained_inquiry:=FileAccess.open(OPENING_OUTPUT.path_join("inquiry-manual-save.json"),FileAccess.WRITE)
+	if not check(retained_inquiry!=null,"retain exact inquiry final F5 bytes before the first household responsibility overwrites its manual slot"): return false
+	retained_inquiry.store_buffer(inquiry_bytes);retained_inquiry.close()
+	_household_body_ids=_household_native_ids();_household_guard_observation=_escort_observation()
+	_household_checkpoint_sha=FileAccess.get_sha256(chapter.checkpoint_path())
+	household_task_persistence={"inquiry_snapshot":final_manual_save.snapshot,"inquiry_save_sha256":digest(inquiry_bytes),
+		"inquiry_retained_file":"inquiry-manual-save.json","file":SAVE,"retained_file":"household-fuel-save.json",
+		"declared_saved_pose_restored":true,"input":"actual native E and displayed allowance/commission/handover/collect/deliver buttons; actual F5/F9 after earned carried fuel",
+		"initial_native_body_ids":_household_body_ids,"initial_escort_observation":_household_guard_observation,"final_task_completed":false}
+	for target in [Vector3(-2,.14,5),Vector3(3,.14,4)]:
+		if not await walk_to(target): return false
+	await look_toward(TerritoryRules.QUARTERMASTER);key(KEY_E);await frames(3)
+	if not check(chapter._paused and chapter._panel_text.text.begins_with("QUARTERMASTER"),"actual returned player physically reaches and faces the quartermaster's allowance conversation"): return false
+	var allowance_dialog: Dictionary=chapter.model.snapshot()
+	await frames(15)
+	if not check(chapter.model.snapshot()==allowance_dialog and not chapter.model.has_economy(),"hearing the actual quartermaster alone grants no funds and freezes the whole Home clock"): return false
+	if not await _dialog_click("Accept the limited household allowance"): return false
+	var allowance: Dictionary=chapter.model.economy()
+	if not check(chapter.model.has_economy() and allowance.events.is_empty() and TerritoryRules._equal(allowance.ledger,TerritoryRules.initial())
+		and allowance.origin_tick>=household_task_persistence.inquiry_snapshot.aftermath.reported_tick,"actual allowance acceptance creates the single original120 household coins and separate18 personal coins after the observed report"): return false
+	var allowance_hud: Dictionary=hud_observation()
+	if not check(allowance_hud.compact_visible and allowance_hud.task=="Ask about the smith's commission" and not allowance_hud.legacy_visible
+		and chapter._marker.visible and chapter._marker.global_position.is_equal_approx(TerritoryRules.QUARTERMASTER+Vector3.UP*2.1),
+		"actual allowance acceptance keeps one compact unassigned commission task and the existing quartermaster marker"): return false
+	if not _household_continuity("actual allowance acceptance"): return false
+	note("household-allowance-earned");await capture("quartermaster-allowance","Actual allowance accepted after the complete earned inquiry; the original household ledger begins once")
+	key(KEY_E);await frames(3)
+	if not await _dialog_click("Commission two tool bundles"): return false
+	var reserved: Dictionary=chapter.model.economy().ledger
+	if not check(chapter.model.workshop_phase()=="fuel" and reserved.treasury==116 and reserved.purse==18 and reserved.stock.timber==6 and reserved.stock.tools==2
+		and chapter.model.workshop().fuel_carried==2 and chapter.model.workshop().fee_held==4 and chapter.workplace.carried.visible
+		and not chapter.workplace.carried.get_node("ToolHeads").visible and chapter.avatar.external_speed_limit==HouseholdCraft.CARRY_SPEED,
+		"actual displayed commission reserves exactly two timber and four household coins with native carried fuel and the existing walking cap"): return false
+	if not _household_continuity("actual first commission reservation"): return false
+	if not _household_objective(HouseholdCraft.SITE,"Smith · E","carried fuel"): return false
+	note("household-commission-earned");await capture("household-commission","Actual first smith commission and physically carried household fuel/payment")
+	key(KEY_F5);await frames(3)
+	var saved_authority=chapter.model.get_script().new()
+	if not check(saved_authority.load_from(SAVE).is_empty(),"actual household F5 saves carried fuel through the production whole-Home authority"): return false
+	var saved_snapshot: Dictionary=saved_authority.snapshot()
+	var fuel_bytes:=FileAccess.get_file_as_bytes(SAVE)
+	var retained_fuel:=FileAccess.open(OPENING_OUTPUT.path_join("household-fuel-save.json"),FileAccess.WRITE)
+	if not check(retained_fuel!=null,"retain exact native carried-fuel save bytes for independent verification"): return false
+	retained_fuel.store_buffer(fuel_bytes);retained_fuel.close()
+	household_task_persistence.saved_snapshot=saved_snapshot;household_task_persistence.saved_tick=saved_snapshot.childhood.tick
+	household_task_persistence.save_sha256=digest(fuel_bytes);household_task_persistence.saved_state_sha256=saved_authority.present_sha256()
+	if not check(saved_authority.workshop_phase()=="fuel" and saved_snapshot.riding_skills.lesson_receipts==[learned_receipt]
+		and saved_snapshot.misl.events.map(func(event): return event.kind)==["smith.reserve"],"carried-fuel native save retains its only earned reservation receipt and genuinely learned horsecraft"): return false
+	note("household-fuel-native-save")
+	if not await _walk_to_smith(): return false
+	if not await _dialog_click("Hand over fuel and payment"): return false
+	if not check(chapter.model.workshop_phase()=="working" and chapter.model.workshop().fuel_used==2 and chapter.model.workshop().fee_paid==4
+		and not chapter.workplace.carried.visible and is_inf(chapter.avatar.external_speed_limit),"actual physical smith handover consumes the reserved fuel/payment once and releases the original player motor"): return false
+	household_task_persistence.progressed_snapshot=chapter.model.snapshot()
+	household_task_persistence.progressed_tick=chapter.model.progress().tick
+	if not check(FileAccess.get_sha256(SAVE)==household_task_persistence.save_sha256,"actual later smith custody leaves the retained carried-fuel manual save unchanged"): return false
+	if not _household_continuity("actual smith handover before rollback"): return false
+	if not _household_objective(HouseholdCraft.SITE,"Smith · E","working smith order"): return false
+	note("smith-handover-earned-before-reload");await capture("smith-handover","Actual physical smith handover before the carried-fuel native save is restored")
+	if not await _native_household_reload_boundary(saved_snapshot): return false
+	if not await _walk_to_smith(): return false
+	if not await _dialog_click("Hand over fuel and payment"): return false
+	var started: int=chapter.model.workshop().started_tick
+	var deadline: int=started+HouseholdCraft.WORK_TICKS
+	var work_journal: Array=chapter.model.journal()
+	var work_hint: String=chapter.workshop_hint()
+	if not check(chapter.model.workshop_phase()=="working" and chapter.model.economy().events.map(func(event): return event.kind)==["smith.reserve","smith.start"],
+		"replayed physical handover leaves one reservation and one smith custody receipt after the whole-state rollback"): return false
+	while chapter.model.progress().tick<deadline-1: await frames(1)
+	if not check(chapter.model.progress().tick==deadline-1 and chapter.model.workshop_phase()=="working","the original smith clock cannot produce output before its600th active tick"): return false
+	await frames(1)
+	if not check(chapter.model.workshop_phase()=="ready" and chapter.model.workshop().ready_tick==deadline and chapter.workplace.finished.visible
+		and chapter.model.economy().ledger.stock.tools==2 and chapter.model.journal()==work_journal and chapter.workshop_hint()==work_hint,
+		"the existing600-tick deadline creates bench tools once without premature household stock or remotely delivered knowledge"): return false
+	await look_toward(HouseholdCraft.SITE);key(KEY_E);await frames(3)
+	if not await _dialog_click("Collect both tool bundles"): return false
+	if not check(chapter.model.workshop_phase()=="tools" and chapter.model.workshop().tools_carried==2 and chapter.workplace.carried.visible
+		and chapter.workplace.carried.get_node("ToolHeads").visible and not chapter.workplace.finished.visible and chapter.avatar.external_speed_limit==HouseholdCraft.CARRY_SPEED,
+		"actual local smith collection transfers two tools to the existing player with the original loaded walking cap"): return false
+	if not _household_continuity("actual smith tool collection"): return false
+	if not _household_objective(TerritoryRules.QUARTERMASTER,"Quartermaster · E","carried tools"): return false
+	note("smith-tools-physically-collected");await capture("smith-collection","Actual local collection of completed tools; the player carries them before the household store receives them")
+	for target in [Vector3(-15,.14,1),Vector3(3,.14,1),Vector3(3,.14,4)]:
+		if not await walk_to(target): return false
+	await look_toward(TerritoryRules.QUARTERMASTER);key(KEY_E);await frames(3)
+	if not await _dialog_click("Return both tool bundles to household stock"): return false
+	var settled: Dictionary=chapter.model.economy()
+	if not check(chapter.model.workshop_phase()=="complete" and settled.ledger.treasury==116 and settled.ledger.purse==18 and settled.ledger.stock.timber==6
+		and settled.ledger.stock.tools==4 and settled.ledger.favor==53 and chapter.model.workshop().tools_carried==0
+		and not chapter.workplace.carried.visible and is_inf(chapter.avatar.external_speed_limit),"physical household return settles exactly two tools and three standing once without personal payout or duplicate costs"): return false
+	if not check(settled.events.map(func(event): return event.kind)==["smith.reserve","smith.start","smith.ready","smith.collect","smith.deliver"]
+		and chapter.model.journal().filter(func(memory): return memory.id.begins_with("workshop_")).map(func(memory): return memory.id)==["workshop_reserve","workshop_start","workshop_collect","workshop_deliver"],
+		"complete first responsibility has exactly five causal receipts and four locally heard custody accounts"): return false
+	if not _household_continuity("actual completed first responsibility"): return false
+	key(KEY_F5);await frames(3)
+	var final_authority=chapter.model.get_script().new()
+	if not check(final_authority.load_from(SAVE).is_empty() and final_authority.workshop_phase()=="complete", "final actual F5 saves the complete first household responsibility through the original whole-Home authority"): return false
+	var saved_final: Dictionary=final_authority.snapshot()
+	final_manual_save={"file":SAVE,"sha256":FileAccess.get_sha256(SAVE),"snapshot":saved_final,"state_sha256":final_authority.present_sha256()}
+	if not check(TerritoryRules._equal(saved_final.misl,chapter.model.economy()) and saved_final.riding_skills.lesson_receipts==[learned_receipt]
+		and _after_save_projection(saved_final.aftermath)==_after_save_projection(chapter.model.aftermath()),"completed first-responsibility native save preserves exact economy receipts, learned horsecraft and inquiry knowledge with only native guard precision reconciliation"): return false
+	if not _household_continuity("actual final first-responsibility save"): return false
+	if not check(hud_observation().compact_visible and hud_observation().task=="First household responsibility complete"
+		and not hud_observation().legacy_visible,"actual first-responsibility completion keeps one compact settled-task handoff"): return false
+	if not _household_objective(TerritoryRules.QUARTERMASTER,"Quartermaster · E","settled first responsibility"): return false
+	household_task_persistence.final_task_completed=true
+	household_task_persistence.final_snapshot=chapter.model.snapshot();household_task_persistence.final_tick=chapter.model.progress().tick
+	household_task_persistence.final_native_body_ids=_household_native_ids()
+	note("household-first-responsibility-complete");await capture("household-task-complete","Actual completed smith commission after physical return and final production F5 save")
+	return check(captures.size()==23,"complete optional first responsibility retains the original eighteen and five new production-camera boundaries")
+
 func _run() -> void:
 	if not _configure_inquiry_choice(): quit(2);return
 	root.content_scale_size=Vector2i.ZERO;root.size=Vector2i(1280,720)
@@ -548,4 +752,5 @@ func _run() -> void:
 	if not await _course_and_practice(): await finish();return
 	if not await _track_and_return(): await finish();return
 	if not await _household_inquiry(): await finish();return
+	if household_task=="smith-commission" and not await _first_household_responsibility(): await finish();return
 	await finish()
