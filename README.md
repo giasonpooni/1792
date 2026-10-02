@@ -119,6 +119,20 @@ Loading and checkpoints retain their existing validation and rollback semantics.
 
 ## Architecture
 
+Traversal, local access, received information and conflict develop within the
+same physical world and saved state. The working loop is: perceive the place,
+interpret what has reached Buddh, choose an approach, interact or fight, then
+encounter the consequences that the world retained.
+
+The first bounded connection is the optional **household passage** interaction.
+After the inquiry, approach the keeper beside the final riding marker on foot,
+face him and press **E**. Request a passage, cross on foot or horseback, and
+return to hear his account. His response reflects witnessed conduct; hidden
+guard memory reaches the journal through a local conversation. Save/load and
+whole-world rollback retain or rewind the same receipts. The route remains open.
+
+[Shared-world gameplay contract and passage limits](docs/SHARED_WORLD_GAMEPLAY.md)
+
 Godot owns the active game, state and clock. Blender is the intended asset-authoring
 path. The shared **C++–Rust–Python–Julia** architecture remains documented for
 bounded provider workloads; this update does not pretend all four runtimes have

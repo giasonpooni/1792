@@ -354,13 +354,13 @@ func _physics_process(delta: float) -> void:
 		_toggle_mount()
 	if model.mounted():
 		var motion: Dictionary = horse.step(delta,Input.get_action_strength("move_forward"),Input.get_axis("move_left","move_right"),Input.is_action_pressed("sprint"),Input.is_key_pressed(KEY_CTRL),Input.is_action_pressed("move_backward") or Input.is_key_pressed(KEY_SPACE))
-		var error := model.record_ride(motion,delta)
+		var error := _record_mounted(motion,delta)
 		if not error.is_empty(): horse.apply_record(model.horse_record())
 		avatar.global_position = model.position()
 	else:
 		avatar.walk_speed = 2.0 if Input.is_key_pressed(KEY_C) else 4.5
 		avatar.run_speed = 2.0 if Input.is_key_pressed(KEY_C) else 7.5
-		var error := model.record_position(avatar.global_position,delta)
+		var error := _record_walk(avatar.global_position,delta)
 		if not error.is_empty(): avatar.global_position = model.position()
 	model.advance()
 	if _interact_requested:
@@ -372,6 +372,13 @@ func _physics_process(delta: float) -> void:
 	_strike_requested = false
 	guard_visual.visible = not model.mounted() and Input.is_key_pressed(KEY_Q)
 	_refresh()
+
+# Extension seams retain the same admitted player and horse motion.
+func _record_walk(p: Vector3, delta: float) -> String:
+	return model.record_position(p,delta)
+
+func _record_mounted(motion: Dictionary, delta: float) -> String:
+	return model.record_ride(motion,delta)
 
 func _interact() -> void:
 	if model.mounted():

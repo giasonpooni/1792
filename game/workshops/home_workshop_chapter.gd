@@ -6,16 +6,26 @@ const Craft := preload("res://workshops/workshop_rules.gd")
 const CourtyardEnvelope := preload("res://reconstruction/courtyard_envelope.gd")
 const WorkshopView := preload("res://workshops/workshop_world.gd")
 const BazaarPerformance := preload("res://youth/performance/bazaar_director.gd")
+const GateRules := preload("res://access/gate_rules.gd")
 var bazaar_performance: Node
 var workplace: Node3D
 var _workshop_action := ""
 var _workshop_choices: Array[String]=[]
+var _gate_action := ""
+var _gate_choices: Array[String]=[]
+var _gate_caption: Label3D
 
 func _init() -> void:
 	model=WorkshopState.new();save_path=WorkshopState.WORKSHOP_SAVE
 
 func _ready() -> void:
 	super._ready()
+	# Bind this keeper projection to the same marked place used by motion receipts.
+	gate_passage.guard_root.set_meta("actor_projection_id",GateRules.GUARD_ID)
+	_gate_caption=Label3D.new();_gate_caption.text="Gate keeper [E]"
+	_gate_caption.position=GateRules.GUARD+Vector3.UP*1.8
+	_gate_caption.billboard=BaseMaterial3D.BILLBOARD_ENABLED
+	_gate_caption.font_size=20;_gate_caption.pixel_size=0.0015;add_child(_gate_caption)
 	bazaar_performance=BazaarPerformance.new();bazaar_performance.name="BazaarPerformance";add_child(bazaar_performance);bazaar_performance.build(self)
 	_refresh()
 
@@ -36,8 +46,13 @@ func _build_world() -> void:
 
 func _clear_pending_actions() -> void:
 	super._clear_pending_actions();_workshop_action="";_workshop_choices.clear()
+	_gate_action="";_gate_choices.clear()
 
 func _menu_action(action: String) -> void:
+	if action.begins_with("gate:"):
+		var kind:=action.trim_prefix("gate:")
+		if _paused and kind in _gate_choices and _gate_action.is_empty(): _gate_action=kind
+		return
 	if action.begins_with("smith:"):
 		var kind:=action.trim_prefix("smith:")
 		if _paused and kind in _workshop_choices and _workshop_action.is_empty(): _workshop_action=kind
@@ -46,6 +61,7 @@ func _menu_action(action: String) -> void:
 
 func _resume() -> void:
 	_workshop_action="";_workshop_choices.clear()
+	_gate_action="";_gate_choices.clear()
 	super._resume()
 
 func _workshop_button(label: String,kind: String) -> void:
@@ -67,11 +83,54 @@ func _open_journal() -> void:
 		_workshop_button("Import prior youth/visual save · replaces this whole run","import")
 
 func _interact() -> void:
+	if model.aftermath_phase()=="complete" and not model.brawl_busy() and model.position().distance_to(GateRules.GUARD)<=3.0:
+		var error:=_gate_access()
+		if not error.is_empty(): _message=error;return
+		_open_gate();return
 	if model.aftermath_phase()=="complete" and not model.brawl_busy() and model.position().distance_to(Craft.SITE)<=3.0:
 		var error:=_workshop_access("start")
 		if not error.is_empty(): _message=error;return
 		_open_smith();return
 	super._interact()
+
+func _gate_access() -> String:
+	if model.mounted(): return "Dismount to speak to the gate keeper."
+	if not avatar.is_on_floor(): return "Stand on the ground before speaking to the gate keeper."
+	if avatar.global_position.distance_to(model.position())>0.25: return "The body and recorded position must agree."
+	if avatar.global_position.distance_to(GateRules.GUARD)>3.0 or not _seen(GateRules.GUARD+Vector3.UP*1.35,4.5) or not _gate_contact(model.position()):
+		return "Face the nearby gate keeper from unobstructed standing ground."
+	return ""
+
+func _open_gate() -> void:
+	_gate_choices.clear()
+	var body: String="Gate keeper · Ask before using this marked passage, and keep to a controlled pace. I can speak about what I see here."
+	# The UI reads received testimony only; the guard's hidden ledger is not a codex.
+	for entry in model.journal():
+		if entry.source_id==GateRules.GUARD_ID: body=String(entry.text)
+	var actions: Array=[["Ask for one passage","gate:request"]]
+	var choices: Array[String]=["request"]
+	if model.has_gate_passage():
+		actions.append(["Hear the keeper's account","gate:account"]);choices.append("account")
+		# Offered without inspecting private guard memory; the reducer decides whether it applies.
+		actions.append(["Acknowledge the heard concern and request passage","gate:reconcile"]);choices.append("reconcile")
+	actions.append(["Return","resume"])
+	_show_dialog("HOUSEHOLD PASSAGE",body+"\n\nAn original fictional interaction. Keep a controlled pace between the training markers.",actions)
+	_gate_choices=choices
+
+func _gate_contact(p: Vector3) -> bool:
+	if not is_instance_valid(gate_passage) or not gate_passage.is_visible_in_tree(): return false
+	if p.distance_to(GateRules.GUARD)>8.0: return false
+	var ray:=PhysicsRayQueryParameters3D.create(GateRules.GUARD+Vector3.UP*1.35,p+Vector3.UP*1.35,3,[avatar.get_rid(),horse.get_rid(),attacker.get_rid()])
+	return get_world_3d().direct_space_state.intersect_ray(ray).is_empty()
+
+func _record_walk(p: Vector3,delta: float) -> String:
+	var witnessed: bool=model.has_gate_passage() and GateRules.crossing(model.position(),p) and _gate_contact(p)
+	return model.record_gate_position(p,delta,witnessed,avatar.is_on_floor())
+
+func _record_mounted(motion: Dictionary,delta: float) -> String:
+	var target: Vector3=Model.point(motion.position) if Model.valid_point(motion.get("position")) else model.position()
+	var witnessed: bool=model.has_gate_passage() and GateRules.crossing(model.position(),target) and _gate_contact(target)
+	return model.record_gate_ride(motion,delta,witnessed)
 
 func _open_smith() -> void:
 	var text: String={"unassigned":"Smith · Ask your quartermaster about the two tool bundles. I cannot charge his household on your word alone.",
@@ -96,6 +155,16 @@ func _workshop_access(kind: String) -> String:
 	return ""
 
 func _physics_process(delta: float) -> void:
+	if not _gate_action.is_empty():
+		var kind:=_gate_action;_gate_action=""
+		var error:=_gate_access() # Recheck real sight and standing position after opening the dialogue.
+		if error.is_empty(): error=model.gate_action(kind,true)
+		if not error.is_empty(): _message=error
+		else:
+			_message="The keeper's spoken account is retained in the journal."
+			for entry in model.journal():
+				if entry.source_id==GateRules.GUARD_ID: _message=String(entry.text)
+		_resume();return
 	if not _workshop_action.is_empty():
 		var kind:=_workshop_action;_workshop_action=""
 		if kind=="import": _load(YouthState.BRAWL_SAVE);return
@@ -128,6 +197,10 @@ func workshop_hint() -> String:
 
 func _refresh() -> void:
 	super._refresh();_sync_workshop()
+	var gate_near: bool=model.aftermath_phase()=="complete" and not model.brawl_busy() and not model.mounted() and model.position().distance_to(GateRules.GUARD)<6.0
+	if is_instance_valid(_gate_caption): _gate_caption.visible=gate_near and not _paused
+	if is_instance_valid(_hud) and gate_near:
+		_hud.text+="\nHOUSEHOLD PASSAGE · Face the keeper beside the riding marker [E]."
 	if not is_instance_valid(_hud) or not model.has_economy():
 		if is_instance_valid(bazaar_performance): bazaar_performance.sample()
 		return
