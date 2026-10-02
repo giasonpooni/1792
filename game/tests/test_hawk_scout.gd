@@ -53,25 +53,24 @@ func run() -> void:
 	check(scout.get_meta("classification","")=="authored-gameplay-scouting","scout declares its gameplay classification")
 	check(scout.get_meta("historical_claim",true)==false and scout.get_meta("save_authority",true)==false,"scout is neither historical proof nor save authority")
 
+	check(is_instance_valid(scene.scout_contacts) and scene.scout_contacts.contacts.size()==2,"two distant fictional scout contacts are present behind the Home sightline")
+	check(scene.scout_contacts.get_meta("historical_claim",true)==false and scene.scout_contacts.get_meta("persistent_state",true)==false,"distant contacts are authored gameplay, not historical or persistent state")
 	var before: Dictionary = scene.model.snapshot()
 	scene._launch_hawk()
 	check(scout.active and scout.camera.current,"launch switches to the aerial camera")
 	check(not scene.avatar.input_enabled,"launch freezes player input without replacing the body")
 	check(scene.model.snapshot()==before,"launch does not mutate campaign state")
 
-	scout.global_position = Vector3(0.0,10.0,4.0)
+	var contact: Node3D=scene.scout_contacts.contacts[0]
+	scout.global_position = contact.global_position + Vector3(0.0,8.0,10.0)
 	scout.rotation = Vector3.ZERO
-	scene.attacker.global_position = Vector3(0.0,0.14,-12.0)
-	scene.attacker.visible = true
-	scene.attacker.collision_layer = 1
-	scene.attacker.collision_mask = 1
 	scout.sample(int(scene.model.progress().tick))
 	var tagged: Dictionary = scout.tag_best_target()
-	check(String(tagged.error).is_empty() and tagged.target_id=="unknown_assailant","visible hostile can be tagged from the hawk view")
+	check(String(tagged.error).is_empty() and tagged.target_id=="unknown_northwest_lookout","distant hostile contact is discovered and tagged from the hawk view")
 	var observations: Array = scout.observations()
 	check(observations.size()==1 and Rules.valid_observation(observations[0]),"tag produces one valid last-seen observation")
 	var remembered: Vector3 = Rules.observation_position(observations[0])
-	scene.attacker.global_position += Vector3(5.0,0.0,0.0)
+	contact.position += Vector3(3.0,0.0,0.0)
 	check(Rules.observation_position(scout.observations()[0]).is_equal_approx(remembered),"tag does not become omniscient live tracking")
 	check(scene.model.snapshot()==before,"tagging does not mutate the campaign model")
 
