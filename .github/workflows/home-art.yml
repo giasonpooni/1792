@@ -39,6 +39,12 @@ jobs:
           sudo apt-get install --yes --no-install-recommends xvfb xauth libgl1-mesa-dri
           python3 tools/capture_home_art.py --xvfb --godot "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --output test-results/home-art-captures
           cp "$HOME/.local/share/godot/app_userdata/1792/home-art-tests.json" test-results/
+          timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_gujranwala_beauty.gd 2>&1 | tee test-results/gujranwala-beauty-render.log
+          ! grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/gujranwala-beauty-render.log
+          grep -q 'GUJRANWALA_BEAUTY_RENDER: 5 captures; 0 failures' test-results/gujranwala-beauty-render.log
+          cp -r "$HOME/.local/share/godot/app_userdata/1792/gujranwala-beauty-images" test-results/
       - name: Retain source and execution identity
         if: always()
         run: |
