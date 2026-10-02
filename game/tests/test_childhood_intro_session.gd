@@ -69,6 +69,39 @@ func _silent_loop() -> AudioStreamWAV:
 	stream.loop_mode=AudioStreamWAV.LOOP_FORWARD;stream.loop_begin=0;stream.loop_end=22050*4
 	return stream
 
+func _native_audio_frozen(sound: AudioStreamPlayback,witness: AudioStreamPlayer3D,must_remain_paused: bool) -> bool:
+	# Pause is consumed by the audio mixer, independently of accelerated physics
+	# frames. Observe a bounded quiescent interval instead of guessing that an
+	# in-flight mix must have settled after exactly 80 ms. An unparked native
+	# stream proves the mixer advances during that same interval.
+	var mixer:=AudioStreamPlayer.new();mixer.stream=_silent_loop()
+	mixer.process_mode=Node.PROCESS_MODE_ALWAYS;root.add_child(mixer);mixer.play()
+	var reference: AudioStreamPlayback=mixer.get_stream_playback()
+	var started: int=Time.get_ticks_msec()
+	var deadline: int=started+2000
+	while not reference.is_playing() and Time.get_ticks_msec()<deadline: await process_frame
+	var unchanged_since: int=Time.get_ticks_msec()
+	var parked_at: float=sound.get_playback_position()
+	var first_at: float=parked_at
+	var reference_at: float=reference.get_playback_position()
+	var frozen:=false
+	while Time.get_ticks_msec()<deadline:
+		await process_frame
+		# A pending, never-started 3D stream has no active pause flag. The
+		# separate steady-audio case must retain a genuinely paused playback.
+		if (must_remain_paused or sound.is_playing()) and not witness.stream_paused: break
+		var now: int=Time.get_ticks_msec()
+		var at: float=sound.get_playback_position()
+		if at!=parked_at:
+			parked_at=at;unchanged_since=now
+			reference_at=reference.get_playback_position()
+		if now-unchanged_since>=250 and reference.get_playback_position()>reference_at:
+			frozen=(witness.stream_paused if must_remain_paused else not sound.is_playing() or witness.stream_paused) and at==parked_at
+			break
+	print("INTRO_AUDIO_PAUSE_OBSERVATION: first_position=%s; settled_position=%s; final_position=%s; unchanged_ms=%d; elapsed_ms=%d; mixer_before=%s; mixer_after=%s; paused=%s; frozen=%s"%[first_at,parked_at,sound.get_playback_position(),Time.get_ticks_msec()-unchanged_since,Time.get_ticks_msec()-started,reference_at,reference.get_playback_position(),witness.stream_paused,frozen])
+	mixer.stop();mixer.stream=null;mixer.queue_free()
+	return frozen
+
 func _release_flag_audio() -> void:
 	if not is_instance_valid(home): return
 	for path in ["IntroAudioUnpausedFlag","IntroAudioPausedFlag"]:
@@ -150,14 +183,7 @@ func _opening(steady_audio: bool=false) -> void:
 	controls(true);await frames(12);controls()
 	_check_frozen()
 	var sound: AudioStreamPlayback=witness.get_stream_playback()
-	# Native audio applies pause at its independent mix boundary. Settle the
-	# in-flight buffer before measuring that subsequent mixer time does not run.
-	var settled: int=Time.get_ticks_msec()+80
-	while Time.get_ticks_msec()<settled: await process_frame
-	var sound_at: float=sound.get_playback_position()
-	var until: int=Time.get_ticks_msec()+80
-	while Time.get_ticks_msec()<until: await process_frame
-	check(sound.get_playback_position()==sound_at,"native 3D playback clock stays frozen while the opening owns execution")
+	check(await _native_audio_frozen(sound,witness,steady_audio),"native 3D playback clock stays frozen while the independent mixer advances during the opening")
 	if not steady_audio: check(not sound.is_playing(),"initial pending 3D stream never begins secretly while Home is parked")
 
 func _check_frozen() -> void:

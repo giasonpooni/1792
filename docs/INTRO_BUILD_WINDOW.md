@@ -110,3 +110,38 @@ Next: independently inspect the final frames; reconcile the exact published head
 and CI evidence; qualify the independent inquiry from a new earned route; then
 repair demonstrated presentation or control defects and improve the first
 household-task handoff. No new capability is authorized by a passed fixture alone.
+
+## Checkpoint: first hosted reconciliation
+
+Draft PR #71 published head `9afc0c3a2c35d6b9eb966d3c094e73a76ab4211b`
+with qualified tree `17cba507e3ae2cfce2c7edd6c3c077397b64411b`. The committed
+local execution `322077ce-e149-4bd1-96e1-23b520cc2729` and independent verification
+`3a206a23-bd60-4a70-bd6b-a87cc67ed12e` passed the 18-frame, 224-check route.
+Independent inspection found readable dialogue/controls and a compact final
+handoff; the bend frame establishes guard attendance through native pose/radius
+evidence, rather than claiming the guard is prominently framed.
+
+The first hosted Command story run `37011540111` correctly checked out that exact
+head and passed native suites, then failed the inherited reconstruction renderer:
+three assertions expected legacy narration under the default compact HUD. The
+renderer now first checks default compact suppression, parks execution to select
+the supported classic presentation, checks whole authority and native body poses
+unchanged, and retains the original four research-view captures. Native display
+rerun: **4 captures, zero failures**.
+
+The first Courtyard run `37011540170` failed the intro session's fixed 80 ms audio
+freeze probe: **612 passed, one failed**; other same-head native runners passed.
+That failed log had no playback samples, so its precise cause is not established.
+The replacement probe allows at most two seconds for native mixer settlement,
+then requires every sampled 3D position to remain exactly unchanged for 250 ms
+while an independent root audio stream advances. Active 3D playback must remain
+paused; pending playback must remain unstarted. No runtime pause code changes.
+The new trace observed one active witness advance from `0.09868480725624` to
+`0.1102947845805`, then remain exact for 250 ms while the reference mixer advanced;
+the suite passed **613 checks, zero failures**. This is a bounded settlement
+qualification, not tolerance for continuing playback drift.
+
+These corrections require a new committed-source qualification and fresh exact-
+head hosted results. The earlier failed runs remain failed and provide no hosted
+opening-journey qualification. Inspect the next run and its retained artifact
+before claiming hosted success. The branch remains draft and unmerged.
