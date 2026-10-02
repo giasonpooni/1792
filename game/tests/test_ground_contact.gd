@@ -183,6 +183,45 @@ func quarter_speed_journey() -> void:
 	check(clearance_ok,"quarter-speed full capsule never clips at any route tick")
 	await dispose(course)
 
+func fine_control_fixtures() -> void:
+	var course = await new_course(); var actor: CharacterBody3D = course.avatar
+	course.samples.clear()
+	check(await walk_z(course,-0.65,5000,0.22),"near-deadzone mapped input ascends the connected stairs without cycling")
+	near(actor.global_position.y,0.72,0.012,"near-deadzone ascent reaches the real plateau")
+	check(actor.is_on_floor() and no_overlap(course),"near-deadzone ascent finishes supported with full capsule clearance")
+	var prior_z := INF; var monotonic := true; var maximum_contact_run := 0; var contact_run := 0
+	for sample in course.samples:
+		monotonic = monotonic and sample.position[2] <= prior_z+0.0001
+		prior_z = sample.position[2]
+		if sample.mode == "step_contact": contact_run += 1; maximum_contact_run = maxi(maximum_contact_run,contact_run)
+		else: contact_run = 0
+	check(monotonic,"near-deadzone commanded ascent never reverses horizontal progress")
+	check(maximum_contact_run > 0 and maximum_contact_run <= 60,"near-deadzone stair contact remains finite")
+	check(course.samples.filter(func(s): return not s.grounded and s.mode == "air").is_empty(),"near-deadzone ascent has no undeclared fall-and-retry cycle")
+	await dispose(course)
+	for kind in ["stop","reverse","turn"]:
+		course = await new_course(); actor = course.avatar
+		await fixture(course,Vector3(0,0.04,4.65))
+		Input.action_press("move_forward",0.4)
+		var reached := false
+		for _i in range(600):
+			await frames(1)
+			if actor.ground_contact_active(): reached = true; break
+		check(reached,kind+" fixture begins during real stair contact")
+		var before := actor.global_position
+		release()
+		if kind == "reverse": Input.action_press("move_backward",0.4)
+		elif kind == "turn": Input.action_press("move_right",0.4)
+		await frames(1)
+		check(not actor.ground_contact_active(),kind+" input releases retained contact in one physics tick")
+		check(Vector2(actor.last_ground_displacement.x,actor.last_ground_displacement.z).length() <= actor.walk_speed/60.0+0.002,kind+" release respects one-tick commanded travel budget")
+		await frames(24); release()
+		if kind == "stop": check(actor.global_position.distance_to(before) < 0.05,"released stick stops without a stair-edge launch")
+		elif kind == "reverse": check(actor.global_position.z > before.z+0.2,"reverse input retreats from the stair")
+		else: check(actor.global_position.x > before.x+0.2,"turn input exits laterally from the stair")
+		check(actor.is_on_floor() and no_overlap(course),kind+" result ends supported and capsule-clear")
+		await dispose(course)
+
 func physical_fixtures() -> void:
 	var course = await new_course(); var actor: CharacterBody3D = course.avatar
 	await fixture(course,Vector3(6,0.04,4.8))
@@ -502,6 +541,7 @@ func run() -> void:
 	check(Engine.physics_ticks_per_second == 60,"native runtime physics clock is 60Hz")
 	await played_journey()
 	await quarter_speed_journey()
+	await fine_control_fixtures()
 	await physical_fixtures()
 	await save_fixtures()
 	release()

@@ -29,8 +29,10 @@ final native floor-contact update establishes the engine's actual grounding flag
 
 At slow analog speeds, the rounded capsule first meets a stair corner at a steep
 contact normal. A short, explicit contact transition retains the original support
-and rise bound while the commanded movement crosses that corner. It expires within
-one second, adds no autonomous horizontal movement, and releases on interruption.
+and total rise bound while the commanded movement crosses that corner. Successive
+supported destinations may adjust downward relative to the immediately prior tick,
+but never below the original contact anchor. It expires within one second, adds no
+autonomous horizontal movement, and releases on interruption.
 A separate ray verifies the same static body's walkable top face; that observation
 does not fabricate the native grounding flag. No separate locomotion service or
 frame-driven transform animation advances the actor.
@@ -42,9 +44,15 @@ not a biomechanical, deformable-ground or rigid-body animal simulation.
 
 The independent fixture matrix measures 18, 24 and 30 cm risers at walking targets
 of 0.45, 1.125, 2.25 and 4.5 m/s; over-height 30.1 cm and larger risers refuse.
-Extremely slow approaches can exhaust the finite contact window and stall. That
-remaining feel limitation is explicit; it is not resolved by adding uncommanded
-travel or increasing the admissible step height.
+The connected course also admits mapped input strength 0.22, just above its 0.20
+deadzone, without a fall-and-retry cycle. A command at 0.21 moves too slowly to
+reach the first stair during the current 40-second probe, so it is not evidence of
+stair refusal or completion. No implementation promises finite-time traversal for
+an arbitrarily small input above the deadzone.
+
+Zero input, full reversal and a perpendicular turn release retained stair contact
+in one physics tick. The shared acceleration still governs stopping and direction
+change; contact release does not add an impulse or autonomous horizontal travel.
 
 ## State and measurement
 

@@ -194,7 +194,14 @@ static func plan(actor: CharacterBody3D,movement: Vector3,height: float,continua
 	if landing==null: return refusal
 	var destination:=advanced;destination.origin+=landing.get_travel()
 	var rise:= (destination.origin-original.origin).dot(up)
-	if rise<=EPSILON or (destination.origin-anchor.origin).dot(up)>height+EPSILON: return refusal
+	var anchored_rise:= (destination.origin-anchor.origin).dot(up)
+	# The first admission must actually rise. During a retained corner crossing,
+	# the capsule's supported destination can move slightly down from the prior
+	# tick while remaining above its original anchor. Refusing that local descent
+	# made near-deadzone input repeatedly climb and fall at the same stair edge.
+	if continuation.is_empty() and rise<=EPSILON: return refusal
+	if not continuation.is_empty() and anchored_rise < -EPSILON: return refusal
+	if anchored_rise>height+EPSILON: return refusal
 	# The capsule can touch a high corner before its sole reaches that corner.
 	# Bound the contacted surface itself, so repeated ticks cannot ratchet up a wall.
 	for index in range(landing.get_collision_count()):
@@ -232,7 +239,10 @@ static func execute(actor: CharacterBody3D,admission: Dictionary) -> bool:
 		actor.move_and_collide(motion,false,0.0,false,8)
 		var residual:=actor.global_position-point
 		var up:=actor.up_direction.normalized()
-		var recovered_floor: bool=index==0 and residual.dot(up)>=0 and residual.dot(up)<=actor.safe_margin*2+EPSILON and (residual-up*residual.dot(up)).length()<=EPSILON and (actor.global_position-admission.anchor.origin).dot(up)<=admission.height+EPSILON
+		# Native recovery can add a sub-margin vertical correction on any already
+		# swept segment, especially the final lower motion onto a stair tread. It is
+		# accepted only when purely upward and still inside the original rise bound.
+		var recovered_floor: bool=residual.dot(up)>=0 and residual.dot(up)<=actor.safe_margin*2+EPSILON and (residual-up*residual.dot(up)).length()<=EPSILON and (actor.global_position-admission.anchor.origin).dot(up)<=admission.height+EPSILON
 		if residual.length()>EPSILON and not recovered_floor:
 			actor.global_transform=original;return false
 	var displacement:=actor.global_position-original.origin

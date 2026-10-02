@@ -102,9 +102,18 @@ trace and native PNG in `ground-contact-physics-evidence`. Native full-run and
 render logs are separate verification identities; inspect their completion markers
 for the current head rather than treating this checkpoint as a CI success claim.
 
-Next unresolved work: very slow analog approaches can expire and stall or cycle
-on permitted risers. Measure stopping/reversal and altered approach angles before
-changing that policy. Keep the finite deadline, real full-hull contact, rise bound
-and commanded travel budget. Human control feel remains unqualified. Horse changes
+The next pass repaired a measured near-deadzone cycle: during a retained rounded-
+capsule corner crossing, the supported destination may move slightly downward from
+the prior tick while remaining above the original contact anchor. Mapped strength
+0.22 now clears the connected stairs in 4,322 observed ticks; its longest retained
+contact is 42 ticks, below the one-second deadline. Strength 0.24 remains the faster
+qualified route. Stop, full reversal and perpendicular turn each release retained
+contact in one physics tick and remain within the commanded travel budget.
+
+Next unresolved work: qualify oblique approach angles and turning across uneven
+ground beyond the straight authored lane. Keep the finite deadline, real full-hull
+contact, rise bound and commanded travel budget. Inputs arbitrarily close to the
+0.20 deadzone cannot have a finite completion-time guarantee. Human control feel
+remains unqualified. Horse changes
 still require a concrete, isolated integration with the current horsecraft source;
 the concurrent family/horsecraft checkout remains untouched.

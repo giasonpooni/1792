@@ -168,7 +168,12 @@ func step_motion(delta: float,stick: Vector2,sprint: bool,jump: bool=false,obsta
 		var intended:=velocity
 		velocity=-up_direction*0.01;_slide_ground_observed(on_floor)
 		velocity=intended-up_direction*intended.dot(up_direction)
-		last_ground_rise=(global_position-before).dot(up_direction);last_ground_event="step_up"
+		var observed_rise: float=(global_position-before).dot(up_direction)
+		# A retained capsule/corner crossing may make a small supported downward
+		# adjustment. Its position trace remains authoritative; do not mislabel it
+		# as a new upward step event.
+		if observed_rise>GroundContact.EPSILON:
+			last_ground_rise=observed_rise;last_ground_event="step_up"
 		_ground_step={} if is_on_floor() else ground_admission.continuation
 		if not _ground_step.is_empty(): _ground_step.elapsed+=delta
 	else:
