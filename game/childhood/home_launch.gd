@@ -1,7 +1,7 @@
 extends RefCounted
 ## Compose a controller onto the original scene without changing its retained bytes.
 const Home := preload("res://world/home_territory.tscn")
-const Chapter := preload("res://history/childhood_intro_chapter.gd")
+const Chapter := preload("res://warband/nihang_chapter.gd")
 
 static func make_world() -> Node3D:
 	var home: Node3D = Home.instantiate()

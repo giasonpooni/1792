@@ -7,6 +7,9 @@ var space: PhysicsDirectSpaceState3D
 var exclude: Array[RID] = []
 var built := false
 var hull := CapsuleShape3D.new()
+var clearance_size := Vector3(1.9, 1.7, 1.9)
+var clearance_height := 1.05
+var sweep_height := 1.0
 
 func _init() -> void:
 	hull.radius = 0.42
@@ -24,14 +27,14 @@ func bind(world: World3D, ignored: Array[RID]) -> void:
 func rebuild() -> void:
 	var query := PhysicsShapeQueryParameters3D.new()
 	var clearance := BoxShape3D.new()
-	clearance.size = Vector3(1.9, 1.7, 1.9)
+	clearance.size = clearance_size
 	query.shape = clearance
 	query.collision_mask = 1
 	query.exclude = exclude
 	for y in range(62):
 		for x in range(62):
 			var p := grid.get_point_position(Vector2i(x, y))
-			query.transform.origin = Vector3(p.x, 1.05, p.y)
+			query.transform.origin = Vector3(p.x, clearance_height, p.y)
 			grid.set_point_solid(Vector2i(x, y), not space.intersect_shape(query, 1).is_empty())
 	built = true
 
@@ -40,7 +43,7 @@ func clear_segment(start: Vector3, end: Vector3) -> bool:
 	query.shape = hull
 	query.collision_mask = 1
 	query.exclude = exclude
-	query.transform.origin = start + Vector3.UP * 1.0
+	query.transform.origin = start + Vector3.UP * sweep_height
 	if not space.intersect_shape(query, 1).is_empty():
 		return false
 	query.motion = Vector3(end.x - start.x, 0, end.z - start.z)

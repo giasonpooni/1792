@@ -7,6 +7,12 @@ physics and simulation label. **1792** remains the repository and shorthand name
 **Foundry integration on this branch:** [game-owned adapter, terminal connection, and complete retained delivery](docs/FOUNDRY.md). The adapter is a development workload, not a required game service.
 <!-- /foundry-delivery-v1 -->
 
+**Nihang childhood companions on this branch:** the existing Home now includes an
+outdoor camp, familiar childhood forms of address, a horse-care conversation and
+a choice of one or two mounted companions for a practice ride and return.
+Agreements, received dialogue and rider poses travel with the same whole-world
+save. [Play and verification guide](docs/NIHANG_COMPANIONS.md).
+
 ## Historical perspective and production order
 
 **1792 is the primary game workload.** Hero of the Two Worlds / Garibaldi
