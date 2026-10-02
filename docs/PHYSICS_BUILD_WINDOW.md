@@ -132,3 +132,23 @@ Next unresolved work: measure longitudinal-to-lateral direction changes on slope
 support and evaluate actor-specific mount/dismount clearance against a clean,
 concrete horsecraft source. Do not copy the concurrent dirty family/horsecraft work
 into this branch. Human feel and production animation remain unqualified.
+
+The subsequent control pass exercised the authored 30-degree slope with actual mapped
+input. Uphill stopping remained under 11 cm and settled within 2 mm; downhill reversal,
+lateral traverse and diagonal ascent stayed supported and capsule-clear within the
+commanded travel budget. No invented step contact was observed. These are bounded human
+actor results, not a global or horse-terrain qualification.
+
+Actor-specific inspection then found a concrete riding defect in the committed source:
+mount clearance used an eye-height ray and therefore admitted a knee-height wall, while
+dismount clearance substituted a fixed capsule for the actor. Both paths now sweep the
+active actor's real enabled collision shape with its local transform. Native fixtures
+cover the low-wall refusal and an offset actor hull beneath a ceiling. This extends the
+existing horsecraft adapter without changing ride authority, saves, world-clock behavior
+or the standing/two-horse/mounted-matchlock work in the concurrent checkout.
+
+Next unresolved work: qualify horse and rider support on deliberate uneven-terrain
+fixtures, including turning, stopping and mount transitions on slopes. The present riding
+scene remains a flat graybox, so this checkpoint makes no such claim. Human feel,
+production animation, moving supports and arbitrary world geometry also remain
+unqualified.

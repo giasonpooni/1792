@@ -167,7 +167,7 @@ func physical_trace_error(trace: Array, course: Node3D) -> String:
 	return ""
 
 func spatial_error(value: Variant) -> String:
-	if not fields(value,["oblique_steps","turn_terrace","diagonal_ceiling"]): return "Malformed spatial-control evidence."
+	if not fields(value,["oblique_steps","turn_terrace","diagonal_ceiling","slope_control"]): return "Malformed spatial-control evidence."
 	if not value.oblique_steps is Array or value.oblique_steps.size()!=5: return "Spatial evidence requires five declared oblique entries."
 	var angles := [-45.0,-30.0,0.0,30.0,45.0]
 	for index in range(angles.size()):
@@ -201,6 +201,22 @@ func spatial_error(value: Variant) -> String:
 	if not fields(ceiling,["end","step_up_events"]) or not Motion.vector(ceiling.end,100): return "Malformed diagonal-ceiling evidence."
 	if ceiling.end[1]>=0.02 or ceiling.end[2]<=-1 or ceiling.step_up_events!=0:
 		return "Diagonal ceiling did not refuse the otherwise walkable rise."
+	var slope: Variant=value.slope_control
+	if not fields(slope,["stop","reverse","lateral","diagonal"]): return "Malformed slope-control evidence."
+	if not fields(slope.stop,["start","stopped","settled","stop_distance","settled_drift"]): return "Malformed slope-stop evidence."
+	if not Motion.vector(slope.stop.start,100) or not Motion.vector(slope.stop.stopped,100) or not Motion.vector(slope.stop.settled,100): return "Non-finite slope-stop position."
+	if not Motion.finite(slope.stop.stop_distance) or slope.stop.stop_distance>=0.11 or not Motion.finite(slope.stop.settled_drift) or slope.stop.settled_drift>=0.002:
+		return "Slope stopping or settled drift exceeded bounds."
+	if not fields(slope.reverse,["end","air_ticks","maximum_horizontal_per_tick"]): return "Malformed slope-reverse evidence."
+	if not fields(slope.lateral,["end","air_ticks","step_up_events","maximum_horizontal_per_tick"]): return "Malformed lateral-slope evidence."
+	if not fields(slope.diagonal,["end","air_ticks","maximum_horizontal_per_tick"]): return "Malformed diagonal-slope evidence."
+	for key in ["reverse","lateral","diagonal"]:
+		var item: Variant=slope[key]
+		if not Motion.vector(item.get("end"),100) or item.get("air_ticks")!=0 or not Motion.finite(item.get("maximum_horizontal_per_tick")) or item.maximum_horizontal_per_tick>2.7/60.0+0.002:
+			return "Slope direction change exceeded support or travel bounds."
+	if slope.reverse.end[2]<=-1.7 or slope.reverse.end[1]>=0.02: return "Slope reversal did not return to the lower floor."
+	if slope.lateral.end[0]<=-5.4 or slope.lateral.end[1]<=0.3 or slope.lateral.get("step_up_events")!=0: return "Lateral slope evidence is outside bounds."
+	if slope.diagonal.end[0]<=-5.4 or slope.diagonal.end[2]>=-2.8 or slope.diagonal.end[1]<=0.7: return "Diagonal slope evidence is outside bounds."
 	return ""
 
 func run() -> void:

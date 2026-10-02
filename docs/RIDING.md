@@ -44,11 +44,14 @@ teleport a parked horse to Lahore. Without muster, the older immediate viewpoint
 
 ## Spatial checks
 
-Mounting needs proximity and a clear line to the horse. F requests are handled in physics
-time. Dismounting requires a grounded, nearly stopped horse. The scene tries both sides,
-then rear/front, requiring a ground ray, standable normal, standing-capsule clearance and
-swept path. A thin wall cannot be bypassed simply because the final landing is clear.
-The campaign additionally rejects nonfinite or distant landing proposals.
+Mounting needs proximity and a clear swept path to the horse. F requests are handled in
+physics time. Both mount and dismount probes use the active actor's actual enabled
+collision shape and its local transform; they do not substitute an eye ray or a
+hard-coded capsule. Dismounting requires a grounded, nearly stopped horse. The scene tries
+both sides, then rear/front, requiring a ground ray, standable normal, standing-shape
+clearance and swept path. A knee-height or thin wall cannot be bypassed simply because an
+eye ray or the final landing is clear. The campaign additionally rejects nonfinite or
+distant landing proposals.
 
 These are local single-player invariants, not a network anti-cheat boundary. The campaign
 cannot attest collision geometry by itself; the trusted scene adapter performs the probes.
@@ -79,7 +82,8 @@ validation remains inherited and is not claimed as solved here.
 Run `python tools/run_checks.py --godot /path/to/godot` for all structural, import, command,
 house-reporting and riding checks. The riding suite exercises actual physics/input over a
 round trip, acceleration/braking, safe and blocked dismounts, mounting through walls,
-collision stopping, airborne landing, mounted save/load, legacy imports and commission rules.
+low-barrier and offset-hull clearance, collision stopping, airborne landing, mounted
+save/load, legacy imports and commission rules.
 Original tests are retained unchanged; new tests do not weaken their assertions.
 
 `render_riding.gd` creates five controlled render fixtures. They are actual Godot images,

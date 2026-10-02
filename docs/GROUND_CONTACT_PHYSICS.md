@@ -61,6 +61,14 @@ a short native-gravity transition. A separate 30-degree diagonal approach confir
 that the complete capsule still refuses an otherwise walkable tread under a low
 ceiling. These are bounded graybox collision fixtures, not global traversal promises.
 
+The authored 30-degree slope also qualifies four directional control cases through
+mapped input: stopping from uphill travel, reversing downhill, traversing laterally
+and ascending diagonally. Stopping travels less than 11 cm under the shared
+deceleration and then remains within 2 mm for 30 ticks. The commanded cases stay
+supported and capsule-clear without manufacturing stair contacts. This evidence is
+specific to the existing human actor and course geometry; it does not qualify horse,
+rider or arbitrary terrain behavior.
+
 ## State and measurement
 
 The retained motion snapshot stores the motor's integration state. Its velocity

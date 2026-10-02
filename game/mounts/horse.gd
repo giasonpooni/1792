@@ -59,15 +59,37 @@ func step(delta: float, throttle: float, steering: float, canter: bool, walk: bo
 	return {"position": [global_position.x, global_position.y, global_position.z],
 		"yaw": rotation.y, "speed": speed, "vertical_speed": minf(0.0, velocity.y), "grounded": is_on_floor()}
 
+func _avatar_collider(avatar: CharacterBody3D) -> CollisionShape3D:
+	var collider: CollisionShape3D=avatar.get_node_or_null("CollisionShape3D")
+	if collider==null or collider.disabled or collider.shape==null: return null
+	if not avatar.global_transform.is_finite() or not collider.transform.is_finite(): return null
+	return collider
+
+func _avatar_query(avatar: CharacterBody3D,collider: CollisionShape3D,body_transform: Transform3D) -> PhysicsShapeQueryParameters3D:
+	var query:=PhysicsShapeQueryParameters3D.new()
+	query.shape=collider.shape;query.transform=body_transform*collider.transform
+	query.collision_mask=collision_mask;query.exclude=[get_rid(),avatar.get_rid()]
+	return query
+
 func clear_mount_path(avatar: CharacterBody3D) -> bool:
-	var ray := PhysicsRayQueryParameters3D.create(avatar.global_position + Vector3.UP,
-		global_position + Vector3.UP * 1.4, 1, [get_rid(), avatar.get_rid()])
-	return get_world_3d().direct_space_state.intersect_ray(ray).is_empty()
+	# Mounting removes the walking body only after admission. Sweep its actual
+	# configured shape and local transform to the horse; an eye-height ray could
+	# miss a low wall that the avatar capsule cannot cross.
+	var collider:=_avatar_collider(avatar)
+	if collider==null or collision_mask==0: return false
+	var query:=_avatar_query(avatar,collider,avatar.global_transform)
+	var destination:=avatar.global_transform;destination.origin=global_position
+	query.motion=(destination*collider.transform).origin-query.transform.origin
+	var fraction:=get_world_3d().direct_space_state.cast_motion(query)
+	return fraction.size()==2 and fraction[0]>=0.999
 
 func dismount_position(avatar: CharacterBody3D) -> Variant:
-	# Try both sides, then rear/front. Ray ground, capsule clearance, swept path.
+	# Try both sides, then rear/front. Ray ground, then clear and sweep the same
+	# collision shape/local transform that resumes walking after dismount.
 	var space := get_world_3d().direct_space_state
-	var exclusions: Array[RID] = [get_rid(), avatar.get_rid()]
+	var collider:=_avatar_collider(avatar)
+	if collider==null or collision_mask==0: return null
+	var exclusions: Array[RID]=[get_rid(),avatar.get_rid()]
 	for offset in [global_basis.x * 1.8, -global_basis.x * 1.8, global_basis.z * 2.1, -global_basis.z * 2.1]:
 		var p: Vector3 = global_position + offset
 		var ray := PhysicsRayQueryParameters3D.create(p + Vector3.UP * 0.65, p - Vector3.UP * 0.8, 1, exclusions)
@@ -75,19 +97,13 @@ func dismount_position(avatar: CharacterBody3D) -> Variant:
 		if hit.is_empty() or hit.normal.y < cos(deg_to_rad(40.0)):
 			continue
 		var landing: Vector3 = hit.position + Vector3.UP * 0.04
-		var query := PhysicsShapeQueryParameters3D.new()
-		var shape := CapsuleShape3D.new()
-		shape.radius = 0.35
-		shape.height = 1.6
-		query.shape = shape
-		query.exclude = exclusions
-		query.collision_mask = 1
-		query.transform = Transform3D(Basis.IDENTITY, landing + Vector3.UP * 0.8)
+		var destination:=avatar.global_transform;destination.origin=landing
+		var query:=_avatar_query(avatar,collider,destination)
 		if not space.intersect_shape(query, 1).is_empty():
 			continue
-		var start := global_position + Vector3.UP * 0.84
-		query.transform.origin = start
-		query.motion = landing + Vector3.UP * 0.8 - start
+		var target_origin: Vector3=query.transform.origin
+		query.transform=avatar.global_transform*collider.transform
+		query.motion=target_origin-query.transform.origin
 		var fraction := space.cast_motion(query)
 		if fraction.size() == 2 and fraction[0] >= 0.999:
 			return landing

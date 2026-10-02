@@ -69,6 +69,16 @@ func manual_tick(actor: CharacterBody3D,stick: Vector2) -> String:
 	await physics_frame
 	return actor.step_motion(1.0/60.0,stick,false)
 
+func slope_midpoint(course: Node3D) -> bool:
+	await fixture(course,Vector3(-6,0.04,-0.7))
+	Input.action_press("move_forward",0.6)
+	var reached:=false
+	for _i in range(180):
+		await frames(1)
+		if course.avatar.global_position.z < -2.25: reached=true;break
+	release();await frames(1);course.samples.clear()
+	return reached
+
 func physical_contact_modes(samples: Array, actor: CharacterBody3D) -> bool:
 	# Upward corner transfer is explicit bounded contact. Descending stair nosings
 	# may release into real gravity for a short, geometrically supported fall.
@@ -228,6 +238,61 @@ func fine_control_fixtures() -> void:
 		check(actor.is_on_floor() and no_overlap(course),kind+" result ends supported and capsule-clear")
 		await dispose(course)
 
+func slope_control_fixtures() -> Dictionary:
+	var course=await new_course();var actor: CharacterBody3D=course.avatar
+	check(await slope_midpoint(course),"slope stop fixture reaches real mid-slope support")
+	var start:=actor.global_position
+	await frames(30)
+	var stopped:=actor.global_position;var stop_distance:=stopped.distance_to(start)
+	var stable_start:=actor.global_position;await frames(30);var settled:=actor.global_position
+	check(actor.is_on_floor() and no_overlap(course),"released slope input stays supported and capsule-clear")
+	check(stop_distance<0.11 and Vector2(actor.velocity.x,actor.velocity.z).length()<0.001,"released slope input stops under inherited acceleration")
+	check(settled.distance_to(stable_start)<0.002,"stopped actor does not drift on the slope")
+	var stop_result:={"start":M.array(start),"stopped":M.array(stopped),"settled":M.array(settled),
+		"stop_distance":stop_distance,"settled_drift":settled.distance_to(stable_start)}
+	await dispose(course)
+	course=await new_course();actor=course.avatar
+	check(await slope_midpoint(course),"slope reverse fixture reaches real mid-slope support")
+	Input.action_press("move_backward",0.6)
+	var reverse_air:=0;var reverse_max:=0.0
+	for _i in range(35):
+		await frames(1);reverse_air+=int(not actor.is_on_floor())
+		reverse_max=maxf(reverse_max,Vector2(actor.last_ground_displacement.x,actor.last_ground_displacement.z).length())
+	release()
+	check(actor.global_position.z>-1.7 and actor.global_position.y<0.02,"slope reversal returns to the lower real floor")
+	check(reverse_air==0 and actor.is_on_floor() and no_overlap(course),"slope reversal remains supported and capsule-clear")
+	check(reverse_max<=actor.walk_speed*0.6/60.0+0.002,"slope reversal respects commanded travel budget")
+	var reverse_result:={"end":M.array(actor.global_position),"air_ticks":reverse_air,"maximum_horizontal_per_tick":reverse_max}
+	await dispose(course)
+	course=await new_course();actor=course.avatar
+	check(await slope_midpoint(course),"lateral slope fixture reaches real mid-slope support")
+	Input.action_press("move_right",0.6)
+	var lateral_air:=0;var lateral_max:=0.0;var lateral_events:=0
+	for _i in range(25):
+		await frames(1);lateral_air+=int(not actor.is_on_floor());lateral_events+=int(actor.last_ground_event=="step_up")
+		lateral_max=maxf(lateral_max,Vector2(actor.last_ground_displacement.x,actor.last_ground_displacement.z).length())
+	release()
+	check(actor.global_position.x>-5.4 and actor.global_position.y>0.3,"lateral command traverses the real sloped support")
+	check(lateral_air==0 and actor.is_on_floor() and no_overlap(course),"lateral slope travel stays supported and capsule-clear")
+	check(lateral_events==0,"ordinary lateral slope travel does not invent stair contact")
+	check(lateral_max<=actor.walk_speed*0.6/60.0+0.002,"lateral slope travel respects commanded budget")
+	var lateral_result:={"end":M.array(actor.global_position),"air_ticks":lateral_air,"step_up_events":lateral_events,"maximum_horizontal_per_tick":lateral_max}
+	await dispose(course)
+	course=await new_course();actor=course.avatar
+	check(await slope_midpoint(course),"diagonal slope fixture reaches real mid-slope support")
+	Input.action_press("move_forward",0.45);Input.action_press("move_right",0.45)
+	var diagonal_air:=0;var diagonal_max:=0.0
+	for _i in range(30):
+		await frames(1);diagonal_air+=int(not actor.is_on_floor())
+		diagonal_max=maxf(diagonal_max,Vector2(actor.last_ground_displacement.x,actor.last_ground_displacement.z).length())
+	release()
+	check(actor.global_position.x>-5.4 and actor.global_position.z<-2.8 and actor.global_position.y>0.7,"diagonal redirection climbs across real sloped support")
+	check(diagonal_air==0 and actor.is_on_floor() and no_overlap(course),"diagonal slope redirection stays supported and capsule-clear")
+	check(diagonal_max<=actor.walk_speed*0.6/60.0+0.002,"diagonal slope redirection respects commanded budget")
+	var diagonal_result:={"end":M.array(actor.global_position),"air_ticks":diagonal_air,"maximum_horizontal_per_tick":diagonal_max}
+	await dispose(course)
+	return {"stop":stop_result,"reverse":reverse_result,"lateral":lateral_result,"diagonal":diagonal_result}
+
 func spatial_control_fixtures() -> void:
 	var oblique_results: Array = []
 	for angle in [-45.0,-30.0,0.0,30.0,45.0]:
@@ -317,9 +382,10 @@ func spatial_control_fixtures() -> void:
 	check(actor.global_position.y<0.02 and actor.global_position.z>-1.0,"diagonal low ceiling refuses the walkable rise / "+str(actor.global_position))
 	check(ceiling_events==0 and not ceiling_error,"diagonal clearance refusal publishes no step admission or motor error")
 	check(actor.is_on_floor() and ceiling_clear,"diagonal clearance refusal stays supported and capsule-clear")
-	spatial_summary={"oblique_steps":oblique_results,"turn_terrace":turn_result,
-		"diagonal_ceiling":{"end":M.array(actor.global_position),"step_up_events":ceiling_events}}
+	var ceiling_result:={"end":M.array(actor.global_position),"step_up_events":ceiling_events}
 	await dispose(course)
+	spatial_summary={"oblique_steps":oblique_results,"turn_terrace":turn_result,
+		"diagonal_ceiling":ceiling_result,"slope_control":await slope_control_fixtures()}
 
 func physical_fixtures() -> void:
 	var course = await new_course(); var actor: CharacterBody3D = course.avatar
