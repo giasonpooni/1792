@@ -3,6 +3,7 @@ extends SceneTree
 ## Declared native physics fixtures. No fixture pose is represented as played travel.
 const Formation := preload("res://warband/mounted_formation.gd")
 const Horse := preload("res://mounts/horse.tscn")
+const Navigation := preload("res://patrol/patrol_navigator.gd")
 var passed:=0
 var failed:=0
 var course: Node3D
@@ -90,6 +91,84 @@ func obstacles() -> void:
 	check(mounts[0].speed<.08,"narrow gap stops motion rather than repeated full throttle")
 	await finish()
 
+func place_on_support(mount: CharacterBody3D, z: float, yaw: float) -> void:
+	var ray:=PhysicsRayQueryParameters3D.create(Vector3(0,30,z),Vector3(0,-1,z),1,[mount.get_rid()])
+	var hit:=course.get_world_3d().direct_space_state.intersect_ray(ray)
+	check(not hit.is_empty(),"declared terrain fixture has real support")
+	if hit.is_empty(): return
+	mount.apply_record({"position":[0,hit.position.y+.28,z],"yaw":yaw,"speed":0.0,"vertical_speed":0.0,"rider_id":"terrain-fixture"})
+	for _i in range(20):
+		await physics_frame;mount.step(1.0/60,0,0,false,false,true)
+
+func terrain() -> void:
+	await setup([Vector3(0,0,4)])
+	var slope:=box(Vector3(0,5,0),Vector3(8,.3,18));slope.rotation.x=deg_to_rad(30)
+	await frames();await place_on_support(mounts[0],4,0)
+	var low:=mounts[0].position;var air:=0
+	for _i in range(480):
+		await tick([Vector3(0,0,-4)],false);air+=int(not mounts[0].is_on_floor())
+	check(mounts[0].position.z< -3.3 and mounts[0].position.y>low.y+3.5,"follower climbs actual 30-degree support: "+str(mounts[0].position))
+	check(air==0 and mounts[0].speed<.08,"slope following and arrival remain grounded")
+	for _i in range(540): await tick([Vector3(0,0,4)],false)
+	check(mounts[0].position.z>3.3 and mounts[0].position.y<low.y+.6,"follower turns and descends the same support")
+	check(mounts[0].is_on_floor() and maximum_step<=.12,"slope movement remains within motor displacement budget")
+	await finish()
+	await setup([Vector3(0,0,7)])
+	box(Vector3(0,2,5),Vector3(8,.4,10));await frames();await place_on_support(mounts[0],7,0)
+	air=0
+	for _i in range(360):
+		await tick([Vector3(0,0,-6)],false);air+=int(not mounts[0].is_on_floor())
+	check(mounts[0].position.z>.2 and mounts[0].position.y>2.1,"follower brakes on upper platform before a two-metre drop")
+	check(mounts[0].speed<.08 and air==0,"unsupported edge does not become an automatic fall")
+	await finish()
+	await setup([Vector3(0,0,6)])
+	# A 20 cm ledge is within existing floor-snap support; no step teleport is added.
+	box(Vector3(0,-.1,5),Vector3(8,.6,10));await frames();await place_on_support(mounts[0],6,0)
+	for _i in range(360): await tick([Vector3(0,0,-6)],false)
+	check(mounts[0].position.z< -5.3 and mounts[0].is_on_floor(),"bounded small descent reaches the lower floor: "+str(mounts[0].position)+" / "+str(Formation.Terrain.inspect(mounts[0],Vector3.FORWARD,1)))
+	await finish()
+	await setup([Vector3(0,0,7)])
+	var steep:=box(Vector3(0,3.064,0),Vector3(8,.3,8));steep.rotation.x=deg_to_rad(50)
+	await frames()
+	for _i in range(300): await tick([Vector3(0,0,-4)],false)
+	check(mounts[0].position.z>2.7 and mounts[0].position.y<.3 and mounts[0].speed<.08,"follower refuses a 50-degree climb")
+	await finish()
+	await setup([Vector3(0,0,7)])
+	box(Vector3(0,2,7),Vector3(8,.4,6))
+	box(Vector3(0,2,0),Vector3(1,.4,8));await frames();await place_on_support(mounts[0],7,0)
+	for _i in range(360): await tick([Vector3(0,0,-3)],false)
+	check(mounts[0].position.z>4 and mounts[0].position.y>2.1 and mounts[0].speed<.08,"centre-only support cannot admit a bridge narrower than the horse footprint")
+	await finish()
+
+func narrow_passage() -> void:
+	await setup([Vector3(0,0,7),Vector3(-2.2,0,10.8),Vector3(2.2,0,10.8)])
+	box(Vector3(-3.1,1.7,0),Vector3(3.8,3.4,8))
+	box(Vector3(3.1,1.7,0),Vector3(3.8,3.4,8));await frames()
+	var riders: Array[CharacterBody3D]=[mounts[1],mounts[2]]
+	var ignored: Array[RID]=[]
+	for mount in mounts: ignored.append(mount.get_rid())
+	var navigation:=Navigation.new();Formation.configure_navigation(navigation)
+	navigation.bind(course.get_world_3d(),ignored)
+	var file_ticks:=0;var last_mode:="";var gap:=INF
+	for _i in range(1500):
+		await physics_frame
+		var leader:=mounts[0]
+		leader.step(1.0/60,.35 if leader.position.z> -13 else 0,0,false,false,leader.position.z<= -13)
+		var plan:=Formation.layout(leader,riders,func(body,goal): return Formation.Terrain.path_clear(body,goal,ignored))
+		last_mode=plan.mode;file_ticks+=int(last_mode=="single file")
+		for i in range(2):
+			var goal: Vector3=plan.goals[i]
+			if plan.mode=="paired": goal=Formation.traffic_goal(riders[i],goal,mounts)
+			if not Formation.Terrain.path_clear(riders[i],goal,ignored): goal=navigation.waypoint(riders[i].position,goal)
+			Formation.step(riders[i],goal,1.0/60)
+		for i in range(3):
+			for j in range(i+1,3): gap=minf(gap,Formation.horizontal(mounts[i].position-mounts[j].position).length())
+	check(file_ticks>60,"jatha adopts single file for a 2.4-metre passage")
+	check(riders[0].position.z< -5 and riders[1].position.z< -5,"both riders pass through the real narrow corridor: "+str([riders[0].position,riders[1].position]))
+	check(gap>=1.575,"single file maintains physical horse separation: "+str(gap))
+	check(last_mode=="paired","group opens back out after clearing the walls")
+	await finish()
+
 func run() -> void:
 	var leader:=Vector3(0,.04,0)
 	check(Formation.slot(leader,0,0).z>leader.z,"northward rider follows behind leader")
@@ -99,4 +178,5 @@ func run() -> void:
 	check(absf(stop60-stop30)<.12,"braking stand-off stable across 30 and 60 Hz")
 	Engine.physics_ticks_per_second=60
 	await crossing(true);await crossing(false);await obstacles()
+	await terrain();await narrow_passage()
 	print("MOUNTED_FORMATION_TESTS: %d passed, %d failed"%[passed,failed]);quit(1 if failed else 0)

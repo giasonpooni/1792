@@ -12,6 +12,7 @@ var camp_figures: Array[Node3D]=[]
 var _camp_nav:=Navigation.new()
 var _camp_action:=""
 var _camp_choices: Array[String]=[]
+var _camp_formation:="paired"
 
 func _init() -> void:
 	model=CampState.new();save_path=WorkshopState.WORKSHOP_SAVE
@@ -30,8 +31,7 @@ func _build_world() -> void:
 				part.material_override=material
 		camp_horses.append(mount)
 		var figure:=CampFigure.new();add_child(figure);figure.build(4,false);CampView.dress(figure);camp_figures.append(figure)
-	_camp_nav.hull.radius=.84;_camp_nav.hull.height=3.2
-	_camp_nav.sweep_height=1.65;_camp_nav.clearance_height=1.8;_camp_nav.clearance_size=Vector3(1.9,3.2,1.9)
+	Formation.configure_navigation(_camp_nav)
 	_camp_nav.bind(get_world_3d(),[avatar.get_rid(),horse.get_rid(),attacker.get_rid(),escort.get_rid(),camp_horses[0].get_rid(),camp_horses[1].get_rid()])
 	_enable_camp_collision()
 	_sync_camp(true)
@@ -142,6 +142,12 @@ func _physics_process(delta: float) -> void:
 func _step_camp(delta: float) -> void:
 	var state: Dictionary=model.nihang_camp()
 	var records: Array=state.mounts.duplicate(true)
+	var riders: Array[CharacterBody3D]=[]
+	var ignored: Array[RID]=[horse.get_rid(),avatar.get_rid(),camp_horses[0].get_rid(),camp_horses[1].get_rid()]
+	for i in range(2):
+		if CampRules.RIDERS[i] in state.selected: riders.append(camp_horses[i])
+	var arrangement:=Formation.layout(horse,riders,func(body,goal): return Formation.Terrain.path_clear(body,goal,ignored))
+	_camp_formation=arrangement.mode
 	for i in range(2):
 		if CampRules.RIDERS[i] not in state.selected: continue
 		var mount: CharacterBody3D=camp_horses[i]
@@ -149,9 +155,10 @@ func _step_camp(delta: float) -> void:
 		var parking: bool=not model.mounted() and model.position().distance_to(CampRules.CAMP)<3
 		var yaw: float=horse.rotation.y if model.mounted() else avatar.rotation.y
 		var goal: Vector3=CampRules.HORSE_LINES[i] if parking else Formation.slot(model.position(),yaw,i)
+		if model.mounted(): goal=arrangement.goals[riders.find(mount)]
 		var others: Array[CharacterBody3D]=[horse,avatar,camp_horses[0],camp_horses[1]]
-		var traffic_goal:=Formation.traffic_goal(mount,goal,others)
-		var waypoint:=_camp_nav.waypoint(mount.global_position,traffic_goal)
+		var traffic_goal:=goal if model.mounted() and _camp_formation=="single file" else Formation.traffic_goal(mount,goal,others)
+		var waypoint:=traffic_goal if Formation.Terrain.path_clear(mount,traffic_goal,ignored) else _camp_nav.waypoint(mount.global_position,traffic_goal)
 		var motion: Dictionary=Formation.step(mount,waypoint,delta)
 		motion.id=CampRules.RIDERS[i];records[i]=motion
 	var error: String=model.record_nihang_motion(records,delta)
@@ -186,7 +193,8 @@ func _restore_workshop_file(path: String,retry: bool) -> void:
 	if error.is_empty(): error=_candidate_error(staged)
 	if error.is_empty(): error=model.restore(staged.snapshot())
 	if error.is_empty(): _apply()
-	_message="Whole Home restored, including camp agreements and companions." if error.is_empty() else error
+	# Retain the established successful-load cue consumed by opening qualification.
+	_message="Whole Home and riding skills restored." if error.is_empty() else error
 	_clear_pending_actions();_resume()
 
 func _capture_checkpoint(reason: String) -> void:
@@ -208,6 +216,35 @@ func _restore_checkpoint() -> void:
 	_apply();avatar.pivot.rotation=Vector3(result.envelope.camera[0],result.envelope.camera[1],0)
 	_clear_pending_actions();_message="Whole Home checkpoint restored, including camp relationships.";_resume()
 
+func camp_guidance() -> Dictionary:
+	# A read-only projection of the accepted undertaking into the existing HUD.
+	var camp: Dictionary=model.nihang_camp()
+	if not CampRules.active(camp.phase): return {}
+	var nearby:=0
+	for id in camp.selected:
+		if CampRules.point(camp.mounts[CampRules.RIDERS.find(id)].position).distance_to(model.position())<=7: nearby+=1
+	var result:={"title":"GUJRANWALA  /  RIDING WITH THE NIHANGS","task":"","progress":"%d / %d riders nearby"%[nearby,camp.selected.size()],"controls":"","target":CampRules.CAMP,"marker":"Camp elder · E","show_target":true}
+	if model.mounted():
+		result.progress+=" · "+_camp_formation
+		result.controls="W  Forward     A / D  Steer     S / Space  Brake     F  Dismount when stopped     E  Speak"
+	else:
+		result.controls="WASD  Walk     Mouse  Look     F  Mount     E  Speak     J / Esc  Journal and menu"
+	if nearby<camp.selected.size(): result.progress+="\nSlow down or return for the riders."
+	if camp.phase=="outbound":
+		if model.mounted():
+			result.task="Ride to the north marker together"
+			result.progress+="\nWait for everyone, then press E at the marker."
+			result.target=CampRules.TURN;result.marker="North practice marker · E"
+		else:
+			result.task="Mount the household horse"
+			result.progress+="\nYour companions have agreed to ride to the north marker and back."
+			result.target=CampRules.Ride.position(model.horse_record());result.marker="Household horse · F"
+	else:
+		result.task="Return together to the camp"
+		result.progress+="\nStop, dismount, and wait for the riders before speaking to the elder."
+		if model.mounted(): result.marker="Camp elder · dismount first"
+	return result
+
 func _refresh() -> void:
 	super._refresh()
 	if not is_instance_valid(_hud): return
@@ -218,5 +255,6 @@ func _refresh() -> void:
 		for id in camp.selected:
 			if CampRules.point(camp.mounts[CampRules.RIDERS.find(id)].position).distance_to(model.position())<=7: nearby+=1
 		_hud.text+="\n%d/%d riders within calling distance%s"%[nearby,camp.selected.size()," · slow down or return for the riders" if nearby<camp.selected.size() else ""]
+		if model.mounted(): _hud.text+=" · "+_camp_formation
 	elif model.position().distance_to(CampRules.CAMP)<10:
 		_hud.text+="\nNIHANG CAMP · Speak to the elder; listen beside the horse lines [E]."

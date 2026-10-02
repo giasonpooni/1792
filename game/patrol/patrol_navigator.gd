@@ -31,8 +31,8 @@ func rebuild() -> void:
 	query.shape = clearance
 	query.collision_mask = 1
 	query.exclude = exclude
-	for y in range(62):
-		for x in range(62):
+	for y in range(grid.region.position.y,grid.region.end.y):
+		for x in range(grid.region.position.x,grid.region.end.x):
 			var p := grid.get_point_position(Vector2i(x, y))
 			query.transform.origin = Vector3(p.x, clearance_height, p.y)
 			grid.set_point_solid(Vector2i(x, y), not space.intersect_shape(query, 1).is_empty())
@@ -69,7 +69,7 @@ func waypoint(start: Vector3, goal: Vector3) -> Vector3:
 	return start
 
 func _free_cell(p: Vector3) -> Vector2i:
-	var center := Vector2i(roundi((p.x - grid.offset.x) / 2.0), roundi((p.z - grid.offset.y) / 2.0))
+	var center := Vector2i(roundi((p.x - grid.offset.x) / grid.cell_size.x), roundi((p.z - grid.offset.y) / grid.cell_size.y))
 	var best := Vector2i(-1, -1)
 	var distance := INF
 	for y in range(center.y - 2, center.y + 3):

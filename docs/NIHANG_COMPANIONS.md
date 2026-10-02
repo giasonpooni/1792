@@ -29,6 +29,13 @@ not a historical map location.
    elder to finish. Everyone must physically return. The undertaking can also be
    ended unfinished at camp with everyone present.
 
+The main objective display follows the accepted outing: mount, reach the marker
+together, then bring everyone back. Its marker points to the agreed destination;
+the nearby-rider count reminds you to wait when someone falls behind. A mounted
+group switches to single file where paired slots lack clear passage and spreads
+out again in open ground. These prompts read the existing state and grant no
+progress. Immediate danger and failed-attempt guidance retain priority.
+
 This first outing is finite and available once per run. The camp remains after
 completion. There is no gold, troop, skill or loyalty-point farming. Earlier
 saves can restore the whole prior run. Follow the HUD's ordinary lesson prompts
@@ -59,9 +66,15 @@ store preserve the extension; restoring an earlier run discards later agreements
 Both mounted companions use the existing `horse.gd` motor, collision and observed
 motion. Their formation turns with the household horse. They slow while steering,
 use stopping-distance sweeps to brake before obstructions, and approach a nearby
-horse from its near flank when passing. The HUD counts riders within calling
-distance so the player can slow down or return for separated companions. The existing navigator gains optional hull-clearance dimensions with
-unchanged defaults for walking actors. The scene submits one group motion sample
+horse from its near flank when passing. Local ground probes sample the centre and
+sides of the footprint. Sweeps follow the sampled slope while the original motor
+owns gravity and ground contact. Riders refuse steep support, major drops and
+paths too narrow to support the footprint. Small downward treads use the motor's
+existing floor snap. No upward step-climbing or new jumping action is added.
+
+The camp navigator uses a one-metre grid and horse-sized clearance. The existing
+navigator retains its original dimensions and two-metre grid for walking actors.
+The scene submits one group motion sample
 per advancing Home tick. No follow teleport, extra horse inventory, independent
 clock or second treasury is created. Companion horses now have a separate physical collision layer. They collide with
 one another, the household horse and the walking player. The camera arm also
@@ -112,10 +125,18 @@ horse separation throughout the outing, and checks overlapping-save refusal.
 
 `test_mounted_formation.gd` uses declared native physics fixtures for head-on and
 crossing passes, stopping behind a parked horse at 30 and 60 Hz, newly introduced
-and removed walls, and a gap narrower than the horse hull. These fixtures are
+and removed walls, and a gap narrower than the horse hull. It also covers native
+30-degree ascent/descent, a 20 cm downward tread, refusal of a two-metre drop and
+50-degree climb, a bridge narrower than the footprint, and a three-horse journey
+through a 2.4-metre passage that closes to single file and reopens to paired slots.
+The camp journey checks the real compact objective HUD before mounting, outbound,
+returning and after F9, plus restoration of ordinary lessons after check-in.
+These fixtures are
 physics experiments, separate from the input-driven childhood journey. Local
 avoidance is bounded to the small camp group; it is not an arbitrary-size crowd
 solver, terrain path planner or guarantee against every possible traffic jam.
+The terrain fixtures test local physics beyond Home's flat courtyard; they do not
+add an outdoor terrain region. The authoritative Home bounds remain unchanged.
 
 ```sh
 godot --headless --fixed-fps 60 --path game --script res://tests/test_nihang_camp.gd
@@ -127,3 +148,5 @@ Set `NIHANG_CAPTURE_OUTPUT` to an existing directory and run the same journey in
 a graphics-capable Godot session to retain an executed homecoming screenshot and
 whole-world snapshot. Test slots are separate from the player's save. Native
 renderer verification does not establish finished art or human playtest quality.
+Headless runs also retain active and completed whole-world snapshots when this
+output directory is set, for subsequent native rendering of executed state.

@@ -187,6 +187,21 @@ func ride(scene,at: Vector3) -> void:
 	release();await frames(10)
 	check(reached,"physical riding: "+str(at)+" actual "+str(scene.horse.global_position)+" / "+scene._message)
 
+func check_guidance(scene,task: String,target: Vector3) -> void:
+	var before: Dictionary=scene.model.snapshot()
+	var hud: Node=scene.art.detail.hud
+	for _i in range(4): hud.sample()
+	check(hud.visible and hud.title.text.contains("NIHANGS") and hud.task.text==task,"accepted outing appears in the visible objective HUD: "+task)
+	check(scene._marker.visible and scene._marker.position.is_equal_approx(target+Vector3.UP*2.1),"camp guidance points at the agreed destination")
+	check(hud.narrator.text.contains("/ 2 riders nearby"),"visible guidance reports the actual selected group")
+	check(scene.model.snapshot()==before,"camp guidance sampling changes no authoritative state")
+
+func capture_snapshot(scene,filename: String) -> void:
+	var output:=OS.get_environment("NIHANG_CAPTURE_OUTPUT")
+	if output.is_empty(): return
+	var file:=FileAccess.open(output.path_join(filename),FileAccess.WRITE)
+	if file!=null: file.store_string(JSON.stringify(scene.model.snapshot(),"",true,true));file.close()
+
 func journey() -> void:
 	var home:=Launch.make_world();var scene=home.get_node("ChildhoodChapter");scene.save_path=SAVE
 	ok(scene.model.restore(fixture()),"one declared childhood start before native journey")
@@ -205,20 +220,26 @@ func journey() -> void:
 	await walk(scene,R.CAMP+Vector3(1.8,0,0));look(scene,R.CAMP);await tap(scene,KEY_E)
 	await press(scene,"Invite both")
 	check(scene.model.nihang_camp().selected==R.RIDERS,"two mounted companions selected")
+	check_guidance(scene,"Mount the household horse",R.Ride.position(scene.model.horse_record()))
 	await walk(scene,Vector3(17,0,-15));await tap(scene,KEY_F)
 	check(scene.model.mounted(),"existing household mount action")
 	if not scene.model.mounted(): home.queue_free();await frames();return
+	check_guidance(scene,"Ride to the north marker together",R.TURN)
 	await ride(scene,Vector3(15,0,-25))
 	await ride(scene,R.TURN)
 	await frames(300)
 	await tap(scene,KEY_E)
 	check(scene.model.nihang_camp().phase=="returning","marker requires both real companions")
+	check_guidance(scene,"Return together to the camp",R.CAMP)
 	await tap(scene,KEY_F5)
 	check(FileAccess.get_file_as_string(SAVE).contains("nihang_camp"),"F5 includes current camp state")
 	var saved: Dictionary=scene.model.nihang_camp()
 	await ride(scene,Vector3(9,0,-25))
 	await tap(scene,KEY_F9)
 	check(scene.model.nihang_camp().phase==saved.phase and scene.model.nihang_camp().selected==saved.selected,"F9 restores accepted undertaking")
+	check(scene._message=="Whole Home and riding skills restored.","native F9 retains the original successful-load cue")
+	check_guidance(scene,"Return together to the camp",R.CAMP)
+	capture_snapshot(scene,"active-outing.json")
 	ok(scene.model.validate(scene.model.snapshot()),"mid-ride whole-world state valid")
 	var prior_world: Dictionary=scene.model.snapshot()
 	var bad_world:=prior_world.duplicate(true)
@@ -240,14 +261,14 @@ func journey() -> void:
 	look(scene,R.CAMP);await tap(scene,KEY_E)
 	await press(scene,"Return together")
 	check(scene.model.nihang_camp().phase=="complete","whole escort checked in without remote completion")
+	scene.art.detail.hud.sample()
+	check(not scene.art.detail.hud.title.text.contains("NIHANGS") and scene.camp_guidance().is_empty(),"settled undertaking yields to the original lesson guidance")
 	check(closest_horses>=1.575,"native outing keeps all horses physically separate: "+str(closest_horses))
 	ok(scene.model.validate(scene.model.snapshot()),"complete native outing validates")
 	check(scene.model.journal().any(func(e): return e.source_id==R.RIDERS[0] and e.text.begins_with("Little rider")),"received companion voice retained")
 	# Capture actual executed state for separate native rendering, not a replacement scene.
 	var output:=OS.get_environment("NIHANG_CAPTURE_OUTPUT")
-	if not output.is_empty():
-		var file:=FileAccess.open(output.path_join("completed-outing.json"),FileAccess.WRITE)
-		if file!=null: file.store_string(JSON.stringify(scene.model.snapshot(),"",true,true));file.close()
+	capture_snapshot(scene,"completed-outing.json")
 	look(scene,R.CAMP);await tap(scene,KEY_E)
 	check(scene._panel_text.text.contains("Buddh, everyone is home"),"familiar homecoming shown in real UI")
 	await frames(2)

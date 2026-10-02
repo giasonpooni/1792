@@ -2,6 +2,7 @@
 extends RefCounted
 ## Steering only. The existing horse motor owns acceleration, gravity and collision.
 const Motor := preload("res://mounts/horse.gd")
+const Terrain := preload("res://warband/mounted_terrain.gd")
 const TRAFFIC_LAYER := 4
 const ARRIVAL := 0.45
 const PASS_CLEARANCE := 2.6
@@ -9,6 +10,14 @@ const PASS_CLEARANCE := 2.6
 static func configure(mount: CharacterBody3D) -> void:
 	mount.collision_layer=TRAFFIC_LAYER;mount.collision_mask=1|TRAFFIC_LAYER
 	mount.safe_margin=.06
+
+static func configure_navigation(navigation: RefCounted) -> void:
+	navigation.hull.radius=.84;navigation.hull.height=3.2
+	navigation.sweep_height=1.65;navigation.clearance_height=1.8
+	navigation.clearance_size=Vector3(1.9,3.2,1.9)
+	navigation.grid.region=Rect2i(0,0,57,57)
+	navigation.grid.cell_size=Vector2.ONE;navigation.grid.offset=Vector2(-28,-28)
+	navigation.grid.update();navigation.built=false
 
 static func horizontal(v: Vector3) -> Vector3:
 	return Vector3(v.x,0,v.z)
@@ -20,6 +29,20 @@ static func slot(leader: Vector3, yaw: float, index: int) -> Vector3:
 	var offset := Basis(Vector3.UP,yaw)*Vector3(-2.2 if index==0 else 2.2,0,3.8)
 	# The Home yard is bounded. A formation slot must remain inside its walls.
 	return bounded(leader+offset)
+
+static func layout(leader: CharacterBody3D, riders: Array[CharacterBody3D], room: Callable) -> Dictionary:
+	var goals: Array[Vector3]=[]
+	var mode:="paired"
+	for i in range(riders.size()):
+		var goal:=slot(leader.global_position,leader.rotation.y,i)
+		goals.append(goal)
+		if not room.call(riders[i],goal): mode="single file"
+	if mode=="single file":
+		var ahead:=leader
+		for i in range(riders.size()):
+			goals[i]=bounded(ahead.global_position+ahead.global_basis.z*3.4)
+			ahead=riders[i]
+	return {"mode":mode,"goals":goals}
 
 static func traffic_goal(mount: CharacterBody3D, goal: Vector3, others: Array[CharacterBody3D]) -> Vector3:
 	var offset := horizontal(goal-mount.global_position)
@@ -43,17 +66,7 @@ static func traffic_goal(mount: CharacterBody3D, goal: Vector3, others: Array[Ch
 	return bounded(nearest.global_position+right*side*PASS_CLEARANCE-direction*PASS_CLEARANCE)
 
 static func free_distance(mount: CharacterBody3D, direction: Vector3, reach: float) -> float:
-	var query := PhysicsShapeQueryParameters3D.new()
-	query.shape=mount.get_node("Hull").shape
-	query.transform=Transform3D(Basis.IDENTITY,mount.global_position+Vector3.UP*1.65)
-	query.collision_mask=mount.collision_mask;query.exclude=[mount.get_rid()]
-	var space := mount.get_world_3d().direct_space_state
-	# cast_motion permits leaving an existing contact. Treating every initial
-	# contact as zero clearance deadlocks two touching horses even when turning away.
-	# The real motor still resolves contact on every step; saved overlaps are refused.
-	query.motion=direction*reach
-	var hit := space.cast_motion(query)
-	return reach*hit[0] if hit.size()==2 else 0.0
+	return Terrain.inspect(mount,direction,reach).distance
 
 static func step(mount: CharacterBody3D, waypoint: Vector3, delta: float) -> Dictionary:
 	var offset := horizontal(waypoint-mount.global_position)
