@@ -2,6 +2,8 @@
 extends Node3D
 ## Household-gate passage direction. Presentation only: no rank, AI, collision, route or save authority.
 const LANE_HALF_WIDTH := 1.9
+const ServiceSword:=preload("res://presentation/service_sword.gd")
+const ServiceDefence:=preload("res://presentation/service_defence.gd")
 var anchor := Vector3.ZERO
 var guard_root: Node3D
 var guard_hand: Node3D
@@ -98,6 +100,20 @@ func build(at: Vector3) -> void:
 	guard_root.add_child(guard_hand)
 	cylinder(guard_hand,"SignalForearm",.045,.48,Vector3(0,-.20,0),Color("59646a"))
 	sphere(guard_hand,"SignalHand",Vector3(.075,.09,.075),Vector3(0,-.47,0),Color("a77f60"))
+	# Outer-side attachments stay clear of the signal arm and the passage lane.
+	# Equipment remains part of the existing guard record, not another actor.
+	var sidearm:=ServiceSword.new()
+	sidearm.build()
+	sidearm.position=Vector3(.23,.88,.03)
+	sidearm.rotation.x=-.18
+	guard_root.add_child(sidearm)
+	var shield:=ServiceDefence.shield()
+	shield.position=Vector3(.35,.91,.02)
+	shield.rotation.y=PI/2
+	guard_root.add_child(shield)
+	var helmet:=ServiceDefence.helmet()
+	helmet.position=Vector3(0,1.48,0)
+	guard_root.add_child(helmet)
 	remember("gate_guard",guard_root,"One guard marks the threshold and uses a small hand signal when a mounted rider approaches.")
 
 	# Left-side porter: shifts outward slightly instead of becoming a pathfinding agent.
@@ -208,8 +224,7 @@ func sample(tick: int,player_position: Vector3,mounted: bool,stage: String) -> v
 			crossing_right.position=crossing_right_edge
 
 	# The cart and pack remain where they were placed; they are not fake agents.
-	cart_root.rotation.y=.02*sin(float(tick)/95.0)
-	pack_root.rotation.y=.015*sin(float(tick)/120.0+1.1)
+	# Preserve their complete authored transforms, including rotation and scale.
 
 	# Wind/material motion is independent of social attention.
 	marker_cloth.rotation.z=.045*sin(float(tick)/37.0)
@@ -220,6 +235,8 @@ func passage_state() -> Dictionary:
 		"porter_position":porter_root.position if is_instance_valid(porter_root) else Vector3.ZERO,
 		"cart_position":cart_root.position if is_instance_valid(cart_root) else Vector3.ZERO,
 		"pack_position":pack_root.position if is_instance_valid(pack_root) else Vector3.ZERO,
+		"cart_transform":cart_root.transform if is_instance_valid(cart_root) else Transform3D.IDENTITY,
+		"pack_transform":pack_root.transform if is_instance_valid(pack_root) else Transform3D.IDENTITY,
 		"cloth_rotation":marker_cloth.rotation if is_instance_valid(marker_cloth) else Vector3.ZERO,
 		"crossing_left":crossing_left.position if is_instance_valid(crossing_left) else Vector3.ZERO,
 		"crossing_right":crossing_right.position if is_instance_valid(crossing_right) else Vector3.ZERO

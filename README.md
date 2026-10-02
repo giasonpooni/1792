@@ -35,6 +35,11 @@ Import `game/project.godot` in standard **Godot 4.5.1** and press **F5**.
 No .NET SDK, Python service, Bevy process or NET server is required to play.
 Choose **1792 · Buddh Singh · Home territory** for the integrated home chapter.
 
+The **Equipment study** entry inspects a curved service sword, independent scabbard,
+round shield and domed helmet. Its draw and turn controls use the same procedural
+components attached to the Home gate guard. These are authored morphology studies;
+see [controls, references and qualification limits](docs/SERVICE_EQUIPMENT.md).
+
 Learn the yard, hear a letter read, ride, train, follow traces, survive an authored
 ambush, investigate and report home. After the inquiry, administer a limited
 household allowance: carry provisions to market, physically escort a carrier home,
