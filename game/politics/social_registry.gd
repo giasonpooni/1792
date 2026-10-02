@@ -8,9 +8,13 @@ const PEOPLE := {
 	"raj_kaur": {"name":"Raj Kaur", "class":"historical_character_portrayal"},
 	"fictional_household_guard": {"name":"Household guard", "class":"authored_placeholder"},
 	"fictional_north_observer": {"name":"Northern retainer", "class":"authored_placeholder"},
+	"fictional_market_keeper": {"name":"Market keeper", "class":"authored_placeholder"},
+	"fictional_gate_keeper": {"name":"Gate keeper", "class":"authored_placeholder"},
 	"fictional_courier": {"name":"Courier", "class":"authored_placeholder"}
 }
 const RELATIONS := [
+	{"subject":"fictional_market_keeper", "predicate":"gameplay_alignment", "object":"bhangi", "from":1792, "until":1793, "sources":["design:1792"]},
+	{"subject":"fictional_gate_keeper", "predicate":"gameplay_alignment", "object":"sandhawalia", "from":1792, "until":1793, "sources":["design:1792"]},
 	{"subject":"ranjit_singh", "predicate":"gameplay_alignment", "object":"sukerchakia", "from":1792, "until":1793, "sources":["design:1792"]},
 	{"subject":"raj_kaur", "predicate":"gameplay_alignment", "object":"phulkian", "from":1792, "until":1793, "sources":["design:1792"]},
 	{"subject":"fictional_household_guard", "predicate":"retainer_of", "object":"raj_kaur", "from":1792, "until":1793, "sources":["design:1792"]},

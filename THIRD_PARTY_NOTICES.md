@@ -23,6 +23,24 @@ Godot's official [licensing page](https://godotengine.org/license/) explains the
 
 ## Other named systems
 
+### Pinned Godot JSON verification adapter (2026-10-02 increment)
+
+`tools/godot451_json.py` adapts the Godot 4.5.1 decimal-number parser into a
+bounded Python verification helper. Its upstream sources are `core/io/json.cpp`
+(blob `34f001a228237a8fc9c0d10f1908ba0034d11de8`) and
+`core/string/ustring.cpp` (blob `45d8497af81a905599bd7790c777c27d256da6c3`),
+both at the [`4.5.1-stable` tag](https://github.com/godotengine/godot/tree/4.5.1-stable).
+Godot Engine contributors, Juan Linietsky and Ariel Manzur retain their original
+copyright and **MIT** terms. The complete MIT notice and pinned source references
+are retained in the helper; the unchanged notice also remains at
+`licenses/third-party/Godot-MIT.txt`. The project's proprietary notice does not
+replace these upstream rights.
+
+The adaptation preserves the native numeric operation sequence and adds strict
+JSON/finite-size checks, exact raw clock binding and whole cold-save comparison.
+It is used by evidence verification; it does not replace the engine or game save
+authority. Redistributed copies must retain the included upstream MIT notice.
+
 Bevy, Blender, and Notations Engineering Terminal are architecture or tool references in the inspected README, not vendored implementations in that snapshot. Mentioning or using them does not transfer their ownership to Cartesian Graphics or apply 1792's proprietary notice to them. Record the applicable version and terms when any engine, plug-in, library, adapter, or content is actually incorporated or distributed.
 
 ## Additions and release review

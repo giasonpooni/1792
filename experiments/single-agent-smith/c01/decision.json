@@ -1,0 +1,29 @@
+{
+  "schema": "ciw.agent-revision.v1",
+  "revision_id": "c01",
+  "agent_id": "interactive-coding-vision-01",
+  "mode": "interactive_llm_session",
+  "author_attestation": "current_assistant_session_self_reported_not_provider_signed",
+  "decision_summary": "After inspecting original daylight/evening renders: add batched bench joinery, stump binding strips and forge rim; replace flat orange coal with layered dark coals and small ember surfaces. Preserve all rule/clock/collider code. No aesthetic parity claim.",
+  "observed_evidence": [
+    {
+      "kind": "native_preview",
+      "label": "baseline-daylight.png",
+      "sha256": "sha256:07dcc11968aefa073ffd6fb64afbcbd554bb68d738d26c58a31943549e1898af"
+    },
+    {
+      "kind": "native_preview",
+      "label": "baseline-evening.png",
+      "sha256": "sha256:b4f84223d7e0f5be7cbc04380693e41a36c6ed80749f71423f2796339e25ba11"
+    }
+  ],
+  "replacements": {
+    "workshops/workshop_world.gd": {
+      "file": "workshop_world.gd",
+      "sha256": "sha256:32cb456b498f9e1ee340e7926a9d955998b67417eb8b3df9a3dec571a53bfa18"
+    }
+  },
+  "provider_usage": null,
+  "human_active_seconds": null,
+  "external_review": "not_performed"
+}

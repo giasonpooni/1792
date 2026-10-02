@@ -1,0 +1,128 @@
+{
+  "schema": "1792.horsecraft-research.v1",
+  "claim_status": "separated",
+  "sources": [
+    {
+      "id": "reuters-ajay-verma-20160324",
+      "kind": "contemporary-photographic-report",
+      "url": "https://www.reuters.com/news/picture/idUSRTSBTDU/",
+      "author": "Ajay Verma / Reuters",
+      "event_date": "2016-03-24",
+      "locator": "Holi celebrations, photograph 19/39",
+      "supports": [
+        "Modern Nihang two-horse display at Hola Mohalla, Anandpur Sahib"
+      ],
+      "does_not_establish": [
+        "Eighteenth-century combat practice",
+        "Maha Singh attribution",
+        "Four-matchlock reload sequence"
+      ],
+      "binary_imported": false
+    },
+    {
+      "id": "malcolm-sketch-1812",
+      "kind": "near-period-account",
+      "author": "John Malcolm",
+      "title": "Sketch of the Sikhs",
+      "publication_year": 1812,
+      "url": "https://www.gutenberg.org/files/53510/53510-h/53510-h.htm",
+      "locator": "Section II, printed pp. 140\u2013141",
+      "supports": [
+        "The author describes Sikh horsemen carrying matchlocks with swords and spears"
+      ],
+      "scope": "Period observer account; not testimony to the proposed individual episode"
+    },
+    {
+      "id": "cunningham-history-1849",
+      "kind": "retrospective-historical-account",
+      "author": "Joseph Davey Cunningham",
+      "title": "A History of the Sikhs",
+      "publication_year": 1849,
+      "url": "https://archive.org/stream/historyofsikhsfr01cunn/historyofsikhsfr01cunn_djvu.txt",
+      "locator": "Chapter IV, printed p. 117",
+      "supports": [
+        "The author describes effective mounted matchlock use"
+      ],
+      "scope": "Retrospective statement; not eyewitness verification of Maha Singh feat"
+    }
+  ],
+  "claims": [
+    {
+      "id": "modern-two-horse-display",
+      "status": "source-attested-modern",
+      "sources": [
+        "reuters-ajay-verma-20160324"
+      ]
+    },
+    {
+      "id": "sikh-mounted-matchlock-use",
+      "status": "source-attested-period-and-retrospective-accounts",
+      "sources": [
+        "malcolm-sketch-1812",
+        "cunningham-history-1849"
+      ]
+    },
+    {
+      "id": "maha-singh-two-horses-four-matchlocks",
+      "status": "user-attributed-source-unlocated",
+      "user_report": "Maha Singh standing astride two horses while reloading and firing four matchlocks",
+      "date": null,
+      "location": null,
+      "independent_source": null,
+      "historically_authenticated": false,
+      "disproved": false
+    }
+  ],
+  "editorial": {
+    "id": "mahan-horsecraft-flashback-candidate.v1",
+    "character_id": "mahan_singh",
+    "role": "Attributed Maha Singh tale recalled during Buddh's childhood riding instruction",
+    "existing_gate": "childhood_riding_training",
+    "entry_requirements": {
+      "existing_riding_gates_completed": 1,
+      "location": "near the stable trainer in the existing Home",
+      "rider": "stopped and on foot",
+      "interaction": "E"
+    },
+    "episode_date": null,
+    "episode_location": null,
+    "runtime": "res://mounts/horsecraft_training.tscn",
+    "runtime_scope": "Playable three-part childhood riding lesson in its own World3D, with the retained Home world frozen until return",
+    "runtime_owners": [
+      "riding_training_chapter.gd",
+      "riding_training_session.gd",
+      "riding_skill_state.gd",
+      "horsecraft_training.gd"
+    ],
+    "lesson_parts": [
+      "Supported standing on one moving horse",
+      "Supported standing across two moving horses",
+      "Four distinct mounted matchlock discharges, four distinct reloads, then seated stopped withdrawal"
+    ],
+    "expected_skill_grants": [
+      "single_standing",
+      "paired_standing",
+      "mounted_matchlock"
+    ],
+    "capability_admission": "One persistent complete-lesson receipt bound to the suspended Home present; no partial grants",
+    "old_save_migration": "Missing riding-skills state restores as an empty, locked capability record",
+    "stance_controls": {
+      "lesson": "Space",
+      "home_after_learning": "X"
+    },
+    "standalone_study": {
+      "runtime": "res://mounts/horsecraft_study.tscn",
+      "entry": "Main-menu Horsecraft study",
+      "scope": "Isolated restartable practice; no Home capability grants"
+    },
+    "later_fixed_interlude": {
+      "existing_gate": "pre_lahore_1797_1798",
+      "scope": "Separate fixed father retrospective with its existing ending and return contract",
+      "completed_by_this_training": false
+    },
+    "weapons": "Four distinct weapon slots, each holding one abstract charge",
+    "story_receipts": [],
+    "item_grants": [],
+    "character_knowledge_grants": []
+  }
+}

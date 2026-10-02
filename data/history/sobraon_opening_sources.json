@@ -1,0 +1,60 @@
+{
+  "schema": "1792.sobraon-opening-evidence.v1",
+  "instruction_date": "2026-10-02",
+  "sources": [
+    {
+      "id": "rct_750922",
+      "title": "The Battle of Sobraon, 31st Regiment. 10th February 1846",
+      "url": "https://www.rct.uk/collection/750922/the-battle-of-sobraon-31st-regiment-10th-february-1846",
+      "role": "user-supplied visual research lead",
+      "limits": "Collection listing and title inspected; no image asset imported or survey coordinates inferred."
+    },
+    {
+      "id": "nam_first_sikh_war",
+      "title": "First Sikh War",
+      "url": "https://www.nam.ac.uk/explore/first-sikh-war",
+      "role": "museum historical synthesis",
+      "supports": ["Sobraon on 10 February 1846", "destroyed pontoon crossing impeding retreat", "disputed responsibility for bridge loss"],
+      "limits": "Does not establish this fictional veteran, rescue, raft route, dialogue or exact geometry."
+    },
+    {
+      "id": "khushwant_history_vol2",
+      "title": "A History of the Sikhs, Volume 2",
+      "url": "https://www.discoversikhism.com/pdf/a_history_of_the_sikhs-volume2.pdf",
+      "role": "historical synthesis; indexed passage inspected",
+      "supports": ["reported old-veteran lament at the final surrender near Rawalpindi"],
+      "limits": "Indexed relevant passage inspected; full scan exceeds retrieval size. Precise earliest witness and textual variants remain for editorial research."
+    },
+    {
+      "id": "ganda_british_occupation",
+      "title": "The British Occupation of the Punjab",
+      "url": "https://sikhheritageeducation.com/wp-content/uploads/2025/01/The-British-Occupation-of-the-Punjab-Ganda-Singh.pdf",
+      "role": "historical synthesis; indexed passage inspected",
+      "supports": ["14 March 1849 surrender near Rawalpindi and laying down arms", "reported Ranjit Singh lament"],
+      "limits": "Relevant indexed passage inspected; full PDF not inspected."
+    },
+    {
+      "id": "shah_jangnama",
+      "title": "Jangnama Shah Muhammad, Punjabi transcription",
+      "url": "https://www.punjabi-kavita.com/ShahMuhammad.php",
+      "role": "primary poem in a modern transcription",
+      "supports": ["Shah Muhammad's poetic telling of the First Anglo-Sikh War and Ranjit Singh's legacy"],
+      "limits": "Does not authenticate original game dialogue, the Charat handoff, a particular recitation or the narrator's presence at this escape."
+    }
+  ],
+  "evidence_records": [
+    {"id":"sobraon_date","value":"1846-02-10","sources":["nam_first_sikh_war"]},
+    {"id":"bridge_lost","value":"crossing destroyed; causal attribution disputed","sources":["nam_first_sikh_war"]},
+    {"id":"surrender_date","value":"1849-03-14","place":"near Rawalpindi","sources":["ganda_british_occupation"]},
+    {"id":"reported_lament","value":"Today Ranjit Singh has died.","speaker":"unnamed veteran in historical retelling","sources":["khushwant_history_vol2","ganda_british_occupation"],"status":"reported saying; not asserted verbatim contemporary transcript"}
+  ],
+  "authoring_records": [
+    {"id":"survivor","status":"fictional composite","continuity":"same veteran in 1846 and 1849"},
+    {"id":"escape_route","status":"authored playable staging","elements":["optional comrade rescue","kinematic floating timber","scaled river","telegraphed artillery","local retry"]},
+    {"id":"surrender_choreography","status":"original dramatic staging","elements":["seven soldiers","staggered weapon drops","sleeve repair motif"]},
+    {"id":"narration","status":"original dramatic dialogue performed by a dramatized Shah Muhammad","delivery":"captions; no voice recording"},
+    {"id":"shared_sentence","status":"original dramatic dialogue","from":"shah_muhammad","to":"mahan_singh","subject":"charat_singh","listener":"young_ranjit_singh"}
+  ],
+  "campaign_admission": false,
+  "execution_evidence_location": "user://sobraon-opening-images/manifest.json"
+}

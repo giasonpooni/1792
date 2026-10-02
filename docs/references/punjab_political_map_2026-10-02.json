@@ -1,0 +1,456 @@
+{
+  "title": "Punjab political map source notes",
+  "scope": "Production research notes for later dated regional maps. No playable map or territorial simulation is implemented by this file.",
+  "baseline": "1792, with explicit era changes for later material",
+  "implementation_status": "not implemented by this research task",
+  "entity_model": "Separate person, lineage, political office, territorial unit, and relation; each relation needs start/end dates, evidence and confidence. All relation_hook values below are design suggestions.",
+  "entities": [
+    {
+      "name": "Sukerchakia",
+      "type": "misl / ruling coalition",
+      "period_guard": "1792 starting house; later Lahore state requires event-driven transition",
+      "relation_hook": "Internal succession, allied houses, and subordinate chiefs remain distinct."
+    },
+    {
+      "name": "Bhangi",
+      "type": "misl with several chiefships",
+      "period_guard": "Do not render as one uniform owner or permanent single leader",
+      "relation_hook": "Local branches can negotiate, resist, or submit separately."
+    },
+    {
+      "name": "Kanhaiya",
+      "type": "misl / ruling house",
+      "period_guard": "Track Jai Singh, Sada Kaur, and estate transfers by date",
+      "relation_hook": "Marriage, guardianship, and estate control are separate relationships."
+    },
+    {
+      "name": "Ahluwalia",
+      "type": "misl / ruling house",
+      "period_guard": "Retain changing chiefs and later Kapurthala identity",
+      "relation_hook": "Alliance need not imply annexation."
+    },
+    {
+      "name": "Ramgarhia",
+      "type": "misl / ruling house",
+      "period_guard": "Track territorial loss, recovery, and succession",
+      "relation_hook": "Military service and territorial ownership need separate edges."
+    },
+    {
+      "name": "Nakai",
+      "type": "misl / ruling house",
+      "period_guard": "Do not freeze membership or territorial extent",
+      "relation_hook": "Marriage ties can coexist with political rivalry."
+    },
+    {
+      "name": "Dallewalia",
+      "type": "misl / network of chiefships",
+      "period_guard": "Holdings and branches require dated records",
+      "relation_hook": "Permit several local chiefs under a shared misl label."
+    },
+    {
+      "name": "Faizullapuria / Singhpuria",
+      "type": "misl; alternative names",
+      "period_guard": "Alias one historical grouping rather than two neighbours",
+      "relation_hook": "Branches and separate estates may split diplomacy."
+    },
+    {
+      "name": "Nishanwalia",
+      "type": "misl / brotherhood",
+      "period_guard": "Avoid assuming identical organization to family houses",
+      "relation_hook": "Model its own leadership and membership."
+    },
+    {
+      "name": "Phulkian",
+      "type": "dynastic grouping",
+      "period_guard": "Patiala, Nabha, Jind need separate political actors",
+      "relation_hook": "Kinship is not a shared treasury, army, or automatic alliance."
+    },
+    {
+      "name": "Patiala",
+      "type": "Phulkian state",
+      "period_guard": "Use date-specific ruler and British relationship",
+      "relation_hook": "Independent diplomatic actor within Phulkian kinship."
+    },
+    {
+      "name": "Nabha",
+      "type": "Phulkian state",
+      "period_guard": "Use date-specific ruler and external relationship",
+      "relation_hook": "Independent diplomatic actor within Phulkian kinship."
+    },
+    {
+      "name": "Jind",
+      "type": "Phulkian state",
+      "period_guard": "Use date-specific ruler and external relationship",
+      "relation_hook": "Marriage and kinship hooks do not confer permanent loyalty."
+    },
+    {
+      "name": "Karorsinghia",
+      "type": "misl / network of chiefships",
+      "period_guard": "Broad zone south of Sutlej, Samrala–Jagadhri; not simply southern Hoshiarpur",
+      "relation_hook": "Track local branches rather than one rectangular territory."
+    },
+    {
+      "name": "Shahid / Shaheedan",
+      "type": "misl / religious-military grouping",
+      "period_guard": "Retain distinct organization and regional branches",
+      "relation_hook": "Sacred authority, military following, and landholding are separate."
+    },
+    {
+      "name": "Chattha",
+      "type": "local clan / chiefship network",
+      "period_guard": "Rasulnagar and Ramnagar are linked historical place names; ruler/status change",
+      "relation_hook": "Local resistance, garrison control, and negotiated service."
+    },
+    {
+      "name": "Rasulnagar / Ramnagar",
+      "type": "town / fort place identity",
+      "period_guard": "Preserve historical alias; do not create duplicate towns",
+      "relation_hook": "Siege and renaming hooks require dated source records."
+    },
+    {
+      "name": "Kasur",
+      "type": "fortified town / regional chiefship",
+      "period_guard": "1792 owner and later conquest require dated attribution",
+      "relation_hook": "Tribute, sanctuary, siege, and incorporation."
+    },
+    {
+      "name": "Multan",
+      "type": "city / province / regional rulership",
+      "period_guard": "Province, governor, and sovereign must be separate entities",
+      "relation_hook": "Revenue, siege, trade, and superior authority."
+    },
+    {
+      "name": "Kashmir",
+      "type": "region / province",
+      "period_guard": "Do not project later Sikh or Dogra control onto 1792",
+      "relation_hook": "Pass access, provincial office, trade, and conquest."
+    },
+    {
+      "name": "Peshawar",
+      "type": "city / province",
+      "period_guard": "Circa 1800 Durrani context; later Barakzai control cannot be backdated",
+      "relation_hook": "Distinguish governor, local chief, tribute, occupation, and annexation."
+    },
+    {
+      "name": "Attock",
+      "type": "fort / crossing / district",
+      "period_guard": "Do not auto-assign the later Peshawar Barakzai configuration to the 1790s",
+      "relation_hook": "Crossing rights and fort garrison can differ from regional sovereignty."
+    },
+    {
+      "name": "Sial / Jhang",
+      "type": "clan-linked chiefship / regional centre",
+      "period_guard": "Separate Sial lineage from the dated government of Jhang",
+      "relation_hook": "Tribute, river access, local alliances, and resistance."
+    },
+    {
+      "name": "Tiwana / Shahpur",
+      "type": "clan-linked chiefship / regional label",
+      "period_guard": "Exact 1792 centre, ruler, and territorial extent unverified here",
+      "relation_hook": "Service, tribute, and local authority; preserve as research candidate."
+    },
+    {
+      "name": "Kangra",
+      "type": "hill state / fort region",
+      "period_guard": "Sansar Chand ruled 1775–1823; fort control requires separate dating",
+      "relation_hook": "Fort possession, tribute, and ruler recognition need separate edges."
+    },
+    {
+      "name": "Jammu",
+      "type": "hill state / region",
+      "period_guard": "Do not project Gulab Singh's 1822 installation backward",
+      "relation_hook": "Earlier Jammu rulers and later Dogra house require separate eras."
+    },
+    {
+      "name": "Jaswan",
+      "type": "hill state",
+      "period_guard": "Keep name; exact 1792 ruler and dependencies require verification",
+      "relation_hook": "Tribute, refuge, and hill routes."
+    },
+    {
+      "name": "Datarpur",
+      "type": "hill state",
+      "period_guard": "Keep name; exact 1792 ruler and dependencies require verification",
+      "relation_hook": "Local autonomy and tributary arrangements."
+    },
+    {
+      "name": "Kulu / Kullu",
+      "type": "hill state / valley region",
+      "period_guard": "Keep name; later subordination must not overwrite earlier status",
+      "relation_hook": "Pass access and dated tributary relations."
+    },
+    {
+      "name": "Chamba",
+      "type": "hill state",
+      "period_guard": "Keep name; suzerainty and direct government differ",
+      "relation_hook": "Tribute, refuge, and changing alliances."
+    },
+    {
+      "name": "Faridkot",
+      "type": "chiefship / state",
+      "period_guard": "Keep separate; precise 1792 ruler and status require verification",
+      "relation_hook": "Local succession and larger-neighbour diplomacy."
+    },
+    {
+      "name": "Bharatpur",
+      "type": "Jat-ruled state",
+      "period_guard": "Suraj Mal belongs to an earlier generation; separate its Ranjit Singh from Lahore's",
+      "relation_hook": "Historically evidenced contacts, hired troops, and alliances; no automatic cousin bonus."
+    },
+    {
+      "name": "Dholpur",
+      "type": "place / later state",
+      "period_guard": "Later Gohad-house state settlement is 1805–1806; do not instantiate unchanged in 1792",
+      "relation_hook": "Retain place early and later state transition as distinct records."
+    },
+    {
+      "name": "Gohad",
+      "type": "state / dynastic claim",
+      "period_guard": "Track loss/restoration and later territorial exchange separately",
+      "relation_hook": "Dynasty can survive loss of its former political territory."
+    },
+    {
+      "name": "Ballabhgarh",
+      "type": "chiefship / state candidate",
+      "period_guard": "Preserve name; exact 1792 ruler/status unverified in this pass",
+      "relation_hook": "Later researched diplomacy candidate."
+    },
+    {
+      "name": "Kuchesar",
+      "type": "estate / chiefship candidate",
+      "period_guard": "Preserve name; exact 1792 rank and status unverified in this pass",
+      "relation_hook": "Do not automatically equate estate with sovereign state."
+    },
+    {
+      "name": "Talpur Sindh",
+      "type": "dynastic grouping / regional polities",
+      "period_guard": "Do not flatten branches and centres into one timeless unit",
+      "relation_hook": "Trade, treaties, and rival branches require dated evidence."
+    },
+    {
+      "name": "Mazari / Rojhan",
+      "type": "clan network / regional centre",
+      "period_guard": "Exact chronology of Rojhan and proposed campaign claims unverified here",
+      "relation_hook": "Future frontier, movement, and tribute research."
+    },
+    {
+      "name": "Shikarpur",
+      "type": "town / commercial centre / district",
+      "period_guard": "Ownership and proposed Sikh campaigns require future verification",
+      "relation_hook": "Trade and Indus-route research; no assumed sea access."
+    },
+    {
+      "name": "Bahawalpur",
+      "type": "state / regional rulership",
+      "period_guard": "Keep distinct from Talpur Sindh and Multan",
+      "relation_hook": "Dated trade, tribute, alliance, and frontier relations."
+    },
+    {
+      "name": "Gujrat, Punjab",
+      "type": "town / regional centre",
+      "period_guard": "Punjab place near Chenab; not Gujarat in western India",
+      "relation_hook": "Geographic identity guard for routes and Bhangi holdings."
+    },
+    {
+      "name": "Ranjit Singh of Lahore",
+      "type": "person",
+      "period_guard": "1780–1839; distinct from Bharatpur namesake",
+      "relation_hook": "Suggested stable identity: ranjit_singh_lahore."
+    },
+    {
+      "name": "Ranjit Singh of Bharatpur",
+      "type": "person",
+      "period_guard": "Already active in Bharatpur succession struggles in 1769–1770",
+      "relation_hook": "Suggested stable identity: ranjit_singh_bharatpur."
+    },
+    {
+      "name": "Suraj Mal of Bharatpur",
+      "type": "historical person",
+      "period_guard": "Died 1763; historical influence rather than living 1792 interlocutor",
+      "relation_hook": "Legacy, remembered alliances, and descendants."
+    },
+    {
+      "name": "Sansar Chand of Kangra",
+      "type": "person",
+      "period_guard": "Kangra ruler 1775–1823",
+      "relation_hook": "Suggested stable identity: sansar_chand_kangra."
+    }
+  ],
+  "source_guards": [
+    {
+      "id": "date_and_count",
+      "guard": "No fixed historical total of15–20 comparable states. Pick a dated map window and explicit level of aggregation; distinguish regions, forts, chiefships, states, and overlords.",
+      "source_ids": [
+        "eos_misls",
+        "eos_hills"
+      ],
+      "status": "design inference from varied units"
+    },
+    {
+      "id": "religious_balance",
+      "guard": "Do not claim equal numbers or power for Sikh, Muslim, and Hindu polities. Preserve religious diversity; model ruler affiliation separately from population and relations.",
+      "source_ids": [
+        "eos_misls",
+        "eos_hills",
+        "eos_bharatpur"
+      ],
+      "status": "unsupported equality claim rejected; no population census inferred"
+    },
+    {
+      "id": "twelve_not_eleven_neighbours",
+      "guard": "The conventional twelve names do not imply twelve identical states or eleven direct neighbours. EOS describes eleven Dal Khalsa divisions plus Phulkian outside that command; branches and Phulkian states require separate actors.",
+      "source_ids": [
+        "eos_misls"
+      ],
+      "status": "supported organizational correction"
+    },
+    {
+      "id": "karorsinghia_location",
+      "guard": "Use the broad cis-Sutlej Samrala–Jagadhri zone; southern Hoshiarpur is not an adequate location for Karorsinghia. Precise1792 holdings still require mapping.",
+      "source_ids": [
+        "eos_misls",
+        "eos_buddha"
+      ],
+      "status": "supported broad location"
+    },
+    {
+      "id": "gujrat_not_gujarat",
+      "guard": "Gujrat in Punjab near the Chenab is a different place from Gujarat in western India. Store coordinates and region-qualified IDs.",
+      "source_ids": [
+        "gujrat_geography"
+      ],
+      "status": "supported geographic disambiguation"
+    },
+    {
+      "id": "peshawar_attock",
+      "guard": "Do not back-project later Barakzai Peshawar/Attock labels into a1790s snapshot. Peshawar circa1800 belongs in the Durrani succession context; verify each local office separately.1818 attestation is not a start date.",
+      "source_ids": [
+        "eos_shuja",
+        "eos_yar"
+      ],
+      "status": "Peshawar correction supported; Attock exact1792 office remains open"
+    },
+    {
+      "id": "jammu_dogra",
+      "guard": "Jammu existed earlier, but Gulab Singh's ruling configuration belongs to1822 onward. Distinguish region, older dynasty, later Dogra house, and suzerain.",
+      "source_ids": [
+        "eos_hills",
+        "eos_gulab"
+      ],
+      "status": "supported period correction"
+    },
+    {
+      "id": "bharatpur_identity_kinship",
+      "guard": "Separate Ranjit Singh of Lahore from Ranjit Singh of Bharatpur. Suraj Mal is historical by1792. Shared Jat identity is not proof of biological cousinhood, a permanent alliance, or one political unit.",
+      "source_ids": [
+        "eos_bharatpur"
+      ],
+      "status": "namesake correction supported; alleged kinship requires specific genealogy"
+    },
+    {
+      "id": "dholpur_gohad",
+      "guard": "Preserve both names but do not place the later Dholpur settlement unchanged in1792. Dynasty, territorial claim, and actual possession must be separate.",
+      "source_ids": [
+        "dholpur_census"
+      ],
+      "status": "broad1805–1806 guard; direct source inspection pending"
+    },
+    {
+      "id": "guja_narrative",
+      "guard": "The supplied Gujranwala page offers local names and episodes, but labels such as 'unscrupulous' and suspected secret ammunition supply are narrator judgments or attributed suspicions. Its dating conflicts with other histories on some episodes; do not silently hard-code them.",
+      "source_ids": [
+        "guja_monarchy"
+      ],
+      "status": "source-use caution"
+    }
+  ],
+  "future_hooks": [
+    {
+      "name": "Shikarpur",
+      "status": "future verification",
+      "note": "Check dated control, proposed campaigns, diplomacy, and commercial routes before an event."
+    },
+    {
+      "name": "Sea access",
+      "status": "future verification",
+      "note": "Do not infer a Sikh coastline or realized maritime access from Indus ambitions."
+    },
+    {
+      "name": "Mazari / Rojhan",
+      "status": "future verification",
+      "note": "Verify settlement dates, specific chiefs, campaign claims, and locations."
+    },
+    {
+      "name": "Jat kinship network",
+      "status": "future verification",
+      "note": "Check concrete genealogy, correspondence, troop service, or marriage; cultural identity alone supplies no automatic diplomacy."
+    },
+    {
+      "name": "Ballabhgarh, Kuchesar, Faridkot, Tiwana and smaller hill states",
+      "status": "future verification",
+      "note": "Preserve candidates; verify1792 officeholders, scale, dependency and route relevance before activating."
+    }
+  ],
+  "sources": [
+    {
+      "id": "eos_misls",
+      "url": "https://eos.learnpunjabi.org/MISLS.html",
+      "locator": "lines 19–32",
+      "note": "Scholarly encyclopedia; broad organizational/geographic guide, not a complete 1792 cadastral map."
+    },
+    {
+      "id": "eos_buddha",
+      "url": "https://eos.learnpunjabi.org/BUDDHA%20DAL.html",
+      "locator": "misl territorial distribution",
+      "note": "Independent entry supporting the cis-Sutlej Karorsinghia location."
+    },
+    {
+      "id": "guja_monarchy",
+      "url": "https://gujranwala.punjab.gov.pk/sikh_monarchy",
+      "locator": "lines 2–18",
+      "note": "Government-hosted retrospective narrative; moral judgments and suspicions require attribution, not adoption."
+    },
+    {
+      "id": "gujrat_geography",
+      "url": "https://gujrat.punjab.gov.pk/geography",
+      "locator": "lines 4–5",
+      "note": "Geographic disambiguation only; modern district boundaries are not historical polity borders."
+    },
+    {
+      "id": "eos_shuja",
+      "url": "https://eos.learnpunjabi.org/SHAH%20SHUJA%20(1780-1842).html",
+      "locator": "Peshawar appointment by Shah Zaman and succession context",
+      "note": "Inspected during source review; no contemporary map boundary is inferred."
+    },
+    {
+      "id": "eos_yar",
+      "url": "https://eos.learnpunjabi.org/YAR%20MUHAMMAD%20KHAN%20(D.%201829).html",
+      "locator": "Peshawar in November 1818",
+      "note": "Establishes later Barakzai presence, not its exact starting year."
+    },
+    {
+      "id": "eos_hills",
+      "url": "https://eos.learnpunjabi.org/SIKHS%20RELATIONS%20WITH%20HILL%20STATES.html",
+      "locator": "lines 8–11",
+      "note": "Rulership, fort possession, tribute, and suzerainty need separate dating."
+    },
+    {
+      "id": "eos_gulab",
+      "url": "https://eos.learnpunjabi.org/GULAB%20SINGH%20(1792-1857).html",
+      "locator": "lines 0–1",
+      "note": "Gulab Singh born1792, entered service1809, installed Raja of Jammu1822."
+    },
+    {
+      "id": "eos_bharatpur",
+      "url": "https://eos.learnpunjabi.org/SIKHS%20RELATIONS%20WITH%20JATS%20OF%20BHARATPUR.html",
+      "locator": "Bharatpur succession and Sikh contacts, particularly lines10–12",
+      "note": "Namesake separation and specific contact history; ethnic affinity alone is not a treaty."
+    },
+    {
+      "id": "dholpur_census",
+      "url": "https://censusindia.gov.in/nada/index.php/catalog/28801/download/31983/20969_1951_BHA.pdf",
+      "locator": "1951 District Census Handbook Bharatpur, historical account of Dholpur",
+      "note": "Search-index excerpt gives1806 transfer; direct PDF fetch timed out. Treat exact transition as1805–1806 pending direct document inspection."
+    }
+  ]
+}

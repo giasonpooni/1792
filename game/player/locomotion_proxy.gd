@@ -42,9 +42,14 @@ func piece(id: String,size: Vector3,offset: Vector3,color: Color) -> void:
 	var mat:=StandardMaterial3D.new();mat.albedo_color=color;mat.roughness=0.95;mesh.material_override=mat;attachment.add_child(mesh)
 
 func _process(delta: float) -> void:
-	var speed:=Vector2(actor.velocity.x,actor.velocity.z).length()
+	var observed:=actor.velocity
+	if actor.ground_contact_enabled:
+		# This profile retains drive velocity after a blocked command. Animate actual
+		# whole-tick travel, including native step segments, rather than that intent.
+		observed=actor.last_ground_displacement*Engine.physics_ticks_per_second
+	var speed:=Vector2(observed.x,observed.z).length()
 	var climbing: bool=actor.motion_mode_name in ["vault","mantle"]
-	if speed>0.15 and not climbing: rotation.y=atan2(-actor.velocity.x,-actor.velocity.z)
+	if speed>0.15 and not climbing: rotation.y=atan2(-observed.x,-observed.z)
 	elif climbing: rotation.y=actor.pivot.rotation.y
 	phase=fmod(phase+speed*delta*3.5,TAU)
 	var stride:=minf(speed/7.5,1.0)*0.65

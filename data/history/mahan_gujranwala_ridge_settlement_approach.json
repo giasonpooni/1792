@@ -1,0 +1,84 @@
+{
+  "schema_version": "historical-event.v1",
+  "event_id": "mahan_gujranwala_ridge_settlement_approach",
+  "title": "Gujranwala ridge\u2192settlement approach (authored encounter stub)",
+  "summary": "Authored field-command beat on the greybox march from the field ridge line toward Gujranwala settlement via fort road and staging camp. Player choices (hold/observe, delayed approach scout, advance under custody) stay inside the fixed historical endpoint \u2014 no alternate-history survival win and no combat AI.",
+  "date_range": {
+    "start_year": 1789,
+    "end_year": 1790,
+    "precision": "approximate",
+    "note": "Late-campaign approach window under the authored Mahan interlude; not a dated siege scene."
+  },
+  "location": {
+    "place_id": "gujranwala_fort_road",
+    "label": "Gujranwala fort-road approach (ridge\u2192settlement greybox)",
+    "certainty": "authored",
+    "related_place_ids": [
+      "gujranwala_camp",
+      "gujranwala_settlement",
+      "sukarchakia_field_camp"
+    ]
+  },
+  "actors": [
+    {
+      "id": "mahan_singh",
+      "role": "column_commander",
+      "kind": "person"
+    },
+    {
+      "id": "sukerchakia",
+      "role": "household_column",
+      "kind": "household"
+    }
+  ],
+  "evidence": [
+    {
+      "source": "game_canon.mahan_interlude_ridge_settlement_encounter_stub",
+      "confidence": "none",
+      "evidence_class": "D",
+      "note": "Authored fiction exercising delayed scout custody on the Gujranwala march path; not a primary quotation."
+    },
+    {
+      "source": "nominated_secondary_narratives (Sukerchakia home-ground at Gujranwala; approach roads)",
+      "confidence": "low",
+      "evidence_class": "B",
+      "note": "Orientation only; greybox markers are not a surveyed road plan."
+    }
+  ],
+  "canon_class": "authored_fiction",
+  "historical_outcome": {
+    "fixed": false,
+    "summary": "Encounter choices do not rewrite Mahan's fixed death endpoint or open a town combat map.",
+    "invariants": [
+      "no_alternate_history_win",
+      "fixed_endpoint_unchanged",
+      "no_combat_ai",
+      "place_not_person_collapse"
+    ]
+  },
+  "knowledge": {
+    "direct_observers": [
+      "mahan_singh"
+    ],
+    "report_routes": [
+      {
+        "from": "fictional_field_scout",
+        "to": "mahan_singh",
+        "channel": "delayed_historical_report"
+      }
+    ],
+    "propagation_delay": 80,
+    "player_knowledge": false
+  },
+  "gameplay": {
+    "playable": true,
+    "intervention_scope": "order_around",
+    "historical_invariants": [
+      "choices_within_fixed_endpoint",
+      "delayed_scout_custody",
+      "no_combat_ai",
+      "no_town_sim"
+    ],
+    "profile_scope": "mahan.v1"
+  }
+}

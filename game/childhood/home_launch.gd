@@ -1,7 +1,7 @@
 extends RefCounted
 ## Compose a controller onto the original scene without changing its retained bytes.
 const Home := preload("res://world/home_territory.tscn")
-const Chapter := preload("res://workshops/home_workshop_chapter.gd")
+const Chapter := preload("res://history/childhood_intro_chapter.gd")
 
 static func make_world() -> Node3D:
 	var home: Node3D = Home.instantiate()
@@ -10,11 +10,17 @@ static func make_world() -> Node3D:
 	home.add_child(chapter)
 	return home
 
-static func enter(tree: SceneTree) -> void:
+static func enter(tree: SceneTree, include_prologue: bool = true) -> void:
 	var previous := tree.current_scene
 	var world := make_world()
+	# Actual menu entry opens the family story; construction-only tools stay inert.
+	world.get_node("ChildhoodChapter").autoplay_intro=true
+	world.get_node("ChildhoodChapter").include_prologue=include_prologue
 	if previous != null:
 		tree.root.remove_child(previous)
 		previous.queue_free()
 	tree.root.add_child(world)
 	tree.current_scene = world
+	# All children are ready now. Park Home before its first physics tick,
+	# independent of the frame phase in which the menu requested entry.
+	world.get_node("ChildhoodChapter").open_childhood_intro()

@@ -75,6 +75,17 @@ func _run() -> void:
 	check(scene.model.restore(Fixture.complete()).is_empty(),"scene uses inherited state")
 	root.add_child(home)
 	await frames()
+	var compact: Node=scene.art.detail.hud
+	var handoff_process: int=home.process_mode
+	home.process_mode=Node.PROCESS_MODE_DISABLED
+	var handoff_state: Dictionary=scene.model.snapshot()
+	check(compact.visible and compact.task.text=="Speak to the quartermaster","completed inquiry retains a focused compact household handoff")
+	check(not scene._hud.is_visible_in_tree() and not scene._narrator_label.is_visible_in_tree() and not scene._caption.is_visible_in_tree(),"compact handoff suppresses the three legacy text blocks")
+	# The retained narration layout is exercised in its actual classic HUD mode.
+	compact.compact=false;compact.sample();await frames()
+	check(not compact.visible and scene._narrator_label.is_visible_in_tree() and scene._hud.is_visible_in_tree() and scene._caption.is_visible_in_tree(),"classic HUD restores narrator, controls and protagonist captions")
+	check(handoff_state==scene.model.snapshot(),"HUD selection changes no progress, knowledge, allowance, clock or physical pose")
+	home.process_mode=handoff_process
 	check(scene._narrator_label.get_parent()==scene._hud.get_parent(),"narration shares responsive HUD column")
 	check(not scene._narrator_label.get_global_rect().intersects(scene._hud.get_global_rect()),"narration does not overlap controls")
 	check(not scene._narrator_label.get_global_rect().intersects(scene._caption.get_global_rect()),"narrator and protagonist captions stay separate")

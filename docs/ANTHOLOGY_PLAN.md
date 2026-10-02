@@ -53,3 +53,12 @@ not a newly approved protagonist. Wazir Singh's alleged biography and Jeona Morh
 pre-1873 placement remain unverified. Colonial legal labels, community identity
 and individual conduct must remain separate. This supplement does not change the
 31-module runtime registry, activate DLC production, or extend the 1873 endpoint.
+## Fall of Empire: bounded DLC foundation
+
+[Fall of Empire](FALL_OF_EMPIRE.md) binds the retained succession, Naurangabad,
+Sutlej, Second War, post-annexation and Bar modules into a proposed 1839–1859 DLC.
+The working close follows the 1857 rebellion through the Crown transition and
+formal postwar settlement. Opposing perspectives share events, not omniscient
+knowledge. Its standalone synthetic desk tests that contract; it does not make
+these chapters playable or displace the full-Ranjit-before-DLC gate. The separate
+1873 epilogue and later cross-title leads remain outside this DLC.

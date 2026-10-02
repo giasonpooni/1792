@@ -37,9 +37,13 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install --yes --no-install-recommends xvfb xauth libgl1-mesa-dri ffmpeg
           timeout 300 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy --script res://tests/render_bazaar_direction.gd 2>&1 | tee test-results/bazaar-render.log
-          ! grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/bazaar-render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/bazaar-render.log; then
+            exit 1
+          fi
           timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy --script res://tests/render_bazaar_listening.gd 2>&1 | tee test-results/bazaar-listening-render.log
-          ! grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/bazaar-listening-render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/bazaar-listening-render.log; then
+            exit 1
+          fi
           grep -q 'BAZAAR_LISTENING_RENDER: 4 captures; 0 failures' test-results/bazaar-listening-render.log
           python3 tools/check_bazaar_presentation_capture.py --user-dir "$HOME/.local/share/godot/app_userdata/1792" > test-results/capture-completeness.json
           cp "$HOME/.local/share/godot/app_userdata/1792/bazaar-listening-checks.json" test-results/
@@ -47,6 +51,19 @@ jobs:
           cp "$HOME/.local/share/godot/app_userdata/1792/bazaar-direction.json" test-results/
           cp -r "$HOME/.local/share/godot/app_userdata/1792/bazaar-direction-images" test-results/
           ffmpeg -loglevel error -framerate 15 -i test-results/bazaar-direction-images/motion-%03d.png -c:v libx264 -pix_fmt yuv420p -movflags +faststart test-results/bazaar-motion.mp4
+      - name: Native Gujranwala Slice menu, route and courtyard qualification
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p test-results/gujranwala-slice
+          export GUJRANWALA_SLICE_OUTPUT="$PWD/test-results/gujranwala-slice"
+          export SOURCE_COMMIT="$(git rev-parse HEAD)"
+          export SOURCE_TREE="$(git rev-parse HEAD^{tree})"
+          timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy --script res://tests/render_gujranwala_slice.gd 2>&1 | tee test-results/gujranwala-slice-render.log
+          ! grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/gujranwala-slice-render.log
+          grep -q 'GUJRANWALA_SLICE_RENDER: 5 captures; 0 failures' test-results/gujranwala-slice-render.log
       - name: Retain exact source and environment
         if: always()
         shell: bash

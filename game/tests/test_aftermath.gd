@@ -174,6 +174,11 @@ func _journey(choice: String) -> void:
 		await walk(scene,Vector3(-4,0,5))
 		await tap(scene,KEY_G)
 		check(scene.model.aftermath().escort.instruction == "follow","G regroups on return within range")
+	else:
+		var alone: Dictionary=scene.model.aftermath()
+		await tap(scene,KEY_G)
+		check(scene._message=="No deployed household escort.","independent guard command clearly refuses an undeployed escort")
+		check(scene.model.aftermath()==alone and not scene.escort.visible and scene.escort.collision_layer==0,"independent guard command preserves the agreement and undeployed actor")
 	# Avoid the stable's posts; physical pathfinding should carry the guard around them.
 	await walk(scene,Vector3(2,0,-2))
 	await walk(scene,Vector3(3,0,-12))

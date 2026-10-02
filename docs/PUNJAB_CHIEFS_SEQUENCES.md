@@ -1,0 +1,55 @@
+# Punjab Chiefs playable recollections
+
+This catalogue extends 1792 with thirteen short spatial recollections, sixty-five sequential actions and one hundred thirty original dialogue choices. The original six draw from the uploaded *Chiefs and Families of Note in the Punjab*, Volume I, 1940 edition, revised through 1 July 1939. Seven additions draw on the supplied Ranjit Singh biographies and court material. Authority is local to the recollection: an ending records how the player completed this sequence, not a change to campaign chronology, historical identity or the wider faction state.
+
+The content lives in `game/history/punjab_chiefs_catalogue.json`. Source file identity: `file_0000000040f481f5986ef7b122de871c`. The references below use **printed book pages**, not PDF page indices. The source draws on written material, family testimony, bards and priests. Its legends and retrospective allegations remain available for dramatic use. Original dialogue is never presented as a quotation from the source or Shah Muhammad.
+
+## Playable material
+
+| ID | Recollection and role | Physical actions | Choice consequences | Printed source pages |
+| --- | --- | --- | --- | --- |
+| `delegation` | **The Wedding Road**; fictional Nakai household runner during marriage negotiations | Inspect the gifts; receive the delegate; escort the delegate to the entrance; hear the rival messenger; report to the keeper | Public evidence versus discretion; kinship versus protection; credit; direct report versus negotiation | 283 |
+| `alliance` | **The Unequal Victory**; fictional attendant in the remembered 1785 coalition | Hear a captain; gather a wounded companion; escort them to a crossing; petition the herald; allocate dressings | Recognition, assistance across contingents, and supplies produce different closing accounts of the gathering | 283, 287 |
+| `revenge` | **A Stranger at the Threshold**; fictional attendant in Dal Singh's household in the book's 1790 revenge account | Question an arrival; consult a witness; warn the steward; gather a dependent; escort them to shelter | Warning, shelter and testimony change the local response; the recorded fatal revenge remains outside the player's sight | 283, 287 |
+| `desi` | **Desi Remembers the Reins**; Budha Singh in an ancestral dramatization | Mount Desi; ride to the first marker; ride at least twelve metres before the far marker; dismount at water; speak to the companion | Patience, care and what the companion remembers give the legendary rider a personal relationship with his named mare | 399–400 |
+| `exile` | **What Can Be Carried**; fictional attendant among displaced Ramgarhia followers | Hear the elder; choose an offer from supplies; negotiate hospitality; gather a weary follower; escort them to shelter | Limited commitments, reciprocal obligations, the vow of return and the retained treasure story shape the ending | 429 |
+| `well` | **The Water of Bahrwal**; fictional attendant following the narrated legend | Draw brackish water; prepare hospitality; follow the charpai episode; hear the blessing at an exterior threshold; draw sweetened water | Sharing the water or carrying the story changes the final emphasis while retaining the miracle itself | 282 |
+| `regency` | **The Door to the Young Chief**; household clerk, 1792 | Hear Lakhpat and Dal; admit Sada; escort her to the hearing; finish the register | Audience order, public access and whether the agreement preserves objections | Memorial 99–100; Buxi 6–7 |
+| `rumours` | **The Whisper After Midnight**; household attendant, late 1790s | Hear an accusation; examine its unsigned account; collect a witness; escort her to shelter; report | Private inquiry or public allegation; protection or exposure of a witness | Griffin 159–160; Buxi 6–7 |
+| `heirs` | **Two Names in the Dispatch**; Batala courier, 1807 | Receive the names; hear Sada; handle a competing allegation; gather a rider; escort to departure | Message integrity, recognition, confidentiality and who receives the accusation | Griffin 107–108; Memorial 25, 251–252 |
+| `overture` | **The Fortress in the Letter**; Sada's courier, 1808 | Hear the proposed approach; consult the storekeeper; inspect the seal; receive the agent; escort to handoff | Existing obligations, a delivery receipt and conditions of the approach | University Sada entry; Discover Sikhism, 1808 account |
+| `litter` | **Behind the Lowered Curtain**; retainer, 1820–1821 | Hear Sada; prepare the wrapper; confront Vasakha; gather bearers; escort the covered litter | Responsibility, treatment of bearers and a recorded protest; detention remains fixed | Griffin 165–166; University Sada entry; Discover Sikhism |
+| `sodhra` | **When the Camp Falls Quiet**; young camp runner, 1792 | Receive Maha's words; gather a veteran; escort him through the gate; allocate water; speak to the boy | A private father-son message, shared burden and care during withdrawal | Griffin 157–158; alternate Memorial 15 |
+| `settlement` | **Names at the Gate**; settlement attendant, late 1790s | Receive instructions; hear the visiting family; escort them inside; clarify terms; provide supplies | Specific guarantees, obligations, provision and witnesses after conflict | Jan Muhammad Chattha encyclopedia entry |
+
+The Nakai bride Raj Kaur is distinct from Ranjit Singh's mother, Raj Kaur. Budha Singh's mare Desi is named in the source; the playable route is an original adaptation. The Ramgarhia well-treasure episode and the Bahrwal sweet-water miracle are separate traditions and separate locations. In the Bahrwal telling, Hem Raj carries the sleeping Guru Arjun home on a charpai, the water becomes sweet, and a powerful descendant is promised. The catalogue preserves the complete event in narration without requiring a Guru avatar, impersonation or entry into a religious building.
+
+## Catalogue contract and spatial use
+
+Every recollection has a distinct period, player role, source kind and adaptation note. The opening and spoken lines belong to the dramatic presentation. Source metadata belongs to production and reference inspection. The scene geometry is an intentionally compressed stage, approximately fifty metres across, rather than a reconstruction claiming the real distances between historical places.
+
+Each station has a stable ID, label, prop kind and `[x, y, z]` position. All stations are separated by at least four metres, with positions between x = -10 and 10, z = -14 and 8, and y = 0. The intended player start is `[0, 0, 12]`; Desi waits at `[0, 0, 7]`. Clear paths connect the stations. Decorative geometry must preserve these paths.
+
+Beats are ordered and address stations by ID. An interaction is completed through a choice at the active station. Every choice contains an original response and boolean effects. `requires_flags` names prerequisite true flags. The modes are `interact`, `escort` and `ride`; spatial validation remains the runtime's responsibility and must not be inferred from a dialogue choice alone.
+
+Escort choices set `escort_following: true` in **both** branches before an escort beat. The companion is the preceding NPC target. Delegation, alliance, revenge and exile each require the player and companion to reach the active destination; no branch strands a companion through a missing following flag.
+
+Desi's first interaction sets `mounted: true` in both branches. Its next two beats require riding, and the far-marker beat specifies `min_ride_distance: 12.0`. Both watering-place choices set `mounted: false`. Other sequences never set the mounted flag. The catalogue does not create inventory items: gift inspection, provisions and water are represented by station interaction and local flags.
+
+Endings are ordered. Select the first whose complete `requires_flags` list is true; each sequence ends with an empty-requirement fallback. Choices are unique within their sequence. Restore/replay retains the sequence ID, completed choice IDs and resulting local flags while re-establishing the current spatial state through the runtime. New court and frontier entries carry `source_ids`, their own page locators and adaptation notes; the top-level 1940 source applies to the original six.
+
+## Cinematic direction
+
+The scenes share recurring forms: a threshold, someone waiting to be accompanied, an object carried, and an account that changes when repeated. Their palettes distinguish the warm wedding court, muted coalition ground, tense shaded household, open horse ground, subdued exile halt and luminous Bahrwal well. Court additions use sealed dispatch tables; rumours and the litter use cool night fill and warm oil lamps. The litter has opaque curtains, carrying poles and bearers; its visual rig travels with the existing escort body. Sodhra and the settlement use open-country daylight stages. All are procedural blockouts, not reconstructions of surveyed sites.
+
+The well's miraculous change belongs to the performed legend. The revenge sequence keeps the fatal event offscreen so that the player's agency concerns warning, care and testimony. Desi's ride gives the ancestor and mare an intimate action rather than only an assertion of legendary prowess. Escort choices allow political pressure to be experienced through the pace and presence of another person.
+
+This document describes catalogue content and runtime expectations. Integration and execution results must be recorded by the scene and test implementation; the catalogue alone does not establish campaign integration or finished cinematic production quality.
+
+## Historical versions and dramatic choices
+
+`docs/references/court_factions_2026-10-02.json` preserves fifteen claim records, identity guards and source locations. The two Dal Singhs, the two Raj Kaurs and Atalgarh/Akalgarh are separate. The twins and poisoning remain usable allegations; a courier's completed task does not prove parentage or murder. Rival accounts are retained internally while the dialogue performs a particular encounter directly. Sada can be forceful, protective, calculating or threatening through her actions without the narrator claiming universal agreement about her motives.
+
+`docs/references/father_frontier_2026-10-02.json` preserves the incompatible Sodhra outcomes and the Chattha chronology. The implemented Sodhra visit selects the 1792 withdrawal; the 1790 child-victory story remains available for a separate telling. The intimate father-son dialogue is authored drama. The specific smallpox vigil remains a proposed scene.
+
+`docs/references/punjab_political_map_2026-10-02.json` retains forty-five named entities as inputs for a later dated map. It does not implement a map, fix sovereign borders or reduce every lineage, fort, province and state to the same unit. The Mathews caravan, estate petitions, full intelligence system and Sindh campaigns remain future work.

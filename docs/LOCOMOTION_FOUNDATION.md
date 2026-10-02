@@ -102,7 +102,9 @@ Execution uses `move_and_collide` on each segment, not a Tween assigning the bod
 transform. A new obstacle interrupts movement where the collision occurs. A deleted
 or transformed support invalidates the contact. The implementation is deliberately
 conservative: no curved/moving ledges, wall running, ledge hanging, corner transfers,
-free climbing, automatic step-up, root-motion warping or arbitrary geometry inference.
+free climbing, automatic step-up in this course, root-motion warping or arbitrary
+geometry inference. A separate [ground-contact course](GROUND_CONTACT_PHYSICS.md)
+now qualifies bounded static steps through an additional opt-in profile on the same motor.
 
 The rectangular path is a **provisional movement primitive**, not a finished
 biomechanical vault animation. It does not preserve running momentum through a vault.

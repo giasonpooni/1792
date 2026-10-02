@@ -1,0 +1,137 @@
+{
+  "schema": "1792.father-frontier.sources.v1",
+  "reviewed": "2026-10-02",
+  "policy": "Source summaries identify competing retrospective accounts. All dialogue, player roles, guarantees, local tasks and choice outcomes are original dramatic adaptation. No account is silently reconciled with its rival; no family representative speaks for an entire clan.",
+  "sources": [
+    {
+      "id": "father_griffin_1905",
+      "title": "Ranjit Singh and the Sikh Barrier Between Our Growing Empire and Central Asia",
+      "author": "Lepel Griffin",
+      "edition": "Oxford, Clarendon Press, 1905; Fifth Thousand",
+      "kind": "retrospective_colonial_history",
+      "printed_pages": [
+        157,
+        158
+      ],
+      "pdf_pages": [
+        165,
+        166
+      ],
+      "claims": "Mahan becomes ill during the Sodhra siege, faints during fighting, is taken from the field, and his forces retreat. Griffin dates his death at Gujranwala three days later to 1792. His son had already accompanied expeditions.",
+      "limitations": "Not eyewitness testimony; authorial judgments and later reconstruction require attribution. No private father-son handover or bedside vigil is established by these pages.",
+      "file": "ranjitsinghsikh00grif.pdf"
+    },
+    {
+      "id": "father_memorial_1939",
+      "title": "Maharaja Ranjit Singh: First Death Centenary Memorial",
+      "editors": [
+        "Teja Singh",
+        "Ganda Singh"
+      ],
+      "publisher": "Khalsa College, Amritsar",
+      "year": 1939,
+      "kind": "retrospective_commemorative_essay_collection",
+      "printed_pages": [
+        15
+      ],
+      "pdf_pages": [
+        31
+      ],
+      "claims": "An incompatible 1790 account: Mahan entrusts command to his ten-year-old son, retires to Gujranwala and dies; the child defeats reinforcing Bhangis near Kot Maharaja.",
+      "limitations": "Preserved as an alternate, not joined to Griffin's retreat as if one verified narrative. Commemorative framing favours its hero.",
+      "file": "Maharaja.Ranjit.Singh.(GurmatVeechar.com).pdf"
+    },
+    {
+      "id": "father_maha_eos",
+      "title": "MAHAN SINGH (d. 1790)",
+      "url": "https://www.thesikhencyclopedia.com/mahan-singh-2/",
+      "kind": "online_secondary_reference",
+      "claims": "Dates Mahan's death to April 1790 after dysentery during the Sodhra siege forced withdrawal. Associates Ranjit's naming with news received after the father's victorious Rasulnagar campaign.",
+      "limitations": "The similarly titled /mahan-singh/ concerns Mahan Singh Mirpuri, a different man. This entry does not establish a smallpox bedside vigil."
+    },
+    {
+      "id": "father_mana_jatchiefs",
+      "title": "Mana Singh Mann",
+      "url": "https://jatchiefs.com/mana-singh-mann/",
+      "kind": "modern_genealogical_web_summary",
+      "claims": "Describes Mana as Mahan's close associate, a participant in his campaigns, and subsequently loyal to Ranjit. Cites Griffin's Punjab Chiefs (1865).",
+      "limitations": "The underlying passage was not independently located in this bounded review. Do not identify the fictional camp veteran as Mana or conflate him with Maan Singh in other tales."
+    },
+    {
+      "id": "frontier_jan_eos",
+      "title": "JAN MUHAMMAD CHATTHA",
+      "url": "https://www.thesikhencyclopedia.com/jan-muhammad-chattha/",
+      "kind": "online_secondary_reference",
+      "claims": "Reports Jan Muhammad's return with Shah Zaman in 1797, subsequent defeat and death in 1798, followed by small estates and irregular-cavalry employment for his sons.",
+      "limitations": "Supplies the chosen settlement anchor, not the invented courtyard, witness procedure or terms. The sons are unnamed here."
+    },
+    {
+      "id": "frontier_district_portal",
+      "title": "Establishment of the Sikh Monarchy",
+      "url": "https://gujranwala.punjab.gov.pk/sikh_monarchy",
+      "publisher": "District Gujranwala, Government of Punjab",
+      "kind": "official_web_historical_summary",
+      "claims": "Places Jan Muhammad's return and renewed Ramnagar conflict in 1799, differing from the encyclopedia. It also dates the Sodhra siege to 1790.",
+      "limitations": "Official hosting is not contemporary evidence. Its hostile generalizations about communities are not adopted as narrator truth; accusations about particular actors remain allegations."
+    },
+    {
+      "id": "father_user_dramatic_brief",
+      "title": "User father-and-frontier story brief",
+      "kind": "creative_direction_and_supplied_tradition",
+      "claims": "Retain a warm father, an enduring veteran bond, the requested smallpox vigil and local family guarantees as creative possibilities.",
+      "limitations": "No dated source for the specific bedside vigil has been located. It remains a declared dramatic candidate, not deleted or promoted to established biography."
+    }
+  ],
+  "variant_groups": [
+    {
+      "id": "sodhra_father_endpoint",
+      "selected_sequence": "sodhra",
+      "selected": "1792 illness, withdrawal and return, adapted from Griffin; private authority handover is original drama.",
+      "alternates": [
+        {
+          "source_id": "father_memorial_1939",
+          "account": "1790 handover and child victory"
+        },
+        {
+          "source_id": "father_maha_eos",
+          "account": "1790 illness, withdrawal and death"
+        }
+      ],
+      "rule": "Do not claim the retreat and child-victory outcomes have been reconciled. Do not change the fixed death endpoint through local player choices."
+    },
+    {
+      "id": "chattha_settlement_year",
+      "selected_sequence": "settlement",
+      "selected": "Late-1790s aftermath using the encyclopedia's 1798 endpoint.",
+      "alternates": [
+        {
+          "source_id": "frontier_district_portal",
+          "account": "1799 return and renewed Ramnagar siege"
+        }
+      ],
+      "rule": "Keep as a later recollection or separately dated chapter; do not backdate the settlement to the 1792 opening."
+    }
+  ],
+  "proposal_hooks": [
+    {
+      "id": "smallpox_bedside_vigil",
+      "status": "proposed_not_implemented",
+      "source_ids": [
+        "father_user_dramatic_brief"
+      ],
+      "proposal": "An intimate earlier recollection: the father keeps vigil, the veteran quietly brings water, and a runner helps the household endure the night. Preserve warmth and fear without a fabricated medical diagnosis or guaranteed cure.",
+      "evidence": "Specific bedside attendance remains unlocated; all dialogue and errands would be declared drama."
+    },
+    {
+      "id": "father_frontier_map_relations",
+      "status": "proposed_not_implemented",
+      "source_ids": [
+        "father_griffin_1905",
+        "father_maha_eos",
+        "frontier_jan_eos",
+        "frontier_district_portal"
+      ],
+      "proposal": "Relate Gujranwala household, Sodhra siege, Gujrat rivalry and Rasulnagar/Ramnagar conflict as dated routes and household ties. Show separate period layers and uncertain control; no precise sovereign polygons inferred from these narratives."
+    }
+  ]
+}

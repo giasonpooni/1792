@@ -1,0 +1,35 @@
+{
+  "schema_version": "historical-location.v1",
+  "location_id": "gujranwala_settlement",
+  "kind": "settlement",
+  "label": "Gujranwala (Sukerchakia home-ground)",
+  "summary": "Town treated as Sukerchakia political home-ground for the Mahan interlude. Secondary narratives place Charat Singh's HQ move here and Mahan's Garhi Mahan Singh within the walled town. This stub does not quote primary sources or assert surveyed 1790 street geometry.",
+  "region": "rechna_doab_west_punjab",
+  "household_context": "sukerchakia",
+  "connects": [
+    "gujranwala_fort_road",
+    "gujranwala_lahore_approach",
+    "sukarchakia_field_camp",
+    "gujranwala_camp"
+  ],
+  "evidence": [
+    {
+      "source": "nominated_secondary_narratives (Sukerchakia HQ at Gujranwala under Charat Singh / Mahan; Garhi Mahan Singh motif)",
+      "confidence": "medium",
+      "evidence_class": "B",
+      "note": "Reconstructed from commonly repeated secondary accounts; not an invented primary citation or edition page anchor."
+    },
+    {
+      "source": "game_canon.mahan_interlude_home_ground",
+      "confidence": "none",
+      "evidence_class": "C",
+      "note": "Gameplay abstraction: Gujranwala is the named home-ground reference for Mahan field operations, not a full town sim."
+    }
+  ],
+  "canon_class": "reconstructed",
+  "gameplay": {
+    "profile_scope": "mahan.v1",
+    "role": "home_ground",
+    "notes": "Reference location for historical events; greybox camp remains sukarchakia_field_camp."
+  }
+}

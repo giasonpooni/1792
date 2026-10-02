@@ -3,17 +3,20 @@ extends CharacterBody3D
 ## No separate campaign, clock, inventory, save or AI executor lives here.
 
 const Rules := preload("res://mounts/riding_rules.gd")
+const HorseVisual := preload("res://mounts/horse_visual.gd")
 const WALK := 3.0
 const TROT := 6.5
 const ACCELERATION := 4.5
 const BRAKING := 9.0
 const GRAVITY := 22.0
+const DISMOUNT_CLEARANCE_LIFTS := [0.0,0.02,0.04,0.06,0.08,0.12,0.16]
 var speed := 0.0
 var gait_speed_limit := Rules.MAX_SPEED # Optional supplied-condition cap; original default preserved.
 var _rider: Node3D
 var _legs: Array[Node3D] = []
 var _stride := 0.0
 var _hull: CapsuleShape3D
+var _visual: Node3D
 
 func _ready() -> void:
 	floor_snap_length = 0.4
@@ -29,6 +32,18 @@ func _ready() -> void:
 	collider.shape = _hull
 	add_child(collider)
 	_build_blockout()
+	# Preserve legacy leg/rider handles; the visual adapter has no physics authority.
+	for node in get_children():
+		if node is MeshInstance3D:
+			node.hide()
+	for leg in _legs:
+		for node in leg.get_children():
+			if node is MeshInstance3D:
+				node.hide()
+	_visual = HorseVisual.new()
+	_visual.name = "HorseVisual"
+	add_child(_visual)
+	_visual.build()
 
 func apply_record(record: Dictionary) -> void:
 	global_position = Rules.position(record)
@@ -36,6 +51,8 @@ func apply_record(record: Dictionary) -> void:
 	speed = record.speed
 	velocity = -global_basis.z * speed + Vector3.UP * record.vertical_speed
 	_rider.visible = record.rider_id != ""
+	if is_instance_valid(_visual):
+		_visual.sample(speed, _stride)
 
 func step(delta: float, throttle: float, steering: float, canter: bool, walk: bool, brake: bool) -> Dictionary:
 	var maximum := minf(gait_speed_limit, Rules.MAX_SPEED if canter else WALK if walk else TROT)
@@ -56,41 +73,84 @@ func step(delta: float, throttle: float, steering: float, canter: bool, walk: bo
 	_stride += speed * delta * 2.2
 	for i in range(_legs.size()):
 		_legs[i].rotation.x = sin(_stride + (PI if i in [1, 2] else 0.0)) * minf(speed / 12.0, 0.55)
+	_visual.sample(speed, _stride)
 	return {"position": [global_position.x, global_position.y, global_position.z],
 		"yaw": rotation.y, "speed": speed, "vertical_speed": minf(0.0, velocity.y), "grounded": is_on_floor()}
 
+func saddle_support_point() -> Vector3:
+	return _visual.saddle_support_point()
+
+func bridle_points_world() -> Array[Vector3]:
+	return _visual.bridle_points_world()
+func _avatar_collider(avatar: CharacterBody3D, allow_disabled: bool = false) -> CollisionShape3D:
+	var collider: CollisionShape3D=avatar.get_node_or_null("CollisionShape3D")
+	if collider==null or (collider.disabled and not allow_disabled) or collider.shape==null: return null
+	if not avatar.global_transform.is_finite() or not collider.transform.is_finite(): return null
+	return collider
+
+func _avatar_query(avatar: CharacterBody3D,collider: CollisionShape3D,body_transform: Transform3D) -> PhysicsShapeQueryParameters3D:
+	var query:=PhysicsShapeQueryParameters3D.new()
+	query.shape=collider.shape;query.transform=body_transform*collider.transform
+	query.collision_mask=collision_mask;query.exclude=[get_rid(),avatar.get_rid()]
+	return query
+
+func _raised_clear_avatar(space: PhysicsDirectSpaceState3D,avatar: CharacterBody3D,collider: CollisionShape3D,body_transform: Transform3D) -> Variant:
+	# An upright capsule needs slightly more vertical clearance on a slope than
+	# on a flat plane. Search a small declared lift; never alter the real shape.
+	for lift in DISMOUNT_CLEARANCE_LIFTS:
+		var candidate:=body_transform;candidate.origin+=Vector3.UP*lift
+		if space.intersect_shape(_avatar_query(avatar,collider,candidate),1).is_empty():
+			return candidate
+	return null
+
 func clear_mount_path(avatar: CharacterBody3D) -> bool:
-	var ray := PhysicsRayQueryParameters3D.create(avatar.global_position + Vector3.UP,
-		global_position + Vector3.UP * 1.4, 1, [get_rid(), avatar.get_rid()])
-	return get_world_3d().direct_space_state.intersect_ray(ray).is_empty()
+	# Mounting removes the walking body only after admission. Sweep its actual
+	# configured shape and local transform to the horse; an eye-height ray could
+	# miss a low wall that the avatar capsule cannot cross.
+	var collider:=_avatar_collider(avatar)
+	if collider==null or collision_mask==0: return false
+	var space:=get_world_3d().direct_space_state
+	var clear_start:Variant=_raised_clear_avatar(space,avatar,collider,avatar.global_transform)
+	var destination:=avatar.global_transform;destination.origin=global_position
+	var clear_destination:Variant=_raised_clear_avatar(space,avatar,collider,destination)
+	# Resting player and horse contacts can differ by a few millimetres. Use the
+	# same bounded support clearance as dismounting before sweeping the full hull.
+	if clear_start==null or clear_destination==null: return false
+	var query:=_avatar_query(avatar,collider,clear_start)
+	destination=clear_destination
+	query.motion=(destination*collider.transform).origin-query.transform.origin
+	var fraction:=space.cast_motion(query)
+	return fraction.size()==2 and fraction[0]>=0.999
 
 func dismount_position(avatar: CharacterBody3D) -> Variant:
-	# Try both sides, then rear/front. Ray ground, capsule clearance, swept path.
+	# Try both sides, then rear/front. Ray ground, then clear and sweep the same
+	# collision shape/local transform that resumes walking after dismount.
 	var space := get_world_3d().direct_space_state
-	var exclusions: Array[RID] = [get_rid(), avatar.get_rid()]
+	# A seated scene may disable its walking shape. Admission still sweeps that
+	# configured shape before the scene reenables it at the accepted landing.
+	var collider:=_avatar_collider(avatar,true)
+	if collider==null or collision_mask==0: return null
+	var exclusions: Array[RID]=[get_rid(),avatar.get_rid()]
 	for offset in [global_basis.x * 1.8, -global_basis.x * 1.8, global_basis.z * 2.1, -global_basis.z * 2.1]:
 		var p: Vector3 = global_position + offset
-		var ray := PhysicsRayQueryParameters3D.create(p + Vector3.UP * 0.65, p - Vector3.UP * 0.8, 1, exclusions)
+		# Cover the full vertical change possible across this horizontal offset at
+		# the horse's admitted floor angle. The old fixed ray missed both the
+		# uphill and downhill exits on a 30-degree support.
+		var reach:=maxf(0.8,offset.length()*tan(floor_max_angle)+0.2)
+		var ray:=PhysicsRayQueryParameters3D.create(p+Vector3.UP*reach,p-Vector3.UP*reach,collision_mask,exclusions)
 		var hit := space.intersect_ray(ray)
 		if hit.is_empty() or hit.normal.y < cos(deg_to_rad(40.0)):
 			continue
-		var landing: Vector3 = hit.position + Vector3.UP * 0.04
-		var query := PhysicsShapeQueryParameters3D.new()
-		var shape := CapsuleShape3D.new()
-		shape.radius = 0.35
-		shape.height = 1.6
-		query.shape = shape
-		query.exclude = exclusions
-		query.collision_mask = 1
-		query.transform = Transform3D(Basis.IDENTITY, landing + Vector3.UP * 0.8)
-		if not space.intersect_shape(query, 1).is_empty():
-			continue
-		var start := global_position + Vector3.UP * 0.84
-		query.transform.origin = start
-		query.motion = landing + Vector3.UP * 0.8 - start
+		var destination:=avatar.global_transform;destination.origin=hit.position+Vector3.UP*0.04
+		var clear_destination:Variant=_raised_clear_avatar(space,avatar,collider,destination)
+		var clear_start:Variant=_raised_clear_avatar(space,avatar,collider,avatar.global_transform)
+		if clear_destination==null or clear_start==null: continue
+		var query:=_avatar_query(avatar,collider,clear_start)
+		var target_origin: Vector3=(clear_destination*collider.transform).origin
+		query.motion=target_origin-query.transform.origin
 		var fraction := space.cast_motion(query)
 		if fraction.size() == 2 and fraction[0] >= 0.999:
-			return landing
+			return clear_destination.origin
 	return null
 
 func record_fits_world(record: Dictionary, avatar: CharacterBody3D) -> bool:

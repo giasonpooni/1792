@@ -1,0 +1,63 @@
+{
+  "schema": "ciw.workcell-title-profile.v1",
+  "recipe": "1792.smith.v1",
+  "sources": {
+    "characters/character_names.gd": {
+      "sha256": "sha256:c6f39cc8bb3eeea51bd8c6427c4be0f7af0a13a272ffb39a4891cd5545578df6",
+      "bytes": 833
+    },
+    "childhood/childhood_state.gd": {
+      "sha256": "sha256:c56c37b10e7f23a9b300300f7b4bf9ad5ba02d3dd26b48ec0a9eeefcfb0ba764",
+      "bytes": 19051
+    },
+    "mounts/riding_rules.gd": {
+      "sha256": "sha256:b17b8117f34c60b53c7360246d7bdfc87309c4696c944dd70c77ee88d4706ff0",
+      "bytes": 3398
+    },
+    "presentation/canopy.gdshader": {
+      "sha256": "sha256:ffb38469ad5d2a35d6e2123738c2d54df552e8dc89d3a228849ca1532bccb010",
+      "bytes": 950
+    },
+    "presentation/handmade_surface.gdshader": {
+      "sha256": "sha256:b2257b0fcad431217d134df227e663cbb3411568e9f80ec6202665bea510f27c",
+      "bytes": 2188
+    },
+    "presentation/workshop_kit.gd": {
+      "sha256": "sha256:8b4ee19b563250192b228fa82a0f7458500446082f6b0057c090535096472c08",
+      "bytes": 6969
+    },
+    "territory/misl_rules.gd": {
+      "sha256": "sha256:b62e3e09bd1ba3b9af9a7e887d157cb8cf1692da7478ab01eca885e53a7e9472",
+      "bytes": 11783
+    },
+    "workshops/workshop_rules.gd": {
+      "sha256": "sha256:0c62771789c278aa3df4f3e5c38096a16cc9c6d9257788db74cfa152cb9dbd62",
+      "bytes": 4965
+    },
+    "workshops/workshop_world.gd": {
+      "sha256": "sha256:f34709ec4dc2b7a396d4d702b411c1671e1d8c97233a285c178ced977a208c0f",
+      "bytes": 6065
+    },
+    "workcells/baked_smith.gd": {
+      "sha256": "sha256:f92a2be73c505e533d86bec2192bf7b242b4ce9b655a465ed2a4e7faae6633e2",
+      "bytes": 1210
+    },
+    "workcells/smith_scene.gd": {
+      "sha256": "sha256:33bdd7f7ece4dce7680a6d7e099a736ec71485f0cbd98bce419d5af4990200ca",
+      "bytes": 4381
+    },
+    "workcells/smith_probe.gd": {
+      "sha256": "sha256:73103f615471eab8f518abfcd3107deabd92515489e9df29b02ccb4958afe03c",
+      "bytes": 6753
+    },
+    "workcells/NOTICE.txt": {
+      "sha256": "sha256:af774337e96cacfefcfaa546cedea4986e7345faf47734843cf50db15db6e8a3",
+      "bytes": 2468
+    }
+  },
+  "writable": [
+    "workshops/workshop_world.gd",
+    "workshops/workshop_rules.gd"
+  ],
+  "scope": "Isolated asset/commission inspection using original 1792 modules, not a full Home journey or approved historical/artistic reconstruction."
+}

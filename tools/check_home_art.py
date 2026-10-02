@@ -53,7 +53,11 @@ class ArtContracts(unittest.TestCase):
     def test_same_launch_not_a_second_world(self):
         text = (ROOT / "game/childhood/home_launch.gd").read_text()
         self.assertIn('preload("res://world/home_territory.tscn")', text)
-        self.assertIn('preload("res://workshops/home_workshop_chapter.gd")', text)
+        self.assertIn('preload("res://history/childhood_intro_chapter.gd")', text)
+        self.assertIn('extends "res://mounts/riding_training_chapter.gd"',
+                      (ROOT / "game/history/childhood_intro_chapter.gd").read_text())
+        self.assertIn('extends "res://workshops/home_workshop_chapter.gd"',
+                      (ROOT / "game/mounts/riding_training_chapter.gd").read_text())
         self.assertIn('extends "res://presentation/art_chapter.gd"',
                       (ROOT / "game/workshops/home_workshop_chapter.gd").read_text())
         self.assertIn('extends "res://geography/atlas_chapter.gd"',

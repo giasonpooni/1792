@@ -1,6 +1,7 @@
 # Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 extends Node3D
 ## Reversible Gujranwala beauty pass. Appearance only: no collision, navigation, economy or save authority.
+const VesselProfile := preload("res://presentation/vessel_profile.gd")
 var accent_panels: Array[MeshInstance3D]=[]
 var screens: Array[Node3D]=[]
 var planters: Array[Node3D]=[]
@@ -140,9 +141,14 @@ func _build_market_still_life() -> void:
 		Vector3(-26.1,1.15,-17.75),Vector3(-25.55,1.10,-17.92),Vector3(-24.95,1.13,-17.72),
 		Vector3(-24.25,1.08,-17.94),Vector3(-23.58,1.14,-17.70),Vector3(-22.95,1.07,-17.90)]
 	for i in range(pot_positions.size()):
-		pottery.append(cylinder(root,"Vessel%d"%i,.16+.025*(i%3),.30+.05*(i%2),pot_positions[i],Color("9f704c") if i%2==0 else Color("7d6b58"),16))
+		var vessel := cylinder(root,"Vessel%d"%i,.16+.025*(i%3),.30+.05*(i%2),pot_positions[i],Color("9f704c") if i%2==0 else Color("7d6b58"),16)
+		vessel.mesh = VesselProfile.build(.16+.025*(i%3),.30+.05*(i%2),i)
+		pottery.append(vessel)
 		var rim:=torus(root,"Rim%d"%i,.13+.02*(i%3),.16+.02*(i%3),pot_positions[i]+Vector3.UP*(.17+.025*(i%2)),Color("b7865b"))
 		rim.rotation.x=PI/2
+		# Retain the legacy prop identity/inventory; the vessel mesh now owns its
+		# correctly fitted annular lip, so this duplicate rim must not render.
+		rim.layers=0
 	for i in range(3):
 		textiles.append(box(root,"FoldedTextile%d"%i,Vector3(.70,.08,.42),Vector3(-24.65+i*.55,1.08+i*.085,-18.15),[Color("9f694f"),Color("66786e"),Color("b49b6a")][i]))
 	var hanging:=box(root,"HangingTextile",Vector3(.48,.92,.025),Vector3(-22.55,2.02,-18.18),Color("93614d"))

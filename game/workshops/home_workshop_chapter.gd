@@ -6,25 +6,105 @@ const Craft := preload("res://workshops/workshop_rules.gd")
 const CourtyardEnvelope := preload("res://reconstruction/courtyard_envelope.gd")
 const WorkshopView := preload("res://workshops/workshop_world.gd")
 const BazaarPerformance := preload("res://youth/performance/bazaar_director.gd")
+const GateRules := preload("res://access/gate_rules.gd")
+const HawkScout := preload("res://scouting/hawk_scout.gd")
+const HomeScoutContacts := preload("res://scouting/home_scout_contacts.gd")
+const GroundFocus := preload("res://perception/ground_focus.gd")
 var bazaar_performance: Node
+var hawk_scout: Node3D
+var scout_contacts: Node3D
+var ground_focus: Node
 var workplace: Node3D
 var _workshop_action := ""
 var _workshop_choices: Array[String]=[]
+var _gate_action := ""
+var _gate_choices: Array[String]=[]
+var _gate_caption: Label3D
 
 func _init() -> void:
 	model=WorkshopState.new();save_path=WorkshopState.WORKSHOP_SAVE
 
 func _ready() -> void:
 	super._ready()
+	# Bind this keeper projection to the same marked place used by motion receipts.
+	gate_passage.guard_root.set_meta("actor_projection_id",GateRules.GUARD_ID)
+	_gate_caption=Label3D.new();_gate_caption.text="Gate keeper [E]"
+	_gate_caption.position=GateRules.GUARD+Vector3.UP*1.8
+	_gate_caption.billboard=BaseMaterial3D.BILLBOARD_ENABLED
+	_gate_caption.font_size=20;_gate_caption.pixel_size=0.0015;add_child(_gate_caption)
 	bazaar_performance=BazaarPerformance.new();bazaar_performance.name="BazaarPerformance";add_child(bazaar_performance);bazaar_performance.build(self)
+	scout_contacts=HomeScoutContacts.new();add_child(scout_contacts);scout_contacts.build()
+	hawk_scout=HawkScout.new();hawk_scout.name="HawkScout";add_child(hawk_scout);hawk_scout.bind(self,avatar,horse)
+	attacker.set_meta("hawk_scout_id","unknown_assailant");attacker.set_meta("hawk_scout_label","Unknown assailant")
+	hawk_scout.register_target("unknown_assailant",attacker,"Unknown assailant")
+	ground_focus=GroundFocus.new();ground_focus.name="GroundFocus";add_child(ground_focus);ground_focus.bind(self)
+	ground_focus.register_target("trainer",trainer,"Trainer","interaction")
+	ground_focus.register_target("mother",_mother,"Raj Kaur","ally")
+	ground_focus.register_target("bend_trace",_clue,"Ground trace","clue")
+	ground_focus.register_target("household_horse",horse,"Household horse","interaction",Vector3.UP*1.1)
+	ground_focus.register_target("unknown_assailant",attacker,"Unknown contact","contact",Vector3.UP*1.15)
+	ground_focus.register_target("household_guard",escort,"Household guard","ally",Vector3.UP*1.15)
+	for i in range(scout_contacts.contacts.size()):
+		ground_focus.register_target("distant_contact_%d"%i,scout_contacts.contacts[i],"Unknown contact","contact",Vector3.UP*1.15)
+	var smith: Node3D=workplace.find_child("FictionalSmith",true,false)
+	if is_instance_valid(smith): ground_focus.register_target("smith",smith,"Smith","interaction",Vector3.UP*1.25)
+	ground_focus.register_sound("workshop_hammer",workplace.hammer_audio,"Metal striking")
 	_refresh()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_Z:
+		if is_instance_valid(ground_focus):
+			if ground_focus.active: ground_focus.stop()
+			else:
+				var reason:=_focus_access()
+				if reason.is_empty(): ground_focus.start()
+				else: _message=reason;_refresh()
+		get_viewport().set_input_as_handled();return
+	if is_instance_valid(hawk_scout):
+		if hawk_scout.active:
+			var was_active: bool=bool(hawk_scout.active)
+			if hawk_scout.handle_input(event):
+				if was_active and not hawk_scout.active: _refresh()
+				get_viewport().set_input_as_handled();return
+			if event is InputEventKey or event is InputEventMouseButton or event is InputEventMouseMotion:
+				get_viewport().set_input_as_handled();return
+		if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_X:
+			_launch_hawk();get_viewport().set_input_as_handled();return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_F6 and is_instance_valid(bazaar_performance):
 		bazaar_performance.toggle_sound();get_viewport().set_input_as_handled();return
 	super._unhandled_input(event)
 
+func _focus_access() -> String:
+	if _paused or (is_instance_valid(hawk_scout) and hawk_scout.active): return "Return to the ground view before focusing."
+	if model.mounted() or model.stage() in ["active","caught"] or model.brawl_busy(): return "Focus requires a quiet moment on foot."
+	if Input.is_action_pressed("sprint"): return "Slow down before focusing."
+	return ""
+
+func _hawk_access() -> String:
+	if _paused: return "Close the current conversation or notebook before releasing the hawk."
+	if model.mounted(): return "Dismount before releasing the hawk."
+	if model.stage() in ["active","caught"]: return "The hawk cannot be released during the immediate attack."
+	if model.brawl_busy(): return "Finish the active bazaar confrontation before scouting."
+	if model.carrying_workshop(): return "Return the workshop load before handling the hawk."
+	if model.has_water_round():
+		var water: Dictionary=model.water_round().ledger
+		if int(water.get("carried",0))>0 or String(water.get("phase",""))=="drawing":
+			return "Deposit the water or cancel the draw before handling the hawk."
+	if avatar.global_position.distance_to(model.position())>0.25: return "Player body and recorded position disagree; scouting refused."
+	return ""
+
+func _launch_hawk() -> void:
+	var error:=_hawk_access()
+	if error.is_empty(): error=hawk_scout.launch()
+	if error.is_empty() and is_instance_valid(ground_focus): ground_focus.stop()
+	_message=error if not error.is_empty() else "Buddh releases the hawk. Its view can mark only hostiles it actually sees."
+	_refresh()
+	if error.is_empty():
+		if is_instance_valid(_hud): _hud.hide()
+		if is_instance_valid(_caption): _caption.hide()
+
 func _show_dialog(title: String,body: String,actions: Array) -> void:
+	if is_instance_valid(ground_focus): ground_focus.stop()
 	super._show_dialog(title,body,actions)
 	if is_instance_valid(bazaar_performance): bazaar_performance.sample(false)
 
@@ -36,8 +116,13 @@ func _build_world() -> void:
 
 func _clear_pending_actions() -> void:
 	super._clear_pending_actions();_workshop_action="";_workshop_choices.clear()
+	_gate_action="";_gate_choices.clear()
 
 func _menu_action(action: String) -> void:
+	if action.begins_with("gate:"):
+		var kind:=action.trim_prefix("gate:")
+		if _paused and kind in _gate_choices and _gate_action.is_empty(): _gate_action=kind
+		return
 	if action.begins_with("smith:"):
 		var kind:=action.trim_prefix("smith:")
 		if _paused and kind in _workshop_choices and _workshop_action.is_empty(): _workshop_action=kind
@@ -46,6 +131,7 @@ func _menu_action(action: String) -> void:
 
 func _resume() -> void:
 	_workshop_action="";_workshop_choices.clear()
+	_gate_action="";_gate_choices.clear()
 	super._resume()
 
 func _workshop_button(label: String,kind: String) -> void:
@@ -62,16 +148,60 @@ func _open_quartermaster() -> void:
 		"tools": _workshop_button("Return both tool bundles to household stock","deliver")
 
 func _open_journal() -> void:
+	if is_instance_valid(ground_focus): ground_focus.stop()
 	super._open_journal()
 	if FileAccess.file_exists(YouthState.BRAWL_SAVE):
 		_workshop_button("Import prior youth/visual save · replaces this whole run","import")
 
 func _interact() -> void:
+	if model.aftermath_phase()=="complete" and not model.brawl_busy() and model.position().distance_to(GateRules.GUARD)<=3.0:
+		var error:=_gate_access()
+		if not error.is_empty(): _message=error;return
+		_open_gate();return
 	if model.aftermath_phase()=="complete" and not model.brawl_busy() and model.position().distance_to(Craft.SITE)<=3.0:
 		var error:=_workshop_access("start")
 		if not error.is_empty(): _message=error;return
 		_open_smith();return
 	super._interact()
+
+func _gate_access() -> String:
+	if model.mounted(): return "Dismount to speak to the gate keeper."
+	if not avatar.is_on_floor(): return "Stand on the ground before speaking to the gate keeper."
+	if avatar.global_position.distance_to(model.position())>0.25: return "The body and recorded position must agree."
+	if avatar.global_position.distance_to(GateRules.GUARD)>3.0 or not _seen(GateRules.GUARD+Vector3.UP*1.35,4.5) or not _gate_contact(model.position()):
+		return "Face the nearby gate keeper from unobstructed standing ground."
+	return ""
+
+func _open_gate() -> void:
+	_gate_choices.clear()
+	var body: String="Gate keeper · Ask before using this marked passage, and keep to a controlled pace. I can speak about what I see here."
+	# The UI reads received testimony only; the guard's hidden ledger is not a codex.
+	for entry in model.journal():
+		if entry.source_id==GateRules.GUARD_ID: body=String(entry.text)
+	var actions: Array=[["Ask for one passage","gate:request"]]
+	var choices: Array[String]=["request"]
+	if model.has_gate_passage():
+		actions.append(["Hear the keeper's account","gate:account"]);choices.append("account")
+		# Offered without inspecting private guard memory; the reducer decides whether it applies.
+		actions.append(["Acknowledge the heard concern and request passage","gate:reconcile"]);choices.append("reconcile")
+	actions.append(["Return","resume"])
+	_show_dialog("HOUSEHOLD PASSAGE",body+"\n\nAn original fictional interaction. Keep a controlled pace between the training markers.",actions)
+	_gate_choices=choices
+
+func _gate_contact(p: Vector3) -> bool:
+	if not is_instance_valid(gate_passage) or not gate_passage.is_visible_in_tree(): return false
+	if p.distance_to(GateRules.GUARD)>8.0: return false
+	var ray:=PhysicsRayQueryParameters3D.create(GateRules.GUARD+Vector3.UP*1.35,p+Vector3.UP*1.35,3,[avatar.get_rid(),horse.get_rid(),attacker.get_rid()])
+	return get_world_3d().direct_space_state.intersect_ray(ray).is_empty()
+
+func _record_walk(p: Vector3,delta: float) -> String:
+	var witnessed: bool=model.has_gate_passage() and GateRules.crossing(model.position(),p) and _gate_contact(p)
+	return model.record_gate_position(p,delta,witnessed,avatar.is_on_floor())
+
+func _record_mounted(motion: Dictionary,delta: float) -> String:
+	var target: Vector3=Model.point(motion.position) if Model.valid_point(motion.get("position")) else model.position()
+	var witnessed: bool=model.has_gate_passage() and GateRules.crossing(model.position(),target) and _gate_contact(target)
+	return model.record_gate_ride(motion,delta,witnessed)
 
 func _open_smith() -> void:
 	var text: String={"unassigned":"Smith · Ask your quartermaster about the two tool bundles. I cannot charge his household on your word alone.",
@@ -96,6 +226,16 @@ func _workshop_access(kind: String) -> String:
 	return ""
 
 func _physics_process(delta: float) -> void:
+	if not _gate_action.is_empty():
+		var kind:=_gate_action;_gate_action=""
+		var error:=_gate_access() # Recheck real sight and standing position after opening the dialogue.
+		if error.is_empty(): error=model.gate_action(kind,true)
+		if not error.is_empty(): _message=error
+		else:
+			_message="The keeper's spoken account is retained in the journal."
+			for entry in model.journal():
+				if entry.source_id==GateRules.GUARD_ID: _message=String(entry.text)
+		_resume();return
 	if not _workshop_action.is_empty():
 		var kind:=_workshop_action;_workshop_action=""
 		if kind=="import": _load(YouthState.BRAWL_SAVE);return
@@ -104,7 +244,22 @@ func _physics_process(delta: float) -> void:
 		_message=error if not error.is_empty() else Craft.WORDS[kind]
 		_sync_economy();_resume();_sync_workshop();return
 	super._physics_process(delta)
+	if is_instance_valid(scout_contacts): scout_contacts.sample(int(model.progress().tick))
+	if is_instance_valid(hawk_scout):
+		var returned_from_hawk: bool=false
+		if hawk_scout.active and (_paused or model.mounted() or model.stage() in ["active","caught"] or model.brawl_busy()):
+			hawk_scout.return_to_player()
+			returned_from_hawk=true
+		if returned_from_hawk: _refresh()
+		if hawk_scout.active:
+			hawk_scout.step(delta)
+			if is_instance_valid(_hud): _hud.hide()
+			if is_instance_valid(_caption): _caption.hide()
+		hawk_scout.sample(int(model.progress().tick))
 	_sync_workshop()
+	if is_instance_valid(ground_focus):
+		if ground_focus.active and not _focus_access().is_empty(): ground_focus.stop()
+		ground_focus.sample(int(model.progress().tick))
 
 func _sync_workshop() -> void:
 	if not is_instance_valid(workplace): return
@@ -119,6 +274,11 @@ func _sync_water() -> void:
 
 func _apply() -> void:
 	super._apply();_sync_workshop()
+	if is_instance_valid(ground_focus): ground_focus.clear()
+	if is_instance_valid(hawk_scout):
+		if hawk_scout.active: hawk_scout.return_to_player()
+		hawk_scout.clear_tags()
+	if is_instance_valid(scout_contacts): scout_contacts.sample(int(model.progress().tick))
 	if is_instance_valid(bazaar_performance): bazaar_performance.rehydrate()
 
 func workshop_hint() -> String:
@@ -128,6 +288,12 @@ func workshop_hint() -> String:
 
 func _refresh() -> void:
 	super._refresh();_sync_workshop()
+	var gate_near: bool=model.aftermath_phase()=="complete" and not model.brawl_busy() and not model.mounted() and model.position().distance_to(GateRules.GUARD)<6.0
+	if is_instance_valid(_gate_caption): _gate_caption.visible=gate_near and not _paused
+	if is_instance_valid(_hud) and gate_near:
+		_hud.text+="\nHOUSEHOLD PASSAGE · Face the keeper beside the riding marker [E]."
+	if is_instance_valid(_hud) and is_instance_valid(hawk_scout) and not hawk_scout.active:
+		_hud.text+="\nX: release hawk scout · Z: Focus · tags retain the last seen position"
 	if not is_instance_valid(_hud) or not model.has_economy():
 		if is_instance_valid(bazaar_performance): bazaar_performance.sample()
 		return
@@ -136,6 +302,8 @@ func _refresh() -> void:
 		_hud.text="1792 · BUDDH SINGH · HOME COURTYARD\n\nSMITH'S COMMISSION · "+workshop_hint()+"\nHousehold coffers %d · timber %d · stored tools %d · personal purse %d" % [ledger.treasury,ledger.stock.timber,ledger.stock.tools,ledger.purse]
 		_hud.text+="\nE speak · B supplies · J journal · F5/F9 save/load · F7 visual comparison"
 	else: _hud.text+="\nWORKSHOP · "+workshop_hint()
+	if is_instance_valid(ground_focus) and not hawk_scout.active and model.workshop_phase() in ["fuel","working","ready","tools"] and not model.brawl_busy():
+		_hud.text+="\nZ: Focus · X: release hawk scout"
 	if is_instance_valid(art) and is_instance_valid(art.detail) and is_instance_valid(art.detail.hud): art.detail.hud.sample()
 	if is_instance_valid(bazaar_performance): bazaar_performance.sample()
 

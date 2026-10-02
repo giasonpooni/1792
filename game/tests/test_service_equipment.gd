@@ -122,10 +122,19 @@ func run() -> void:
 	for _i in range(3): await process_frame
 	var scroll: ScrollContainer=menu.find_children("*","ScrollContainer",true,false)[0]
 	var buttons: Array[Node]=menu.find_children("*","Button",true,false)
-	check(buttons.size()==6,"five existing destinations plus equipment remain in menu")
-	scroll.ensure_control_visible(buttons[-1])
-	await process_frame
-	check(scroll.get_global_rect().encloses(buttons[-1].get_global_rect()),"equipment entry remains fully reachable at 800 by 450")
+	var equipment_button: Button
+	for destination in ["res://world/home_territory.tscn","res://world/political_home.tscn",
+		"res://world/command_sandbox.tscn","res://world/house_sandbox.tscn",
+		"res://mechanics/course.tscn","res://presentation/equipment_study.tscn"]:
+		var matches: Array[Node]=buttons.filter(func(button: Node) -> bool:
+			return button.get_meta("destination_scene", "")==destination)
+		check(matches.size()==1,"existing menu destination remains unique: "+destination)
+		if destination=="res://presentation/equipment_study.tscn" and matches.size()==1:
+			equipment_button=matches[0] as Button
+	if is_instance_valid(equipment_button):
+		scroll.ensure_control_visible(equipment_button)
+		await process_frame
+		check(scroll.get_global_rect().encloses(equipment_button.get_global_rect()),"equipment entry remains fully reachable at 800 by 450")
 	menu.queue_free()
 	await process_frame
 	print("SERVICE_EQUIPMENT_TESTS: %d passed, %d failed"%[passed,failed])
