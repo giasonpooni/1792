@@ -6,7 +6,9 @@ const Craft := preload("res://workshops/workshop_rules.gd")
 const CourtyardEnvelope := preload("res://reconstruction/courtyard_envelope.gd")
 const WorkshopView := preload("res://workshops/workshop_world.gd")
 const BazaarPerformance := preload("res://youth/performance/bazaar_director.gd")
+const HawkScout := preload("res://scouting/hawk_scout.gd")
 var bazaar_performance: Node
+var hawk_scout: Node3D
 var workplace: Node3D
 var _workshop_action := ""
 var _workshop_choices: Array[String]=[]
@@ -17,12 +19,42 @@ func _init() -> void:
 func _ready() -> void:
 	super._ready()
 	bazaar_performance=BazaarPerformance.new();bazaar_performance.name="BazaarPerformance";add_child(bazaar_performance);bazaar_performance.build(self)
+	hawk_scout=HawkScout.new();hawk_scout.name="HawkScout";add_child(hawk_scout);hawk_scout.bind(self,avatar,horse)
+	attacker.set_meta("hawk_scout_id","unknown_assailant");attacker.set_meta("hawk_scout_label","Unknown assailant")
+	hawk_scout.register_target("unknown_assailant",attacker,"Unknown assailant")
 	_refresh()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if is_instance_valid(hawk_scout):
+		if hawk_scout.active:
+			if hawk_scout.handle_input(event):
+				get_viewport().set_input_as_handled();return
+			if event is InputEventKey or event is InputEventMouseButton or event is InputEventMouseMotion:
+				get_viewport().set_input_as_handled();return
+		if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_X:
+			_launch_hawk();get_viewport().set_input_as_handled();return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_F6 and is_instance_valid(bazaar_performance):
 		bazaar_performance.toggle_sound();get_viewport().set_input_as_handled();return
 	super._unhandled_input(event)
+
+func _hawk_access() -> String:
+	if _paused: return "Close the current conversation or notebook before releasing the hawk."
+	if model.mounted(): return "Dismount before releasing the hawk."
+	if model.stage() in ["active","caught"]: return "The hawk cannot be released during the immediate attack."
+	if model.brawl_busy(): return "Finish the active bazaar confrontation before scouting."
+	if model.carrying_workshop(): return "Return the workshop load before handling the hawk."
+	if model.has_water_round():
+		var water: Dictionary=model.water_round().ledger
+		if int(water.get("carried",0))>0 or String(water.get("phase",""))=="drawing":
+			return "Deposit the water or cancel the draw before handling the hawk."
+	if avatar.global_position.distance_to(model.position())>0.25: return "Player body and recorded position disagree; scouting refused."
+	return ""
+
+func _launch_hawk() -> void:
+	var error:=_hawk_access()
+	if error.is_empty(): error=hawk_scout.launch()
+	_message=error if not error.is_empty() else "Buddh releases the hawk. Its view can mark only hostiles it actually sees."
+	_refresh()
 
 func _show_dialog(title: String,body: String,actions: Array) -> void:
 	super._show_dialog(title,body,actions)
@@ -104,6 +136,18 @@ func _physics_process(delta: float) -> void:
 		_message=error if not error.is_empty() else Craft.WORDS[kind]
 		_sync_economy();_resume();_sync_workshop();return
 	super._physics_process(delta)
+	if is_instance_valid(hawk_scout):
+		if hawk_scout.active and (_paused or model.mounted() or model.stage() in ["active","caught"] or model.brawl_busy()):
+			hawk_scout.return_to_player()
+		if hawk_scout.active:
+			hawk_scout.step(delta)
+		hawk_scout.sample(int(model.progress().tick))
+		if hawk_scout.active:
+			if is_instance_valid(_hud): _hud.hide()
+			if is_instance_valid(_caption): _caption.hide()
+		elif not _paused:
+			if is_instance_valid(_hud): _hud.show()
+			if is_instance_valid(_caption): _caption.show()
 	_sync_workshop()
 
 func _sync_workshop() -> void:
@@ -136,6 +180,7 @@ func _refresh() -> void:
 		_hud.text="1792 · BUDDH SINGH · HOME COURTYARD\n\nSMITH'S COMMISSION · "+workshop_hint()+"\nHousehold coffers %d · timber %d · stored tools %d · personal purse %d" % [ledger.treasury,ledger.stock.timber,ledger.stock.tools,ledger.purse]
 		_hud.text+="\nE speak · B supplies · J journal · F5/F9 save/load · F7 visual comparison"
 	else: _hud.text+="\nWORKSHOP · "+workshop_hint()
+	if is_instance_valid(hawk_scout) and not hawk_scout.active: _hud.text+="\nX: release hawk scout · aerial tags retain only the last seen position"
 	if is_instance_valid(art) and is_instance_valid(art.detail) and is_instance_valid(art.detail.hud): art.detail.hud.sample()
 	if is_instance_valid(bazaar_performance): bazaar_performance.sample()
 
