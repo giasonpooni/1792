@@ -240,3 +240,5 @@ The existing Home visual study now adds a reversible beauty layer over the autho
 See [the beauty-pass scope and limits](docs/GUJRANWALA_BEAUTY_PASS.md).
 
 A second reversible depth/patina pass extends the composition beyond the immediate courtyard with wall-top rhythm, peripheral pavilion silhouettes, selective plaster aging, high household cloth, distant foliage and warm evening opening glows. See [the depth/patina scope and limits](docs/GUJRANWALA_DEPTH_PATINA.md).
+
+A third reversible eye-level craft pass adds restrained trim, dark timber reveals, plinth accents, selective repair fields, sparse wall hardware and two quiet storage corners. See [the microdetail scope and limits](docs/GUJRANWALA_MICRODETAIL.md).
