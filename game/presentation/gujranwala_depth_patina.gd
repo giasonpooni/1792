@@ -86,9 +86,9 @@ func _build_parapet_rhythm() -> void:
 		var x: float=-25.2+float(i)*5.6
 		parapets.append(box(root,"NorthParapet%d"%i,Vector3(3.4,.42,.36),Vector3(x,3.22,28.72),Color("a89170")))
 	# Side-wall accents are sparse so they frame rather than cage the courtyard.
+	var side_z: Array[float]=[-20.0,-10.5,-1.0,8.5,23.0]
 	for side in [-1.0,1.0]:
-		for i in range(5):
-			var z: float=-20.0+float(i)*9.5
+		for z in side_z:
 			parapets.append(box(root,"SideParapet",Vector3(.36,.42,3.2),Vector3(side*28.72,3.22,z),Color("9f886a")))
 
 func _build_skyline_clusters() -> void:
