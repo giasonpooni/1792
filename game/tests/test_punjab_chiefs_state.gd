@@ -1,7 +1,7 @@
 # Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 extends SceneTree
 const State := preload("res://history/punjab_chiefs_state.gd")
-const ROUTES := ["alliance", "delegation", "desi", "exile", "revenge", "well"]
+const ROUTES := ["alliance", "delegation", "desi", "exile", "heirs", "litter", "overture", "regency", "revenge", "rumours", "settlement", "sodhra", "well"]
 var passed := 0
 var failed := 0
 
@@ -46,7 +46,7 @@ func _routes() -> void:
 	var model := State.new()
 	var available: Array = model.catalogue().map(func(item): return item.id)
 	available.sort()
-	check(available == ROUTES, "the six distinct family tales are available")
+	check(available == ROUTES, "the thirteen distinct family and court tales are available")
 	if available != ROUTES: return
 	for id in ROUTES:
 		var first := _finish(id, 0)
@@ -169,7 +169,7 @@ func _detached_queries() -> void:
 	var catalogue_copy: Array = model.catalogue()
 	catalogue_copy.clear()
 	check(model.snapshot() == before and model.current_beat() == expected_beat, "queries cannot mutate progress or next action")
-	check(model.catalogue().size() == 6, "catalogue query is detached")
+	check(model.catalogue().size() == ROUTES.size(), "catalogue query is detached")
 	ok(model.start("desi"), "a new telling replaces prior story progress")
 	check(model.step_index == 0 and model.choices.is_empty() and model.flags.is_empty(), "story switch does not inherit another tale's flags")
 

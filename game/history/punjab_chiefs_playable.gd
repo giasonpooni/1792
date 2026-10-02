@@ -7,7 +7,8 @@ const State = preload("res://history/punjab_chiefs_state.gd")
 const Player = preload("res://player/player.tscn")
 const Horse = preload("res://mounts/horse.tscn")
 const Costume = preload("res://presentation/costume_proxy.gd")
-const CHECKPOINT_SCHEMA := "1792.punjab-chiefs.visit.v1"
+const CHECKPOINT_SCHEMA := "1792.punjab-chiefs.visit.v2"
+const LEGACY_CHECKPOINT_SCHEMA := "1792.punjab-chiefs.visit.v1"
 var model = State.new()
 var sequence_id := "delegation"
 var save_path := "user://punjab_chiefs_visit.json"
@@ -44,6 +45,8 @@ var _elapsed := 0.0
 var _returned := false
 var _awaiting_opening := true
 var _well_water: MeshInstance3D
+var _covered_litter: Node3D
+var _litter_station_id := ""
 
 func configure(id: String) -> void:
 	sequence_id = id
@@ -133,22 +136,24 @@ func _build_stage() -> void:
 	_stage.name = "RecollectionStage"
 	add_child(_stage)
 	var palette: Dictionary = model.sequence.get("palette", {})
+	var night := sequence_id in ["rumours", "litter"]
 	var ground := Color(palette.get("ground", "b79b70"))
-	var sky_color := Color(palette.get("sky", "b7c3c0"))
+	var sky_color := Color(palette.get("sky", "1b2538" if night else "b7c3c0"))
 	var environment := WorldEnvironment.new()
 	var env := Environment.new()
 	env.background_mode = Environment.BG_COLOR
 	env.background_color = sky_color
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = sky_color.lightened(0.1)
-	env.ambient_light_energy = 0.30
+	env.ambient_light_color = Color("7d91ba") if night else sky_color.lightened(0.1)
+	env.ambient_light_energy = 0.40 if night else 0.30
 	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 	environment.environment = env
 	_stage.add_child(environment)
 	var sun := DirectionalLight3D.new()
+	sun.name = "NightSkyFill" if night else "Sun"
 	sun.rotation_degrees = Vector3(-28,-36,0)
-	sun.light_color = Color("ffe3b5")
-	sun.light_energy = 0.72
+	sun.light_color = Color("9bb4de") if night else Color("ffe3b5")
+	sun.light_energy = 0.24 if night else 0.72
 	sun.shadow_enabled = true
 	_stage.add_child(sun)
 	_box(_stage, Vector3(60,0.4,60), Vector3(0,-0.2,0), ground, true)
@@ -158,7 +163,7 @@ func _build_stage() -> void:
 		_box(_stage, Vector3(0.7,3.5,49), Vector3(x,1.75,0), ground.darkened(0.16), true)
 	for z in [-24,24]:
 		_box(_stage, Vector3(49,3.5,0.7), Vector3(0,1.75,z), ground.darkened(0.16), true)
-	var open_country: bool = sequence_id in ["desi","exile","alliance"]
+	var open_country: bool = sequence_id in ["desi","exile","alliance","sodhra","settlement"]
 	for x in [-19,19]:
 		if not open_country:
 			_box(_stage, Vector3(5,4,31), Vector3(x,2,-2), ground.lightened(0.07), true)
@@ -190,6 +195,7 @@ func _build_stage() -> void:
 			reed.rotation.z = (j-1)*0.22
 	for definition in model.sequence.stations:
 		_build_station(definition)
+	_build_sequence_dressing(night)
 	avatar = Player.instantiate()
 	avatar.name = "RecollectionPlayer"
 	avatar.menu_shortcut = false
@@ -214,6 +220,98 @@ func _build_stage() -> void:
 	_marker.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	_marker.modulate = Color("fff0bd")
 	_stage.add_child(_marker)
+
+func _build_sequence_dressing(night: bool) -> void:
+	# These authored silhouettes and light sources decorate the existing routes.
+	# They own no collider, narrative progress, carrier motor or checkpoint fields.
+	if night:
+		for definition in model.sequence.stations:
+			_build_lamp(_point(definition.position) + Vector3(1.6, 0, 1.1))
+	if sequence_id != "litter": return
+	for beat in model.sequence.beats:
+		for choice in beat.choices:
+			if choice.effects.get("escort_following", false) and actors.has(beat.target):
+				_litter_station_id = beat.target
+				break
+		if not _litter_station_id.is_empty(): break
+	if _litter_station_id.is_empty(): return
+	_covered_litter = Node3D.new()
+	_covered_litter.name = "CoveredPalanquin"
+	_covered_litter.set_meta("presentation_role", "authored_covered_litter")
+	_stage.add_child(_covered_litter)
+	var timber := Color("695341")
+	var cloth := Color("594750")
+	var trim := Color("bc9c64")
+	_box(_covered_litter, Vector3(1.38, 0.16, 2.2), Vector3(0, 0.86, 0), timber)
+	# Opaque curtains keep the occupant concealed throughout the telling.
+	for x in [-0.64, 0.64]:
+		_box(_covered_litter, Vector3(0.05, 1.2, 2.1), Vector3(x, 1.53, 0), cloth)
+		_box(_covered_litter, Vector3(0.045, 0.07, 2.12), Vector3(x * 1.05, 1.02, 0), trim)
+		for z in [-0.98, 0.98]:
+			_box(_covered_litter, Vector3(0.08, 1.35, 0.08), Vector3(x, 1.55, z), timber)
+	for z in [-1.02, 1.02]:
+		_box(_covered_litter, Vector3(1.2, 1.18, 0.055), Vector3(0, 1.53, z), cloth.lightened(0.08))
+		for x in [-0.42, 0, 0.42]:
+			_box(_covered_litter, Vector3(0.035, 1.08, 0.02), Vector3(x, 1.53, z * 1.04), cloth.darkened(0.18))
+	for side in [-1, 1]:
+		var roof := _box(_covered_litter, Vector3(0.8, 0.11, 2.38), Vector3(side * 0.34, 2.21, 0), cloth)
+		roof.rotation.z = -side * 0.22
+		_box(_covered_litter, Vector3(0.09, 0.1, 4.2), Vector3(side * 0.59, 1.05, 0), timber)
+		_oval(_covered_litter, Vector3(0, 2.4, side * 1.04), Vector3(0.13, 0.2, 0.13), trim)
+	var rear_bearer := Node3D.new()
+	rear_bearer.name = "RearBearerPresentation"
+	rear_bearer.position.z = 1.68
+	_covered_litter.add_child(rear_bearer)
+	_figure(rear_bearer, Color("a89b7d"))
+	_sync_story_visuals()
+
+func _build_lamp(at: Vector3) -> void:
+	var lamp := Node3D.new()
+	lamp.name = "CourtyardOilLamp"
+	lamp.position = at
+	_stage.add_child(lamp)
+	_cylinder(lamp, Vector3(0, 0.75, 0), 0.055, 1.5, Color("675443"))
+	_cylinder(lamp, Vector3(0, 1.53, 0), 0.16, 0.055, Color("a4804b"))
+	var flame := _oval(lamp, Vector3(0, 1.65, 0), Vector3(0.075, 0.19, 0.075), Color("ffe8aa"))
+	var material := flame.material_override as StandardMaterial3D
+	material.emission_enabled = true
+	material.emission = Color("ffd08b")
+	material.emission_energy_multiplier = 2.0
+	var light := OmniLight3D.new()
+	light.position.y = 1.68
+	light.light_color = Color("ffd098")
+	light.light_energy = 1.7
+	light.omni_range = 7.0
+	light.omni_attenuation = 1.2
+	lamp.add_child(light)
+
+func _build_dispatch_table(anchor: Node3D) -> void:
+	var table := Node3D.new()
+	table.name = "SealedDispatchTable"
+	anchor.add_child(table)
+	var wood := Color("72563e")
+	_box(table, Vector3(1.9, 0.12, 1.0), Vector3(0, 0.85, 0), wood)
+	for x in [-0.82, 0.82]:
+		for z in [-0.37, 0.37]:
+			_box(table, Vector3(0.09, 0.82, 0.09), Vector3(x, 0.41, z), wood.darkened(0.1))
+	for i in range(4):
+		var at := Vector3(-0.59 + (i % 2) * 0.62, 0.927 + i * 0.002, -0.19 + (i / 2) * 0.32)
+		_box(table, Vector3(0.39, 0.025, 0.25), at, Color("dbcfad"))
+		_box(table, Vector3(0.035, 0.009, 0.26), at + Vector3.UP * 0.017, Color("938065"))
+		_cylinder(table, at + Vector3(0.0, 0.026, 0.035), 0.043, 0.012, Color("8d3f38"))
+	_cylinder(table, Vector3(0.69, 0.977, -0.27), 0.065, 0.13, Color("403a35"))
+	var reed := _box(table, Vector3(0.018, 0.018, 0.28), Vector3(0.69, 0.937, 0.03), Color("bca476"))
+	reed.rotation.y = 0.45
+
+func _sync_story_visuals() -> void:
+	if not is_instance_valid(_covered_litter): return
+	var following: bool = is_instance_valid(companion) and companion_id == _litter_station_id and model.flags.get("escort_following", false)
+	var destination: Node3D = companion if following else _stage
+	if _covered_litter.get_parent() != destination: _covered_litter.reparent(destination, false)
+	# Recompute from accepted state after ordinary choices and checkpoint recall.
+	# A recalled pre-escort state returns the litter to its original waiting place.
+	_covered_litter.position = Vector3(0, 0, 1.68) if following else stations[_litter_station_id].position + Vector3(0, 0, 1.68)
+	_covered_litter.rotation = Vector3.ZERO
 
 func _tree(at: Vector3) -> void:
 	_cylinder(_stage,at+Vector3.UP*1.6,0.18,3.2,Color("655343"))
@@ -268,8 +366,11 @@ func _build_station(definition: Dictionary) -> void:
 				var cloth := _box(anchor,Vector3(1.1,0.8,0.025),Vector3(side*1.5,2.1,0),Color("b69a63"))
 				cloth.rotation.z = side*0.08
 		"bundle":
-			for i in range(3):
-				_oval(anchor,Vector3((i-1)*0.4,0.3,0),Vector3(0.52,0.56,0.72),Color("9a8669"))
+			if definition.id == "dispatch_table":
+				_build_dispatch_table(anchor)
+			else:
+				for i in range(3):
+					_oval(anchor,Vector3((i-1)*0.4,0.3,0),Vector3(0.52,0.56,0.72),Color("9a8669"))
 		"track":
 			if sequence_id=="well" and definition.id=="resting_place":
 				_box(anchor,Vector3(1.4,0.12,2.3),Vector3(0,0.55,0),Color("9e8965"),true)
@@ -317,7 +418,7 @@ func _build_interface() -> void:
 	_title = _label(column,28,Color("fff1d3"))
 	var period := _label(column,15,Color("ebddbe"))
 	var roles := {"delegation":"Nakai household runner", "alliance":"Attendant to the allied chiefs", "revenge":"Dal Singh's household", "desi":"Budha Singh", "exile":"Among the Ramgarhia followers", "well":"Bahrwal household attendant"}
-	period.text = model.sequence.period+"  •  "+roles[sequence_id]
+	period.text = model.sequence.period+"  •  "+str(model.sequence.get("display_role", roles.get(sequence_id, model.sequence.get("role", "Household attendant"))))
 	var spacer := Control.new()
 	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -585,6 +686,7 @@ func _station_label(id: String) -> String:
 
 func _refresh() -> void:
 	if not is_instance_valid(_title): return
+	_sync_story_visuals()
 	_title.text = model.sequence.title
 	_objective.visible = not paused
 	_hint.visible = not paused
@@ -647,6 +749,7 @@ func save_checkpoint() -> String:
 		"player":_array(avatar.global_position),"camera":_array(avatar.pivot.rotation),
 		"mounted":mounted,"ride_distance":ride_distance,"companion_id":companion_id,
 		"companion":_array(companion.global_position) if is_instance_valid(companion) else [],
+		"companion_yaw":companion.rotation.y if is_instance_valid(companion) else 0.0,
 		"horse":_array(horse.global_position) if is_instance_valid(horse) else [],
 		"horse_yaw":horse.rotation.y if is_instance_valid(horse) else 0.0}
 	var temporary := save_path+".tmp"
@@ -670,8 +773,10 @@ func load_checkpoint() -> String:
 
 func restore_checkpoint(value: Variant) -> String:
 	# Validate the entire candidate before changing the live visit.
-	if not value is Dictionary or value.get("schema","")!=CHECKPOINT_SCHEMA: return "This is not a story checkpoint."
+	if not value is Dictionary or value.get("schema","") not in [CHECKPOINT_SCHEMA, LEGACY_CHECKPOINT_SCHEMA]: return "This is not a story checkpoint."
 	var keys := ["schema","progress","player","camera","mounted","ride_distance","companion_id","companion","horse","horse_yaw"]
+	var has_companion_yaw: bool = value.schema == CHECKPOINT_SCHEMA
+	if has_companion_yaw: keys.append("companion_yaw")
 	if value.size()!=keys.size(): return "Invalid checkpoint fields."
 	for key in keys:
 		if not value.has(key): return "Invalid checkpoint fields."
@@ -690,6 +795,18 @@ func restore_checkpoint(value: Variant) -> String:
 	if value.get("companion_id",null)!=expected_companion: return "The companion state disagrees with the telling."
 	if not expected_companion.is_empty() and (not actors.has(expected_companion) or not _valid_vector(value.get("companion"),25)): return "Invalid companion position."
 	if expected_companion.is_empty() and value.companion!=[]: return "Unexpected companion position."
+	var companion_yaw := 0.0
+	if has_companion_yaw:
+		if not (value.companion_yaw is float or value.companion_yaw is int) or not is_finite(float(value.companion_yaw)) or absf(float(value.companion_yaw))>TAU:
+			return "Invalid companion facing."
+		companion_yaw = float(value.companion_yaw)
+		if expected_companion.is_empty() and companion_yaw!=0.0: return "Unexpected companion facing."
+	elif not expected_companion.is_empty():
+		# Old checkpoints did not retain facing. Infer it without changing their
+		# saved locations or requiring the player to discard an earlier visit.
+		var toward_player := _point(value.player)-_point(value.companion)
+		if Vector2(toward_player.x,toward_player.z).length()>0.01:
+			companion_yaw = atan2(-toward_player.x,-toward_player.z)
 	if is_instance_valid(horse):
 		if not _valid_vector(value.get("horse"),25) or not (value.get("horse_yaw") is float or value.get("horse_yaw") is int) or not is_finite(float(value.horse_yaw)) or absf(float(value.horse_yaw))>TAU: return "Invalid horse position."
 		var record := {"position":value.horse,"yaw":float(value.horse_yaw),"grounded":true}
@@ -725,6 +842,7 @@ func restore_checkpoint(value: Variant) -> String:
 	companion = actors[companion_id] if not companion_id.is_empty() else null
 	if is_instance_valid(companion):
 		companion.global_position = _point(value.companion)
+		companion.rotation.y = companion_yaw
 		companion.velocity = Vector3.ZERO
 		companion.add_collision_exception_with(avatar)
 		avatar.add_collision_exception_with(companion)

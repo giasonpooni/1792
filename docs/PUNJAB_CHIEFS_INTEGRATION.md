@@ -56,7 +56,7 @@ Canvas/audio flags and Home save bytes through cancellation, forced overlay
 removal and host teardown. This qualifies the visit boundary; individual tale
 routes and cinematic presentation require their separate playable checks.
 
-The journey suite walks all six fresh routes with keyboard inputs into the
+The journey suite walks all thirteen fresh routes with keyboard inputs into the
 existing player motor, and steers/stops Desi through the existing horse motor.
 It invokes dialogue only after actual proximity and sight admission. It observes
 a lagging companion, waits for physical arrival, walks around a well upright
@@ -80,6 +80,12 @@ before applying them. It resets a former companion, restores mount presentation
 and rejects damaged, incompatible or obstructed checkpoints atomically. It never
 uses the household's save path.
 
+Visit checkpoint version 2 adds companion facing so the covered litter restores
+its full pose. Version 1 checkpoints remain readable; their companion facing is
+inferred from the saved player and companion positions. Narrative progress and
+Home save formats remain unchanged. The checkpoint suite covers an earned litter
+departure, return to its waiting pose, active recall and legacy loading.
+
 ```sh
 godot --headless --path game --script res://tests/test_punjab_chiefs_state.gd
 godot --headless --path game --script res://tests/test_punjab_chiefs_checkpoint.gd
@@ -87,12 +93,18 @@ godot --path game --rendering-method gl_compatibility --script res://tests/rende
 godot --path game --rendering-method gl_compatibility --script res://tests/render_punjab_chiefs_ride.gd
 ```
 
-Godot 4.5.1 qualification on 2 October 2026: state 339/0, lifecycle 31/0,
-native journeys 205/0 and checkpoints 94/0 (passed/failed). The existing
-`test_childhood_intro_session.gd` regression also passed 613/0. Native
-1280×720 OpenGL frames were inspected for all six openings and the mounted
-Desi conversation/crossing; dialogue framing was adjusted to remove overlapping
-exploration labels. The ride render passed its seven admission/capture checks.
+Godot 4.5.1 qualification after the court/frontier expansion on 2 October 2026:
+state **570/0**, lifecycle **31/0**, native journeys **448/0**, and checkpoints
+**124/0** (passed/failed). All thirteen routes completed. The original six also
+retain their earlier qualification, including the childhood integration
+regression at 613/0 and the seven mounted Desi render checks. Those unrelated
+suites were not rerun for this content expansion.
+
+The new route check approaches gate openings from the front: a straight diagonal
+from Sada's station struck a real gatepost. That collision remains physical; the
+test now walks around it through ordinary input. Every one of the seven new
+sequences' three endings is reachable through its five choices. A first visual
+pass inspected the new court openings at 1280×720, including night lighting.
 
 This is a first playable blockout. Characters, landscapes, carried objects and
 conversation cameras are simple procedural presentation. Finished art, voiced

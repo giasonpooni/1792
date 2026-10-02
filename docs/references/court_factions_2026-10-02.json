@@ -1,0 +1,505 @@
+{
+  "schema": "1792.court-factions-reference.v1",
+  "date": "2026-10-02",
+  "purpose": "Production provenance and dramatic variants for the regency, royal household and Sada Kaur court sequences.",
+  "scope": "Targeted reading of the supplied material and its cited sources, not a comprehensive biography or proof that an unlocated episode never occurred.",
+  "intake": {
+    "attachment": "Pasted text(20261002-161450).txt",
+    "kind": "User-supplied AI conversation and subsequent user research notes",
+    "treatment": "Preserve the useful premises and claims; a cited link is checked for the specific claim rather than treated as automatic verification. Repeated passages in the conversation are one submission, not independent evidence."
+  },
+  "creative_contract": [
+    "Retain legends, disputed parentage, accusations, family loyalties and clandestine approaches as usable material.",
+    "Original dialogue can be forceful and characters can make false, self-serving or sincerely mistaken claims. Their claims need not be the narrator's verdict.",
+    "The performed version has dramatic conviction. Production notes preserve alternatives without interrupting every scene with caveats.",
+    "Political status is not a certificate of virtue. Give each person specific interests, actions and costs rather than assigning an all-purpose noble or evil label.",
+    "Sada Kaur's wish to preserve authority and Ranjit's wish to centralize it can both create material danger for others. Do not replace that conflict with omniscient claims about either person's private psychology.",
+    "The five new visits give the player control over access, message handling, witnesses and the manner of an escort. They do not implement a branching imperial succession simulation."
+  ],
+  "identity_guards": [
+    {
+      "id": "dal_regency",
+      "name": "Dal Singh in the Lakhpat Rai dispute",
+      "keep_separate_from": "dal_bahrwal",
+      "evidence": "The 1939 memorial, G. L. Chopra chapter, printed 100 / PDF 128, identifies him as the maternal uncle of Ranjit's father. That is a great-uncle on Ranjit's paternal side. A forum retelling instead calls him Raj Kaur's brother.",
+      "connection": "Buxi printed 10 / PDF 24 repeats the father's maternal-uncle relationship for a chief captured after the Jammu expedition. Linking this to Dal of Akalgarh is a supported identification inference, not an explicit place-name in the regency paragraph."
+    },
+    {
+      "id": "dal_bahrwal",
+      "name": "Dal Singh, son of Hira Singh of Bahrwal",
+      "evidence": "Chiefs and Families of Note, printed 287 / PDF 310, records his killing of Wazir Singh and death in a servant's revenge in the 1790 narrative.",
+      "game_use": "Existing revenge sequence only; do not revive him as the regency faction leader."
+    },
+    {
+      "id": "forts",
+      "separate": [
+        "Dal Singh's Akalgarh",
+        "Sada Kaur's Atalgarh at Mukerian"
+      ],
+      "variant": "Buxi prints Atulgarh in the Dal Singh episode. Similar spellings do not establish one fort or one ownership history."
+    },
+    {
+      "id": "raj_kaurs",
+      "separate": [
+        "Mai Raj Kaur / Mai Malvain, Ranjit's mother",
+        "Raj Kaur / Datar Kaur of the Nakai family, Ranjit's wife and Kharak's mother"
+      ],
+      "game_use": "Use the relationship or household in labels whenever the shared name could confuse the player."
+    },
+    {
+      "id": "chet_singhs",
+      "separate": [
+        "Chet Singh Bhangi, associated with Lahore in 1799",
+        "Chet Singh Bajwa, associated with Kharak Singh in 1839"
+      ],
+      "game_use": "Do not attach the later court assassination or manufactured letters to the 1799 chief."
+    }
+  ],
+  "sources": [
+    {
+      "id": "griffin_1905",
+      "file": "ranjitsinghsikh00grif.pdf",
+      "kind": "Uploaded retrospective colonial biography; source identity in source_intake_2026-10-02.json",
+      "anchors": [
+        {
+          "printed": "64, 67–68",
+          "pdf": [
+            72,
+            75,
+            76
+          ],
+          "topic": "Different estate inheritance customs; not a simple statute for royal succession"
+        },
+        {
+          "printed": "107–108",
+          "pdf": [
+            115,
+            116
+          ],
+          "topic": "Substitution allegation and subsequent recognition of Sher and Tara"
+        },
+        {
+          "printed": "117–118, 126",
+          "pdf": [
+            125,
+            126,
+            134
+          ],
+          "topic": "Azizuddin and Dhian Singh's functions"
+        },
+        {
+          "printed": "158–160",
+          "pdf": [
+            166,
+            167,
+            168
+          ],
+          "topic": "1792 succession, affair and matricide stories, author's doubts, allegations about Sada's guardianship"
+        },
+        {
+          "printed": "165–166",
+          "pdf": [
+            173,
+            174
+          ],
+          "topic": "Estate confrontation, covered litter, confiscation"
+        }
+      ]
+    },
+    {
+      "id": "memorial_1939",
+      "file": "Maharaja.Ranjit.Singh.(GurmatVeechar.com).pdf",
+      "kind": "Uploaded multi-author centenary volume",
+      "anchors": [
+        {
+          "printed": "15–16",
+          "pdf": [
+            31,
+            32
+          ],
+          "topic": "1790 succession chronology and education/training account"
+        },
+        {
+          "printed": "19, 25",
+          "pdf": [
+            37,
+            45
+          ],
+          "topic": "Dal of Akalgarh; news of twin sons"
+        },
+        {
+          "printed": "99–100",
+          "pdf": [
+            127,
+            128
+          ],
+          "topic": "G. L. Chopra on regency and Lakhpat-Dal reconciliation"
+        },
+        {
+          "printed": "107–108",
+          "pdf": [
+            137,
+            138
+          ],
+          "topic": "Orders, attendants, Persian-writing munshis and approval"
+        },
+        {
+          "printed": "251–252",
+          "pdf": [
+            291,
+            292
+          ],
+          "topic": "Mehtab's sons in the family account"
+        }
+      ]
+    },
+    {
+      "id": "buxi_1992",
+      "file": "maharajaranjitsi00buxi.pdf",
+      "kind": "Uploaded later biography",
+      "anchors": [
+        {
+          "printed": "10",
+          "pdf": [
+            24
+          ],
+          "topic": "Dal Singh kinship and northern campaign"
+        },
+        {
+          "printed": "14",
+          "pdf": [
+            28
+          ],
+          "topic": "Intelligence about Bhangi plans"
+        },
+        {
+          "printed": "35",
+          "pdf": [
+            51
+          ],
+          "topic": "British interception of Ranjit's letters; direction of interception matters"
+        },
+        {
+          "printed": "48–49",
+          "pdf": [
+            66,
+            67
+          ],
+          "topic": "Azizuddin handling confidential documents, provincial agents, inspection and monthly reports"
+        }
+      ]
+    },
+    {
+      "id": "chiefs_1940",
+      "file": "The-Punjab-Chiefs (1).pdf",
+      "kind": "Uploaded family history",
+      "anchors": [
+        {
+          "printed": "283, 287",
+          "pdf": [
+            306,
+            310
+          ],
+          "topic": "Bahrwal Dal Singh and Nakai family; existing revenge source"
+        }
+      ]
+    },
+    {
+      "id": "eos_sada",
+      "author": "Rajinder Singh",
+      "title": "Sada Kaur, Sardarni",
+      "url": "https://eos.learnpunjabi.org/SADA%20KAUR%20SARDARNI%20(1762-1832)%20.html",
+      "kind": "Punjabi University encyclopedia entry",
+      "lineage": "SikhiWiki and the main Sikh Encyclopedia entry largely repeat this narrative; they are not independent witnesses."
+    },
+    {
+      "id": "eos_sher",
+      "title": "Sher Singh, Maharaja",
+      "url": "https://eos.learnpunjabi.org/SHER%20SINGH%20MAHARAJA%20(1807-1843).html",
+      "kind": "Punjabi University encyclopedia entry"
+    },
+    {
+      "id": "eos_kharak",
+      "author": "M. L. Ahluwalia",
+      "title": "Kharak Singh, Maharaja",
+      "url": "https://eos.learnpunjabi.org/KHARAK%20SINGH%20MAHARAJA%20(1801-1840).html",
+      "kind": "Punjabi University encyclopedia entry"
+    },
+    {
+      "id": "gupta_iv",
+      "title": "History of the Sikhs, Volume IV",
+      "author": "Hari Ram Gupta",
+      "url": "https://archive.org/stream/HistoryOfTheSikhsVol.IvTheSikhCommonwealthOrRiseAndFallOfSikh_648/HistoryOfTheSikhsVol.IvTheSikhCommonwealthOrRiseAndFallOfSikhMisls_djvu.txt",
+      "printed_pages": [
+        58,
+        59
+      ],
+      "kind": "Later scholarly synthesis; searchable OCR"
+    },
+    {
+      "id": "gupta_v",
+      "title": "History of the Sikhs, Volume V",
+      "author": "Hari Ram Gupta",
+      "url": "https://archive.org/stream/HistoryOfTheSikhsVol.VTheSikhLionOfLahoremaharajaRanjitSingh/HistoryOfTheSikhsVol.VTheSikhLionOfLahoremaharajaRanjitSingh1799-1839_djvu.txt",
+      "printed_pages": [
+        51,
+        127,
+        224,
+        225,
+        226,
+        227,
+        235
+      ],
+      "kind": "Later scholarly synthesis; searchable OCR",
+      "trace": "Mathews section cites NAI Foreign Department Secret Consultations, 13 May 1808, nos. 1–2, via M. L. Ahluwalia, Select Documents, pp. 36–40. Underlying archival documents not inspected directly."
+    },
+    {
+      "id": "discover_sada",
+      "title": "Sardarni Sada Kaur",
+      "url": "https://www.discoversikhism.com/sikhs/sardarni_sada_kaur.html",
+      "kind": "Online narrative mixing referenced material and explicit conjecture"
+    },
+    {
+      "id": "raj_2023",
+      "title": "Life Sketch of Mai Malwain: Raj Kaur",
+      "author": "Karamjit Singh",
+      "url": "https://socialresearchfoundation.com/new/publish-journal.php?editID=11759",
+      "kind": "2023 article with internal chronological inconsistencies"
+    },
+    {
+      "id": "raj_encyclopedia",
+      "title": "Raj Kaur",
+      "url": "https://www.thesikhencyclopedia.com/raj-kaur-2/",
+      "kind": "Online encyclopedia reproduction"
+    },
+    {
+      "id": "regency_forum",
+      "title": "Maharaja Ranjit Singh",
+      "url": "https://www.sikhphilosophy.net/threads/maharaja-ranjit-singh.34168/",
+      "kind": "2011 forum retelling, not a contemporary court record"
+    },
+    {
+      "id": "sanjha_2019",
+      "title": "Saga of Sada Kaur, the guiding force behind Ranjit Singh's spread of dominion",
+      "url": "https://www.sanjhamorcha.com/saga-of-sada-kaur-the-guiding-force-behind-ranjit-singhs-spread-of-dominion/",
+      "kind": "Reproduced 2019 popular article"
+    }
+  ],
+  "claim_register": [
+    {
+      "id": "succession_year",
+      "status": "conflicting_accounts",
+      "sources": [
+        "griffin_1905",
+        "memorial_1939",
+        "raj_2023"
+      ],
+      "finding": "1792 and 1790 both occur in the supplied books. The game's regency visit uses 1792 and retains 1790 as an alternate chronology. With a November 1780 birth, April 1790 is his tenth year, not ten completed years.",
+      "implementation": "regency"
+    },
+    {
+      "id": "regency_alignment",
+      "status": "supported_dispute_with_additional_retelling",
+      "sources": [
+        "memorial_1939",
+        "regency_forum"
+      ],
+      "finding": "The memorial records Lakhpat's quarrel with Dal and Ranjit's temporary reconciliation. The forum adds Dal joining Sada. A formal secret pact with an established membership or written terms is not demonstrated by those passages.",
+      "implementation": "Original competing-instruction scene; Sada's intervention is a dramatization, not a discovered transcript."
+    },
+    {
+      "id": "neglect",
+      "status": "competing_characterizations",
+      "sources": [
+        "griffin_1905",
+        "memorial_1939",
+        "raj_2023"
+      ],
+      "finding": "The memorial describes education and military training. Griffin's accusation of deliberate educational neglect on printed 160 targets Sada, not Raj Kaur. The 2023 paper credits Raj's administration. None warrants the narrator's blanket verdict that Raj ignored all parenting.",
+      "implementation": "A household can argue over the child's time, hunting, education and access without erasing either tradition."
+    },
+    {
+      "id": "affair_and_death",
+      "status": "allegations_retained",
+      "sources": [
+        "griffin_1905",
+        "raj_2023",
+        "raj_encyclopedia"
+      ],
+      "finding": "Griffin alleges an affair and records incompatible killing/poisoning reports before doubting the killing stories. The encyclopedia instead narrates decline after loss of authority. A verified poisoning in 1801 is not established by the reviewed passages.",
+      "implementation": "rumours keeps the accusation in circulation; neither a discovered poison nor a murder confession is manufactured as proof."
+    },
+    {
+      "id": "twins",
+      "status": "contradictory_source_traditions",
+      "sources": [
+        "griffin_1905",
+        "memorial_1939",
+        "eos_sada"
+      ],
+      "finding": "Griffin alleges substitution: a chintz-weaver's child and a slave-girl's child. The memorial and university entry identify the boys as Mehtab's sons. Preserve the user's carpenter/weaver telling as another allegation, not the wording of Griffin or a solved intelligence investigation.",
+      "implementation": "heirs makes the announcement, challenge and recognition politically consequential without giving a household runner omniscient access to parentage."
+    },
+    {
+      "id": "succession_rules",
+      "status": "oversimplification_corrected",
+      "sources": [
+        "griffin_1905",
+        "eos_kharak",
+        "eos_sher"
+      ],
+      "finding": "Estate-sharing customs in Griffin are not an empire-wide strict primogeniture statute. Kharak's birth is dated 1801 by the university entry. The first wife's sons are not automatically elder sons. Sher became Maharaja in 1841, so permanent exclusion of Sada's line is false.",
+      "implementation": "Characters contest seniority, recognition, maternal-house prestige and support; no universal eldest-wife override is implemented."
+    },
+    {
+      "id": "household_informants",
+      "status": "adaptation_and_specific_report_distinguished",
+      "sources": [
+        "sanjha_2019",
+        "gupta_v"
+      ],
+      "finding": "The Sanjha article does not establish a routine mother-daughter palace intelligence system. A specific reported diplomatic approach involving Mehtab is different evidence from a permanent network.",
+      "implementation": "Keep private messages and divided loyalties available; do not label an invented standing network as a verified office."
+    },
+    {
+      "id": "mathews",
+      "status": "attributed_report_with_route_conflict",
+      "sources": [
+        "gupta_v",
+        "discover_sada"
+      ],
+      "finding": "Gupta routes the 1808 proposal through Mehtab and confidential intermediaries and says Mathews did not meet Sada. The online narrative speculates about a direct meeting. Neither proves every term was authorized personally by Sada.",
+      "implementation": "Future caravan sequence: the intermediary's authority is part of the tension."
+    },
+    {
+      "id": "metcalfe",
+      "status": "documented_overture_date_variant",
+      "sources": [
+        "gupta_v",
+        "discover_sada"
+      ],
+      "finding": "Gupta dates the Atalgarh depot/passage offer's receipt to 15 December 1808; the online narrative places an offer in November.",
+      "implementation": "overture uses late 1808, a sealed approach and the costs of offering strategic access."
+    },
+    {
+      "id": "wadni",
+      "status": "approval_and_possession_separated",
+      "sources": [
+        "gupta_iv"
+      ],
+      "finding": "Gupta distinguishes the 1808 district grant, disputed villages, permission on 21 November 1811, renewed permission on 20 July 1816, and expulsion of Amar Singh in 1817. Do not collapse these into one completed 1811 acquisition.",
+      "implementation": "Future estate petition sequence; different land parcels retain separate jurisdiction and claim histories."
+    },
+    {
+      "id": "continued_cooperation",
+      "status": "permanent_rupture_claim_corrected",
+      "sources": [
+        "gupta_v"
+      ],
+      "finding": "Consultation after the 1814 Kashmir failure prevents treating Mehtab's death as the permanent end of all political cooperation.",
+      "implementation": "Allow renewed collaboration between estrangements; a relationship variable cannot simply become permanently hostile in 1813."
+    },
+    {
+      "id": "intelligence",
+      "status": "apparatus_supported_superlatives_unverified",
+      "sources": [
+        "buxi_1992",
+        "griffin_1905",
+        "memorial_1939"
+      ],
+      "finding": "The books support agents, provincial information, reports, confidential paperwork and access management. They do not establish that Azizuddin ran every spy, routine interception of Sada's letters, a report on every meeting by morning, or a comparative ranking among all Asian intelligence systems.",
+      "implementation": "Use messenger delays, access, translated orders and incomplete knowledge. Reserve mature administrative roles for their period."
+    },
+    {
+      "id": "covered_litter",
+      "status": "escape_supported_mechanism_attributed",
+      "sources": [
+        "griffin_1905",
+        "eos_sada",
+        "discover_sada",
+        "gupta_v"
+      ],
+      "finding": "Covered-litter escape and detention appear in several accounts. Discover names Vasakha as the reporting retainer; the university entry leaves detection unspecified. Gupta distinguishes an October 1820 property demand from 1821 imprisonment, with inconsistencies elsewhere.",
+      "implementation": "litter uses 1820–1821 and names the retainer within that chosen telling. Detention is fixed; warning, exposure and witness treatment are local choices."
+    },
+    {
+      "id": "british_response",
+      "status": "jurisdiction_matters",
+      "sources": [
+        "gupta_iv"
+      ],
+      "finding": "Protection of a cis-Sutlej possession is not protection of all Kanhaiya holdings or a commitment to free Sada. Avoid the universal claim that the British never intervened anywhere; date variants for subsequent Wadni restoration require their own check.",
+      "implementation": "Do not make crossing one river automatically confer control of every estate."
+    },
+    {
+      "id": "moral_verdict",
+      "status": "dramatic_interpretation",
+      "sources": [],
+      "finding": "Co-ruler, puppet, protector, betrayer and tyrant are useful partisan readings. The reviewed material does not establish a unanimous Panth verdict, a consensus of modern historians, or that personal resentment explains every decision.",
+      "implementation": "Let voices argue those positions; show troops, revenue, kin, autonomy and imperial security as tangible stakes."
+    }
+  ],
+  "playable_mapping": [
+    {
+      "id": "regency",
+      "status": "catalogue_and_native_visit",
+      "dramatic_question": "Who can speak in the child's name?",
+      "player_agency": "Carry competing orders, bring a witness and decide whose objection is entered."
+    },
+    {
+      "id": "rumours",
+      "status": "catalogue_and_native_visit",
+      "dramatic_question": "Who benefits when an allegation becomes the official account?",
+      "player_agency": "Trace a whisper, protect or expose its bearer, and determine how it is repeated."
+    },
+    {
+      "id": "heirs",
+      "status": "catalogue_and_native_visit",
+      "dramatic_question": "What does a court announcement make politically real?",
+      "player_agency": "Handle a birth message, confront a competing claim and shape the audience's account."
+    },
+    {
+      "id": "overture",
+      "status": "catalogue_and_native_visit",
+      "dramatic_question": "What price does a promise of protection carry?",
+      "player_agency": "Carry terms of an approach and decide which obligations are explicit."
+    },
+    {
+      "id": "litter",
+      "status": "catalogue_and_native_visit",
+      "dramatic_question": "What remains of loyalty when the order is to bring her back?",
+      "player_agency": "Escort a covered litter and determine how a retainer's report and detention are witnessed."
+    }
+  ],
+  "future_sequences": [
+    {
+      "id": "mathews_caravan",
+      "status": "design_only",
+      "premise": "Haridwar to Punjab, 1808: a traveller's party, an intermediary and an offer whose speaker may not have authority.",
+      "mechanics": "Check references, escort the party, carry a reply, compare the spoken proposal with the written account.",
+      "source_ids": [
+        "gupta_v",
+        "discover_sada"
+      ]
+    },
+    {
+      "id": "wadni_petition",
+      "status": "design_only",
+      "premise": "A permit, a family's disputed possession and an estate claimed across jurisdictions.",
+      "mechanics": "Match the named villages to petitions; meet claimants; carry a new decree; decide whether force precedes a hearing.",
+      "source_ids": [
+        "gupta_iv"
+      ]
+    },
+    {
+      "id": "court_dispatches",
+      "status": "design_only",
+      "premise": "Reports arrive at different times and official access changes what the ruler hears.",
+      "mechanics": "Collect accounts, consult a munshi, preserve seals, resolve contradictory orders and choose the order of presentation.",
+      "source_ids": [
+        "buxi_1992",
+        "memorial_1939"
+      ]
+    }
+  ]
+}
