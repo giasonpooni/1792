@@ -127,6 +127,14 @@ jobs:
           fi
           grep -q 'RIDING_TRAINING_RENDER: 6 captures; 0 failures' test-results/riding-training-render.log
           cp -r "$HOME/.local/share/godot/app_userdata/1792/riding-training-images" test-results/
+          timeout 180 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/test_sobraon_prologue.gd -- --capture 2>&1 | tee test-results/sobraon-prologue-render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/sobraon-prologue-render.log; then
+            exit 1
+          fi
+          grep -Eq '^SOBRAON_PROLOGUE_TESTS: [1-9][0-9]* passed, 0 failed$' test-results/sobraon-prologue-render.log
+          cp -r "$HOME/.local/share/godot/app_userdata/1792/sobraon-opening-images" test-results/
           timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
             --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy \
             --script res://tests/render_charat_campaign_intro.gd 2>&1 | tee test-results/charat-intro-render.log

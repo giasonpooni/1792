@@ -92,6 +92,7 @@ def main() -> int:
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_riding_training.gd"],"riding-training","RIDING_TRAINING_TESTS:")
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_charat_campaign_intro.gd"],"charat-campaign-intro","CHARAT_CAMPAIGN_INTRO_TESTS:")
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_childhood_intro_session.gd"],"childhood-intro-session","CHILDHOOD_INTRO_SESSION_TESTS:")
+    run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_sobraon_prologue.gd"],"sobraon-prologue","SOBRAON_PROLOGUE_TESTS:")
     return 0
 
 

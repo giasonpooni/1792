@@ -73,9 +73,9 @@ func capture_story(id: String) -> void:
 func _run() -> void:
 	root.content_scale_size=Vector2i.ZERO;root.size=Vector2i(1280,720)
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUTPUT))
-	Launch.enter(self);home=current_scene;chapter=home.get_node("ChildhoodChapter")
+	Launch.enter(self, false);home=current_scene;chapter=home.get_node("ChildhoodChapter")
 	await frames(3)
-	check(is_instance_valid(chapter.intro_session),"actual production entry opens the family story")
+	check(is_instance_valid(chapter.intro_session),"explicit family-only entry opens the family story")
 	if not is_instance_valid(chapter.intro_session): home.queue_free();quit(1);return
 	session=chapter.intro_session;story=session.lesson;binding=session.present_sha256;art_id=chapter.art.get_instance_id()
 	check(root.disable_3d and session.viewport.own_world_3d,"production opening owns isolated rendering")
@@ -110,7 +110,7 @@ func _run() -> void:
 	captures.append(capture)
 	check(captures.size()==4,"four native opening/return frames")
 	var manifest:={"schema":"1792.charat-intro-render.v1","captures":captures,"failures":failures,
-		"entry":"actual HomeLaunch.enter production path","engine":Engine.get_version_info().string,
+		"entry":"HomeLaunch.enter family-only qualification","engine":Engine.get_version_info().string,
 		"renderer":RenderingServer.get_current_rendering_method(),"device":RenderingServer.get_video_adapter_name(),
 		"historical_conversation_authenticated":false,"dialogue_status":"original-authored-dialogue",
 		"campaigns_playable_reconstruction":false,"human_playtest":false,"returned_home_sha256":returned_sha}

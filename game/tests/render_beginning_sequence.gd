@@ -172,7 +172,7 @@ func walk_to(target: Vector3,radius: float=.45) -> bool:
 func finish() -> void:
 	var manifest:={"schema":"1792.beginning-sequence-render.v1","captures":captures,"route":route,"failures":failures,"checks":checks,
 		"engine":Engine.get_version_info().string,"renderer":RenderingServer.get_current_rendering_method(),"device":RenderingServer.get_video_adapter_name(),
-		"physics_hz":Engine.physics_ticks_per_second,"entry":"actual HomeLaunch.enter","entry_state_sha256":_binding_sha,"human_playtest":false,
+		"physics_hz":Engine.physics_ticks_per_second,"entry":"actual HomeLaunch.enter","prologue_route":"explicit F2 skip; separately qualified playable route","entry_state_sha256":_binding_sha,"human_playtest":false,
 		"input_source":"native mouse/key events, real scene dialog controls and ordinary game actions","progress_seeded":false,
 		"capability_receipt_seeded":false,"saved_pose_restored":false,"camera_pose_injected":false,
 		"between_capture_3d_rendering_disabled":true,"historical_authentication":false}
@@ -193,6 +193,9 @@ func _run() -> void:
 	await process_frame;await process_frame
 	session=chapter.intro_session
 	if not check(is_instance_valid(session),"true production launch opens the family introduction"): await finish();return
+	# Childhood route explicitly skips the outer frame through its real F2 control.
+	if session.prologue_active:
+		key(KEY_F2);await process_frame;await process_frame
 	lesson=session.lesson;session.viewport.render_target_update_mode=SubViewport.UPDATE_DISABLED
 	_binding_sha=session.present_sha256
 	await capture("family-opening","Production family opening before any childhood progress",lesson)

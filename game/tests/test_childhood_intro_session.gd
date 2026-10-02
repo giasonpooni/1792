@@ -1,5 +1,6 @@
 extends SceneTree
-## Actual production entry and routed input qualify the retained-Home lifecycle.
+## Fresh Home plus declared flag fixtures qualify the retained-Home lifecycle.
+## The complete production launch is exercised by test_sobraon_prologue.gd.
 ## Canvas/audio witnesses are explicit flag fixtures; no campaign progress,
 ## historical knowledge, skill receipt or fixed-interlude receipt is injected.
 const Launch:=preload("res://childhood/home_launch.gd")
@@ -125,6 +126,10 @@ func capture() -> Dictionary:
 
 func _opening(steady_audio: bool=false) -> void:
 	controls();returned.clear();returns.clear()
+	# Dispose any preceding test menu before constructing a fixture host.
+	if current_scene!=null:
+		var previous_scene:=current_scene;current_scene=null
+		root.remove_child(previous_scene);previous_scene.queue_free()
 	if steady_audio:
 		# A construction-only host supplies a genuinely running 3D audio stream.
 		# Its world remains disabled while the explicit ALWAYS audio witness starts;
@@ -138,16 +143,19 @@ func _opening(steady_audio: bool=false) -> void:
 		check(playback.is_playing(),"steady audio fixture has genuinely active native 3D playback before parking")
 		home.process_mode=Node.PROCESS_MODE_INHERIT
 	else:
-		Launch.enter(self)
-		home=current_scene;chapter=home.get_node("ChildhoodChapter")
+		# Flags must predate parking. Production Launch now parks synchronously,
+		# before tick 1, so install these witnesses on a fresh constructed Home.
+		home=Launch.make_world();root.add_child(home);current_scene=home
+		chapter=home.get_node("ChildhoodChapter");chapter.autoplay_intro=true
 		_flag_fixtures()
 	# Autoplay runs deferred. Capture the real freshly constructed authority before
 	# any input or lesson rather than reconstructing it from a seeded save.
 	binding=capture()
 	if steady_audio: check(chapter.open_childhood_intro().is_empty(),"actual protected intro admits a fresh host with a running audio witness")
+	else: check(chapter.open_childhood_intro().is_empty(),"protected intro admits a fresh host with declared flag witnesses")
 	await process_frame;await process_frame
 	session=chapter.intro_session
-	check(is_instance_valid(session),"production launch opens the family story" if not steady_audio else "native protected entry opens the family story with real active audio")
+	check(is_instance_valid(session),"family-only launch opens the family story" if not steady_audio else "native protected entry opens the family story with real active audio")
 	if not is_instance_valid(session): return
 	story=session.lesson
 	check((chapter.autoplay_intro or steady_audio) and chapter.model.stage()=="orientation" and chapter.model.progress().tick<=1,"opening precedes any ordinary childhood lesson")
@@ -273,8 +281,12 @@ func _run() -> void:
 	root.size=Vector2i(1280,720);root.disable_3d=false;initial_files=digest_files()
 	var front:=Node.new();front.name="ExplicitPreviousFrontFixture";root.add_child(front);current_scene=front
 	var previous: WeakRef=weakref(front)
-	await _opening()
+	Launch.enter(self,false)
+	await process_frame;await process_frame
 	check(previous.get_ref()==null,"production entry releases the previous front scene")
+	var production_home:=current_scene;current_scene=null;production_home.queue_free()
+	await process_frame;await process_frame
+	await _opening()
 	if not is_instance_valid(session): quit(1);return
 	var expected_ids: Array=story.story_beats().map(func(beat): return beat.id)
 	var ids: Array=[]

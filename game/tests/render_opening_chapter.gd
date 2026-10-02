@@ -173,7 +173,7 @@ func finish() -> void:
 	var checkpoint: String=chapter.checkpoint_path() if is_instance_valid(chapter) else SAVE+".checkpoint.json"
 	var manifest:={"schema":"1792.opening-chapter-render.v2","inquiry_choice":inquiry_choice,"captures":captures,"route":route,"failures":failures,"checks":checks,
 		"engine":Engine.get_version_info().string,"renderer":RenderingServer.get_current_rendering_method(),"device":RenderingServer.get_video_adapter_name(),
-		"physics_hz":Engine.physics_ticks_per_second,"entry":"actual HomeLaunch.enter","entry_state_sha256":_binding_sha,
+		"physics_hz":Engine.physics_ticks_per_second,"entry":"actual HomeLaunch.enter","prologue_route":"explicit F2 skip; separately qualified playable route","entry_state_sha256":_binding_sha,
 		"human_playtest":false,"camera_pose_injected":false,"progress_seeded":false,"saved_pose_restored":not midreturn_persistence.is_empty(),"startup_save_seeded":false,"capability_receipt_seeded":false,
 		"save_restore_route":"actual F5/F9 after freshly earned clue and report; no startup save seed",
 		"midreturn_persistence":midreturn_persistence,"final_manual_save":final_manual_save,
@@ -219,6 +219,9 @@ func _beginning() -> bool:
 	_art_id=chapter.art.get_instance_id();_initial_snapshot=chapter.model.snapshot()
 	await process_frame;await process_frame;session=chapter.intro_session
 	if not check(is_instance_valid(session),"production new game opens the family story"): return false
+	# Childhood route explicitly skips the outer frame through its real F2 control.
+	if session.prologue_active:
+		key(KEY_F2);await process_frame;await process_frame
 	lesson=session.lesson;session.viewport.render_target_update_mode=SubViewport.UPDATE_DISABLED;_binding_sha=session.present_sha256
 	await capture("family-opening","Actual family introduction before gameplay",lesson)
 	for _i in range(lesson.story_beats().size()): key(KEY_ENTER);await process_frame

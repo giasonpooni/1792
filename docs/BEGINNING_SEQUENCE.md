@@ -1,6 +1,6 @@
 # Beginning of the game
 
-The main menu gives the Home childhood entry one focused **Begin** action. Other playable prototypes remain available under **Development studies**. The family opening leads into the same retained Home scene; neither the opening nor the guidance supplies canonical progress.
+The main menu gives the Home childhood entry one focused **Begin** action. It first opens the [Sobraon escape and Rawalpindi surrender frame](SOBRAON_ORAL_OPENING.md), then carries Shah Muhammad's telling into Maha Singh's family story. Other playable prototypes remain available under **Development studies**. The family opening leads into the same retained Home scene; neither the opening nor the guidance supplies canonical progress. Existing childhood-only production routes explicitly press F2 to skip the outer frame; its complete playable route has its own native qualification.
 
 The compact courtyard HUD now supports the early lessons. It shows one current objective, real progress and relevant controls, while the bottom panel preserves actual speech, refusals and errors. The classic HUD remains available through F7's existing compact/original switch. Journal and other modals immediately suppress the compact panels.
 

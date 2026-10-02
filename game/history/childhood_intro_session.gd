@@ -2,6 +2,9 @@
 extends "res://mounts/riding_training_session.gd"
 ## The opening uses the existing retained-Home visit lifecycle without skill grants.
 const Intro:=preload("res://history/charat_campaign_intro.tscn")
+const Prologue:=preload("res://history/sobraon_prologue.gd")
+var prologue_active:=false
+var prologue_record: Dictionary={}
 
 func start_intro(host: Node3D) -> String:
 	if is_instance_valid(chapter): return "The opening is already active."
@@ -10,15 +13,42 @@ func start_intro(host: Node3D) -> String:
 	_park_present(host)
 	Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
 	_build_isolated_viewport("ChildhoodStoryViewport")
-	lesson=Intro.instantiate();lesson.return_requested.connect(_return_requested)
-	viewport.add_child(lesson)
+	if host.include_prologue:
+		prologue_active=true
+		lesson=Prologue.new();lesson.family_requested.connect(_family_requested)
+		viewport.add_child(lesson)
+		return ""
+	_open_family(false)
 	return ""
+
+func _open_family(from_bard: bool) -> void:
+	Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
+	lesson=Intro.instantiate();lesson.return_requested.connect(_return_requested)
+	lesson.oral_handoff=from_bard
+	viewport.add_child(lesson)
+
+func _family_requested(completed: bool) -> void:
+	_show_family.call_deferred(completed)
+
+func _show_family(completed: bool) -> void:
+	if _finished or not prologue_active or not is_instance_valid(chapter): return
+	if chapter.model.present_sha256()!=present_sha256:
+		lesson.reject_return("The waiting Home changed. Return cannot combine different states.");return
+	if completed and not lesson.can_complete():
+		lesson.reject_return("Finish the telling before continuing.");return
+	prologue_record=lesson.observation()
+	prologue_record["completed"]=completed
+	prologue_active=false
+	var old:=lesson
+	viewport.remove_child(old);old.queue_free()
+	_open_family(completed)
 
 func start_training(_host: Node3D,_practice: String="") -> String:
 	return "This visit owns the family opening, not a riding exercise."
 
 func finish(completed: bool) -> String:
 	if _finished or not is_instance_valid(chapter): return "The opening has already returned."
+	if prologue_active: return "Continue to the family telling before returning to childhood."
 	if chapter.model.present_sha256()!=present_sha256:
 		var error: String="The waiting Home changed. Return cannot combine different states."
 		lesson.reject_return(error);return error

@@ -46,6 +46,7 @@ const BEATS := [
 ]
 
 var current_beat := 0
+var oral_handoff := false
 var furthest_beat := 0
 var _returned := false
 var _heading: Label
@@ -197,6 +198,8 @@ func _refresh(animate: bool = true) -> void:
 	_heading.text = "%d / %d   %s" % [current_beat+1,BEATS.size(),beat.title]
 	_period.text = beat.period
 	_dialogue.text = beat.dialogue
+	if oral_handoff and current_beat==0:
+		_dialogue.text = "…he rode out from Gujranwala with men who had little certainty of returning.\n\nCome closer, Buddh. Charat Singh was my father, your grandfather. I will tell you how he fought, and how this became our home."
 	_previous.disabled = current_beat == 0
 	_next.text = "Continue to Home" if current_beat == BEATS.size()-1 else "Next"
 	_start_presentation(animate)

@@ -27,7 +27,7 @@ func _ready() -> void:
 	title.add_theme_font_size_override("font_size", 64)
 	panel.add_child(title)
 	var subtitle := Label.new()
-	subtitle.text = "Begin in Gujranwala. A father's telling opens Buddh Singh's childhood.\nExplore home, hear its voices, and learn to ride."
+	subtitle.text = "Escape Sobraon. Hear the story carried through defeat.\nFollow Shah Muhammad's telling into Ranjit Singh's childhood in Gujranwala."
 	subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	panel.add_child(subtitle)
 	var begin:=_add_button(panel, "Begin · 1792 · " + Names.PLAYER_NAME + " · Home territory", "res://world/home_territory.tscn")

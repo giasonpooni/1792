@@ -3,12 +3,9 @@ extends "res://mounts/riding_training_chapter.gd"
 ## Production opening is a presentation visit before the original playable Home.
 const IntroSession:=preload("res://history/childhood_intro_session.gd")
 var autoplay_intro:=false
+var include_prologue:=false # Construction-only studies retain the family entry.
 var intro_session: Node
 var _intro_shown:=false
-
-func _ready() -> void:
-	super._ready()
-	if autoplay_intro: open_childhood_intro.call_deferred()
 
 func intro_entry_error() -> String:
 	if is_instance_valid(intro_session) or is_instance_valid(training_session): return "Finish the active story or riding visit first."
