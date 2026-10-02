@@ -29,6 +29,7 @@ def main() -> int:
     parser.add_argument("--godot", default=shutil.which("godot") or shutil.which("godot4"))
     args = parser.parse_args()
     run([sys.executable, "tools/check_project.py"], "structure")
+    run([sys.executable, "tools/test_check_gujranwala_daily_detail_capture.py"], "gujranwala-daily-capture-contracts")
     run([sys.executable, "tools/check_smith_workcell.py"], "smith-workcell-capsule")
     run([sys.executable, "tools/check_net_profile.py"], "net-water-profile")
     if not args.godot:
@@ -45,6 +46,8 @@ def main() -> int:
         "companions", "COMPANION_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_character_names.gd"],
         "character-names", "CHARACTER_NAMES_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_mounted_formation.gd"],
+        "mounted-formation", "MOUNTED_FORMATION_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_nihang_camp.gd"],
         "nihang-camp", "NIHANG_CAMP_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_childhood.gd"],
@@ -101,6 +104,7 @@ def main() -> int:
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_gujranwala_depth.gd"],"gujranwala-depth","GUJRANWALA_DEPTH_TESTS:")
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_gujranwala_arms_craft.gd"],"gujranwala-arms-craft","GUJRANWALA_ARMS_CRAFT_TESTS:")
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_gujranwala_microdetail.gd"],"gujranwala-microdetail","GUJRANWALA_MICRODETAIL_TESTS:")
+    run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_gujranwala_daily_detail.gd"],"gujranwala-daily-detail","GUJRANWALA_DAILY_DETAIL_TESTS:")
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_vessel_profile.gd"],"vessel-profile","VESSEL_PROFILE_TESTS:")
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_gujranwala_material_fidelity.gd"],"gujranwala-material-fidelity","GUJRANWALA_MATERIAL_FIDELITY_TESTS:")
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_horsecraft_state.gd"],"horsecraft-state","HORSECRAFT_STATE_TESTS:")

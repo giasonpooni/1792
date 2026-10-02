@@ -4,6 +4,7 @@ extends "res://history/childhood_intro_chapter.gd"
 const CampState := preload("res://warband/nihang_state.gd")
 const CampRules := preload("res://warband/nihang_rules.gd")
 const CampView := preload("res://warband/nihang_camp_view.gd")
+const Formation := preload("res://warband/mounted_formation.gd")
 const CampFigure := preload("res://youth/performance/bazaar_figure.gd")
 var camp_view: Node3D
 var camp_horses: Array[CharacterBody3D]=[]
@@ -20,7 +21,7 @@ func _build_world() -> void:
 	camp_view=CampView.new();add_child(camp_view);camp_view.build()
 	for i in range(2):
 		var mount: CharacterBody3D=Horse.instantiate();mount.name="CampMount%d"%i
-		add_child(mount);mount.collision_layer=2;mount.collision_mask=1;mount.gait_speed_limit=CampRules.SPEED
+		add_child(mount);Formation.configure(mount);mount.gait_speed_limit=CampRules.SPEED
 		# Preserve the common motor and legacy rider anchors; tint this owned projection.
 		for part in mount._rider.get_children():
 			if part is MeshInstance3D:
@@ -32,7 +33,13 @@ func _build_world() -> void:
 	_camp_nav.hull.radius=.84;_camp_nav.hull.height=3.2
 	_camp_nav.sweep_height=1.65;_camp_nav.clearance_height=1.8;_camp_nav.clearance_size=Vector3(1.9,3.2,1.9)
 	_camp_nav.bind(get_world_3d(),[avatar.get_rid(),horse.get_rid(),attacker.get_rid(),escort.get_rid(),camp_horses[0].get_rid(),camp_horses[1].get_rid()])
+	_enable_camp_collision()
 	_sync_camp(true)
+
+func _enable_camp_collision() -> void:
+	horse.collision_mask=1|Formation.TRAFFIC_LAYER
+	if not model.mounted(): avatar.collision_mask=1|Formation.TRAFFIC_LAYER
+	avatar.get_node("CameraPivot/SpringArm3D").collision_mask=1|Formation.TRAFFIC_LAYER
 
 func _sync_camp(reset: bool=false) -> void:
 	if not is_instance_valid(camp_view): return
@@ -140,26 +147,37 @@ func _step_camp(delta: float) -> void:
 		var mount: CharacterBody3D=camp_horses[i]
 		# When back on foot by the elder, park in separate nearby slots to allow check-in.
 		var parking: bool=not model.mounted() and model.position().distance_to(CampRules.CAMP)<3
-		var goal: Vector3=CampRules.HORSE_LINES[i] if parking else model.position()+Vector3(-2.2 if i==0 else 2.2,0,3.5)
-		var waypoint:=_camp_nav.waypoint(mount.global_position,goal)
-		var offset:=waypoint-mount.global_position;offset.y=0
-		var difference:=wrapf(atan2(-offset.x,-offset.z)-mount.rotation.y,-PI,PI)
-		var stop: bool=offset.length()<.8 or absf(difference)>.8
-		var motion: Dictionary=mount.step(delta,0.0 if stop else 1.0,clampf(-difference*2,-1,1),false,false,stop)
+		var yaw: float=horse.rotation.y if model.mounted() else avatar.rotation.y
+		var goal: Vector3=CampRules.HORSE_LINES[i] if parking else Formation.slot(model.position(),yaw,i)
+		var others: Array[CharacterBody3D]=[horse,avatar,camp_horses[0],camp_horses[1]]
+		var traffic_goal:=Formation.traffic_goal(mount,goal,others)
+		var waypoint:=_camp_nav.waypoint(mount.global_position,traffic_goal)
+		var motion: Dictionary=Formation.step(mount,waypoint,delta)
 		motion.id=CampRules.RIDERS[i];records[i]=motion
 	var error: String=model.record_nihang_motion(records,delta)
 	if not error.is_empty():
 		_sync_camp(true);_message=error
 
 func _apply() -> void:
-	super._apply();_sync_camp(true)
+	super._apply();_enable_camp_collision();_sync_camp(true)
 
 func _candidate_error(staged: Story) -> String:
 	var error:=super._candidate_error(staged)
 	if not error.is_empty() or not staged is CampState: return error
 	var state: Dictionary=staged.nihang_camp()
+	var staged_peers: Array[RID]=[horse.get_rid()]
 	for i in range(camp_horses.size()):
-		if not camp_horses[i].record_fits_world(state.mounts[i],avatar): return "A camp horse has no clear standing room. Home unchanged."
+		if not camp_horses[i].record_fits_world(state.mounts[i],avatar,staged_peers): return "A camp horse has no clear standing room. Home unchanged."
+	# Test staged poses against one another, never against their stale live projections.
+	var poses: Array=state.mounts
+	if not Formation.separated(CampRules.point(poses[0].position),CampRules.point(poses[1].position),1.6):
+		return "Saved camp horses overlap. Home unchanged."
+	for pose in poses:
+		var at:=CampRules.point(pose.position)
+		if not Formation.separated(at,CampRules.point(staged.horse_record().position),1.6):
+			return "A saved camp horse overlaps the household horse. Home unchanged."
+		if not staged.mounted() and not Formation.separated(at,staged.position(),1.15):
+			return "A saved camp horse overlaps the walking player. Home unchanged."
 	return ""
 
 func _restore_workshop_file(path: String,retry: bool) -> void:
@@ -196,5 +214,9 @@ func _refresh() -> void:
 	var camp: Dictionary=model.nihang_camp()
 	if CampRules.active(camp.phase):
 		_hud.text+="\nCAMP RIDE · %d companion(s) · %s"%[camp.selected.size(),"ride to the north marker together [E]" if camp.phase=="outbound" else "return to the camp elder together [E]"]
+		var nearby:=0
+		for id in camp.selected:
+			if CampRules.point(camp.mounts[CampRules.RIDERS.find(id)].position).distance_to(model.position())<=7: nearby+=1
+		_hud.text+="\n%d/%d riders within calling distance%s"%[nearby,camp.selected.size()," · slow down or return for the riders" if nearby<camp.selected.size() else ""]
 	elif model.position().distance_to(CampRules.CAMP)<10:
 		_hud.text+="\nNIHANG CAMP · Speak to the elder; listen beside the horse lines [E]."

@@ -10,8 +10,9 @@ physics and simulation label. **1792** remains the repository and shorthand name
 **Nihang childhood companions on this branch:** the existing Home now includes an
 outdoor camp, familiar childhood forms of address, a horse-care conversation and
 a choice of one or two mounted companions for a practice ride and return.
-Agreements, received dialogue and rider poses travel with the same whole-world
-save. [Play and verification guide](docs/NIHANG_COMPANIONS.md).
+The mounted group turns with the leader, brakes for obstacles and keeps physical
+separation. Agreements, received dialogue and rider poses travel with the same
+whole-world save. [Play and verification guide](docs/NIHANG_COMPANIONS.md).
 
 ## Historical perspective and production order
 
@@ -461,6 +462,8 @@ See [the arms-craft scope and limits](docs/GUJRANWALA_ARMS_CRAFT.md).
 A third reversible eye-level craft pass adds restrained trim, dark timber reveals, plinth accents, selective repair fields, sparse wall hardware and two quiet storage corners. See [the microdetail scope and limits](docs/GUJRANWALA_MICRODETAIL.md).
 
 The next increment improves the existing assets: metre-scaled plaster, directional timber grain, filtered cloth weave and twelve fitted hollow vessels inside their original envelopes. Six engine inspection views include a same-camera daylight/golden-hour/evening comparison with independent PNG verification. Explicit CI error guards and renderer cleanup address shutdown errors that previously escaped qualification. See [material fidelity, verification scope and limits](docs/GUJRANWALA_MATERIAL_FIDELITY.md).
+
+Close construction and daily-use detail adds paired door ring pulls, three latches, selective threshold wear, two open woven baskets fitted to the solid market counter, and masonry/sheave fittings within the existing well footprint. The layer shares the F7 comparison and retains the existing routes, collisions and water operation. Paired engine captures compare only this layer. See [daily-detail scope and qualification](docs/GUJRANWALA_DAILY_DETAIL.md).
 
 The main menu also offers a playable horsecraft study: the existing motor drives two independent horse bodies, with a supported standing stance, counterbalance, four separate matchlock charge slots and collision-checked target shots. It develops a candidate Maha Singh remembered feat while preserving the campaign, riding-save and father-interlude contracts. The specific two-horse/four-matchlock anecdote remains source-unlocated. [Controls, evidence and production limits](docs/HORSECRAFT_STUDY.md).
 

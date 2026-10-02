@@ -1,12 +1,12 @@
 {
   "schema": "ciw.godot-project-profile.v1",
   "project_id": "1792",
-  "source_revision": "dc4139ff11f6cb4804d47a22199c680aab142031",
+  "source_revision": "be19902b422420a380025a2e1793a5492d43a1e8",
   "source_scope": "game-owned domain slice plus explicit fixtures; not full scene or played childhood",
   "engine_version_prefix": "4.5.1",
   "entrypoint": "tools/net/water_round_capture.gd",
   "files": {
-    "characters/character_names.gd": "sha256:c6f39cc8bb3eeea51bd8c6427c4be0f7af0a13a272ffb39a4891cd5545578df6",
+    "characters/character_names.gd": "sha256:b989bbe7aa80f542fb040ff375c97aab78685be90ccfb243e54e01f3850fd194",
     "childhood/aftermath_state.gd": "sha256:88e3a0f8e51b72ca7a62bf8d0968c71da82088bc2ed0dbabd966311ff95397c5",
     "childhood/childhood_state.gd": "sha256:c56c37b10e7f23a9b300300f7b4bf9ad5ba02d3dd26b48ec0a9eeefcfb0ba764",
     "mounts/riding_rules.gd": "sha256:b17b8117f34c60b53c7360246d7bdfc87309c4696c944dd70c77ee88d4706ff0",

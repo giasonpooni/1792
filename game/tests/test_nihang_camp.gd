@@ -12,6 +12,8 @@ const Store:=preload("res://childhood/checkpoint_store.gd")
 const SAVE:="user://nihang-camp-test-only.json"
 var passed:=0
 var failed:=0
+var watched: Node3D
+var closest_horses:=INF
 
 func _initialize() -> void: run.call_deferred()
 func check(value: bool,label: String) -> void:
@@ -23,8 +25,16 @@ func refused(model,operation: Callable,label: String) -> void:
 	check(not String(operation.call()).is_empty(),label+" refused")
 	check(model.snapshot()==before,label+" atomic")
 func frames(n: int=3) -> void:
-	for _i in range(n): await physics_frame
+	for _i in range(n):
+		await physics_frame;observe_spacing()
 	await process_frame
+
+func observe_spacing() -> void:
+	if not is_instance_valid(watched): return
+	var bodies: Array=[watched.horse,watched.camp_horses[0],watched.camp_horses[1]]
+	for i in range(bodies.size()):
+		for j in range(i+1,bodies.size()):
+			closest_horses=minf(closest_horses,Base.distance(bodies[i].position,bodies[j].position))
 
 func same_saved(a: Variant,b: Variant) -> bool:
 	# Only floating-point transport gets tolerance. Identity, keys, flags and counts stay exact.
@@ -159,7 +169,7 @@ func walk(scene,at: Vector3) -> void:
 	var reached:=false
 	for _i in range(900):
 		if Base.distance(scene.avatar.global_position,at)<.28: reached=true;break
-		look(scene,at);Input.action_press("move_forward");await physics_frame
+		look(scene,at);Input.action_press("move_forward");await physics_frame;observe_spacing()
 	release();await frames(6)
 	check(reached,"physical walking: "+str(at)+" actual "+str(scene.avatar.global_position))
 func ride(scene,at: Vector3) -> void:
@@ -173,7 +183,7 @@ func ride(scene,at: Vector3) -> void:
 			if scene.horse.speed<.1: reached=true;break
 		elif absf(angle)<.6: Input.action_press("move_forward",.55)
 		if absf(angle)>.03: Input.action_press("move_left" if angle>0 else "move_right",minf(absf(angle)*2,1))
-		await physics_frame
+		await physics_frame;observe_spacing()
 	release();await frames(10)
 	check(reached,"physical riding: "+str(at)+" actual "+str(scene.horse.global_position)+" / "+scene._message)
 
@@ -181,6 +191,7 @@ func journey() -> void:
 	var home:=Launch.make_world();var scene=home.get_node("ChildhoodChapter");scene.save_path=SAVE
 	ok(scene.model.restore(fixture()),"one declared childhood start before native journey")
 	root.add_child(home);await frames(8)
+	watched=scene;closest_horses=INF
 	ok(scene._candidate_error(scene.model),"initial Home including camp has standing room")
 	look(scene,R.CAMP);await tap(scene,KEY_E)
 	check(scene._paused and scene._camp_choices.has("meet"),"local E opens camp")
@@ -209,6 +220,16 @@ func journey() -> void:
 	await tap(scene,KEY_F9)
 	check(scene.model.nihang_camp().phase==saved.phase and scene.model.nihang_camp().selected==saved.selected,"F9 restores accepted undertaking")
 	ok(scene.model.validate(scene.model.snapshot()),"mid-ride whole-world state valid")
+	var prior_world: Dictionary=scene.model.snapshot()
+	var bad_world:=prior_world.duplicate(true)
+	bad_world.nihang_camp.mounts[0].position=bad_world.nihang_camp.mounts[1].position.duplicate()
+	var staged:=State.new();ok(staged.restore(bad_world),"declared internally valid overlapping pose fixture")
+	check(not scene._candidate_error(staged).is_empty(),"physical restore refuses overlapping camp horses")
+	bad_world=prior_world.duplicate(true)
+	bad_world.nihang_camp.mounts[0].position=bad_world.riding.horse.position.duplicate()
+	ok(staged.restore(bad_world),"declared internally valid leader-overlap fixture")
+	check(not scene._candidate_error(staged).is_empty(),"physical restore refuses overlap with household mount")
+	check(scene.model.snapshot()==prior_world,"preflight refusal leaves played world unchanged")
 	await ride(scene,Vector3(15,0,-25))
 	await ride(scene,Vector3(16,0,-18))
 	await tap(scene,KEY_F)
@@ -219,6 +240,7 @@ func journey() -> void:
 	look(scene,R.CAMP);await tap(scene,KEY_E)
 	await press(scene,"Return together")
 	check(scene.model.nihang_camp().phase=="complete","whole escort checked in without remote completion")
+	check(closest_horses>=1.575,"native outing keeps all horses physically separate: "+str(closest_horses))
 	ok(scene.model.validate(scene.model.snapshot()),"complete native outing validates")
 	check(scene.model.journal().any(func(e): return e.source_id==R.RIDERS[0] and e.text.begins_with("Little rider")),"received companion voice retained")
 	# Capture actual executed state for separate native rendering, not a replacement scene.
@@ -232,7 +254,7 @@ func journey() -> void:
 	if not output.is_empty() and DisplayServer.get_name()!="headless":
 		await RenderingServer.frame_post_draw
 		ok("" if root.get_texture().get_image().save_png(output.path_join("camp-homecoming.png"))==OK else "capture failed","native screenshot")
-	release();home.queue_free();await frames()
+	release();watched=null;home.queue_free();await frames()
 
 func stale_menu() -> void:
 	var home:=Launch.make_world();var scene=home.get_node("ChildhoodChapter");scene.save_path=SAVE

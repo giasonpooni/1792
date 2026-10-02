@@ -153,12 +153,13 @@ func dismount_position(avatar: CharacterBody3D) -> Variant:
 			return clear_destination.origin
 	return null
 
-func record_fits_world(record: Dictionary, avatar: CharacterBody3D) -> bool:
+func record_fits_world(record: Dictionary, avatar: CharacterBody3D, staged_peers: Array[RID] = []) -> bool:
 	# Domain validation runs first. Check loaded pose without mutating this body.
 	var query := PhysicsShapeQueryParameters3D.new()
 	query.shape = _hull
 	query.collision_mask = 1
 	query.exclude = [get_rid(), avatar.get_rid()]
+	query.exclude.append_array(staged_peers)
 	query.transform = Transform3D(Basis(Vector3.UP, record.yaw), Rules.position(record) + Vector3.UP * 1.65)
 	if not get_world_3d().direct_space_state.intersect_shape(query, 1).is_empty():
 		return false

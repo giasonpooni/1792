@@ -57,18 +57,28 @@ invented acquaintance, escort or testimony. F5/F9 and the existing checkpoint
 store preserve the extension; restoring an earlier run discards later agreements.
 
 Both mounted companions use the existing `horse.gd` motor, collision and observed
-motion. The existing navigator gains optional hull-clearance dimensions with
+motion. Their formation turns with the household horse. They slow while steering,
+use stopping-distance sweeps to brake before obstructions, and approach a nearby
+horse from its near flank when passing. The HUD counts riders within calling
+distance so the player can slow down or return for separated companions. The existing navigator gains optional hull-clearance dimensions with
 unchanged defaults for walking actors. The scene submits one group motion sample
 per advancing Home tick. No follow teleport, extra horse inventory, independent
-clock or second treasury is created. Companion bodies avoid static obstacles;
-as with existing friendly projections, they do not resolve mutual crowd collision.
+clock or second treasury is created. Companion horses now have a separate physical collision layer. They collide with
+one another, the household horse and the walking player. The camera arm also
+responds to these horses. Other friendly pedestrian projections retain their
+existing behavior. The broad capsule hull is a conservative gameplay shape, not
+a model of horse anatomy, mass, injury or herd dynamics.
 
 Dialogue is rechecked against the actual body position, ground and line of sight
 at execution. Turnaround requires the selected riders; check-in requires every
 invited rider, on the ground and stopped at camp. Historical evidence, gameplay
 operation, native execution and test verification remain distinct. Event replay
 checks internal consistency; it is not save authentication or proof that arbitrary
-user-supplied event records describe a physically executed route.
+user-supplied event records describe a physically executed route. Native restore
+compares the staged horse and player poses against one another, separate from
+static-world clearance. It refuses overlaps without changing the current world.
+A previous-version save containing interpenetrating horses must return to an
+earlier clear checkpoint; the loader does not move characters to invent clearance.
 
 ## Evidence and scope
 
@@ -97,10 +107,19 @@ relationship address across accession, unrelated speakers, malformed and future
 events, selected-roster movement, save/load, whole-world rollback and checkpoint
 compatibility. Its native journey starts from one explicitly declared first-gate
 fixture, then uses walking/riding inputs, E/F, actual buttons and F5/F9. It also
-adds a wall after opening a conversation to test stale-menu refusal.
+adds a wall after opening a conversation to test stale-menu refusal, monitors
+horse separation throughout the outing, and checks overlapping-save refusal.
+
+`test_mounted_formation.gd` uses declared native physics fixtures for head-on and
+crossing passes, stopping behind a parked horse at 30 and 60 Hz, newly introduced
+and removed walls, and a gap narrower than the horse hull. These fixtures are
+physics experiments, separate from the input-driven childhood journey. Local
+avoidance is bounded to the small camp group; it is not an arbitrary-size crowd
+solver, terrain path planner or guarantee against every possible traffic jam.
 
 ```sh
 godot --headless --fixed-fps 60 --path game --script res://tests/test_nihang_camp.gd
+godot --headless --fixed-fps 60 --path game --script res://tests/test_mounted_formation.gd
 python tools/run_checks.py --godot /path/to/godot
 ```
 
