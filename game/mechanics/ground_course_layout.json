@@ -1,0 +1,33 @@
+{
+  "schema": "ground-contact-course.v1",
+  "authoring": "original_metric_graybox_not_historical_geometry",
+  "spawn": [0, 0.04, 7],
+  "boxes": [
+    {"id": "safety_floor", "size": [30, 0.4, 28], "at": [0, -3.2, 0]},
+    {"id": "start_floor", "size": [4, 0.4, 5], "at": [0, -0.2, 6.5]},
+    {"id": "practice_crosswalk", "size": [20, 0.4, 1.2], "at": [0, -0.2, 8.6]},
+    {"id": "stair_01", "size": [4, 0.58, 0.9], "at": [0, -0.11, 3.55]},
+    {"id": "stair_02", "size": [4, 0.76, 0.9], "at": [0, -0.02, 2.65]},
+    {"id": "stair_03", "size": [4, 0.94, 0.9], "at": [0, 0.07, 1.75]},
+    {"id": "stair_04", "size": [4, 1.12, 0.9], "at": [0, 0.16, 0.85]},
+    {"id": "top_landing", "size": [4, 1.12, 2], "at": [0, 0.16, -0.6]},
+    {"id": "incline", "size": [4, 0.2, 2.50567356], "at": [0, 0.26421737, -2.77126521], "rotate_x_degrees": -16.69924423},
+    {"id": "finish_floor", "size": [4, 0.4, 4], "at": [0, -0.2, -6]},
+    {"id": "lane_left", "size": [0.3, 2.8, 16.2], "at": [-2.15, 1.4, 0]},
+    {"id": "lane_right", "size": [0.3, 2.8, 16.2], "at": [2.15, 1.4, 0]},
+    {"id": "lane_end", "size": [4.6, 2.8, 0.3], "at": [0, 1.4, -8.15]},
+    {"id": "riser_floor", "size": [4, 0.4, 8], "at": [6, -0.2, 4]},
+    {"id": "high_riser", "size": [3, 0.36, 1], "at": [6, 0.18, 3]},
+    {"id": "riser_wall", "size": [3, 2.4, 0.3], "at": [6, 1.2, 0.5]},
+    {"id": "ceiling_floor", "size": [4, 0.4, 8], "at": [-6, -0.2, 4]},
+    {"id": "ceiling_step", "size": [3, 0.18, 1.4], "at": [-6, 0.09, 3]},
+    {"id": "low_ceiling", "size": [3, 0.3, 2.5], "at": [-6, 1.8, 2.9]},
+    {"id": "curb_floor", "size": [3, 0.4, 3], "at": [6, -0.2, -2]},
+    {"id": "narrow_curb", "size": [3, 0.12, 0.18], "at": [6, 0.06, -2]},
+    {"id": "far_gap_floor", "size": [3, 0.4, 2], "at": [6, -0.2, -7]},
+    {"id": "slope_fixture_30_start", "size": [3, 0.4, 2], "at": [-6, -0.2, -0.7]},
+    {"id": "slope_fixture_30", "size": [3, 0.3, 3], "at": [-6, 0.6200962, -3.075], "rotate_x_degrees": 30},
+    {"id": "slope_fixture_55_start", "size": [3, 0.4, 2], "at": [-10, -0.2, -1.14]},
+    {"id": "slope_fixture_55", "size": [3, 0.3, 3], "at": [-10, 1.14207, -3.12287], "rotate_x_degrees": 55}
+  ]
+}

@@ -1,0 +1,79 @@
+name: Ground contact physics qualification
+on:
+  pull_request:
+    paths:
+      - 'game/**'
+      - 'tools/**'
+      - '.github/workflows/ground-contact.yml'
+permissions:
+  contents: read
+concurrency:
+  group: ground-contact-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  ground-contact:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Install checksum-pinned runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/godot"
+          curl --fail --location --retry 3 --max-time 180 'https://github.com/godotengine/godot-builds/releases/download/4.5.1-stable/Godot_v4.5.1-stable_linux.x86_64.zip' -o "$RUNNER_TEMP/godot.zip"
+          echo "02ec53d1cc7dbb9cc6355393c61b9ab43d1244751a124f10248a4802830788cd  $RUNNER_TEMP/godot.zip" | sha256sum --check
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
+      - name: Execute native collision, input and replay checks
+        env:
+          GODOT_SILENCE_ROOT_WARNING: '1'
+        run: |
+          set -euo pipefail
+          mkdir -p test-results/ground-contact-captures
+          export GROUND_CAPTURE_OUTPUT="$GITHUB_WORKSPACE/test-results/ground-contact-captures"
+          export SOURCE_COMMIT="$(git rev-parse HEAD)"
+          export SOURCE_TREE="$(git rev-parse HEAD^{tree})"
+          python3 - "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" <<'PY'
+          import sys
+          from tools.run_checks import run
+          engine = sys.argv[1]
+          run([engine, '--headless', '--path', 'game', '--editor', '--import'], 'ground-contact-import')
+          run([engine, '--headless', '--fixed-fps', '60', '--path', 'game', '--script', 'res://tests/test_ground_contact.gd'], 'ground-contact-native', 'GROUND_CONTACT_TESTS:')
+          PY
+      - name: Render the retained native journey state
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          GODOT_SILENCE_ROOT_WARNING: '1'
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install --yes --no-install-recommends xvfb xauth libgl1-mesa-dri
+          export GROUND_CAPTURE_OUTPUT="$GITHUB_WORKSPACE/test-results/ground-contact-captures"
+          export SOURCE_COMMIT="$(git rev-parse HEAD)"
+          export SOURCE_TREE="$(git rev-parse HEAD^{tree})"
+          xvfb-run -a python3 - "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" <<'PY'
+          import sys
+          from tools.run_checks import run
+          run([sys.argv[1], '--fixed-fps', '60', '--path', 'game', '--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--script', 'res://tests/render_ground_contact.gd'], 'ground-contact-render', 'GROUND_CONTACT_RENDER:')
+          PY
+      - name: Retain separate source and execution identities
+        if: always()
+        run: |
+          mkdir -p test-results
+          git rev-parse HEAD > test-results/source-commit.txt
+          git rev-parse HEAD^{tree} > test-results/source-tree.txt
+          git archive --format=tar HEAD > test-results/source.tar
+          sha256sum "$RUNNER_TEMP/godot.zip" > test-results/runtime-sha256.txt
+          if test -f test-results/ground-contact-captures/ground-contact-journey.png; then
+            sha256sum test-results/ground-contact-captures/ground-contact-journey.json test-results/ground-contact-captures/ground-contact-journey.png > test-results/ground-contact-capture-sha256.txt
+          fi
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: ground-contact-physics-evidence
+          path: test-results/
+          retention-days: 14

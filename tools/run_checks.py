@@ -69,6 +69,8 @@ def main() -> int:
         "youth-brawl", "YOUTH_BRAWL_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_locomotion.gd"],
         "locomotion", "LOCOMOTION_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_ground_contact.gd"],
+        "ground-contact", "GROUND_CONTACT_TESTS:")
     run([sys.executable, "tools/check_locomotion_rates.py", "--godot", args.godot], "locomotion-rates")
     run([sys.executable, "tools/check_world_atlas.py"], "world-atlas-contracts")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_world_atlas.gd"],

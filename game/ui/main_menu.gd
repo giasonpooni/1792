@@ -11,9 +11,9 @@ func _ready() -> void:
 	add_child(background)
 	var panel := VBoxContainer.new()
 	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	panel.position = Vector2(-330, -260)
-	panel.size = Vector2(660, 520)
-	panel.add_theme_constant_override("separation", 14)
+	panel.position = Vector2(-330, -305)
+	panel.size = Vector2(660, 610)
+	panel.add_theme_constant_override("separation", 10)
 	add_child(panel)
 	var title := Label.new()
 	title.text = "1792"
@@ -28,6 +28,7 @@ func _ready() -> void:
 	_add_button(panel, "Lahore · Command story (separate 1801 sandbox)", "res://world/command_sandbox.tscn")
 	_add_button(panel, "Lahore · Houses and rivals (riding / companions / house politics)", "res://world/house_sandbox.tscn")
 	_add_button(panel, "Movement qualification · shared motor / no story progress", "res://mechanics/course.tscn")
+	_add_button(panel, "Ground contact practice · stairs and slopes", "res://mechanics/ground_course.tscn")
 	var note := Label.new()
 	note.text = "WASD: move · Shift: run · Mouse: look\nE interact · F5 save · F9 load · F1 menu · H houses · F mount · G companions (Houses and rivals)\nThe sandbox captain, missions and geography are fictional placeholders."
 	panel.add_child(note)

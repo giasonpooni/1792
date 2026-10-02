@@ -29,6 +29,13 @@ it does not advance Buddh's biography or replace a story chapter.
 
 [Movement controls, rules, evidence and remaining gates](docs/LOCOMOTION_FOUNDATION.md)
 
+The separate **Ground contact practice · stairs and slopes** entry extends the
+same motor with opt-in bounded static steps and supported slope following. It
+qualifies actual capsule travel, clearance and isolated save/replay on an original
+course before campaign admission.
+[Ground-contact physics and qualification](docs/GROUND_CONTACT_PHYSICS.md) ·
+[Current physics development window](docs/PHYSICS_BUILD_WINDOW.md)
+
 ## Play
 
 Import `game/project.godot` in standard **Godot 4.5.1** and press **F5**.
