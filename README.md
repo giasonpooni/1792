@@ -40,11 +40,15 @@ The planned narrative spans his childhood, rise and reign. Current production
 priority is childhood through the prelude to the Lahore campaign, followed by the
 rest of his life before historical-character DLC production.
 
-The [playable mission and sequence ledger](docs/PLAYABLE_MISSION_LEDGER.md)
-inventories main and draft-branch content with stable IDs, launch instructions,
-prerequisites, outcomes and source revisions. Its
-[machine-readable register](data/production/playable_ledger.json) keeps playable
-sequences, variants, mechanics and planned work separate.
+The [mission development plan](docs/MISSION_DEVELOPMENT_PLAN.md) gives every
+playable sequence its next dramatic and gameplay target. Start with
+[The Words Between Us](docs/MESSAGE_FOLLOWUP.md), the opening message's optional
+question-and-report sequence. The [mission ledger](docs/PLAYABLE_MISSION_LEDGER.md)
+and [machine-readable register](data/production/playable_ledger.json) retain stable
+IDs, launch instructions and source revisions, separating prototypes from future work.
+The next [childhood development pass](docs/CHILDHOOD_ARC_DEVELOPMENT.md) connects
+riding, practice, tracking, the ambush and the household inquiry with clearer
+staging, feedback and responses shaped by what the player experienced.
 
 ## Title and story
 

@@ -8,7 +8,8 @@
   "files": {
     "characters/character_names.gd": "sha256:c6f39cc8bb3eeea51bd8c6427c4be0f7af0a13a272ffb39a4891cd5545578df6",
     "childhood/aftermath_state.gd": "sha256:88e3a0f8e51b72ca7a62bf8d0968c71da82088bc2ed0dbabd966311ff95397c5",
-    "childhood/childhood_state.gd": "sha256:c56c37b10e7f23a9b300300f7b4bf9ad5ba02d3dd26b48ec0a9eeefcfb0ba764",
+    "childhood/childhood_state.gd": "sha256:f85726eb03127e0b39045058ece8c19a7a9cf1f876ff7771f24675bdc06b7174",
+    "childhood/message_followup_rules.gd": "sha256:ff68346bea1bb970c1b6fd45b3e5fa429193bc2712bb0bb830193ff24fde894e",
     "mounts/riding_rules.gd": "sha256:b17b8117f34c60b53c7360246d7bdfc87309c4696c944dd70c77ee88d4706ff0",
     "patrol/companion_rules.gd": "sha256:425914a00cfd836f1a3b13a3dced5cfe1c1babe57ff31c464774bc55b33f9f95",
     "territory/gujranwala_state.gd": "sha256:de70d1a347bcc93844b85f04dafb3039418d83ecc182fb17d7a19959654cd859",

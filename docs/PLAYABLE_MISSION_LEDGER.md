@@ -2,9 +2,9 @@
 
 1792 – The One-Eyed King: playable mission and sequence ledger
 
-Snapshot: **2026-10-02**. Main: `8ae0e3a45a5137e4e1dcb92318297515f4b35ea9`.
+Snapshot: **2026-10-02**. Main: `cd3a473b6725872d4c03f190cd1b07ae940d72c9`.
 
-**33 authored playable sequences**: 14 on the recorded main revision and 19 on recorded draft branches. These range from short lessons to multi-stage prototype missions; this is not a count of finished campaign missions or one fully integrated build.
+**33 authored playable sequences**: 30 on the recorded main revision and 3 on recorded draft branches. These range from short lessons to multi-stage prototype missions; this is not a count of finished campaign missions or one fully integrated build.
 
 | Inventory category | Entries |
 | --- | ---: |
@@ -15,6 +15,12 @@ Snapshot: **2026-10-02**. Main: `8ae0e3a45a5137e4e1dcb92318297515f4b35ea9`.
 | micro scene | 3 |
 | study | 5 |
 | mechanic | 2 |
+
+## Active development
+
+HOME-003, HOME-004, HOME-005, HOME-006, HOME-007 on `feat/childhood-arc-development-v1-20261002`. Riding-to-inquiry development continues the opening-message pass. These changes elaborate existing sequences; the total remains 33. Source guides remain pinned to their inspected revisions.
+
+See [the active playable increment](CHILDHOOD_ARC_DEVELOPMENT.md) and [development cards for every sequence](MISSION_DEVELOPMENT_PLAN.md).
 
 ## Counting and maintenance
 
@@ -43,26 +49,26 @@ Edit `data/production/playable_ledger.json`, then run `python tools/playable_led
 | HOME-011 | [The smith’s commission](#home-011) | 1792 | main |
 | HOME-012 | [Sukerchakia household service](#home-012) | 1792 | main |
 | HOME-013 | [The Bhangi Bazaar Brawl](#home-013) | 1792 | main |
-| HOME-014 | [Maha’s horsecraft lesson](#home-014) | 1792 | [PR #71](https://github.com/giasonpooni/1792/pull/71) · draft |
-| HOME-015 | [Missing remounts](#home-015) | 1792 | [PR #14](https://github.com/giasonpooni/1792/pull/14) · draft |
-| HOME-016 | [The borrowed rope](#home-016) | 1792 | [PR #23](https://github.com/giasonpooni/1792/pull/23) · draft |
-| HOME-017 | [A funded instructor](#home-017) | 1792 | [PR #32](https://github.com/giasonpooni/1792/pull/32) · draft |
+| HOME-014 | [Maha’s horsecraft lesson](#home-014) | 1792 | main · [source PR #71](https://github.com/giasonpooni/1792/pull/71) |
+| HOME-015 | [Missing remounts](#home-015) | 1792 | draft · [source PR #14](https://github.com/giasonpooni/1792/pull/14) |
+| HOME-016 | [The borrowed rope](#home-016) | 1792 | draft · [source PR #23](https://github.com/giasonpooni/1792/pull/23) |
+| HOME-017 | [A funded instructor](#home-017) | 1792 | draft · [source PR #32](https://github.com/giasonpooni/1792/pull/32) |
 | CMD-001 | [Lahore road patrol](#cmd-001) | 1801 fictional fixture | main |
-| MAHA-001 | [Mahan’s field camp](#maha-001) | 1790 development fixture; chronology variants retained | [PR #9](https://github.com/giasonpooni/1792/pull/9) · draft |
-| PRO-001 | [Sobraon to the oral telling](#pro-001) | 1846 → 1849 → retrospective | [PR #77](https://github.com/giasonpooni/1792/pull/77) · draft |
-| TALE-001 | [The Wedding Road](#tale-001) | Late eighteenth century; Nakai marriage negotiations | [PR #76](https://github.com/giasonpooni/1792/pull/76) · draft |
-| TALE-002 | [The Unequal Victory](#tale-002) | 1785; a remembered coalition and its strained aftermath | [PR #76](https://github.com/giasonpooni/1792/pull/76) · draft |
-| TALE-003 | [A Stranger at the Threshold](#tale-003) | 1790; the book's account of revenge after Wazir Singh's death | [PR #76](https://github.com/giasonpooni/1792/pull/76) · draft |
-| TALE-004 | [Desi Remembers the Reins](#tale-004) | Early eighteenth century; ancestral recollection | [PR #76](https://github.com/giasonpooni/1792/pull/76) · draft |
-| TALE-005 | [What Can Be Carried](#tale-005) | Late eighteenth century; Ramgarhia displacement and return traditions | [PR #76](https://github.com/giasonpooni/1792/pull/76) · draft |
-| TALE-006 | [The Water of Bahrwal](#tale-006) | Ancestral legend; Guru Arjun and Hem Raj | [PR #76](https://github.com/giasonpooni/1792/pull/76) · draft |
-| TALE-007 | [The Door to the Young Chief](#tale-007) | 1792; the Sukerchakia household | [PR #76](https://github.com/giasonpooni/1792/pull/76) · draft |
-| TALE-008 | [The Whisper After Midnight](#tale-008) | Late 1790s; the household at night | [PR #76](https://github.com/giasonpooni/1792/pull/76) · draft |
-| TALE-009 | [Two Names in the Dispatch](#tale-009) | 1807; a dispatch from Batala | [PR #76](https://github.com/giasonpooni/1792/pull/76) · draft |
-| TALE-010 | [The Fortress in the Letter](#tale-010) | Late 1808; a diplomatic approach | [PR #76](https://github.com/giasonpooni/1792/pull/76) · draft |
-| TALE-011 | [Behind the Lowered Curtain](#tale-011) | 1820–1821; departure from a watched camp | [PR #76](https://github.com/giasonpooni/1792/pull/76) · draft |
-| TALE-012 | [When the Camp Falls Quiet](#tale-012) | 1792; the camp at Sodhra | [PR #76](https://github.com/giasonpooni/1792/pull/76) · draft |
-| TALE-013 | [Names at the Gate](#tale-013) | Late 1790s; after the Ramnagar conflict | [PR #76](https://github.com/giasonpooni/1792/pull/76) · draft |
+| MAHA-001 | [Mahan’s field camp](#maha-001) | 1790 development fixture; chronology variants retained | main · [source PR #9](https://github.com/giasonpooni/1792/pull/9) |
+| PRO-001 | [Sobraon to the oral telling](#pro-001) | 1846 → 1849 → retrospective | main · [source PR #77](https://github.com/giasonpooni/1792/pull/77) |
+| TALE-001 | [The Wedding Road](#tale-001) | Late eighteenth century; Nakai marriage negotiations | main · [source PR #76](https://github.com/giasonpooni/1792/pull/76) |
+| TALE-002 | [The Unequal Victory](#tale-002) | 1785; a remembered coalition and its strained aftermath | main · [source PR #76](https://github.com/giasonpooni/1792/pull/76) |
+| TALE-003 | [A Stranger at the Threshold](#tale-003) | 1790; the book's account of revenge after Wazir Singh's death | main · [source PR #76](https://github.com/giasonpooni/1792/pull/76) |
+| TALE-004 | [Desi Remembers the Reins](#tale-004) | Early eighteenth century; ancestral recollection | main · [source PR #76](https://github.com/giasonpooni/1792/pull/76) |
+| TALE-005 | [What Can Be Carried](#tale-005) | Late eighteenth century; Ramgarhia displacement and return traditions | main · [source PR #76](https://github.com/giasonpooni/1792/pull/76) |
+| TALE-006 | [The Water of Bahrwal](#tale-006) | Ancestral legend; Guru Arjun and Hem Raj | main · [source PR #76](https://github.com/giasonpooni/1792/pull/76) |
+| TALE-007 | [The Door to the Young Chief](#tale-007) | 1792; the Sukerchakia household | main · [source PR #76](https://github.com/giasonpooni/1792/pull/76) |
+| TALE-008 | [The Whisper After Midnight](#tale-008) | Late 1790s; the household at night | main · [source PR #76](https://github.com/giasonpooni/1792/pull/76) |
+| TALE-009 | [Two Names in the Dispatch](#tale-009) | 1807; a dispatch from Batala | main · [source PR #76](https://github.com/giasonpooni/1792/pull/76) |
+| TALE-010 | [The Fortress in the Letter](#tale-010) | Late 1808; a diplomatic approach | main · [source PR #76](https://github.com/giasonpooni/1792/pull/76) |
+| TALE-011 | [Behind the Lowered Curtain](#tale-011) | 1820–1821; departure from a watched camp | main · [source PR #76](https://github.com/giasonpooni/1792/pull/76) |
+| TALE-012 | [When the Camp Falls Quiet](#tale-012) | 1792; the camp at Sodhra | main · [source PR #76](https://github.com/giasonpooni/1792/pull/76) |
+| TALE-013 | [Names at the Gate](#tale-013) | Late 1790s; after the Ramnagar conflict | main · [source PR #76](https://github.com/giasonpooni/1792/pull/76) |
 
 ## Detailed register
 
@@ -238,7 +244,7 @@ Edit `data/production/playable_ledger.json`, then run `python tools/playable_led
 
 ### MEM-001
 
-**Maha’s family story / Charat Singh** — presentation; draft.
+**Maha’s family story / Charat Singh** — presentation; main.
 
 - **Era:** Family retrospective
 - **Launch:** Begin through the Home launcher.
@@ -251,7 +257,7 @@ Edit `data/production/playable_ledger.json`, then run `python tools/playable_led
 
 ### HOME-014
 
-**Maha’s horsecraft lesson** — playable sequence; draft.
+**Maha’s horsecraft lesson** — playable sequence; main.
 
 - **Era:** 1792
 - **Launch:** Run game/project.godot; choose Home territory. Speak to the stable trainer after the first riding lesson.
@@ -347,7 +353,7 @@ Edit `data/production/playable_ledger.json`, then run `python tools/playable_led
 
 ### MAHA-001
 
-**Mahan’s field camp** — playable sequence; draft.
+**Mahan’s field camp** — playable sequence; main.
 
 - **Era:** 1790 development fixture; chronology variants retained
 - **Launch:** Main menu → 1790 / Mahan Singh / Field camp (interlude).
@@ -361,7 +367,7 @@ Edit `data/production/playable_ledger.json`, then run `python tools/playable_led
 
 ### PRO-001
 
-**Sobraon to the oral telling** — playable sequence; draft.
+**Sobraon to the oral telling** — playable sequence; main.
 
 - **Era:** 1846 → 1849 → retrospective
 - **Launch:** Begin through the branch’s Home launcher.
@@ -375,7 +381,7 @@ Edit `data/production/playable_ledger.json`, then run `python tools/playable_led
 
 ### TALE-001
 
-**The Wedding Road** — playable sequence; draft.
+**The Wedding Road** — playable sequence; main.
 
 - **Era:** Late eighteenth century; Nakai marriage negotiations
 - **Launch:** Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects delegation.
@@ -397,7 +403,7 @@ Edit `data/production/playable_ledger.json`, then run `python tools/playable_led
 
 ### TALE-002
 
-**The Unequal Victory** — playable sequence; draft.
+**The Unequal Victory** — playable sequence; main.
 
 - **Era:** 1785; a remembered coalition and its strained aftermath
 - **Launch:** Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects alliance.
@@ -419,7 +425,7 @@ Edit `data/production/playable_ledger.json`, then run `python tools/playable_led
 
 ### TALE-003
 
-**A Stranger at the Threshold** — playable sequence; draft.
+**A Stranger at the Threshold** — playable sequence; main.
 
 - **Era:** 1790; the book's account of revenge after Wazir Singh's death
 - **Launch:** Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects revenge.
@@ -441,7 +447,7 @@ Edit `data/production/playable_ledger.json`, then run `python tools/playable_led
 
 ### TALE-004
 
-**Desi Remembers the Reins** — playable sequence; draft.
+**Desi Remembers the Reins** — playable sequence; main.
 
 - **Era:** Early eighteenth century; ancestral recollection
 - **Launch:** Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects desi.
@@ -463,7 +469,7 @@ Edit `data/production/playable_ledger.json`, then run `python tools/playable_led
 
 ### TALE-005
 
-**What Can Be Carried** — playable sequence; draft.
+**What Can Be Carried** — playable sequence; main.
 
 - **Era:** Late eighteenth century; Ramgarhia displacement and return traditions
 - **Launch:** Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects exile.
@@ -485,7 +491,7 @@ Edit `data/production/playable_ledger.json`, then run `python tools/playable_led
 
 ### TALE-006
 
-**The Water of Bahrwal** — playable sequence; draft.
+**The Water of Bahrwal** — playable sequence; main.
 
 - **Era:** Ancestral legend; Guru Arjun and Hem Raj
 - **Launch:** Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects well.
@@ -507,7 +513,7 @@ Edit `data/production/playable_ledger.json`, then run `python tools/playable_led
 
 ### TALE-007
 
-**The Door to the Young Chief** — playable sequence; draft.
+**The Door to the Young Chief** — playable sequence; main.
 
 - **Era:** 1792; the Sukerchakia household
 - **Launch:** Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects regency.
@@ -529,7 +535,7 @@ Edit `data/production/playable_ledger.json`, then run `python tools/playable_led
 
 ### TALE-008
 
-**The Whisper After Midnight** — playable sequence; draft.
+**The Whisper After Midnight** — playable sequence; main.
 
 - **Era:** Late 1790s; the household at night
 - **Launch:** Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects rumours.
@@ -551,7 +557,7 @@ Edit `data/production/playable_ledger.json`, then run `python tools/playable_led
 
 ### TALE-009
 
-**Two Names in the Dispatch** — playable sequence; draft.
+**Two Names in the Dispatch** — playable sequence; main.
 
 - **Era:** 1807; a dispatch from Batala
 - **Launch:** Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects heirs.
@@ -573,7 +579,7 @@ Edit `data/production/playable_ledger.json`, then run `python tools/playable_led
 
 ### TALE-010
 
-**The Fortress in the Letter** — playable sequence; draft.
+**The Fortress in the Letter** — playable sequence; main.
 
 - **Era:** Late 1808; a diplomatic approach
 - **Launch:** Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects overture.
@@ -595,7 +601,7 @@ Edit `data/production/playable_ledger.json`, then run `python tools/playable_led
 
 ### TALE-011
 
-**Behind the Lowered Curtain** — playable sequence; draft.
+**Behind the Lowered Curtain** — playable sequence; main.
 
 - **Era:** 1820–1821; departure from a watched camp
 - **Launch:** Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects litter.
@@ -617,7 +623,7 @@ Edit `data/production/playable_ledger.json`, then run `python tools/playable_led
 
 ### TALE-012
 
-**When the Camp Falls Quiet** — playable sequence; draft.
+**When the Camp Falls Quiet** — playable sequence; main.
 
 - **Era:** 1792; the camp at Sodhra
 - **Launch:** Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects sodhra.
@@ -639,7 +645,7 @@ Edit `data/production/playable_ledger.json`, then run `python tools/playable_led
 
 ### TALE-013
 
-**Names at the Gate** — playable sequence; draft.
+**Names at the Gate** — playable sequence; main.
 
 - **Era:** Late 1790s; after the Ramnagar conflict
 - **Launch:** Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects settlement.
@@ -713,7 +719,7 @@ Edit `data/production/playable_ledger.json`, then run `python tools/playable_led
 
 ### STUDY-002
 
-**Ground-contact course** — study; draft.
+**Ground-contact course** — study; main.
 
 - **Era:** Development fixture / Home prototype
 - **Launch:** Run res://mechanics/ground_course.tscn.
@@ -726,7 +732,7 @@ Edit `data/production/playable_ledger.json`, then run `python tools/playable_led
 
 ### STUDY-003
 
-**Horsecraft study** — study; draft.
+**Horsecraft study** — study; main.
 
 - **Era:** Development fixture / Home prototype
 - **Launch:** Run res://mounts/horsecraft_study.tscn.
@@ -765,7 +771,7 @@ Edit `data/production/playable_ledger.json`, then run `python tools/playable_led
 
 ### SYSTEM-001
 
-**Hawk scouting** — mechanic; draft.
+**Hawk scouting** — mechanic; main.
 
 - **Era:** Development fixture / Home prototype
 - **Launch:** Run game/project.godot; choose Home territory. X releases/recalls the hawk.
@@ -778,7 +784,7 @@ Edit `data/production/playable_ledger.json`, then run `python tools/playable_led
 
 ### SYSTEM-002
 
-**Ground Focus** — mechanic; draft.
+**Ground Focus** — mechanic; main.
 
 - **Era:** Development fixture / Home prototype
 - **Launch:** Run game/project.godot; choose Home territory. Z toggles Focus.

@@ -26,9 +26,9 @@ def main():
         assert profile['files'][name] == 'sha256:' + hashlib.sha256(raw).hexdigest(), name
         pending.extend(re.findall(r'res://([\w/.-]+\.gd)', raw.decode('utf-8')))
     assert visited == set(profile['files']), 'The explicit preload closure changed'
-    assert len(visited) == 11
+    assert len(visited) == 12
     assert len(profile['scenario']['checks']) == 9
-    print('NET_GAME_PROFILE: 11 exact source files; 9 authored rules; 18 parameter cases; no engine started')
+    print('NET_GAME_PROFILE: 12 exact source files; 9 authored rules; 18 parameter cases; no engine started')
 
 if __name__ == '__main__':
     main()

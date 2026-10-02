@@ -5,6 +5,7 @@ const Childhood:=preload("res://childhood/childhood_state.gd")
 const Riding:=preload("res://mounts/riding_rules.gd")
 const Aftermath:=preload("res://childhood/aftermath_state.gd")
 const Household:=preload("res://territory/misl_rules.gd")
+const Lessons:=preload("res://childhood/lesson_direction.gd")
 
 static func household_uncommitted(model) -> bool:
 	# Match the existing workshop's custody exclusions without reserving anything.
@@ -24,6 +25,7 @@ static func read(chapter: Node3D) -> Dictionary:
 		"orientation":
 			result.task="Explore the courtyard"
 			result.progress="Walk through the yard%s\nTurn your view left and right%s"%["  ·  done" if state.walked>=5.0 else "", "  ·  done" if state.looked>=0.6 else ""]
+			result.progress+="\nA courier is waiting with a sealed message. Find your bearings before you approach him."
 			result.controls="WASD  Walk     Mouse  Look     J / Esc  Journal and menu"
 		"letter":
 			result.controls="E  Speak / examine     WASD  Walk     Mouse  Look     J / Esc  Journal and menu"
@@ -53,6 +55,7 @@ static func read(chapter: Node3D) -> Dictionary:
 				result.controls="F  Mount     WASD  Walk     Mouse  Look     J / Esc  Journal and menu"
 				result.target=Riding.position(model.horse_record());result.marker="Household horse · F"
 			result.progress="%d / 3 gates reached. Ride between the poles in order."%state.ride_gate
+			result.progress+="\nThe ochre flag marks the next gate; crossed flags carry a pale stitch."
 			if state.ride_gate>0 and model.has_method("has_riding_skill") and not model.has_riding_skill("single_standing"):
 				result.progress+="\nThe stable trainer now offers standing riding and mounted matchlock lessons. Stop, dismount, and speak to him with E."
 			result.show_target=true
@@ -61,12 +64,14 @@ static func read(chapter: Node3D) -> Dictionary:
 			result.progress="The riding course is complete. Stop on clear ground, then dismount with F." if model.mounted() else "Guard %d / 2 raised blows. After two guards, counter during his recovery."%state.parries
 			result.controls="S / Space  Brake     F  Dismount when stopped" if model.mounted() else "Q  Hold guard while facing the trainer     Left click  Counter during recovery"
 			result.target=Childhood.SITES.spar;result.marker="Practice trainer";result.show_target=true
+			if not model.mounted():
+				result.progress += "\n" + ("The raised arm is your warning; keep facing the trainer." if Lessons.practice_phase(int(state.tick)) == "windup" else "Wait for the arm to fall, then answer during recovery." if state.parries >= 2 else "Read the preparation, hold through the blow, then settle again.")
 		"tracking":
-			result.task="Follow the trail" if state.tracks<3 else "Approach the quarry quietly"
+			result.task=Lessons.trail_task(int(state.tracks))
 			result.progress="%d / 3 traces examined. Face each nearby trace before pressing E."%state.tracks if state.tracks<3 else "You have followed the traces. Hold C as you approach, then observe with E."
 			result.controls="E  Examine     C  Hold for quiet approach     WASD  Walk     Mouse  Look"
 			result.target=Childhood.SITES["track_%d"%(int(state.tracks)+1)] if state.tracks<3 else Childhood.SITES.quarry
-			result.marker="Trace %d / 3"%(int(state.tracks)+1) if state.tracks<3 else "Quarry";result.show_target=true
+			result.marker=Lessons.TRACE_NAMES[int(state.tracks)]+" · E" if state.tracks<3 else "Quarry";result.show_target=true
 			if model.mounted():
 				result.task="Stop and dismount to follow the trail" if state.tracks<3 else "Stop and dismount to observe the quarry"
 				result.progress="Stop on clear ground, then continue on foot.\n"+result.progress
@@ -157,4 +162,19 @@ static func read(chapter: Node3D) -> Dictionary:
 			result.show_target=true
 		_:
 			return {}
+	# Follow-up is optional and uses the same chapter state. It never opens a
+	# riding gate or invents knowledge merely because the HUD displays an objective.
+	if model.has_method("message_phase") and stage in ["riding", "sparring", "tracking", "ready"] and not model.mounted():
+		var followup: String = model.message_phase()
+		if followup == "dormant" and stage == "riding" and state.ride_gate == 0:
+			result.progress += "\nOptional: speak to the steward again about carrying these accounts to the trainer."
+		elif followup in ["clarify", "report"]:
+			result.title = "GUJRANWALA  /  THE WORDS BETWEEN US"
+			result.task = "Question the courier" if followup == "clarify" else "Carry your account to the trainer"
+			result.progress = "Ask what he actually saw, then take his answer to the trainer." if followup == "clarify" else "Tell the practice trainer what each speaker knows, and what remains uncertain."
+			result.progress += "\nYour riding and practice lessons remain available."
+			result.controls = "E  Speak     WASD  Walk     Mouse  Look     J / Esc  Remembered accounts"
+			result.target = Childhood.SITES.courier if followup == "clarify" else Childhood.SITES.spar
+			result.marker = "Courier · E" if followup == "clarify" else "Practice trainer · E"
+			result.show_target = true
 	return result

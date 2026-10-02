@@ -47,6 +47,16 @@ def main() -> int:
         "character-names", "CHARACTER_NAMES_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_childhood.gd"],
         "childhood", "CHILDHOOD_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_message_followup_state.gd"],
+        "message-followup-state", "MESSAGE_FOLLOWUP_STATE_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_message_followup_scene.gd"],
+        "message-followup-scene", "MESSAGE_FOLLOWUP_SCENE_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_childhood_arc.gd"],
+        "childhood-arc", "CHILDHOOD_ARC_NATIVE_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_childhood_arc_staging.gd"],
+        "childhood-arc-staging", "CHILDHOOD_ARC_STAGING_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_inquiry_presentation.gd"],
+        "inquiry-presentation", "INQUIRY_PRESENTATION_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_hawk_scout.gd"],
         "hawk-scout", "HAWK_SCOUT_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_ground_focus.gd"],

@@ -89,7 +89,7 @@ jobs:
           if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/aftermath-render.log; then
             exit 1
           fi
-          grep -q 'AFTERMATH_RENDER: 5 captures; 0 failures' test-results/aftermath-render.log
+          grep -q 'AFTERMATH_RENDER: 6 captures; 0 failures' test-results/aftermath-render.log
           timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
             --path game --rendering-method gl_compatibility --audio-driver Dummy \
             --script res://tests/render_gujranwala.gd 2>&1 | tee test-results/gujranwala-render.log

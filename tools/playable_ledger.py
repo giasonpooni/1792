@@ -37,6 +37,12 @@ def render(data):
              "| Inventory category | Entries |", "| --- | ---: |"]
     for kind, count in counts.items():
         lines.append(f"| {kind.replace('_', ' ')} | {count} |")
+    if data.get("active_development"):
+        work = data["active_development"]
+        lines += ["", "## Active development", "",
+                  f"{', '.join(work['ids'])} on `{work['branch']}`. {work['note']}", "",
+                  f"See [the active playable increment]({Path(work['guide']).name}) and "
+                  "[development cards for every sequence](MISSION_DEVELOPMENT_PLAN.md)."]
     lines += ["", "## Counting and maintenance", "",
               "The JSON file is authoritative; this document is generated. Stable IDs survive renaming and moving scenes. "
               "A mission owns its child beats. Alternate approaches, captain/delegated control, chapter wrappers, art passes and integration PRs do not create new missions. "
@@ -49,7 +55,9 @@ def render(data):
               "Use `--check` to catch stale generated output, and `--check-source-paths` in a checkout containing the recorded commits to verify references.", "",
               "## Playable sequence index", "", "| ID | Sequence | Era | Delivery |", "| --- | --- | --- | --- |"]
     for e in play:
-        delivery = "main" if e["pr"] is None else f"[PR #{e['pr']}](https://github.com/giasonpooni/1792/pull/{e['pr']}) · draft"
+        delivery = e["delivery"]
+        if e["pr"] is not None:
+            delivery += f" · [source PR #{e['pr']}](https://github.com/giasonpooni/1792/pull/{e['pr']})"
         lines.append(f"| {e['id']} | [{cell(e['title'])}](#{e['id'].lower()}) | {cell(e['era'])} | {delivery} |")
     lines += ["", "## Detailed register", ""]
     for e in entries:
