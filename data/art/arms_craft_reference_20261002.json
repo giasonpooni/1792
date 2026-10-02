@@ -190,6 +190,9 @@
     "ornament concentrates at grips, guards, scabbard mounts and focal bands rather than coating every surface",
     "repair wrapping and replaced fittings are desirable evidence of use",
     "dark steel/wood fields make small warm-metal accents legible at gameplay distance",
-    "this batch informs presentation and material contrast only; it does not authenticate weapon types for 1792"
+    "this batch informs presentation and material contrast only; it does not authenticate weapon types for 1792",
+    "scabbards and shields should read as staged/carry objects, not floating inventory slots",
+    "resting shield, suspension rings and belts may use chat-visible motif references but are not evidence of exact 1792 equipment",
+    "body–weapon relationship and room placement are valid composition questions distinct from weapon-function claims"
   ]
 }
