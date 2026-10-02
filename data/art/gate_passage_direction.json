@@ -1,0 +1,32 @@
+{
+  "schema": "1792.gate-passage-direction.v1",
+  "id": "household-gate-study",
+  "anchor": "childhood_state.GATES[2]",
+  "classification": "direct-craft presentation, not historical reconstruction",
+  "current_profile": {
+    "life_stage": "childhood",
+    "social_meaning": "ordinary household passage",
+    "mounted_clearance": "small practical yielding only",
+    "guard_signal": "presentation gesture only",
+    "route_authority": false
+  },
+  "future_direction": [
+    {
+      "life_stage": "young_leader",
+      "status": "not_implemented",
+      "idea": "recognition may alter waiting/acknowledgement, subject to historical and narrative review"
+    },
+    {
+      "life_stage": "maharaja",
+      "status": "not_implemented",
+      "idea": "a future authority route may pre-clear before arrival; do not infer from this childhood study"
+    }
+  ],
+  "invariants": [
+    "no collision or navigation bodies",
+    "no witness, memory, journal, economy, rank or reputation state",
+    "cart and waiting pack stay outside the central lane",
+    "porter yields outward, never into the central lane",
+    "same gate may later change social meaning without changing its physical identity"
+  ]
+}

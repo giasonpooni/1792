@@ -7,6 +7,7 @@ const Names := preload("res://characters/character_names.gd")
 const Riding := preload("res://mounts/riding_rules.gd")
 const Story := preload("res://childhood/aftermath_state.gd")
 const Checkpoint := preload("res://childhood/checkpoint_store.gd")
+const GatePassage := preload("res://presentation/gate_passage.gd")
 const EscortAgent := preload("res://patrol/patrol_agent.gd")
 const Navigation := preload("res://patrol/patrol_navigator.gd")
 var model := Story.new()
@@ -41,6 +42,7 @@ var _escort_order_requested := ""
 var _after_action := ""
 var _checkpoint_note := "No checkpoint yet. F5 keeps a separate manual save."
 var _message := "Buddh · I know the yard, the horse, and the voices. I do not yet know what lies beyond them."
+var gate_passage: Node3D
 
 func _ready() -> void:
 	avatar = get_parent().get_node("Player")
@@ -94,6 +96,10 @@ func _build_world() -> void:
 	for i in range(Model.GATES.size()):
 		var p: Vector3 = Model.GATES[i]
 		for side in [-1,1]: _box(Vector3(0.12, 1.5, 0.12), p + Vector3(side * 2.8, 0.7, 0), Color("ceba86"))
+	gate_passage=GatePassage.new()
+	gate_passage.name="HouseholdGatePassageStudy"
+	add_child(gate_passage)
+	gate_passage.build(Model.GATES[2])
 	for i in range(1,4):
 		for offset in [Vector3(-0.25, 0, 0), Vector3(0.25, 0, -0.35)]:
 			_box(Vector3(0.2, 0.03, 0.35), Model.SITES["track_%d" % i] + offset, Color("443e2e"))
@@ -536,6 +542,8 @@ func _load(path: String = "") -> void:
 func _refresh() -> void:
 	var s := model.progress()
 	var lesson := model.stage()
+	if is_instance_valid(gate_passage):
+		gate_passage.sample(int(s.tick),model.position(),model.mounted(),lesson)
 	var target := Model.SITES.home
 	var instructions := ""
 	match lesson:
