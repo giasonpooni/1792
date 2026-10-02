@@ -1,0 +1,26 @@
+{
+  "schema": "1792.gujranwala-beauty-pass.v1",
+  "id": "gujranwala-home-beauty-v1",
+  "classification": "direct-craft presentation study",
+  "georeferenced": false,
+  "historical_truth_verified": false,
+  "gameplay_authority": false,
+  "components": {
+    "veranda_accents": 16,
+    "jali_depth_panels": 8,
+    "garden_pockets": 6,
+    "warm_practicals": 4,
+    "market_vessels": 6,
+    "folded_or_hanging_textiles": 4,
+    "reflective_basin": 1
+  },
+  "art_direction": [
+    "warm lime/plaster with restrained ochre accents",
+    "dark timber and jali depth against pale walls",
+    "green planted pockets breaking repeated masonry rhythm",
+    "small clusters of vessels/textiles instead of evenly distributed props",
+    "warm practical light appears only in golden-hour/evening visual presets",
+    "no new collider, navigation, economy, journal, clock or save authority"
+  ],
+  "historical_boundary": "Reference-derived beauty grammar only; exact plant species, decorative motifs, colors and arrangement are not asserted as measured 1792 Gujranwala reconstruction."
+}
