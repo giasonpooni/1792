@@ -1,6 +1,7 @@
 extends Node3D
 ## Home tutorial controller. Reuses the original player and horse physics.
 ## No Lahore clock/order execution runs while this chapter is loaded.
+const Perspective := preload("res://childhood/perspective_view.gd")
 const Model := preload("res://childhood/childhood_state.gd")
 const Horse := preload("res://mounts/horse.tscn")
 const Names := preload("res://characters/character_names.gd")
@@ -293,6 +294,7 @@ func _open_journal() -> void:
 	for memory in model.journal():
 		text += "[%s · %s · %.1fs]\n%s\n\n" % [memory.channel,memory.source_id,memory.received_tick/60.0,memory.text]
 	if model.journal().is_empty(): text += "No reports have reached me.\n\n"
+	text += "WORKING IMPRESSION\n" + Perspective.impression(Perspective.project(model.journal(), int(model.progress().tick))) + "\n\n"
 	text += "An account is not its confirmation. The readable text here represents remembered speech and experience, not Buddh reading a document.\n\nSOURCE PROFILE: Latif's History of the Panjab (1891), selected passages; the lessons, dialogue, map and escape outcome are authored. Eye loss is already present; F4 changes only subjective framing. There is no historically established progressive-blindness schedule here."
 	text += "\n\n" + _checkpoint_note + "\nRestoring a checkpoint replaces this whole chapter state, including memories and decisions."
 	_panel_text.text = text
@@ -331,7 +333,9 @@ func _physics_process(delta: float) -> void:
 	if not _escort_order_requested.is_empty():
 		var instruction := _escort_order_requested
 		_escort_order_requested = ""
-		_message = model.order_escort(instruction) if _escort_audible() else "Move within sight and calling distance of the guard."
+		# An independent agreement has no deployed guard to approach. Let the
+		# existing authority supply that refusal before testing audible range.
+		_message = model.order_escort(instruction) if not model.aftermath().escort.active or _escort_audible() else "Move within sight and calling distance of the guard."
 		if _message.is_empty(): _message = "Guard · " + ("I will follow." if instruction == "follow" else "I will hold here.")
 		_refresh()
 	if _load_requested:
@@ -354,13 +358,13 @@ func _physics_process(delta: float) -> void:
 		_toggle_mount()
 	if model.mounted():
 		var motion: Dictionary = horse.step(delta,Input.get_action_strength("move_forward"),Input.get_axis("move_left","move_right"),Input.is_action_pressed("sprint"),Input.is_key_pressed(KEY_CTRL),Input.is_action_pressed("move_backward") or Input.is_key_pressed(KEY_SPACE))
-		var error := model.record_ride(motion,delta)
+		var error := _record_mounted(motion,delta)
 		if not error.is_empty(): horse.apply_record(model.horse_record())
 		avatar.global_position = model.position()
 	else:
 		avatar.walk_speed = 2.0 if Input.is_key_pressed(KEY_C) else 4.5
 		avatar.run_speed = 2.0 if Input.is_key_pressed(KEY_C) else 7.5
-		var error := model.record_position(avatar.global_position,delta)
+		var error := _record_walk(avatar.global_position,delta)
 		if not error.is_empty(): avatar.global_position = model.position()
 	model.advance()
 	if _interact_requested:
@@ -372,6 +376,13 @@ func _physics_process(delta: float) -> void:
 	_strike_requested = false
 	guard_visual.visible = not model.mounted() and Input.is_key_pressed(KEY_Q)
 	_refresh()
+
+# Extension seams retain the same admitted player and horse motion.
+func _record_walk(p: Vector3, delta: float) -> String:
+	return model.record_position(p,delta)
+
+func _record_mounted(motion: Dictionary, delta: float) -> String:
+	return model.record_ride(motion,delta)
 
 func _interact() -> void:
 	if model.mounted():

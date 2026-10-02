@@ -3,6 +3,31 @@
 **The first game from Cartesian Graphics**, Notation Systems' games, graphics,
 physics and simulation label. **1792** remains the repository and shorthand name.
 
+<!-- foundry-delivery-v1 -->
+**Foundry integration on this branch:** [game-owned adapter, terminal connection, and complete retained delivery](docs/FOUNDRY.md). The adapter is a development workload, not a required game service.
+<!-- /foundry-delivery-v1 -->
+
+## Historical perspective and production order
+
+**1792 is the primary game workload.** Hero of the Two Worlds / Garibaldi
+progresses slowly as the secondary title and workflow-transfer test; Geronimo is
+on hold. The full Ranjit Singh narrative still precedes historical-character DLC.
+
+Our style is **situated, explorable history**: encounter people through their
+relationships, partial knowledge, obligations and choices, not biography cards
+alone. Reconstructed beliefs and motives retain their evidence or fiction status;
+actors do not inherit the narrator's hindsight or the developer's research.
+
+[Historical-perspective style and game-owned integration contract](docs/HISTORICAL_PERSPECTIVE.md).
+The first runnable authoring tool is published separately in
+[Terminal PR #70](https://github.com/giasonpooni/Notations-Systems-Terminal/pull/70)
+as `net history`. It compiles received-information views and audits annotated
+statements. **It is not yet a live 1792 integration or a historical-truth engine.**
+Godot remains the game-state, clock and save authority. Existing gameplay,
+oral-memory work, source interpretation, sacred-site rules and rights are retained.
+
+---
+
 **Build outward from home.**
 
 A historical open-world biopic following **Buddh Singh**, later **Maharaja Ranjit
@@ -38,6 +63,16 @@ horse and environment proxies are not the intended finished style.
 [Street, interior and roofscape reference targets](docs/VISUAL_REFERENCE_TARGETS.md)
 apply to the existing childhood benchmark, not a new engine or copied setting.
 
+**Begin:** the focused Begin action opens the Sobraon escape and Rawalpindi coda,
+followed by Maha Singh's authored family recollection and the childhood Home. Learn the yard,
+hear the sealed message, ride and train, follow the hunting trail, return alive,
+hear the household, investigate the bend and give your observed account. Compact
+guidance then points to the quartermaster; hearing and accepting the allowance
+still uses the existing dialogue and world authority.
+[Opening sequence and qualification](docs/BEGINNING_SEQUENCE.md) ·
+[Sobraon opening and oral handoff](docs/SOBRAON_ORAL_OPENING.md) ·
+[Current intro development window](docs/INTRO_BUILD_WINDOW.md)
+
 ## Current foundation work: movement before more content
 
 The existing stories remain intact. A new **Movement qualification** menu entry
@@ -52,11 +87,29 @@ it does not advance Buddh's biography or replace a story chapter.
 
 [Movement controls, rules, evidence and remaining gates](docs/LOCOMOTION_FOUNDATION.md)
 
+The separate **Ground contact practice · stairs and slopes** entry extends the
+same motor with opt-in bounded static steps and supported slope following. It
+qualifies actual capsule travel, clearance and isolated save/replay on an original
+course before campaign admission.
+[Ground-contact physics and qualification](docs/GROUND_CONTACT_PHYSICS.md) ·
+[Current physics development window](docs/PHYSICS_BUILD_WINDOW.md)
+
+[Play](#play) · [Production order and historical perspective](docs/HISTORICAL_PERSPECTIVE.md) ·
+[Foundry integration](docs/FOUNDRY.md)
+
 ## Play
 
 Import `game/project.godot` in standard **Godot 4.5.1** and press **F5**.
 No .NET SDK, Python service, Bevy process or NET server is required to play.
-Choose **1792 · Buddh Singh · Home territory** for the integrated home chapter.
+Choose **Start a new Gujranwala run** for **Gujranwala Vertical Slice 0.1**.
+It starts the actual childhood lessons and provides an optional route through the
+household inquiry, two water trips, smith commission and friends' bazaar outing.
+**O** opens the route. **Continue** restores the whole visit between sessions;
+periodic and save-and-menu persistence retain the existing common clock, agents,
+custody and received memories. **F5/F9** use a separate manual slot for each run.
+The existing **1792 · Buddh Singh · Home territory** entry remains available.
+
+[Slice walkthrough, persistence, identities and qualification](docs/GUJRANWALA_SLICE_V01.md)
 
 The **Equipment study** entry inspects a curved service sword, independent scabbard,
 round shield and domed helmet with articulated ring mail. Draw, turn and mail-motion
@@ -133,6 +186,22 @@ The menu also retains the separate Lahore command story, houses-and-rivals patro
 sandbox, and the political-exposure/perception experiment. These are development
 scenarios, not completed transitions in the childhood-to-Lahore biography.
 
+## Local social-field prototype
+
+In **Living politics + one-eye vision (extended home chapter)**, complete the
+household inquiry, then speak to the market keeper and gate keeper with **E**.
+A raid can change their manner only after reports reach their own communication
+links. Reparations travel too; helping one relationship does not erase every
+other observer's account. Raj Kaur's policy dialogue also reflects her received
+reports. No numerical social score is exposed to the player.
+
+This is an authored, bounded social model: five local observers, delayed and
+attenuated reports, trust/grievance/fear/attention/obligation, and three rendered
+conversation fixtures. It is not validated social science, a completed city-wide
+NPC simulation, or an extension of the separate household trade economy.
+
+[Social-field implementation and walkthrough](docs/SOCIAL_FIELD.md)
+
 ## Controls
 
 | Control | Action |
@@ -142,13 +211,42 @@ scenarios, not completed transitions in the childhood-to-Lahore biography.
 | E / B | Interact / oral household accounts |
 | Q / left click / C | Childhood guard / counter / quiet approach |
 | G / J / F1 | Follow or hold where available / journal / pause |
+| X | Release / recall the bounded hawk scout in the Home chapter |
+| Z | Toggle ground Focus: sustained sight, last-seen memory and short motion estimates |
 | F2 | Paused reconstruction notebook in the home chapter |
 | F5 / F9 / R | Save / load / restore childhood checkpoint |
 
 The detailed guide covers mounted gaits, alternate modes and optional framing.
 Loading and checkpoints retain their existing validation and rollback semantics.
 
+
+## Hawk scout — bounded aerial reconnaissance
+
+The composed Home chapter now includes a third-person hawk scouting prototype. Press **X** on foot to release the hawk, use **WASD / Shift / Space / Ctrl / mouse** to fly, and press **E** or **left click** to tag a hostile that is actually inside the hawk view with unobstructed line of sight. **X** or **Esc** returns to Buddh.
+
+Two fictional distant scout contacts sit beyond the household's ordinary ground sightline. A tag records only the **last observed position** for 30 seconds of the existing chapter clock; it does not follow a target through walls. The hawk has a 52 m horizontal release radius and a 5–24 m altitude envelope. Buddh's authoritative body remains in place, campaign state continues on the existing clock, and transient tags are cleared by save/checkpoint rehydration rather than carried backward through a rewind.
+
+[Controls, observation semantics, limits and qualification](docs/HAWK_SCOUT.md)
+
+Ground **Focus** uses the same character-eye visibility checks as Home interactions. A continuous 45-tick look marks a visible contact, speaker, horse or ground trace. Color and symbols describe the observed affordance; unknown people remain unknown. **E** still performs the existing inspection or conversation. Focus does not grant journal knowledge or complete a task.
+
+Last-seen markers age on the existing chapter clock. Dashed two-second motion estimates use two observed positions, never a hidden patrol route. Actual nearby hammer playback can produce a coarse directional sound cue, without a concealed person's identity or exact location. Dialogues, sprinting, mounting and hawk scouting end Focus; whole-world restoration clears its transient records. [Controls, limits and qualification](docs/GROUND_FOCUS.md).
+
 ## Architecture
+
+Traversal, local access, received information and conflict develop within the
+same physical world and saved state. The working loop is: perceive the place,
+interpret what has reached Buddh, choose an approach, interact or fight, then
+encounter the consequences that the world retained.
+
+The first bounded connection is the optional **household passage** interaction.
+After the inquiry, approach the keeper beside the final riding marker on foot,
+face him and press **E**. Request a passage, cross on foot or horseback, and
+return to hear his account. His response reflects witnessed conduct; hidden
+guard memory reaches the journal through a local conversation. Save/load and
+whole-world rollback retain or rewind the same receipts. The route remains open.
+
+[Shared-world gameplay contract and passage limits](docs/SHARED_WORLD_GAMEPLAY.md)
 
 Godot owns the active game, state and clock. Blender is the intended asset-authoring
 path. The shared **C++–Rust–Python–Julia** architecture remains documented for
@@ -158,6 +256,76 @@ simulation/experiment providers, not competing game loops.
 
 [Shared game architecture](docs/SHARED_GAME_ARCHITECTURE.md) ·
 [Campaign direction](docs/COUPLED_CAMPAIGN.md)
+
+## Scope and development order
+
+The intended product is an embodied historical open-world biography: childhood,
+adolescence, relationships, travel and increasing responsibility lead toward the
+full Ranjit Singh narrative. First complete the rich Gujranwala childhood and
+adolescent campaign through the prelude to Lahore, then the Lahore campaign and
+remaining life story. Historical-character DLC production follows the completed
+main narrative, not the other way around.
+
+Plan the wider geographic envelope from the beginning, while building playable
+detail outward from home. Evidence-supported 1:1 terrain and location fidelity
+are reconstruction targets, not claims about the current compressed test cell.
+Unknown historical layouts remain explicit reconstruction choices. Visual beauty,
+movement, interaction and narrative are joint production priorities, not a choice
+between an empty beautiful map and mechanics with indefinitely deferred art.
+
+Oral tradition, differing accounts and dramatized youth stories belong in the
+authored campaign. Preserve their attribution and distinguish historical claims,
+later tradition, inference and original fiction rather than silently promoting
+all generated material into historical fact.
+
+## Coupled engineering experiment
+
+**1792 is both a game project and the first major reference workload for an
+industrial agentic game-development experiment.** Its ambition motivates a second
+deliverable: reusable production workflows that help a small human-led team turn
+research and creative direction into coherent, tested, playable content.
+
+That work belongs in
+[Notations Engineering Terminal](https://github.com/giasonpooni/Notations-Engineering-Terminal),
+with **Notations Game Foundry (working name: NGF)** as a game-production workload
+on the existing workbench, not a new engine inside this repository. The question
+is whether typed work orders, bounded tools/agents, retained evidence and
+independent acceptance gates can increase integrated output without supervision
+and repair consuming the gain. It is an engineering hypothesis, not a claim that
+autonomous large-studio production has already been achieved.
+
+```text
+1792 requirement → bounded production work → candidate artifact
+       ↑                                          ↓
+       └── playable result + review ← checks + controlled integration
+```
+
+Measure accepted and integrated work per human hour, compute/provider cost,
+review and rework effort, regressions, visual/playtesting quality and actual reuse.
+Compare equivalent tasks with fixed acceptance criteria; count tooling setup and
+failed attempts, not just successful generation. A working production system must
+improve the game rather than only produce more files, plans or agent activity.
+
+**Earlier controller-only snapshot (PR #28):** NET's [production-controller PR #65](https://github.com/giasonpooni/Notations-Engineering-Terminal/pull/65)
+is draft and unmerged as of September 29, 2026. Its
+[pinned implementation guide](https://github.com/giasonpooni/Notations-Engineering-Terminal/blob/98386f4dfa621f6340670755603abd229be4684f/docs/NET_PRODUCTION.md)
+describes a local sequential controller with declared parameter repairs and a
+synthetic Godot courier fixture. It does **not** attach this game or provide an
+autonomous asset factory. The next engineering gate is one actual 1792 scenario
+or asset operation with a fixed acceptance contract and retained failure/success
+evidence, demonstrated back in a playable build.
+
+Subsequent game-owned production adapters are tracked in [PR #29](https://github.com/giasonpooni/1792/pull/29)
+and [PR #30](https://github.com/giasonpooni/1792/pull/30), separately from the new
+historical-perspective authoring tool. Their implementation and qualification
+must be read at their own revisions; this documentation does not merge them or
+establish a live historical-perspective adapter.
+
+Godot remains the game-state and clock authority. Story, art direction, source
+interpretation, sacred-site rules, saves and release approval stay game-owned;
+automation does not get to redefine its own success criteria. Development-time
+agents do not add a live AI service requirement to playing 1792. Shared tooling
+may later benefit sister titles, but does not move them ahead of this campaign.
 
 ## Develop and verify
 
@@ -278,3 +446,32 @@ A second reversible depth/patina pass extends the composition beyond the immedia
 A reversible non-functional household arms-craft niche now uses the user-supplied reference corpus to study material hierarchy: dark steel/wood fields, localized warm-metal fittings, pale grip contrast, scabbard mounts, paired display composition and visible repair wrapping. The niche adds no usable weapon mechanics, inventory, collision or historical ownership claims.
 
 See [the arms-craft scope and limits](docs/GUJRANWALA_ARMS_CRAFT.md).
+A third reversible eye-level craft pass adds restrained trim, dark timber reveals, plinth accents, selective repair fields, sparse wall hardware and two quiet storage corners. See [the microdetail scope and limits](docs/GUJRANWALA_MICRODETAIL.md).
+
+The next increment improves the existing assets: metre-scaled plaster, directional timber grain, filtered cloth weave and twelve fitted hollow vessels inside their original envelopes. Six engine inspection views include a same-camera daylight/golden-hour/evening comparison with independent PNG verification. Explicit CI error guards and renderer cleanup address shutdown errors that previously escaped qualification. See [material fidelity, verification scope and limits](docs/GUJRANWALA_MATERIAL_FIDELITY.md).
+
+The main menu also offers a playable horsecraft study: the existing motor drives two independent horse bodies, with a supported standing stance, counterbalance, four separate matchlock charge slots and collision-checked target shots. It develops a candidate Maha Singh remembered feat while preserving the campaign, riding-save and father-interlude contracts. The specific two-horse/four-matchlock anecdote remains source-unlocated. [Controls, evidence and production limits](docs/HORSECRAFT_STUDY.md).
+
+The Home riding lesson now offers that tale through the stable trainer after the first riding gate. Its playable flashback teaches standing on one horse, standing across two horses and mounted matchlock handling; completing all three exercises unlocks those capabilities in the existing Home save. Older saves acquire no inferred skills. The Home remains parked in-tree during the lesson and resumes with its prior clock, pose, economy and memories. The later fixed-ending Mahan retrospective remains a separate story sequence.
+
+The production Home entry starts with a playable Sikh veteran's escape from **Sobraon, 10 February 1846**, then an explicitly dated **Rawalpindi surrender coda, 14 March 1849**. Shah Muhammad's captioned telling follows the same survivor, the laying down of arms and the reported lament, then begins a sentence that Maha Singh completes for his young son. The original family introduction follows: ten dialogue pages on Charat Singh, Desan Kaur, Gujranwala and the campaigns from 1761 to 1767. Both frames reuse the retained-Home session and grant no childhood knowledge or skills. Movement, optional rescue, steered wreckage, retry and explicit skip are available in the opening prototype. [Sobraon sequence, controls, sources and limits](docs/SOBRAON_ORAL_OPENING.md) · [Existing family story](docs/CHARAT_CAMPAIGN_INTRO.md).
+
+The beginning presents one compact objective with actual progress and contextual controls through walking, conversations, riding, practice, tracking and the household inquiry. Named lesson markers remain visible when earned, the courier's interactions stay together, and the optional standing lesson appears after the first riding gate. Eleven production-camera frames cover the first standing exercise and its incomplete return. Separate eighteen-frame routes earn the riding skills, complete the original lessons and return, hear the household, select escorted or independent inquiry, report home and exercise declared native save rollback. Independence retains its own consequence and never deploys a guard. Source, runtime, execution, PNG/RGBA, receipt, checkpoint and save evidence are independently verified. Exact observed status belongs to the draft PR and retained execution, not the frame count alone. [First-play sequence and verification](docs/BEGINNING_SEQUENCE.md).
+## Deferred DLC foundation: Fall of Empire
+
+[Fall of Empire](docs/FALL_OF_EMPIRE.md) now has a source-scoped 1839–1859 campaign
+contract and a standalone **synthetic authoring desk** for opposing perspectives,
+delayed reports and postwar closure. It is not a playable historical campaign.
+The ordinary Home chapter, main menu and saves are unchanged; the full Ranjit
+Singh narrative still precedes DLC production. Run the isolated desk with
+`godot --path game res://dlc/fall_of_empire/desk.tscn`.
+
+## Childhood preservation production slice
+
+The existing input-driven childhood journey now exports game-owned observations
+for NET Foundry verification: briefing, riding, sparring, tracking, escape and
+save/reload. A read-only journal-derived working impression uses received memories
+without omniscient state access. Likelihoods remain explicit authored gameplay
+tuning. See [scope and qualification](docs/CHILDHOOD_FOUNDRY_PRESERVATION.md).
+This adds no second game-state owner and does not certify historical truth or
+human playability.

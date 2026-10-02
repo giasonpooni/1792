@@ -118,3 +118,8 @@ doctors, mounted garrisons, medical treatment, ammunition/reload/repair mechanic
 field artillery, spies, adult court households, succession and aged-character
 delegation remain future systems. See `COUPLED_CAMPAIGN.md`. This increment does
 not silently simulate these through an undifferentiated “resources” counter.
+
+## Separate Mahan field study
+
+The optional Mahan field-command study retains its own isolated state and historical
+endpoint. It does not replace this campaign profile. See [Mahan Home Ground](MAHAN_HOME_GROUND.md).

@@ -6,6 +6,8 @@ var longarms: Array[Node3D]=[]
 var blades: Array[Node3D]=[]
 var fittings: Array[MeshInstance3D]=[]
 var repair_cloth: Array[MeshInstance3D]=[]
+var shields: Array[Node3D]=[]
+var carry_studies: Array[Node3D]=[]
 var _materials: Dictionary={}
 var enabled := true
 
@@ -37,6 +39,20 @@ func cylinder(parent: Node3D,name: String,radius: float,height: float,pos: Vecto
 	shape.bottom_radius=radius
 	shape.height=height
 	shape.radial_segments=segments
+	mesh.name=name
+	mesh.mesh=shape
+	mesh.position=pos
+	mesh.material_override=material
+	parent.add_child(mesh)
+	return mesh
+
+func torus(parent: Node3D,name: String,inner: float,outer: float,pos: Vector3,material: Material) -> MeshInstance3D:
+	var mesh:=MeshInstance3D.new()
+	var shape:=TorusMesh.new()
+	shape.inner_radius=inner
+	shape.outer_radius=outer
+	shape.rings=12
+	shape.ring_segments=8
 	mesh.name=name
 	mesh.mesh=shape
 	mesh.position=pos
@@ -100,6 +116,10 @@ func _build_sheathed_sabre(parent: Node3D) -> Node3D:
 	var grip:=box(root,"PaleGrip",Vector3(.16,.42,.08),Vector3(-.22,.45,.02),pale)
 	grip.rotation.z=.08
 	fittings.append(box(root,"WarmGuard",Vector3(.38,.055,.08),Vector3(-.20,.24,.02),warm))
+	for i in range(2):
+		var ring:=torus(root,"SuspensionRing%d"%i,.055,.075,Vector3(.33,-.18-.42*i,.035),warm)
+		ring.rotation.x=PI/2
+		fittings.append(ring)
 	return root
 
 func _build_compact_pair(parent: Node3D) -> void:
@@ -118,6 +138,42 @@ func _build_compact_pair(parent: Node3D) -> void:
 		var grip:=box(root,"PaleCurvedGrip",Vector3(.15,.30,.075),Vector3(.05,.25,0),pale)
 		grip.rotation.z=.13*(-1 if i==0 else 1)
 		fittings.append(box(root,"WarmMount",Vector3(.20,.08,.08),Vector3(.02,.08,0),warm))
+
+func _build_resting_shield(parent: Node3D) -> void:
+	var root:=Node3D.new()
+	root.name="RestingShieldStudy"
+	root.position=Vector3(1.18,-.48,-.10)
+	root.rotation=Vector3(.10,-.08,-.12)
+	parent.add_child(root)
+	shields.append(root)
+	var dark:=mat(Color("34312c"),.72,.34)
+	var warm:=mat(Color("aa823f"),.38,.68)
+	var face:=cylinder(root,"ShieldFace",.43,.055,Vector3.ZERO,dark,24)
+	face.rotation.x=PI/2
+	for i in range(4):
+		var a: float=float(i)/4.0*TAU
+		fittings.append(cylinder(root,"ShieldBoss%d"%i,.055,.035,Vector3(cos(a)*.21,.035,sin(a)*.21),warm,12))
+	var rim:=torus(root,"ShieldRim",.39,.43,Vector3.ZERO,warm)
+	rim.rotation.x=PI/2
+	fittings.append(rim)
+
+func _build_carry_belt(parent: Node3D) -> void:
+	var root:=Node3D.new()
+	root.name="CarryBeltStudy"
+	root.position=Vector3(-1.08,-.78,-.07)
+	parent.add_child(root)
+	carry_studies.append(root)
+	var leather:=mat(Color("4e3b2e"),.92,.02)
+	var warm:=mat(Color("a47b3e"),.40,.62)
+	var belt:=box(root,"Belt",Vector3(.84,.10,.055),Vector3.ZERO,leather)
+	belt.rotation.z=-.11
+	fittings.append(box(root,"Buckle",Vector3(.13,.14,.065),Vector3(.18,-.02,0),warm))
+	for i in range(2):
+		var ring:=torus(root,"CarryRing%d"%i,.045,.063,Vector3(-.24+.44*i,-.07,0),warm)
+		ring.rotation.x=PI/2
+		fittings.append(ring)
+	var strap:=box(root,"SuspensionStrap",Vector3(.08,.52,.045),Vector3(.34,-.27,0),leather)
+	strap.rotation.z=.18
 
 func build(chapter: Node3D) -> void:
 	name="GujranwalaArmsCraftNiche"
@@ -143,6 +199,8 @@ func build(chapter: Node3D) -> void:
 	_build_longarm(root,"LongarmStudyRight",Vector3(.72,.05,-.02),1.0)
 	_build_sheathed_sabre(root)
 	_build_compact_pair(root)
+	_build_resting_shield(root)
+	_build_carry_belt(root)
 
 	var tray:=box(root,"MaintenanceTray",Vector3(1.05,.08,.32),Vector3(0,-1.06,-.06),mat(Color("6a523c"),.90,0))
 	tray.rotation.x=.02

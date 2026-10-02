@@ -1,0 +1,35 @@
+{
+  "schema_version": "historical-location.v1",
+  "location_id": "gujranwala_fort_road",
+  "kind": "road",
+  "label": "Gujranwala fort road (authored approach)",
+  "summary": "Authored approach road linking the field-camp greybox toward Gujranwala home-ground / garhi motif. Geometry is gameplay abstraction, not a surveyed 1790 alignment.",
+  "region": "rechna_doab_west_punjab",
+  "household_context": "sukerchakia",
+  "connects": [
+    "sukarchakia_field_camp",
+    "gujranwala_settlement",
+    "gujranwala_garhi",
+    "gujranwala_camp"
+  ],
+  "evidence": [
+    {
+      "source": "game_canon.mahan_interlude_fort_road",
+      "confidence": "none",
+      "evidence_class": "C",
+      "note": "Gameplay road stub so events and recon can name an approach without claiming documentary mileposts."
+    },
+    {
+      "source": "nominated_secondary_context (Gujranwala as HQ implies local approach routes)",
+      "confidence": "low",
+      "evidence_class": "B",
+      "note": "Existence of approaches is reconstructed context only; specific path is authored."
+    }
+  ],
+  "canon_class": "game_canon",
+  "gameplay": {
+    "profile_scope": "mahan.v1",
+    "role": "approach",
+    "notes": "Aligns with existing authored 'fort road' language in Mahan recon fiction."
+  }
+}

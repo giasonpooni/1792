@@ -19,8 +19,8 @@ func geometry_digest() -> String:
 	return (FileAccess.get_file_as_string(LayoutPath)+FileAccess.get_file_as_string("res://mechanics/course.gd")).sha256_text()
 func motor_digest() -> String:
 	var text: String=""
-	for path in ["res://player/player.gd","res://player/locomotion_rules.gd","res://player/traversal_probe.gd","res://player/player.tscn"]: text+=FileAccess.get_file_as_string(path)
-	return (text+JSON.stringify([avatar.movement_profile,avatar.traversal_enabled,avatar.walk_speed,avatar.run_speed,avatar.acceleration,avatar.gravity_strength,avatar.floor_max_angle,avatar.floor_snap_length])).sha256_text()
+	for path in ["res://player/player.gd","res://player/locomotion_rules.gd","res://player/traversal_probe.gd","res://player/ground_contact.gd","res://player/player.tscn"]: text+=FileAccess.get_file_as_string(path)
+	return (text+JSON.stringify([avatar.movement_profile,avatar.traversal_enabled,avatar.walk_speed,avatar.run_speed,avatar.acceleration,avatar.gravity_strength,avatar.floor_max_angle,avatar.floor_snap_length,avatar.ground_profile()])).sha256_text()
 
 func _ready() -> void:
 	process_physics_priority=1 # Observe after the shared Player motor at priority zero.

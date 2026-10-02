@@ -1,0 +1,32 @@
+{
+  "schema": "1792.gujranwala-microdetail.v1",
+  "id": "gujranwala-eye-level-craft-v1",
+  "classification": "direct-craft presentation study",
+  "georeferenced": false,
+  "historical_truth_verified": false,
+  "gameplay_authority": false,
+  "components": {
+    "upper_borders": 8,
+    "timber_reveals": 16,
+    "plinth_accents": 8,
+    "selective_repair_fields": 10,
+    "wall_rings": 6,
+    "hanging_cords": 2,
+    "quiet_storage_corners": 2
+  },
+  "art_direction": [
+    "eye-level detail should reward close walking-view inspection without competing with the courtyard silhouette",
+    "dark timber reveals deepen pale plaster bays",
+    "trim and plinth accents remain restrained rather than uniformly ornate",
+    "repairs are selective and asymmetric",
+    "wall hardware is sparse and partly unexplained",
+    "storage clusters sit against the edge and do not become vendor or inventory systems"
+  ],
+  "invariants": [
+    "no collision or navigation authority",
+    "storage corners remain clear of childhood lesson sites and riding gates",
+    "cord motion samples the existing chapter tick only",
+    "no object grants inventory, journal, economy or historical knowledge",
+    "exact hardware, repair placement and storage contents are not asserted as measured 1792 reconstruction"
+  ]
+}

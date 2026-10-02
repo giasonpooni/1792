@@ -29,7 +29,9 @@ jobs:
           unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
           chmod +x "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
       - name: Full inherited gameplay and visual contracts
-        run: python3 tools/run_checks.py --godot "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
+        run: |
+          python3 tools/run_checks.py --godot "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
+          python3 tools/test_check_gujranwala_beauty_capture.py
       - name: Actual renders and compact-window controls
         env:
           LIBGL_ALWAYS_SOFTWARE: '1'
@@ -47,6 +49,25 @@ jobs:
           cat test-results/equipment-render.log
           if grep -Eq '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/equipment-render.log; then exit 1; fi
           grep -q 'SERVICE_EQUIPMENT_RENDER: 9 captures, 0 failures' test-results/equipment-render.log
+          timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_gujranwala_beauty.gd 2>&1 | tee test-results/gujranwala-beauty-render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/gujranwala-beauty-render.log; then
+            exit 1
+          fi
+          grep -q 'GUJRANWALA_BEAUTY_RENDER: 6 captures; 0 failures' test-results/gujranwala-beauty-render.log
+          python3 tools/check_gujranwala_beauty_capture.py \
+            --capture-dir "$HOME/.local/share/godot/app_userdata/1792/gujranwala-beauty-images" \
+            | tee test-results/gujranwala-beauty-verification.json
+          cp -r "$HOME/.local/share/godot/app_userdata/1792/gujranwala-beauty-images" test-results/
+          SOURCE_COMMIT="$(git rev-parse HEAD)" \
+            SOURCE_CONTENT_SHA256="$(git archive --format=tar HEAD | sha256sum | cut -d ' ' -f1)" \
+            GROUND_FOCUS_OUTPUT="$PWD/test-results/ground-focus-captures" timeout 120 xvfb-run -a \
+            "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --path game \
+            --rendering-method gl_compatibility --audio-driver Dummy --fixed-fps 60 \
+            --script res://tests/render_ground_focus.gd 2>&1 | tee test-results/ground-focus-render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/ground-focus-render.log
+          grep -q 'GROUND_FOCUS_RENDER: .* captures, 0 failures' test-results/ground-focus-render.log
       - name: Retain source and execution identity
         if: always()
         run: |

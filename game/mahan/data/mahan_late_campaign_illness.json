@@ -1,0 +1,80 @@
+{
+  "schema_version": "historical-event.v1",
+  "event_id": "mahan_late_campaign_illness",
+  "title": "Mahan Singh late-campaign illness (authored frame)",
+  "summary": "Authored field-illness frame for the Mahan interlude. Nominated secondary narratives often link a final illness to a late campaign; this file marks that as reconstructed/game-canon connective tissue, not a documentary primary-source claim.",
+  "date_range": {
+    "start_year": 1790,
+    "end_year": 1790,
+    "precision": "approximate",
+    "note": "Approximate late-campaign window for the interlude scenario tag."
+  },
+  "location": {
+    "place_id": "sukarchakia_field_camp",
+    "label": "Field camp / column context",
+    "certainty": "authored",
+    "related_place_ids": [
+      "gujranwala_fort_road",
+      "gujranwala_settlement",
+      "gujranwala_garhi"
+    ]
+  },
+  "actors": [
+    {
+      "id": "mahan_singh",
+      "role": "ill_commander",
+      "kind": "person"
+    },
+    {
+      "id": "sukerchakia",
+      "role": "household_context",
+      "kind": "household"
+    }
+  ],
+  "evidence": [
+    {
+      "source": "nominated_secondary_narratives (late-campaign illness motif; not quoted)",
+      "confidence": "low",
+      "evidence_class": "B",
+      "note": "Reconstructed motif only. No invented primary citation, edition, or page anchor in this stub."
+    },
+    {
+      "source": "game_canon.mahan_interlude_illness_frame",
+      "confidence": "none",
+      "evidence_class": "D",
+      "note": "Fictional connective material so the interlude can exercise observe-vs-report knowledge fences."
+    }
+  ],
+  "canon_class": "game_canon",
+  "historical_outcome": {
+    "fixed": false,
+    "summary": "Illness framing is authored for play; it does not rewrite the fixed death endpoint.",
+    "invariants": [
+      "does_not_override_fixed_death",
+      "person_not_household_collapse"
+    ]
+  },
+  "knowledge": {
+    "direct_observers": [
+      "mahan_singh"
+    ],
+    "report_routes": [
+      {
+        "from": "fictional_camp_retainer",
+        "to": "mahan_singh",
+        "channel": "delayed_historical_report"
+      }
+    ],
+    "propagation_delay": 90,
+    "player_knowledge": false
+  },
+  "gameplay": {
+    "playable": true,
+    "intervention_scope": "observe",
+    "historical_invariants": [
+      "observe_or_delayed_report_only",
+      "no_alter_outcome"
+    ],
+    "profile_scope": "mahan.v1"
+  }
+}

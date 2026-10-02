@@ -1,0 +1,30 @@
+{
+  "schema_version": "historical-location.v1",
+  "location_id": "gujranwala_lahore_approach",
+  "kind": "road",
+  "label": "Gujranwala–Lahore approach (authored)",
+  "summary": "Authored long-distance approach naming Gujranwala home-ground relative to Lahore. Not a navmesh; epistemic/reference only for this interlude.",
+  "region": "rechna_doab_west_punjab",
+  "household_context": "sukerchakia",
+  "connects": ["gujranwala_settlement"],
+  "evidence": [
+    {
+      "source": "game_canon.mahan_interlude_lahore_approach",
+      "confidence": "none",
+      "evidence_class": "C",
+      "note": "Named axis for later integration; no automatic Lahore knowledge handoff."
+    },
+    {
+      "source": "nominated_secondary_context (Gujranwala west of Lahore as regional orientation)",
+      "confidence": "medium",
+      "evidence_class": "B",
+      "note": "Regional orientation only; route geometry is authored."
+    }
+  ],
+  "canon_class": "game_canon",
+  "gameplay": {
+    "profile_scope": "mahan.v1",
+    "role": "reference_only",
+    "notes": "Does not rewrite Lahore sandboxes or childhood places."
+  }
+}

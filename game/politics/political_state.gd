@@ -27,6 +27,22 @@ func political_debug() -> Dictionary:
 	# Privileged headless/test telemetry. Do not bind this to the ordinary HUD.
 	return _derive().duplicate(true)
 
+func social_debug(observer: String) -> Dictionary:
+	# Privileged actor inspection, excluded from the journal and ordinary HUD.
+	return Politics.Social.sample(_derive().social,observer,Politics.SocialProfile.HERO_SUBJECT,int(_state.childhood.tick))
+
+func local_social_response(observer: String, perceived: bool) -> Dictionary:
+	# A scene-provided physical observation plus authority-owned proximity is required.
+	if not perceived or aftermath_phase()!="complete" or mounted(): return {}
+	var sites: Dictionary = Politics.SocialProfile.SITES
+	var at: Vector3 = MOTHER if observer=="raj_kaur" else sites.get(observer,Vector3(INF,INF,INF))
+	if not Politics.SocialProfile.ACTORS.has(observer) or distance(position(),at)>3.0: return {}
+	var response := social_debug(observer)
+	if response.is_empty(): return {}
+	# Whitelist: no score, root, queue, other actor or hidden culprit escapes here.
+	return {"speaker_id":observer, "speaker":Registry.PEOPLE[observer].name,
+		"text":Politics.SocialProfile.TEXT[response.stance], "channel":"local_conversation"}
+
 func political_inputs() -> Array:
 	return _state.politics.inputs.duplicate(true)
 

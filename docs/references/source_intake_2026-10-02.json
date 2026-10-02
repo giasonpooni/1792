@@ -1,0 +1,713 @@
+{
+  "schema": "1792.historical-reference-intake.v1",
+  "date": "2026-10-02",
+  "purpose": "Reference intake for the existing Punjab Chiefs playables, childhood-to-Lahore development, and later Ranjit Singh chapters.",
+  "status": "Reference-only. Scene hooks below are proposed adaptations, not newly implemented gameplay.",
+  "review_scope": "Verified file hashes; inspected title/frontmatter and selected relevant passages. This is not an exhaustive fact-check of every book.",
+  "editorial_policy": [
+    "Retain legends, anecdotes, beliefs and disputed accounts as usable dramatic material.",
+    "Keep source attribution, chronology variants and adaptation decisions in production records; do not require repetitive source disclaimers in dramatic scenes.",
+    "Distinguish an author's account from original dialogue and actions designed for the game.",
+    "Repeated accounts from dependent books are not independent corroboration.",
+    "Keep observed 1838 court events and mature-empire institutions distinct from the 1792 childhood baseline.",
+    "Prescriptive texts provide characters' ideals and possible practices, not a universal uniform or rule for every Sikh household."
+  ],
+  "sources": [
+    {
+      "id": "griffin_1905",
+      "title": "Ranjit Singh and the Sikh Barrier Between Our Growing Empire and Central Asia",
+      "author": "Sir Lepel Griffin",
+      "publisher": "Clarendon Press, Oxford",
+      "publication_year": 1905,
+      "printing_statement": "Fifth Thousand; not a numbered fifth edition",
+      "files": [
+        {
+          "name": "ranjitsinghsikh00grif.pdf",
+          "sha256": "04935b555320c1dcc5b0c4f112307dccb41a4283b2ec30861a7e0376f4c0b5f5"
+        },
+        {
+          "name": "ranjitsinghsikh00grif(1).pdf",
+          "sha256": "04935b555320c1dcc5b0c4f112307dccb41a4283b2ec30861a7e0376f4c0b5f5",
+          "duplicate_of": "ranjitsinghsikh00grif.pdf"
+        }
+      ],
+      "pdf_pages": 242,
+      "identity_pages": [
+        11,
+        13
+      ],
+      "kind": "Retrospective colonial biography",
+      "source_relationship": "Preface expressly reuses Griffin's The Punjab Chiefs, The Rajas of the Punjab and family/official records.",
+      "passages": [
+        {
+          "id": "desi",
+          "printed": "153–154",
+          "pdf": [
+            161,
+            162
+          ],
+          "account": "Budha Singh's piebald mare Desi and wounded warrior tradition.",
+          "use": "Deepen the existing Desi recollection; shared lineage with The Punjab Chiefs."
+        },
+        {
+          "id": "wedding_fodder",
+          "printed": "155",
+          "pdf": [
+            163
+          ],
+          "account": "Maha Singh's wedding attendants cut horse fodder on a Nabha preserve; a clash during festivities produces a subsequent grievance.",
+          "use": "A horse-care errand that exposes territorial authority and restrained anger. This concerns Ranjit's parents, not the Nakai marriage."
+        },
+        {
+          "id": "sodhran_withdrawal",
+          "printed": "157–158",
+          "pdf": [
+            165,
+            166
+          ],
+          "account": "Maha Singh collapses on his elephant; the driver withdraws him, the army retreats, and he dies at Gujranwala three days later in this version.",
+          "use": "Evacuation and an anxious journey home; preserve alongside alternative Sodhran accounts."
+        },
+        {
+          "id": "manchar_rescue",
+          "printed": "158",
+          "pdf": [
+            166
+          ],
+          "account": "Hashmat Khan reaches the child's elephant and an attendant kills him, dated 1790 here.",
+          "use": "A distinct remembered rescue; do not silently fuse it with a later Hashmat encounter."
+        },
+        {
+          "id": "miani_flood",
+          "printed": "158–159",
+          "pdf": [
+            166,
+            167
+          ],
+          "account": "During the Miani siege, refused appeals through Sahib Singh Bedi precede a Beas flood that sweeps through the besiegers' camp.",
+          "use": "Messenger work, a providential telling, rising water and an escape with animals."
+        },
+        {
+          "id": "jhelum_guns",
+          "printed": "161",
+          "pdf": [
+            169
+          ],
+          "account": "Griffin reports twelve Afghan guns lost in the flooded Jhelum and eight recovered by Ranjit; a grant of Lahore is promised in exchange.",
+          "use": "Survey, salvage and convoy work in the Lahore prelude; the grant story remains attributed."
+        },
+        {
+          "id": "lahore_entry",
+          "printed": "162",
+          "pdf": [
+            170
+          ],
+          "account": "Assurances from Lahore's inhabitants precede opened gates and entry in July 1799.",
+          "use": "Confidential messages, approach and a change of control inside the city."
+        },
+        {
+          "id": "nakai_dates",
+          "printed": "108 and 164",
+          "pdf": [
+            116,
+            172
+          ],
+          "account": "The same book dates the Nakai marriage to 1798 in one passage and 1802 in another.",
+          "use": "Keep both date claims in the variant record; the delegation remains usable."
+        }
+      ]
+    },
+    {
+      "id": "prem_sumarag_mcleod_2006",
+      "title": "Prem Sumarag: The Testimony of a Sanatan Sikh",
+      "translator": "W. H. McLeod",
+      "text_basis": "Randhir Singh's edited text",
+      "publisher": "Oxford University Press, New Delhi",
+      "publication_year": 2006,
+      "files": [
+        {
+          "name": "Prem-Sumarag-Testimony-of-Sanatan-Sikh (1).pdf",
+          "sha256": "e00e1c71fbb6b8393a5318ad7eefd2c803766edf8a61ce3a1602d01c859618c8"
+        }
+      ],
+      "pdf_pages": 137,
+      "identity_pages": [
+        3,
+        4
+      ],
+      "kind": "Translation of a prescriptive rahit text with a modern scholarly introduction",
+      "dating": "Introduction, printed 3–7 / PDF 10–14, discusses disputed dates. The 1815 composite manuscript cited on printed 6 / PDF 13 contains chapter 1; it does not securely date all later chapters.",
+      "passages": [
+        {
+          "id": "marriage_gifts",
+          "printed": "32–33",
+          "pdf": [
+            39,
+            40
+          ],
+          "account": "Gifts include money, sugar candy, clothes, weapons and a sword-belt; gifts for the groom's mother include clothes, coconut and bangles. Expenditure is tied to resources.",
+          "use": "Visible packing and spending decisions in the Nakai delegation; selecting these wedding prescriptions for a betrothal visit is an adaptation."
+        },
+        {
+          "id": "hearth_work",
+          "printed": "57–58",
+          "pdf": [
+            64,
+            65
+          ],
+          "account": "Preparation includes grain sorting and washing, a clean pot and surface, seasoning in ghee, slow cooking, breads and rice.",
+          "use": "Work at the hearth before the exile hospitality conversation."
+        },
+        {
+          "id": "hungry_guest",
+          "printed": "58–59",
+          "pdf": [
+            65,
+            66
+          ],
+          "account": "The text urges feeding visitors and reserving a portion for a hungry Hindu, Muslim or Khalsa traveller, even with little available.",
+          "use": "An offered meal with household consequences; preserve the characters' connection between hospitality and blessing."
+        },
+        {
+          "id": "water_and_travel",
+          "printed": "59",
+          "pdf": [
+            66
+          ],
+          "account": "Travel permits adaptation to local eating customs. A household drinking jar is kept cool and clean, with rose petals and cardamom.",
+          "use": "A supplied rest stop in the riding journey; do not present the ingredients as water purification."
+        },
+        {
+          "id": "dress",
+          "printed": "65",
+          "pdf": [
+            72
+          ],
+          "account": "Prescribed attire layers a turban and optional ornaments, front-opening jama, trousers or socks, sash, sword-belt and sword.",
+          "use": "Status and preparation through clothing; not a universal Sikh uniform."
+        },
+        {
+          "id": "household_plan",
+          "printed": "66",
+          "pdf": [
+            73
+          ],
+          "account": "A dwelling, separate cooking space, garden, tank, reception bower, stable and well are described according to resources.",
+          "use": "A legible warning and dependent-escort route in the revenge scene; not a reconstruction of Dal Singh's actual house."
+        },
+        {
+          "id": "dawn_routine",
+          "printed": "13–14 and 63–64",
+          "pdf": [
+            20,
+            21,
+            70,
+            71
+          ],
+          "account": "Washing, recitation and morning devotion precede work; limited washing is allowed where bathing is impracticable.",
+          "use": "A later storytelling frame with water gathering and distant singing; not proof of the earlier Bahrwal legend's actual setting."
+        },
+        {
+          "id": "camp_watches",
+          "printed": "101",
+          "pdf": [
+            108
+          ],
+          "account": "Camp enclosure, pioneers and axe-men, four-sided watches and differentiated command posts are prescribed for an army.",
+          "use": "Shared perimeter work and disputed duties among allied chiefs; scale this large-army ideal to the authored scene."
+        }
+      ]
+    },
+    {
+      "id": "osborne_1840",
+      "title": "The Court and Camp of Runjeet Sing",
+      "author": "W. G. Osborne",
+      "publisher": "Henry Colburn, London",
+      "publication_year": 1840,
+      "files": [
+        {
+          "name": "courtcampofrunje00osboiala.pdf",
+          "sha256": "b387ac4e024674fc2bdadce86c1a2b5dc0ef68ea11805381e5d1cfed6668ba3c"
+        }
+      ],
+      "pdf_pages": 282,
+      "identity_pages": [
+        3,
+        9,
+        10,
+        11
+      ],
+      "kind": "British mission journal with introductory history, illustrations and later concluding material",
+      "observed_period": "Main diary 19 May–13 July 1838; return to Simla afterward. Particular royal routines and named events belong to this late reign.",
+      "passages": [
+        {
+          "id": "fortified_villages",
+          "printed": "50–51",
+          "pdf": [
+            66,
+            67
+          ],
+          "account": "Villages on the journey are described with mud turrets, musket loopholes and shallow dry ditches.",
+          "use": "Vernacular defence reference to compare with earlier evidence; the author's generalization is not a census."
+        },
+        {
+          "id": "ready_horse",
+          "printed": "61",
+          "pdf": [
+            79
+          ],
+          "account": "An open-front scarlet-and-gold shawl tent, sword and shield beside the pillow, and a saddled horse ready outside.",
+          "use": "A later-reign night-to-dawn camp composition."
+        },
+        {
+          "id": "elite_escort",
+          "printed": "62–63",
+          "pdf": [
+            80,
+            81
+          ],
+          "account": "Golden howdahs, guards in mail and quilted silk, and Suchet Singh's helmet, mail fringe, shawls, breastplates and shield.",
+          "use": "Elite equipment and costume variants, not ordinary cavalry's universal equipment."
+        },
+        {
+          "id": "audience",
+          "printed": "71–73",
+          "pdf": [
+            95,
+            96,
+            99
+          ],
+          "account": "Visitors approach through guards, dismount, and reach a court with golden chairs, carpets and canopy; Ranjit wears simple white while chiefs sit on the floor.",
+          "use": "Later court choreography and contrasting status."
+        },
+        {
+          "id": "mobile_breakfast",
+          "printed": "112–116",
+          "pdf": [
+            144,
+            145,
+            146,
+            147,
+            148
+          ],
+          "account": "Pack elephants carry shelter and cooking gear; a grove becomes a breakfast camp. Sewn fresh-leaf vessels hold food and liquid.",
+          "use": "Tent raising, transport loads, food service and conversation during adult Ranjit's excursions."
+        },
+        {
+          "id": "jungle_hunt",
+          "printed": "182–183",
+          "pdf": [
+            220,
+            221
+          ],
+          "account": "A 30 June outing with Sher Singh reports boar, deer, black partridges and hares, with withy snares placed in boar runs.",
+          "use": "A specific hunt account and habitat lead; catch totals are not regional wildlife abundance."
+        },
+        {
+          "id": "rain_and_crossing",
+          "printed": "200 and 205–206",
+          "pdf": [
+            238,
+            245,
+            246
+          ],
+          "account": "Wet tents become difficult to transport; later an overloaded open boat reaches the opposite bank far below its usual landing.",
+          "use": "Rain, baggage weight, current and displaced landings. Verify river identification before fixing this route on the map."
+        }
+      ],
+      "geographic_note": "The return narrative calls the crossing Ravee after Amritsar on the way to Ludhiana; retain that wording as a source claim, not a resolved map coordinate.",
+      "wildlife_note": "The tiger total at printed 114 / PDF 146 concerns Osborne's previous Terai and Dehra Dun hunt, not Punjab."
+    },
+    {
+      "id": "buxi_1992",
+      "title": "Maharaja Ranjit Singh",
+      "author": "L. S. Buxi",
+      "translator": "Ajit Uniyal",
+      "publisher": "Publications Division, Ministry of Information and Broadcasting, Government of India, New Delhi",
+      "publication_date": "March 1992",
+      "files": [
+        {
+          "name": "maharajaranjitsi00buxi.pdf",
+          "sha256": "1b2009fc6a5e564bee6b19b60630c83bcb74d220854f703cafd96eb277e02a9d"
+        },
+        {
+          "name": "maharajaranjitsi00buxi(1).pdf",
+          "sha256": "1b2009fc6a5e564bee6b19b60630c83bcb74d220854f703cafd96eb277e02a9d",
+          "duplicate_of": "maharajaranjitsi00buxi.pdf"
+        }
+      ],
+      "pdf_pages": 92,
+      "identity_pages": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "kind": "Modern popular biography with celebratory interpretation and an explicit popular-legends chapter",
+      "passages": [
+        {
+          "id": "horse_trader_blessing",
+          "printed": "5",
+          "pdf": [
+            19
+          ],
+          "account": "Charat Singh moves from farming into horse trading after a mahatma's blessing.",
+          "use": "A horse-market journey that retains the blessing and introduces followers and alliances."
+        },
+        {
+          "id": "victory_name",
+          "printed": "6",
+          "pdf": [
+            20
+          ],
+          "account": "A proposed Budh Singh name gives way to Ranjit following Maha Singh's Rasoolgarh victory.",
+          "use": "A campaign messenger and household naming scene; retain Rasoolgarh as this account's place name."
+        },
+        {
+          "id": "household_authority",
+          "printed": "6–7",
+          "pdf": [
+            20,
+            21
+          ],
+          "account": "Raj Kaur fears Lakhpat Rai's increasing power. The text presents and disputes allegations about her later death.",
+          "use": "Competing reports and protective political motives as well as darker traditions."
+        },
+        {
+          "id": "rampart_challenges",
+          "printed": "8",
+          "pdf": [
+            22
+          ],
+          "account": "Ranjit approaches Shah Zaman's walls and repeats a challenge on three days.",
+          "use": "Repeated reconnaissance, voiced challenge and withdrawal."
+        },
+        {
+          "id": "sada_kaur_lahore",
+          "printed": "9",
+          "pdf": [
+            23
+          ],
+          "account": "Secret contact with Lahore residents, a night operation led by Sada Kaur, and orders protecting residents accompany entry on 7 July 1799 in this telling.",
+          "use": "Household contacts, coordinated gates and street-level discipline; printed quotation marks do not authenticate verbatim dialogue."
+        },
+        {
+          "id": "lion_tradition",
+          "printed": "Unpaginated introduction",
+          "pdf": [
+            9
+          ],
+          "account": "An adolescent barehanded lion-killing story at Gujranwala is linked to Sheranwala Bagh.",
+          "use": "Retain as a fully stageable heroic tradition, with its status recorded internally."
+        },
+        {
+          "id": "popular_legends",
+          "printed": "57–59",
+          "pdf": [
+            75,
+            76,
+            77
+          ],
+          "account": "Stories include the soot-covered griddle exchanged for gold, carrying an old woman's grain, the berry-throwing boy, a clown's reprieve, repartee and the painter receiving a camel.",
+          "use": "Compact street encounters and character scenes for adult Ranjit, each retained as a popular legend."
+        }
+      ]
+    },
+    {
+      "id": "khalsa_college_1939",
+      "title": "Maharaja Ranjit Singh: First Death Centenary Memorial",
+      "editors": [
+        "Teja Singh",
+        "Ganda Singh"
+      ],
+      "publisher": "Khalsa College, Amritsar",
+      "publication_year": 1939,
+      "files": [
+        {
+          "name": "Maharaja.Ranjit.Singh.(GurmatVeechar.com).pdf",
+          "sha256": "eebc1712aa39ed82bbd0e21ca9bd4b90ce0beaab944a0e82d4cdb55d4fcb9502"
+        }
+      ],
+      "pdf_pages": 318,
+      "identity_pages": [
+        5,
+        7,
+        9
+      ],
+      "kind": "Multi-author historical memorial collection; claims must retain their chapter author and cited evidence",
+      "passages": [
+        {
+          "id": "cultivation_and_bars",
+          "chapter_author": "Harbans Singh",
+          "printed": "144–145",
+          "pdf": [
+            174,
+            175
+          ],
+          "account": "The chapter combines intensive river-side cultivation, inundation canals and water lifting with thorny, pastoral Bar tracts west of Lahore and cattle/ghee livelihoods.",
+          "use": "A mosaic of cultivated settlements, grazing and scrub; not a uniformly uncultivated Punjab. Some agricultural evidence cited is from 1852 and later publications."
+        },
+        {
+          "id": "cultivation_map",
+          "printed": "Map facing 146",
+          "pdf": [
+            177
+          ],
+          "account": "The illustration is explicitly labelled Punjab 1839 and Intensive Cultivation.",
+          "use": "A later spatial reference, not a surveyed 1792 land-cover layer."
+        },
+        {
+          "id": "hasli_and_inundation",
+          "chapter_author": "Gurdit Singh",
+          "printed": "148–150",
+          "pdf": [
+            180,
+            181,
+            182
+          ],
+          "account": "The irrigation chapter describes an older Hasli canal, reconstruction and an Amritsar branch, as well as seasonal inundation channels.",
+          "use": "Pre-colonial water infrastructure, maintenance and disputes. The chapter's first-ruler assertion should not override its own acknowledgement of earlier canals."
+        },
+        {
+          "id": "well_loans_and_water",
+          "chapter_author": "Gurdit Singh",
+          "printed": "151",
+          "pdf": [
+            183
+          ],
+          "account": "The chapter describes taqavi loans for wells, different crops and government regulation and maintenance of canals; many operate April–September.",
+          "use": "Later-empire water work and household obligations. Do not import this whole administration into childhood 1792."
+        },
+        {
+          "id": "canal_failure",
+          "chapter_author": "Gurdit Singh",
+          "printed": "151–152",
+          "pdf": [
+            183,
+            184
+          ],
+          "account": "Wells offer an alternative when seasonal canals fail. Breaches can deprive downstream fields and produce crop-remission claims.",
+          "use": "A later-empire repair, water-access and compensation sequence; not an automatic 1792 rule."
+        },
+        {
+          "id": "revenue_assessment",
+          "chapter_author": "Hardit Singh Dhillon",
+          "printed": "125–129",
+          "pdf": [
+            155,
+            156,
+            157,
+            158,
+            159
+          ],
+          "account": "The chapter distinguishes actual produce division at the threshing floor, standing-crop estimates and cash, area, plough or well-based arrangements. Collection passes through village officials and the kardar.",
+          "use": "Harvest work, measurements, grain transport and disputed estimates. Preserve local variation rather than one universal tax rate."
+        },
+        {
+          "id": "local_dispute",
+          "chapter_author": "G. L. Chopra",
+          "printed": "116–118",
+          "pdf": [
+            146,
+            147,
+            148
+          ],
+          "account": "Kardars combine revenue and other administrative functions. Village panchayats hear disputes, with some unresolved matters reaching a kardar.",
+          "use": "Witness gathering, village arbitration and escalation for a later locally dated dispute."
+        },
+        {
+          "id": "toll_and_route",
+          "chapter_author": "G. L. Chopra",
+          "printed": "113–114",
+          "pdf": [
+            143,
+            144
+          ],
+          "account": "The essay discusses toll barriers, caravan conductors handling duties and merchants changing routes in response to excessive charges.",
+          "use": "A passage negotiation or longer detour for travelling parties after checking the specific route's date."
+        }
+      ],
+      "source_relationship": "A selective, sympathetic multi-author memorial. The bibliography begins at printed 257 / PDF 303 and includes early narratives and manuscripts alongside later settlement literature; a cited source is not necessarily contemporary with Ranjit."
+    },
+    {
+      "id": "virk_real_ranjit_review",
+      "title": "The Real Ranjit Singh: An Account based on the Archive of Fakir Family",
+      "author": "H. S. Virk",
+      "publication_date": null,
+      "files": [
+        {
+          "name": "TheRealRanjitSingh.doc",
+          "sha256": "5a467009d947e2738a3ddc80037ab78e73a328d96da7bcc6b1460b2446157c8a"
+        }
+      ],
+      "kind": "Short review or essay about Fakir Syed Waheed-ud-Din's book, not the book or the underlying Fakir archive",
+      "identity_locator": "Title and H. S. Virk byline in converted Word text",
+      "read_method": "Read legacy Word document through LibreOffice plain-text conversion; no reliable printed page locators assigned.",
+      "passages": [
+        {
+          "id": "four_commandments",
+          "locator": "Paragraph beginning 'The author writes' and its four-item list",
+          "account": "The review relates a holy voice at the Lahore conquest setting duties of prayer, avoiding the Mughal throne, equal treatment and friendship with the Fakir family.",
+          "use": "A spiritual-political story or remembered counsel; retain the review-to-book-to-family-archive source chain."
+        },
+        {
+          "id": "sada_kaur_sarbat",
+          "locator": "Paragraph beginning 'Historians have not done justice'",
+          "account": "The review emphasizes Sada Kaur's rallying speech, Ranjit's challenge to Shah Zaman and her later conflict with Ranjit.",
+          "use": "Competing memories of who enabled his rise; quoted speech remains attributed through the review."
+        },
+        {
+          "id": "court_contrast",
+          "locator": "Paragraphs beginning 'Following the second commandment' and 'He had a keen sense'",
+          "account": "Simple personal attire and posture are contrasted with elaborate courtiers and surroundings.",
+          "use": "Adult court composition and dialogue. Absolutes such as never using emblems should not suppress contrary portrayals."
+        }
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "id": "nakai_marriage_year",
+      "status": "Keep open",
+      "claims": [
+        {
+          "source": "griffin_1905",
+          "printed": "108",
+          "value": "1798"
+        },
+        {
+          "source": "griffin_1905",
+          "printed": "164",
+          "value": "1802"
+        }
+      ]
+    },
+    {
+      "id": "maha_death_age",
+      "status": "Keep open",
+      "claims": [
+        {
+          "source": "griffin_1905",
+          "printed": "157–158",
+          "value": "Maha dies in 1792; child successor approximately twelve"
+        },
+        {
+          "source": "buxi_1992",
+          "printed": "6",
+          "value": "Ranjit seven at father's death and eight on succession"
+        }
+      ]
+    },
+    {
+      "id": "charat_death_date",
+      "status": "Keep open",
+      "claims": [
+        {
+          "source": "griffin_1905",
+          "printed": "154–155",
+          "value": "1773, inferred from the 1774 marriage described as the following year"
+        },
+        {
+          "source": "buxi_1992",
+          "printed": "5",
+          "value": "1767, attributed there to the Gujranwala gazetteer"
+        }
+      ]
+    },
+    {
+      "id": "prem_text_date",
+      "status": "Keep open",
+      "note": "Date individual textual layers cautiously; an 1815 witness to chapter 1 is not a date certificate for every chapter."
+    }
+  ],
+  "existing_sequence_hooks": [
+    {
+      "sequence": "delegation",
+      "priority": "Next detail pass",
+      "source_passages": [
+        "prem_sumarag_mcleod_2006:marriage_gifts",
+        "prem_sumarag_mcleod_2006:dress"
+      ],
+      "proposed_action": "Choose and pack visible gifts within a household's means; reveal status and competing expectations in clothing and equipment."
+    },
+    {
+      "sequence": "alliance",
+      "priority": "Next detail pass",
+      "source_passages": [
+        "prem_sumarag_mcleod_2006:camp_watches"
+      ],
+      "proposed_action": "Build or inspect a shared perimeter, carry tools, and negotiate watch assignments before the dispute over credit."
+    },
+    {
+      "sequence": "revenge",
+      "priority": "Next detail pass",
+      "source_passages": [
+        "prem_sumarag_mcleod_2006:household_plan"
+      ],
+      "proposed_action": "Give the warning and escort route distinct dwelling, kitchen, reception and stable spaces."
+    },
+    {
+      "sequence": "desi",
+      "priority": "Next detail pass",
+      "source_passages": [
+        "griffin_1905:desi",
+        "prem_sumarag_mcleod_2006:water_and_travel"
+      ],
+      "proposed_action": "Develop mare handling and a household rest stop, keeping legendary biography and designed errands distinct internally."
+    },
+    {
+      "sequence": "exile",
+      "priority": "Next detail pass",
+      "source_passages": [
+        "prem_sumarag_mcleod_2006:hearth_work",
+        "prem_sumarag_mcleod_2006:hungry_guest"
+      ],
+      "proposed_action": "Prepare and share a scarce meal through physical tasks before deciding what help to request or offer."
+    },
+    {
+      "sequence": "well",
+      "priority": "Frame only",
+      "source_passages": [
+        "prem_sumarag_mcleod_2006:dawn_routine"
+      ],
+      "proposed_action": "Enrich the later dawn storytelling frame without replacing the existing Bahrwal miracle or backdating this text to the legend."
+    }
+  ],
+  "future_scene_candidates": [
+    {
+      "phase": "Ancestral recollection",
+      "source_passage": "griffin_1905:wedding_fodder",
+      "title": "Fodder at the Wedding"
+    },
+    {
+      "phase": "Ancestral recollection",
+      "source_passage": "buxi_1992:horse_trader_blessing",
+      "title": "Charat Singh's Horse Market"
+    },
+    {
+      "phase": "Childhood-to-Lahore",
+      "source_passage": "griffin_1905:miani_flood",
+      "title": "The Camp Below the Flood"
+    },
+    {
+      "phase": "Lahore prelude",
+      "source_passage": "griffin_1905:jhelum_guns",
+      "title": "The Guns in the Jhelum"
+    },
+    {
+      "phase": "Lahore entry",
+      "source_passage": "buxi_1992:sada_kaur_lahore",
+      "title": "The Gates and the Households"
+    },
+    {
+      "phase": "Later Ranjit life",
+      "source_passage": "osborne_1840:mobile_breakfast",
+      "title": "A Court Raised in a Grove"
+    },
+    {
+      "phase": "Later Ranjit life",
+      "source_passage": "buxi_1992:popular_legends",
+      "title": "The Griddle and the Gold"
+    }
+  ]
+}

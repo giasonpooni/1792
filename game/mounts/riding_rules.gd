@@ -8,6 +8,10 @@ const MAX_SPEED := 11.0
 const MAX_FALL := 50.0
 const MOUNT_DISTANCE := 2.7
 const DISMOUNT_SPEED := 0.6
+# The trusted scene adapter admits a 2.1 m longitudinal exit on at most a
+# 40-degree floor plus its bounded standing-shape lift. This remains local to
+# the opt-in riding slice; it is not arbitrary vertical traversal authority.
+const MAX_DISMOUNT_VERTICAL := 2.0
 
 static func initial() -> Dictionary:
 	return {"schema_version": VERSION, "horse": {

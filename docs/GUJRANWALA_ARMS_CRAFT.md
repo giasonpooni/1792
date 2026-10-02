@@ -31,9 +31,13 @@ It contains:
 - a maintenance tray;
 - three small loose fittings;
 - one folded repair cloth;
-- localized warm-metal inlay/bands and pale/dark grip contrast.
+- localized warm-metal inlay/bands and pale/dark grip contrast;
+- one resting shield study;
+- two scabbard suspension rings and a wall carry-belt/strap study.
 
 The objects are intentionally **abstract presentation studies**. They are not literal replicas of any supplied reference object.
+
+The shield/belt staging specifically uses the newest portrait and shield/sword references for **resting composition and carry logic**: a shield can lean at the body/room edge, a scabbard hangs from rings rather than floating at a generic inventory slot, and the belt/strap is visually subordinate to the person or wall composition. These newest chat-visible images remain motif references until file-level hash bindings are available.
 
 ## F7 ownership
 

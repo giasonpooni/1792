@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://1792.game/schemas/historical_location.schema.json",
+  "title": "1792 Historical Location",
+  "description": "Optional Mahan-scoped historical location stub (settlement/road). Does not extend world-state.v1. Events may reference location_id via location.place_id.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "location_id",
+    "kind",
+    "label",
+    "region",
+    "evidence",
+    "canon_class",
+    "gameplay"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": "historical-location.v1" },
+    "location_id": { "type": "string", "minLength": 1 },
+    "kind": {
+      "type": "string",
+      "enum": ["settlement", "road", "fort", "camp", "ford", "landmark"]
+    },
+    "label": { "type": "string" },
+    "summary": { "type": "string" },
+    "region": { "type": "string" },
+    "household_context": { "type": "string" },
+    "connects": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["source", "confidence", "evidence_class"],
+        "additionalProperties": false,
+        "properties": {
+          "source": { "type": "string" },
+          "confidence": {
+            "type": "string",
+            "enum": ["high", "medium", "low", "none"]
+          },
+          "evidence_class": {
+            "type": "string",
+            "enum": ["A", "B", "C", "D"]
+          },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "canon_class": {
+      "type": "string",
+      "enum": ["source_attested", "reconstructed", "game_canon", "authored_fiction"]
+    },
+    "gameplay": {
+      "type": "object",
+      "required": ["profile_scope", "role"],
+      "additionalProperties": false,
+      "properties": {
+        "profile_scope": { "type": "string" },
+        "role": {
+          "type": "string",
+          "enum": ["home_ground", "approach", "column_node", "reference_only"]
+        },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

@@ -2,6 +2,8 @@ extends RefCounted
 ## Deterministic political reducer. Only the bounded input ledger is authoritative.
 ## The runtime below is a disposable projection of that ledger and the chapter tick.
 const Registry := preload("res://politics/social_registry.gd")
+const Social := preload("res://politics/social_field_rules.gd")
+const SocialProfile := preload("res://politics/social_field_profile.gd")
 const STEP := 60
 const MAX_INPUTS := 256
 const KINDS := ["raid","incursion","reparation","scout","discretion","gaze"]
@@ -47,7 +49,7 @@ static func append(log: Dictionary, tick: int, kind: String, source: String, tar
 	return error
 
 static func runtime(origin: int) -> Dictionary:
-	var r := {"tick":origin,"cursor":0,"factions":{},"pairs":{},"coalitions":{},"queue":[],"trace":[],"player_reports":[]}
+	var r := {"tick":origin,"cursor":0,"factions":{},"pairs":{},"coalitions":{},"queue":[],"trace":[],"player_reports":[],"social":Social.initial(SocialProfile.ACTORS,Registry.FACTIONS)}
 	for faction in Registry.FACTIONS:
 		r.factions[faction] = {"resources":100.0,"surface":0.0,"shield":0.0,"scouts":{}}
 		for target in Registry.FACTIONS:
@@ -134,9 +136,11 @@ static func _incident(r: Dictionary, root: String, actor: String, target: String
 				_report(r,root,neighbour,actor,kind,severity*0.65,0.65,420,"relayed_local_witness")
 
 static func _report(r: Dictionary, root: String, recipient: String, accused: String, kind: String, strength: float, confidence: float, delay: int, source: String) -> void:
-	r.queue.append({"id":root+":"+recipient+":"+kind,"event_id":root,"recipient":recipient,
+	var report := {"id":root+":"+recipient+":"+kind,"event_id":root,"recipient":recipient,
 		"accused":accused,"kind":kind,"strength":strength,"confidence":confidence,"source_id":source,
-		"sent_tick":int(r.tick),"received_tick":int(r.tick)+delay})
+		"sent_tick":int(r.tick),"received_tick":int(r.tick)+delay}
+	r.queue.append(report)
+	r.queue.append_array(Social.route(report,SocialProfile.ACTORS))
 
 static func _deliver(r: Dictionary) -> void:
 	var pending: Array = []
@@ -144,6 +148,10 @@ static func _deliver(r: Dictionary) -> void:
 		if int(report.received_tick) > int(r.tick):
 			pending.append(report)
 			continue
+		if report.has("observer_id"):
+			var error := Social.receive(r.social,report,int(r.tick))
+			if not error.is_empty(): push_error(error)
+			continue # Local receipt never increments faction grievance a second time.
 		var key: String = str(report.recipient)+":"+str(report.accused)
 		if r.pairs.has(key):
 			var pair: Dictionary = r.pairs[key]

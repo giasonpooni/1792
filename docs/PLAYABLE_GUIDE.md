@@ -113,6 +113,8 @@ a bounded flat-lane profile.
 | C in childhood | Quiet approach |
 | B in home territory | Oral supply accounts |
 | G | Household guard or patrol follow/hold, where available |
+| X | Release / recall the bounded hawk scout in Home territory |
+| Z | Toggle Focus on foot; look steadily to mark visible contacts or clues |
 | J / F1 | Childhood journal / pause |
 | H in Houses and rivals | Antagonist codex |
 | F4 in childhood | Optional peripheral framing |
@@ -131,6 +133,16 @@ the whole later session, including economic progress.
 Lahore profiles retain their separate slots and import controls. Invalid loads
 are staged and rejected before replacing the running session. Windows save
 replacement and hardened duplicate-key parsing remain unqualified.
+
+## Hawk scouting in Home territory
+
+On foot and outside immediate combat, press **X** to release the hawk. The view transfers to a third-person aerial camera while Buddh's body remains where it was. Fly with **WASD**, use **Shift** for speed, **Space / Ctrl** for altitude, and the **mouse** to look. Press **E** or **left click** to tag a hostile currently inside the hawk view with clear physics line of sight; press **X** or **Esc** to return.
+
+The initial slice includes two fictional distant scout contacts behind the household sightline. A marker means **last observed there**, not **currently there**: it stays at the observed position if the contact moves and expires after 1,800 chapter ticks. Save/load and checkpoint restoration clear these transient observations. The hawk does not modify money, missions, relationships, inventory, journal memories or the campaign save.
+
+Ground Focus uses **Z**, preserving **Q** guard and all existing interaction controls. Hold a visible subject in your character's sight for 45 active ticks to mark it. Focus emphasizes contacts, existing speakers, the horse and an available ground trace; **E** remains necessary to inspect or speak. A stale marker freezes and fades. Dashed lines labelled **estimated** extrapolate only previously observed movement for at most two seconds. Nearby emitted hammer sounds appear as coarse directions such as **ahead-left · muffled**, without an exact concealed location. [Full behavior and limits](GROUND_FOCUS.md).
+
+[Hawk-scout implementation and qualification](HAWK_SCOUT.md)
 
 ## Lahore patrols and house conflict
 

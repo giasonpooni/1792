@@ -1,0 +1,24 @@
+{
+  "schema_version": "historical-location.v1",
+  "location_id": "sukarchakia_field_camp",
+  "kind": "camp",
+  "label": "Sukerchakia field camp (greybox)",
+  "summary": "Existing Mahan interlude greybox camp place string. Authored gameplay site; not a surveyed 1790 encampment plan.",
+  "region": "rechna_doab_west_punjab",
+  "household_context": "sukerchakia",
+  "connects": ["gujranwala_fort_road", "gujranwala_settlement"],
+  "evidence": [
+    {
+      "source": "game_canon.mahan_interlude_field_camp",
+      "confidence": "none",
+      "evidence_class": "C",
+      "note": "Greybox camp already used by mahan_state; listed here so historical events can resolve place_id."
+    }
+  ],
+  "canon_class": "game_canon",
+  "gameplay": {
+    "profile_scope": "mahan.v1",
+    "role": "column_node",
+    "notes": "Playable greybox root; unchanged scene bytes."
+  }
+}

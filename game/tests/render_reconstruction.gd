@@ -32,6 +32,20 @@ func _run() -> void:
 	camera.position=Vector3(56,48,64)
 	camera.look_at(Vector3(0,0,-2))
 	await frames()
+	var guidance: Node=scene.art.detail.hud
+	check(guidance.visible and not scene._narrator_label.is_visible_in_tree() and not scene._hud.is_visible_in_tree() and not scene._caption.is_visible_in_tree(),"default compact guidance suppresses legacy narration and captions")
+	# These retained research-view captures inspect the existing classic narrator
+	# layout. Select that supported presentation while execution is parked; this
+	# cannot advance the childhood world or grant first-task progress.
+	var prior_process: int=home.process_mode
+	home.process_mode=Node.PROCESS_MODE_DISABLED
+	var parked: Dictionary=scene.model.snapshot()
+	var player_pose: Transform3D=scene.avatar.global_transform
+	var horse_pose: Transform3D=scene.horse.global_transform
+	var guard_pose: Transform3D=scene.escort.global_transform
+	guidance.compact=false;guidance.sample();await frames()
+	check(not guidance.visible and parked==scene.model.snapshot() and player_pose==scene.avatar.global_transform and horse_pose==scene.horse.global_transform and guard_pose==scene.escort.global_transform,"classic HUD selection preserves whole authority and native body poses")
+	home.process_mode=prior_process
 	check(scene._narrator_label.visible,"initial narration is visible")
 	check(not scene._narrator_label.get_global_rect().intersects(scene._hud.get_global_rect()),"narrator overlaps controls")
 	check(not scene._narrator_label.get_global_rect().intersects(scene._caption.get_global_rect()),"narrator overlaps protagonist caption")
