@@ -40,6 +40,12 @@ The planned narrative spans his childhood, rise and reign. Current production
 priority is childhood through the prelude to the Lahore campaign, followed by the
 rest of his life before historical-character DLC production.
 
+The [playable mission and sequence ledger](docs/PLAYABLE_MISSION_LEDGER.md)
+inventories main and draft-branch content with stable IDs, launch instructions,
+prerequisites, outcomes and source revisions. Its
+[machine-readable register](data/production/playable_ledger.json) keeps playable
+sequences, variants, mechanics and planned work separate.
+
 ## Title and story
 
 The subtitle draws on the childhood smallpox that left Ranjit Singh with facial

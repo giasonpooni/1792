@@ -1,0 +1,2201 @@
+{
+  "schema": "1792.playable-ledger.v1",
+  "title": "1792 – The One-Eyed King: playable mission and sequence ledger",
+  "as_of": "2026-10-02",
+  "main_commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+  "policy": {
+    "count_unit": "One authored objective arc; child beats and mutually exclusive routes are not additional sequences.",
+    "scope": "Repository main plus 36 open PR heads inventoried on the snapshot date. Not a claim that all branches are composed or release-ready.",
+    "historical_material": "Preserve legends, disputed accounts and cinematic invention with attribution; implementation status is independent of historical confidence.",
+    "verification": "Source/path inventory only in this pass; previous feature test reports are not fresh playtests."
+  },
+  "entries": [
+    {
+      "id": "HOME-001",
+      "title": "Learning the yard",
+      "kind": "playable_sequence",
+      "delivery": "main",
+      "pr": null,
+      "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+      "branch": "main",
+      "source_path": "docs/PLAYABLE_GUIDE.md",
+      "era": "1792",
+      "launch": "Run game/project.godot; choose Home territory.",
+      "prerequisites": "Follow the preceding childhood prompts.",
+      "player_actions": "Walk, turn and inspect the household yard.",
+      "completion": "Reach the opening lesson prompts.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "HOME-002",
+      "title": "The sealed message",
+      "kind": "playable_sequence",
+      "delivery": "main",
+      "pr": null,
+      "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+      "branch": "main",
+      "source_path": "docs/PLAYABLE_GUIDE.md",
+      "era": "1792",
+      "launch": "Run game/project.godot; choose Home territory.",
+      "prerequisites": "Follow the preceding childhood prompts.",
+      "player_actions": "Receive the courier’s message and take it to the steward for reading aloud.",
+      "completion": "Hear the steward; no literacy granted.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "HOME-003",
+      "title": "First riding gates",
+      "kind": "playable_sequence",
+      "delivery": "main",
+      "pr": null,
+      "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+      "branch": "main",
+      "source_path": "docs/PLAYABLE_GUIDE.md",
+      "era": "1792",
+      "launch": "Run game/project.godot; choose Home territory.",
+      "prerequisites": "Follow the preceding childhood prompts.",
+      "player_actions": "Mount and ride through the numbered gates.",
+      "completion": "Finish the riding course.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "HOME-004",
+      "title": "Guard and counter",
+      "kind": "playable_sequence",
+      "delivery": "main",
+      "pr": null,
+      "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+      "branch": "main",
+      "source_path": "docs/PLAYABLE_GUIDE.md",
+      "era": "1792",
+      "launch": "Run game/project.godot; choose Home territory.",
+      "prerequisites": "Follow the preceding childhood prompts.",
+      "player_actions": "Spar; guard, recover and counter.",
+      "completion": "Complete the trainer’s lesson.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "HOME-005",
+      "title": "Tracks beyond Home",
+      "kind": "playable_sequence",
+      "delivery": "main",
+      "pr": null,
+      "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+      "branch": "main",
+      "source_path": "docs/PLAYABLE_GUIDE.md",
+      "era": "1792",
+      "launch": "Run game/project.godot; choose Home territory.",
+      "prerequisites": "Follow the preceding childhood prompts.",
+      "player_actions": "Inspect three traces and approach the quarry quietly.",
+      "completion": "Complete the tracking lesson; no harvesting loop.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "HOME-006",
+      "title": "The return-path ambush",
+      "kind": "playable_sequence",
+      "delivery": "main",
+      "pr": null,
+      "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+      "branch": "main",
+      "source_path": "docs/PLAYABLE_GUIDE.md",
+      "era": "1792",
+      "launch": "Run game/project.godot; choose Home territory.",
+      "prerequisites": "Follow the preceding childhood prompts.",
+      "player_actions": "React to the assailant and escape toward Home.",
+      "completion": "Survive and reach Home; failure retries the encounter.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "HOME-007",
+      "title": "The household inquiry",
+      "kind": "playable_sequence",
+      "delivery": "main",
+      "pr": null,
+      "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+      "branch": "main",
+      "source_path": "docs/AFTERMATH.md",
+      "era": "1792",
+      "launch": "Run game/project.godot; choose Home territory.",
+      "prerequisites": "HOME-006",
+      "player_actions": "Hear accounts, choose escort or independent inquiry, inspect the bend and report.",
+      "completion": "Return the account; neither route establishes the culprit.",
+      "parent_id": null,
+      "beats": [
+        "Hear the household",
+        "Choose approach",
+        "Inspect the bend",
+        "Report"
+      ],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "HOME-008",
+      "title": "Four-food delivery",
+      "kind": "playable_sequence",
+      "delivery": "main",
+      "pr": null,
+      "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+      "branch": "main",
+      "source_path": "docs/PLAYABLE_GUIDE.md",
+      "era": "1792",
+      "launch": "Run game/project.godot; choose Home territory.",
+      "prerequisites": "Completed inquiry; allowance/resources where required by the linked guide.",
+      "player_actions": "Accept the finite contract; carry four food to the market.",
+      "completion": "Deliver the cargo once and receive the existing payout.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "HOME-009",
+      "title": "Bring the carrier Home",
+      "kind": "playable_sequence",
+      "delivery": "main",
+      "pr": null,
+      "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+      "branch": "main",
+      "source_path": "docs/PLAYABLE_GUIDE.md",
+      "era": "1792",
+      "launch": "Run game/project.godot; choose Home territory.",
+      "prerequisites": "Completed inquiry; allowance/resources where required by the linked guide.",
+      "player_actions": "Meet and physically escort the return supply carrier.",
+      "completion": "One household check-in; no duplicated cargo or payout.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "HOME-010",
+      "title": "Water for the household",
+      "kind": "playable_sequence",
+      "delivery": "main",
+      "pr": null,
+      "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+      "branch": "main",
+      "source_path": "docs/GUJRANWALA_WATER_ROUND.md",
+      "era": "1792",
+      "launch": "Run game/project.godot; choose Home territory.",
+      "prerequisites": "Completed inquiry; allowance/resources where required by the linked guide.",
+      "player_actions": "Make two well trips; draw and carry three units each time.",
+      "completion": "Return six units; drawing and carrying use the existing world clock.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "HOME-011",
+      "title": "The smith’s commission",
+      "kind": "playable_sequence",
+      "delivery": "main",
+      "pr": null,
+      "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+      "branch": "main",
+      "source_path": "docs/HOME_WORKSHOP_INTEGRATION.md",
+      "era": "1792",
+      "launch": "Run game/project.godot; choose Home territory.",
+      "prerequisites": "Completed inquiry; allowance/resources where required by the linked guide.",
+      "player_actions": "Reserve fuel and fee; hand over, wait, collect tools and carry them Home.",
+      "completion": "Deliver two tools once; cancellation only before handover.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "HOME-012",
+      "title": "Sukerchakia household service",
+      "kind": "playable_sequence",
+      "delivery": "main",
+      "pr": null,
+      "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+      "branch": "main",
+      "source_path": "docs/SUKERCHAKIA_SERVICE.md",
+      "era": "1792",
+      "launch": "Run game/project.godot; choose Home territory.",
+      "prerequisites": "Completed inquiry; allowance/resources where required by the linked guide.",
+      "player_actions": "Hear requests, provision a hired guard, dispatch him and receive his returned account.",
+      "completion": "Complete the finite market and well requests; reports require hearing.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "HOME-013",
+      "title": "The Bhangi Bazaar Brawl",
+      "kind": "playable_sequence",
+      "delivery": "main",
+      "pr": null,
+      "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+      "branch": "main",
+      "source_path": "docs/YOUTH_CAMPAIGN.md",
+      "era": "1792",
+      "launch": "Run game/project.godot; choose Home territory.",
+      "prerequisites": "Completed inquiry; allowance/resources where required by the linked guide.",
+      "player_actions": "Meet Mela and Jiva, walk to the challenge, counter or leave together, regroup and report.",
+      "completion": "Resolve the confrontation and return; withdrawal is a route, not another mission.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "MEM-001",
+      "title": "Maha’s family story / Charat Singh",
+      "kind": "presentation",
+      "delivery": "draft",
+      "pr": 71,
+      "commit": "21f8cf824d6b5dd98b2bb44dfa37948adafd55e7",
+      "branch": "feat/opening-game-v1-20261002",
+      "source_path": "docs/BEGINNING_SEQUENCE.md",
+      "era": "Family retrospective",
+      "launch": "Begin through the Home launcher.",
+      "prerequisites": "None",
+      "player_actions": "Advance, revisit or skip the ten-page family introduction.",
+      "completion": "Return to the childhood opening.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Attributed family-history adaptation; ten pages are not ten missions.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "HOME-014",
+      "title": "Maha’s horsecraft lesson",
+      "kind": "playable_sequence",
+      "delivery": "draft",
+      "pr": 71,
+      "commit": "21f8cf824d6b5dd98b2bb44dfa37948adafd55e7",
+      "branch": "feat/opening-game-v1-20261002",
+      "source_path": "docs/HORSECRAFT_STUDY.md",
+      "era": "1792",
+      "launch": "Run game/project.godot; choose Home territory. Speak to the stable trainer after the first riding lesson.",
+      "prerequisites": "HOME-003",
+      "player_actions": "Complete moving standing riding, paired standing riding, then mounted firing, reloading and withdrawal.",
+      "completion": "Receive the three Home capability flags.",
+      "parent_id": null,
+      "beats": [
+        "Single horse balance",
+        "Paired horse balance",
+        "Mounted matchlock handling"
+      ],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "HOME-015",
+      "title": "Missing remounts",
+      "kind": "playable_sequence",
+      "delivery": "draft",
+      "pr": 14,
+      "commit": "06fccd1ededdfe203c8135efc4f844aeb78899d9",
+      "branch": "feat/missing-remounts-v1",
+      "source_path": "docs/MISSING_REMOUNTS.md",
+      "era": "1792",
+      "launch": "Run game/project.godot; choose Home territory. Hear the quartermaster’s brief.",
+      "prerequisites": "Inquiry and allowance",
+      "player_actions": "Reach the private yard, inspect the sealed tally and two horses, report both.",
+      "completion": "Deliver observations; no horse inventory or cash grant.",
+      "parent_id": null,
+      "beats": [
+        "Permission route / service gap / ramp overlook",
+        "Inspect tally and horses",
+        "Report"
+      ],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "HOME-016",
+      "title": "The borrowed rope",
+      "kind": "playable_sequence",
+      "delivery": "draft",
+      "pr": 23,
+      "commit": "575b95f398059a8d26ca03c57c75a198eb1a8293",
+      "branch": "feat/oral-memory-v1",
+      "source_path": "docs/ORAL_MEMORY.md",
+      "era": "1792",
+      "launch": "Run game/project.godot; choose Home territory. Listen to the quartermaster’s rope story.",
+      "prerequisites": "Completed inquiry",
+      "player_actions": "Hear variant tellings, inspect the rope, compare, request recollection and retell locally.",
+      "completion": "Listener receives the chosen sourced account; no canonical-truth or cash reward.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Explicitly fictional sakhi-inspired transmission episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "HOME-017",
+      "title": "A funded instructor",
+      "kind": "playable_sequence",
+      "delivery": "draft",
+      "pr": 32,
+      "commit": "ae3dffe2e2182a7692e0d430393c1fc5955f6b06",
+      "branch": "feat/funded-service-v1",
+      "source_path": "docs/FUNDED_SERVICE.md",
+      "era": "1792",
+      "launch": "Run game/project.godot; choose Home territory. Reserve the instructor commission.",
+      "prerequisites": "Inquiry, allowance, sufficient household funds",
+      "player_actions": "Earn/reserve funds, meet the agent and candidate, escort Home, sign, provision pupil and fund practice.",
+      "completion": "Complete the funded practice under actual attendance and supply conditions.",
+      "parent_id": null,
+      "beats": [
+        "Commission",
+        "Introduction",
+        "Escort",
+        "Signing and wages",
+        "Funded practice"
+      ],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "CMD-001",
+      "title": "Lahore road patrol",
+      "kind": "playable_sequence",
+      "delivery": "main",
+      "pr": null,
+      "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+      "branch": "main",
+      "source_path": "docs/COMMAND_STORIES.md",
+      "era": "1801 fictional fixture",
+      "launch": "Main menu → Lahore · Command story.",
+      "prerequisites": "None",
+      "player_actions": "Assign riders; play as captain or delegate the same order; inspect village/outpost and organize patrol or withdraw.",
+      "completion": "Delayed report releases the riders; control switching does not create another order.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "CMD-002",
+      "title": "Houses and rivals",
+      "kind": "scenario_variant",
+      "delivery": "main",
+      "pr": null,
+      "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+      "branch": "main",
+      "source_path": "docs/HOUSE_CONFLICT.md",
+      "era": "Command sandbox",
+      "launch": "Main menu → Houses and rivals.",
+      "prerequisites": "None",
+      "player_actions": "Play the expanded house-dispute command scenario with riding and companions.",
+      "completion": "Resolve the existing command/report loop.",
+      "parent_id": "CMD-001",
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "ROAD-001",
+      "title": "The disputed crossing",
+      "kind": "route_variant",
+      "delivery": "draft",
+      "pr": 16,
+      "commit": "b251d6967ec46a95bcee4bbca55737d900b6c66d",
+      "branch": "feat/shah-caravan-road-v1",
+      "source_path": "docs/DISPUTED_ROAD.md",
+      "era": "1792",
+      "launch": "Run game/project.godot; choose Home territory. After first food delivery, select the disputed return route.",
+      "prerequisites": "HOME-008",
+      "player_actions": "Recognize the keeper’s claim, seek delayed confirmation, or use the field bypass.",
+      "completion": "Escort the same carrier Home; one original check-in.",
+      "parent_id": "HOME-009",
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "MAHA-001",
+      "title": "Mahan’s field camp",
+      "kind": "playable_sequence",
+      "delivery": "draft",
+      "pr": 9,
+      "commit": "8e858c00d4cd457f3a44174229462fd192b8cee0",
+      "branch": "feat/mahan-interlude-v1",
+      "source_path": "docs/MAHAN_INTERLUDE.md",
+      "era": "1790 development fixture; chronology variants retained",
+      "launch": "Main menu → 1790 / Mahan Singh / Field camp (interlude).",
+      "prerequisites": "None",
+      "player_actions": "Dispatch scouts, receive reports, consult retainers, march or hold, inspect field markers and issue bounded orders.",
+      "completion": "Acknowledge the fixed endpoint; this prototype is not the completed later father campaign.",
+      "parent_id": null,
+      "beats": [
+        "Reconnaissance",
+        "Orders and march",
+        "Settlement/garhi observations",
+        "Fixed endpoint"
+      ],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "PRO-001",
+      "title": "Sobraon to the oral telling",
+      "kind": "playable_sequence",
+      "delivery": "draft",
+      "pr": 77,
+      "commit": "e42ddd552879673b7477dbd4f926e389c1aa8e5b",
+      "branch": "feat/sobraon-oral-opening-v1-20261002",
+      "source_path": "docs/SOBRAON_ORAL_OPENING.md",
+      "era": "1846 → 1849 → retrospective",
+      "launch": "Begin through the branch’s Home launcher.",
+      "prerequisites": "None",
+      "player_actions": "Escape the earthworks, optionally carry a wounded soldier, steer river timber and approach the later surrender tableau.",
+      "completion": "Hand off through oral narration to the existing family introduction.",
+      "parent_id": null,
+      "beats": [
+        "Sobraon bank",
+        "Sutlej crossing",
+        "Rawalpindi surrender",
+        "Narrator handoff"
+      ],
+      "historical_basis": "Historical framing with original veteran viewpoint and authored survival actions.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "TALE-001",
+      "title": "The Wedding Road",
+      "kind": "playable_sequence",
+      "delivery": "draft",
+      "pr": 76,
+      "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+      "branch": "feat/punjab-chiefs-playable-v1-20261002",
+      "source_path": "game/history/punjab_chiefs_catalogue.json",
+      "era": "Late eighteenth century; Nakai marriage negotiations",
+      "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects delegation.",
+      "prerequisites": "None",
+      "player_actions": "Inspect the gifts before the delegation leaves. Receive the delegate and agree how to enter. Escort the delegate across the courtyard to the entrance. Hear the rival messenger before choosing whom to alert. Return to the keeper with your account of the arrival.",
+      "completion": "Reach a local ending; F5/F9 preserve this story; no Home grants.",
+      "parent_id": null,
+      "beats": [
+        "Inspect the gifts before the delegation leaves.",
+        "Receive the delegate and agree how to enter.",
+        "Escort the delegate across the courtyard to the entrance.",
+        "Hear the rival messenger before choosing whom to alert.",
+        "Return to the keeper with your account of the arrival."
+      ],
+      "historical_basis": "retrospective_family_account; The source connects Bhagwan Singh's alliance through his sister with losses of territory and attempted interference. The errands, witnesses, dialogue and local outcomes are original. The prospective bride Raj Kaur is distinct from Ranjit Singh's mother.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "catalogue_id": "delegation",
+      "choices": [
+        {
+          "beat_id": "delegation_prepare",
+          "options": [
+            "Show every seal",
+            "Keep the letters covered"
+          ]
+        },
+        {
+          "beat_id": "delegation_receive",
+          "options": [
+            "Lead with kinship",
+            "Lead with protection"
+          ]
+        },
+        {
+          "beat_id": "delegation_cross",
+          "options": [
+            "Credit the whole escort",
+            "Name the sponsoring house"
+          ]
+        },
+        {
+          "beat_id": "delegation_intercept",
+          "options": [
+            "Report the interference",
+            "Ask what settlement he wants"
+          ]
+        },
+        {
+          "beat_id": "delegation_account",
+          "options": [
+            "Name your witnesses",
+            "Keep the negotiation discreet"
+          ]
+        }
+      ],
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+    },
+    {
+      "id": "TALE-002",
+      "title": "The Unequal Victory",
+      "kind": "playable_sequence",
+      "delivery": "draft",
+      "pr": 76,
+      "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+      "branch": "feat/punjab-chiefs-playable-v1-20261002",
+      "source_path": "game/history/punjab_chiefs_catalogue.json",
+      "era": "1785; a remembered coalition and its strained aftermath",
+      "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects alliance.",
+      "prerequisites": "None",
+      "player_actions": "Hear the captain's grievance before leaving the gathering. Ask the wounded companion how to make the passage. Escort the wounded companion to the crossing marker. Challenge the victory announcement before it is repeated. Decide how the remaining dressings should leave the gathering.",
+      "completion": "Reach a local ending; F5/F9 preserve this story; no Home grants.",
+      "parent_id": null,
+      "beats": [
+        "Hear the captain's grievance before leaving the gathering.",
+        "Ask the wounded companion how to make the passage.",
+        "Escort the wounded companion to the crossing marker.",
+        "Challenge the victory announcement before it is repeated.",
+        "Decide how the remaining dressings should leave the gathering."
+      ],
+      "historical_basis": "retrospective_family_account; The book records shifting Nakai, Sukerchakia and other chief relationships, the 1785 coalition after Jai Singh's 1783 seizure, and failed reconciliation. This local escort and honour dispute is invented to make those pressures playable.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "catalogue_id": "alliance",
+      "choices": [
+        {
+          "beat_id": "alliance_orders",
+          "options": [
+            "Promise to seek public credit",
+            "Promise the riders a safe passage"
+          ]
+        },
+        {
+          "beat_id": "alliance_collect",
+          "options": [
+            "Walk together openly",
+            "Take the quieter passage"
+          ]
+        },
+        {
+          "beat_id": "alliance_crossing",
+          "options": [
+            "Ask both contingents for help",
+            "Ask your own riders for help"
+          ]
+        },
+        {
+          "beat_id": "alliance_honour",
+          "options": [
+            "Name the allies and their losses",
+            "Seek recognition in private"
+          ]
+        },
+        {
+          "beat_id": "alliance_supplies",
+          "options": [
+            "Leave dressings at the crossing",
+            "Reserve your contingent's share"
+          ]
+        }
+      ],
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+    },
+    {
+      "id": "TALE-003",
+      "title": "A Stranger at the Threshold",
+      "kind": "playable_sequence",
+      "delivery": "draft",
+      "pr": 76,
+      "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+      "branch": "feat/punjab-chiefs-playable-v1-20261002",
+      "source_path": "game/history/punjab_chiefs_catalogue.json",
+      "era": "1790; the book's account of revenge after Wazir Singh's death",
+      "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects revenge.",
+      "prerequisites": "None",
+      "player_actions": "Ask the stranger why he has come to the household. Compare the stranger's account with the gate witness. Warn the steward before the household gathering continues. Bring the waiting dependent away from the approach. Escort the dependent into the sheltered passage.",
+      "completion": "Reach a local ending; F5/F9 preserve this story; no Home grants.",
+      "parent_id": null,
+      "beats": [
+        "Ask the stranger why he has come to the household.",
+        "Compare the stranger's account with the gate witness.",
+        "Warn the steward before the household gathering continues.",
+        "Bring the waiting dependent away from the approach.",
+        "Escort the dependent into the sheltered passage."
+      ],
+      "historical_basis": "retrospective_family_account; The book attributes Wazir Singh's murder to Dal Singh, son of Hira Singh of Bahrwal, and says an unnamed devoted servant later killed Dal Singh in his household. The player witnesses warning signs and shelters people; choices do not cancel that recorded death or establish omniscient guilt.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "catalogue_id": "revenge",
+      "choices": [
+        {
+          "beat_id": "revenge_notice",
+          "options": [
+            "Ask whose service brought him",
+            "Withhold the household's movements"
+          ]
+        },
+        {
+          "beat_id": "revenge_witness",
+          "options": [
+            "Carry the witness's exact account",
+            "Call attention to the danger"
+          ]
+        },
+        {
+          "beat_id": "revenge_warning",
+          "options": [
+            "Deliver a warning with its limits",
+            "Ask permission to move dependents"
+          ]
+        },
+        {
+          "beat_id": "revenge_gather",
+          "options": [
+            "Explain that you are finding shelter",
+            "Keep the instructions calm and brief"
+          ]
+        },
+        {
+          "beat_id": "revenge_shelter",
+          "options": [
+            "Keep her sheltered and call for aid",
+            "Keep her sheltered and send a witness"
+          ]
+        }
+      ],
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+    },
+    {
+      "id": "TALE-004",
+      "title": "Desi Remembers the Reins",
+      "kind": "playable_sequence",
+      "delivery": "draft",
+      "pr": 76,
+      "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+      "branch": "feat/punjab-chiefs-playable-v1-20261002",
+      "source_path": "game/history/punjab_chiefs_catalogue.json",
+      "era": "Early eighteenth century; ancestral recollection",
+      "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects desi.",
+      "prerequisites": "None",
+      "player_actions": "Approach Desi and take the saddle. Ride Desi to the first route marker. Ride at least twelve metres before reaching the far marker. Reach the watering place and dismount beside Desi. Return to the companion and choose what the story remembers.",
+      "completion": "Reach a local ending; F5/F9 preserve this story; no Home grants.",
+      "parent_id": null,
+      "beats": [
+        "Approach Desi and take the saddle.",
+        "Ride Desi to the first route marker.",
+        "Ride at least twelve metres before reaching the far marker.",
+        "Reach the watering place and dismount beside Desi.",
+        "Return to the companion and choose what the story remembers."
+      ],
+      "historical_basis": "recorded_ancestral_tradition; The book names Budha Singh's piebald mare Desi and credits him with surviving about forty wounds. This short ride, horse responses and dialogue are original. It preserves the larger-than-life ancestor without treating the ride as a documented journey.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "catalogue_id": "desi",
+      "choices": [
+        {
+          "beat_id": "desi_mount",
+          "options": [
+            "Let her settle before mounting",
+            "Mount with the familiar signal"
+          ]
+        },
+        {
+          "beat_id": "desi_approach",
+          "options": [
+            "Keep a measured stride",
+            "Give her room to find her stride"
+          ]
+        },
+        {
+          "beat_id": "desi_far_route",
+          "options": [
+            "Read the ground before returning",
+            "Answer the companion across the ground"
+          ]
+        },
+        {
+          "beat_id": "desi_water",
+          "options": [
+            "Let Desi drink before speaking",
+            "Check her tack before the rest"
+          ]
+        },
+        {
+          "beat_id": "desi_remember",
+          "options": [
+            "Remember the mare beside the rider",
+            "Remember the endurance of the pair"
+          ]
+        }
+      ],
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+    },
+    {
+      "id": "TALE-005",
+      "title": "What Can Be Carried",
+      "kind": "playable_sequence",
+      "delivery": "draft",
+      "pr": 76,
+      "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+      "branch": "feat/punjab-chiefs-playable-v1-20261002",
+      "source_path": "game/history/punjab_chiefs_catalogue.json",
+      "era": "Late eighteenth century; Ramgarhia displacement and return traditions",
+      "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects exile.",
+      "prerequisites": "None",
+      "player_actions": "Hear the elder before seeking shelter for the party. Choose what the salvaged supplies can offer the hosts. Negotiate a night's hospitality with the settlement host. Gather the weary follower for the last walk to shelter. Escort the weary follower to the shelter entrance.",
+      "completion": "Reach a local ending; F5/F9 preserve this story; no Home grants.",
+      "parent_id": null,
+      "beats": [
+        "Hear the elder before seeking shelter for the party.",
+        "Choose what the salvaged supplies can offer the hosts.",
+        "Negotiate a night's hospitality with the settlement host.",
+        "Gather the weary follower for the last walk to shelter.",
+        "Escort the weary follower to the shelter entrance."
+      ],
+      "historical_basis": "retrospective_account_with_treasure_tradition; The source contains Ramgarhia humiliation, release with gifts, retaliatory vows, exile and a treasure-in-a-well episode. This relief errand and its choices are original, with the treasure retained as narrated possibility rather than a fabricated documented discovery by the player.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "catalogue_id": "exile",
+      "choices": [
+        {
+          "beat_id": "exile_promise",
+          "options": [
+            "Promise an account of every person",
+            "Carry the household's vow of return"
+          ]
+        },
+        {
+          "beat_id": "exile_supplies",
+          "options": [
+            "Offer goods for the night's shelter",
+            "Keep the goods and offer service"
+          ]
+        },
+        {
+          "beat_id": "exile_host",
+          "options": [
+            "Ask for shelter with a limited promise",
+            "Promise to remember the hospitality"
+          ]
+        },
+        {
+          "beat_id": "exile_companion",
+          "options": [
+            "Let the treasure tale sustain him",
+            "Name the help already within reach"
+          ]
+        },
+        {
+          "beat_id": "exile_arrive",
+          "options": [
+            "Thank the hosts before speaking of return",
+            "Renew the vow with an obligation to the hosts"
+          ]
+        }
+      ],
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+    },
+    {
+      "id": "TALE-006",
+      "title": "The Water of Bahrwal",
+      "kind": "playable_sequence",
+      "delivery": "draft",
+      "pr": 76,
+      "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+      "branch": "feat/punjab-chiefs-playable-v1-20261002",
+      "source_path": "game/history/punjab_chiefs_catalogue.json",
+      "era": "Ancestral legend; Guru Arjun and Hem Raj",
+      "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects well.",
+      "prerequisites": "None",
+      "player_actions": "Draw the first water from the Bahrwal well. Prepare the household's welcome from the open courtyard. Reach the resting-place marker and hear the charpai episode. Listen at the exterior threshold as the blessing is told. Return to the well and draw its sweetened water.",
+      "completion": "Reach a local ending; F5/F9 preserve this story; no Home grants.",
+      "parent_id": null,
+      "beats": [
+        "Draw the first water from the Bahrwal well.",
+        "Prepare the household's welcome from the open courtyard.",
+        "Reach the resting-place marker and hear the charpai episode.",
+        "Listen at the exterior threshold as the blessing is told.",
+        "Return to the well and draw its sweetened water."
+      ],
+      "historical_basis": "recorded_miracle_legend; The book records Hem Raj carrying the sleeping Guru Arjun home on a charpai, brackish water becoming sweet, and a blessing promising a powerful descendant. This adaptation preserves the miracle as the legend tells it. Dialogue and attendant errands are original; no Guru avatar, impersonation or religious-building entry is required.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "catalogue_id": "well",
+      "choices": [
+        {
+          "beat_id": "well_first_water",
+          "options": [
+            "Tell the household how the water tastes",
+            "Carry the water with care"
+          ]
+        },
+        {
+          "beat_id": "well_hospitality",
+          "options": [
+            "Prepare a clear approach",
+            "Set the water within reach"
+          ]
+        },
+        {
+          "beat_id": "well_charpai",
+          "options": [
+            "Follow the narrated passage quietly",
+            "Attend to Hem Raj's act of service"
+          ]
+        },
+        {
+          "beat_id": "well_blessing",
+          "options": [
+            "Receive the legend as the household tells it",
+            "Remember the blessing through the well"
+          ]
+        },
+        {
+          "beat_id": "well_return",
+          "options": [
+            "Share the sweet water with the household",
+            "Carry the well's story onward"
+          ]
+        }
+      ],
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+    },
+    {
+      "id": "TALE-007",
+      "title": "The Door to the Young Chief",
+      "kind": "playable_sequence",
+      "delivery": "draft",
+      "pr": 76,
+      "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+      "branch": "feat/punjab-chiefs-playable-v1-20261002",
+      "source_path": "game/history/punjab_chiefs_catalogue.json",
+      "era": "1792; the Sukerchakia household",
+      "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects regency.",
+      "prerequisites": "None",
+      "player_actions": "Receive Lakhpat Rai's order for the audience list. Hear Dal Singh's objection at the waiting place. Receive Sada Kaur and choose how to announce her arrival. Escort Sada Kaur to the audience entrance. Complete the audience register after the door closes.",
+      "completion": "Reach a local ending; F5/F9 preserve this story; no Home grants.",
+      "parent_id": null,
+      "beats": [
+        "Receive Lakhpat Rai's order for the audience list.",
+        "Hear Dal Singh's objection at the waiting place.",
+        "Receive Sada Kaur and choose how to announce her arrival.",
+        "Escort Sada Kaur to the audience entrance.",
+        "Complete the audience register after the door closes."
+      ],
+      "historical_basis": "conflicting_regency_accounts_with_original_dramatization; The Memorial records Lakhpat Rai quarrelling with Dal Singh, Maha Singh's maternal uncle, and a temporary reconciliation. Buxi supplies the household power struggle. The user-selected 1792 frame retains the project chronology beside the Memorial's 1790 succession. Sada's participation in this particular access dispute and all dialogue are original adaptations of the supplied political plot. This Dal is the elder regency figure, distinct from Dal son of Hira Singh of Bahrwal, killed in the revenge account.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "catalogue_id": "regency",
+      "choices": [
+        {
+          "beat_id": "regency_accounts",
+          "options": [
+            "Give the accounts first place",
+            "Reserve time for the petitions"
+          ]
+        },
+        {
+          "beat_id": "regency_kinship",
+          "options": [
+            "Record his objection beside his name",
+            "Propose that both men be heard together"
+          ]
+        },
+        {
+          "beat_id": "regency_sada",
+          "options": [
+            "Announce her openly before entering",
+            "Take her in after a quiet notice"
+          ]
+        },
+        {
+          "beat_id": "regency_threshold",
+          "options": [
+            "Call both men into the hearing",
+            "Keep the scheduled separate hearings"
+          ]
+        },
+        {
+          "beat_id": "regency_record",
+          "options": [
+            "Record a temporary working agreement",
+            "Preserve the objections beside the agreement"
+          ]
+        }
+      ],
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+    },
+    {
+      "id": "TALE-008",
+      "title": "The Whisper After Midnight",
+      "kind": "playable_sequence",
+      "delivery": "draft",
+      "pr": 76,
+      "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+      "branch": "feat/punjab-chiefs-playable-v1-20261002",
+      "source_path": "game/history/punjab_chiefs_catalogue.json",
+      "era": "Late 1790s; the household at night",
+      "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects rumours.",
+      "prerequisites": "None",
+      "player_actions": "Hear what the waiting messenger intends to repeat. Examine the unsigned account before it leaves the court. Hear the attendant before taking her away from the gathering. Escort the attendant to the sheltered passage. Choose how the night register will carry the accusation.",
+      "completion": "Reach a local ending; F5/F9 preserve this story; no Home grants.",
+      "parent_id": null,
+      "beats": [
+        "Hear what the waiting messenger intends to repeat.",
+        "Examine the unsigned account before it leaves the court.",
+        "Hear the attendant before taking her away from the gathering.",
+        "Escort the attendant to the sheltered passage.",
+        "Choose how the night register will carry the accusation."
+      ],
+      "historical_basis": "conflicting_accusations_with_original_witness_story; Griffin repeats allegations about Raj Kaur, Lakhpat Rai and matricide, then doubts the killing stories. Buxi describes the struggle over authority and cites Sinha's rejection of Smyth's accusation. Neither establishes guilt. This night, its letter, the witnesses and every spoken line are invented. Poison remains an allegation voiced by a character, never an acquired poison item or biological finding. Timing is deliberately broad; no death in 1801 is asserted.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "catalogue_id": "rumours",
+      "choices": [
+        {
+          "beat_id": "rumours_hear",
+          "options": [
+            "Ask where his account began",
+            "Ask him to wait for the attendant"
+          ]
+        },
+        {
+          "beat_id": "rumours_packet",
+          "options": [
+            "Mark the accusations as unconfirmed",
+            "Keep the sheet intact for the hearing"
+          ]
+        },
+        {
+          "beat_id": "rumours_witness",
+          "options": [
+            "Promise a private hearing",
+            "Promise that others will hear her accurately"
+          ]
+        },
+        {
+          "beat_id": "rumours_cross",
+          "options": [
+            "Ask that her name stay within the hearing",
+            "Record her presence with protection requested"
+          ]
+        },
+        {
+          "beat_id": "rumours_report",
+          "options": [
+            "Seal it for a private inquiry",
+            "Read the allegation and its limits publicly"
+          ]
+        }
+      ],
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+    },
+    {
+      "id": "TALE-009",
+      "title": "Two Names in the Dispatch",
+      "kind": "playable_sequence",
+      "delivery": "draft",
+      "pr": 76,
+      "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+      "branch": "feat/punjab-chiefs-playable-v1-20261002",
+      "source_path": "game/history/punjab_chiefs_catalogue.json",
+      "era": "1807; a dispatch from Batala",
+      "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects heirs.",
+      "prerequisites": "None",
+      "player_actions": "Receive the household announcement from Mehtab Kaur's steward. Hear Sada Kaur's instruction before sealing the message. Decide how the dispatch should carry the competing allegation. Gather the escort rider before leaving Batala. Escort the rider to the departure entrance with the dispatch.",
+      "completion": "Reach a local ending; F5/F9 preserve this story; no Home grants.",
+      "parent_id": null,
+      "beats": [
+        "Receive the household announcement from Mehtab Kaur's steward.",
+        "Hear Sada Kaur's instruction before sealing the message.",
+        "Decide how the dispatch should carry the competing allegation.",
+        "Gather the escort rider before leaving Batala.",
+        "Escort the rider to the departure entrance with the dispatch."
+      ],
+      "historical_basis": "conflicting_birth_and_legitimacy_accounts; Griffin alleges substituted children and later political acknowledgement; the Memorial records the twins' birth announcement, thanksgiving and Mehtab's maternity. Neither the courier nor the choices establish biological truth. All dialogue, dispatch handling and minor witnesses are original. The scene preserves competing accusations without encoding strict male primogeniture or deciding future accession. Its authored 1807 frame follows the selected announcement variant and does not silently reconcile every source chronology.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "catalogue_id": "heirs",
+      "choices": [
+        {
+          "beat_id": "heirs_receive",
+          "options": [
+            "Put the names before political titles",
+            "Preserve the household's full formal address"
+          ]
+        },
+        {
+          "beat_id": "heirs_sada",
+          "options": [
+            "Ask for an acknowledged delivery",
+            "Ask to deliver the words before witnesses"
+          ]
+        },
+        {
+          "beat_id": "heirs_seal",
+          "options": [
+            "Keep the accusation in a separate marked enclosure",
+            "Leave the unsigned allegation with the steward"
+          ]
+        },
+        {
+          "beat_id": "heirs_companion",
+          "options": [
+            "Permit only the birth announcement",
+            "Keep the dispatch private until delivery"
+          ]
+        },
+        {
+          "beat_id": "heirs_depart",
+          "options": [
+            "Register a household birth announcement",
+            "Register confidential household service"
+          ]
+        }
+      ],
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+    },
+    {
+      "id": "TALE-010",
+      "title": "The Fortress in the Letter",
+      "kind": "playable_sequence",
+      "delivery": "draft",
+      "pr": 76,
+      "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+      "branch": "feat/punjab-chiefs-playable-v1-20261002",
+      "source_path": "game/history/punjab_chiefs_catalogue.json",
+      "era": "Late 1808; a diplomatic approach",
+      "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects overture.",
+      "prerequisites": "None",
+      "player_actions": "Receive Sada Kaur's instruction for the sealed approach. Consult the storekeeper before carrying any practical assurance. Secure the packet and choose its delivery record. Meet the receiving agent and establish the limit of his authority. Escort the agent to the outer entrance and complete the handoff.",
+      "completion": "Reach a local ending; F5/F9 preserve this story; no Home grants.",
+      "parent_id": null,
+      "beats": [
+        "Receive Sada Kaur's instruction for the sealed approach.",
+        "Consult the storekeeper before carrying any practical assurance.",
+        "Secure the packet and choose its delivery record.",
+        "Meet the receiving agent and establish the limit of his authority.",
+        "Escort the agent to the outer entrance and complete the handoff."
+      ],
+      "historical_basis": "secondary_diplomatic_account_with_original_courier_scene; The university entry records secret negotiations with British officers. Discover Sikhism describes a November 1808 offer of Atalgarh to Metcalfe tied to restoration of possessions. The packet, route, receiving agent and conditions voiced here are invented. This stage ends with an approach delivered, never a completed alliance, an invented interception or a transfer of the fort. Atalgarh here belongs to Sada's diplomatic story, not Dal Singh's Akalgarh identity.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "catalogue_id": "overture",
+      "choices": [
+        {
+          "beat_id": "overture_instruction",
+          "options": [
+            "Ask that restoration remain the first condition",
+            "Ask for a hearing before practical promises"
+          ]
+        },
+        {
+          "beat_id": "overture_inventory",
+          "options": [
+            "Include the existing obligations in your oral account",
+            "Give no capacity figures without a written request"
+          ]
+        },
+        {
+          "beat_id": "overture_packet",
+          "options": [
+            "Record the intact seal before handing it over",
+            "Ask a household witness to record your departure"
+          ]
+        },
+        {
+          "beat_id": "overture_agent",
+          "options": [
+            "Require a receipt for delivery alone",
+            "Require a named route for the reply"
+          ]
+        },
+        {
+          "beat_id": "overture_handoff",
+          "options": [
+            "Report that an approach has been delivered",
+            "Report the conditions repeated at handoff"
+          ]
+        }
+      ],
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+    },
+    {
+      "id": "TALE-011",
+      "title": "Behind the Lowered Curtain",
+      "kind": "playable_sequence",
+      "delivery": "draft",
+      "pr": 76,
+      "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+      "branch": "feat/punjab-chiefs-playable-v1-20261002",
+      "source_path": "game/history/punjab_chiefs_catalogue.json",
+      "era": "1820–1821; departure from a watched camp",
+      "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects litter.",
+      "prerequisites": "None",
+      "player_actions": "Receive Sada Kaur's instruction before the curtain is lowered. Choose what account of the departure to leave with the papers. Confront Vasakha Singh before returning to the bearers. Gather the bearers and begin the short approach to the gate. Escort the covered litter to the outer camp entrance.",
+      "completion": "Reach a local ending; F5/F9 preserve this story; no Home grants.",
+      "parent_id": null,
+      "beats": [
+        "Receive Sada Kaur's instruction before the curtain is lowered.",
+        "Choose what account of the departure to leave with the papers.",
+        "Confront Vasakha Singh before returning to the bearers.",
+        "Gather the bearers and begin the short approach to the gate.",
+        "Escort the covered litter to the outer camp entrance."
+      ],
+      "historical_basis": "source_attributed_escape_with_original_retainer_viewpoint; Griffin and the university entry preserve a covered-litter escape followed by detention. Discover Sikhism dates its account to 1820 and names Vasakha Singh as the informing retainer and Desa Singh as the pursuer. This 1820–1821 frame retains chronology variants. The player is a fictional additional retainer; dialogue, papers and movement choices are original. Detention is fixed. Local agency determines the treatment of bearers, the wording of a report and how the party reaches its last gate, never a successful alternate escape.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "catalogue_id": "litter",
+      "choices": [
+        {
+          "beat_id": "litter_order",
+          "options": [
+            "Promise that the bearers will not be coerced",
+            "Promise a discreet departure without a false order"
+          ]
+        },
+        {
+          "beat_id": "litter_papers",
+          "options": [
+            "Leave the household's request in writing",
+            "Record your own responsibility for the preparations"
+          ]
+        },
+        {
+          "beat_id": "litter_retainer",
+          "options": [
+            "Ask him to distinguish departure from armed defiance",
+            "Ask him to name the bearers as hired workers"
+          ]
+        },
+        {
+          "beat_id": "litter_lift",
+          "options": [
+            "Keep everyone together and stop for a clear challenge",
+            "Keep the litter together until the entrance"
+          ]
+        },
+        {
+          "beat_id": "litter_last_gate",
+          "options": [
+            "Acknowledge the order and demand a recorded return",
+            "State a protest and name everyone placed in custody"
+          ]
+        }
+      ],
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+    },
+    {
+      "id": "TALE-012",
+      "title": "When the Camp Falls Quiet",
+      "kind": "playable_sequence",
+      "delivery": "draft",
+      "pr": 76,
+      "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+      "branch": "feat/punjab-chiefs-playable-v1-20261002",
+      "source_path": "game/history/punjab_chiefs_catalogue.json",
+      "era": "1792; the camp at Sodhra",
+      "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects sodhra.",
+      "prerequisites": "None",
+      "player_actions": "Receive the father's order before the camp moves. Bring the veteran into the evacuation work. Escort the veteran to the evacuation gate. Prepare what the returning party needs. Give Ranjit his father's message.",
+      "completion": "Reach a local ending; F5/F9 preserve this story; no Home grants.",
+      "parent_id": null,
+      "beats": [
+        "Receive the father's order before the camp moves.",
+        "Bring the veteran into the evacuation work.",
+        "Escort the veteran to the evacuation gate.",
+        "Prepare what the returning party needs.",
+        "Give Ranjit his father's message."
+      ],
+      "historical_basis": "retrospective_history_with_declared_dramatic_handover; This scene selects Griffin's 1792 illness and withdrawal, not the Memorial's 1790 child-victory outcome. The father's private words, delegated tasks, veteran, young runner, evacuation staging and choices are original drama. Authority passes through a small order to care for the camp; this is not evidence for a documented bedside investiture. Maha's death after his return remains fixed. Mana Singh is a research lead, not the identity assigned to the fictional veteran.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "catalogue_id": "sodhra",
+      "choices": [
+        {
+          "beat_id": "sodhra_father",
+          "options": [
+            "Carry his exact words",
+            "Ask who will stand beside his son"
+          ]
+        },
+        {
+          "beat_id": "sodhra_veteran",
+          "options": [
+            "Admit that you are frightened",
+            "Ask how Maha first trusted him"
+          ]
+        },
+        {
+          "beat_id": "sodhra_passage",
+          "options": [
+            "Count attendants and dependents",
+            "Leave a witness at the gate"
+          ]
+        },
+        {
+          "beat_id": "sodhra_supplies",
+          "options": [
+            "Divide the water between chief and bearers",
+            "Request the household's reserved jar"
+          ]
+        },
+        {
+          "beat_id": "sodhra_son",
+          "options": [
+            "Tell him his father heard him",
+            "Ask him to check the camp with the veteran"
+          ]
+        }
+      ],
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+    },
+    {
+      "id": "TALE-013",
+      "title": "Names at the Gate",
+      "kind": "playable_sequence",
+      "delivery": "draft",
+      "pr": 76,
+      "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+      "branch": "feat/punjab-chiefs-playable-v1-20261002",
+      "source_path": "game/history/punjab_chiefs_catalogue.json",
+      "era": "Late 1790s; after the Ramnagar conflict",
+      "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects settlement.",
+      "prerequisites": "None",
+      "player_actions": "Learn what you may promise the waiting family. Hear the representative before entering together. Escort the representative through the reception gate. Ask the clerk to state what provision and service require. Settle one immediate need before the household leaves.",
+      "completion": "Reach a local ending; F5/F9 preserve this story; no Home grants.",
+      "parent_id": null,
+      "beats": [
+        "Learn what you may promise the waiting family.",
+        "Hear the representative before entering together.",
+        "Escort the representative through the reception gate.",
+        "Ask the clerk to state what provision and service require.",
+        "Settle one immediate need before the household leaves."
+      ],
+      "historical_basis": "secondary_reference_with_original_local_negotiation; The entry takes the reported estates and military employment offered to Jan Muhammad's sons as its historical anchor. The unnamed family representative, veteran, clerk, guarantees, supplies, dialogue and local outcomes are original. These people speak for particular households, never every Chattha family. The sequence follows the conflict without replaying its killing; jobs and provision do not erase bereavement. The late-1790s period is separate from the 1792 opening.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "catalogue_id": "settlement",
+      "choices": [
+        {
+          "beat_id": "settlement_charge",
+          "options": [
+            "Establish who can guarantee passage",
+            "Ask what the household needs first"
+          ]
+        },
+        {
+          "beat_id": "settlement_receive",
+          "options": [
+            "Hear the dependents' needs first",
+            "Hear his questions about service first"
+          ]
+        },
+        {
+          "beat_id": "settlement_gate",
+          "options": [
+            "Call the veteran forward as guarantor",
+            "Remain beside the visitor while waiting"
+          ]
+        },
+        {
+          "beat_id": "settlement_terms",
+          "options": [
+            "Read provision and service separately",
+            "Name witnesses who can be found again"
+          ]
+        },
+        {
+          "beat_id": "settlement_provision",
+          "options": [
+            "Ask for grain to be issued now",
+            "Arrange a witnessed return to the household"
+          ]
+        }
+      ],
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+    },
+    {
+      "id": "MICRO-001",
+      "title": "Saffron in the fold",
+      "kind": "micro_scene",
+      "delivery": "draft",
+      "pr": 53,
+      "commit": "acaefc087cb5f6ccb60aa3868bdb907765ed6859",
+      "branch": "feat/bazaar-listening-performance-20260929",
+      "source_path": "docs/QUIET_OBJECT_STORIES.md",
+      "era": "1792",
+      "launch": "Run game/project.godot; choose Home territory. Face the story object and press V.",
+      "prerequisites": "Completed inquiry",
+      "player_actions": "Turn the cloth and notice its repairs.",
+      "completion": "Finish the optional presentation; no inventory or memory reward.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "MICRO-002",
+      "title": "The hole that was not used",
+      "kind": "micro_scene",
+      "delivery": "draft",
+      "pr": 53,
+      "commit": "acaefc087cb5f6ccb60aa3868bdb907765ed6859",
+      "branch": "feat/bazaar-listening-performance-20260929",
+      "source_path": "docs/QUIET_OBJECT_STORIES.md",
+      "era": "1792",
+      "launch": "Run game/project.godot; choose Home territory. Face the story object and press V.",
+      "prerequisites": "Completed inquiry",
+      "player_actions": "Inspect the harness cheekpiece.",
+      "completion": "Finish the optional presentation; no inventory or memory reward.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "MICRO-003",
+      "title": "A pan with two endings",
+      "kind": "micro_scene",
+      "delivery": "draft",
+      "pr": 53,
+      "commit": "acaefc087cb5f6ccb60aa3868bdb907765ed6859",
+      "branch": "feat/bazaar-listening-performance-20260929",
+      "source_path": "docs/QUIET_OBJECT_STORIES.md",
+      "era": "1792",
+      "launch": "Run game/project.godot; choose Home territory. Face the story object and press V.",
+      "prerequisites": "Completed inquiry",
+      "player_actions": "Bring Mela and Jiva nearby and hear both fables.",
+      "completion": "Finish the optional presentation; no inventory or memory reward.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "STUDY-001",
+      "title": "Locomotion course",
+      "kind": "study",
+      "delivery": "main",
+      "pr": null,
+      "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+      "branch": "main",
+      "source_path": "docs/LOCOMOTION_FOUNDATION.md",
+      "era": "Development fixture / Home prototype",
+      "launch": "Run res://mechanics/course.tscn.",
+      "prerequisites": "None",
+      "player_actions": "Exercise movement and traversal fixtures.",
+      "completion": "Exercise the feature; no separate authored mission completion.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "STUDY-002",
+      "title": "Ground-contact course",
+      "kind": "study",
+      "delivery": "draft",
+      "pr": 68,
+      "commit": "7ab4692886fa7bda97953a948db6ec4bfce50497",
+      "branch": "feat/ground-contact-physics-v1-20261002",
+      "source_path": "docs/GROUND_CONTACT_PHYSICS.md",
+      "era": "Development fixture / Home prototype",
+      "launch": "Run res://mechanics/ground_course.tscn.",
+      "prerequisites": "None",
+      "player_actions": "Exercise terrain contacts and movement fixtures.",
+      "completion": "Exercise the feature; no separate authored mission completion.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "STUDY-003",
+      "title": "Horsecraft study",
+      "kind": "study",
+      "delivery": "draft",
+      "pr": 71,
+      "commit": "21f8cf824d6b5dd98b2bb44dfa37948adafd55e7",
+      "branch": "feat/opening-game-v1-20261002",
+      "source_path": "docs/HORSECRAFT_STUDY.md",
+      "era": "Development fixture / Home prototype",
+      "launch": "Run res://mounts/horsecraft_study.tscn.",
+      "prerequisites": "None",
+      "player_actions": "Practice the horse motor outside campaign skill rewards.",
+      "completion": "Exercise the feature; no separate authored mission completion.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "STUDY-004",
+      "title": "Service equipment study",
+      "kind": "study",
+      "delivery": "main",
+      "pr": null,
+      "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+      "branch": "main",
+      "source_path": "docs/SERVICE_EQUIPMENT.md",
+      "era": "Development fixture / Home prototype",
+      "launch": "Run res://presentation/equipment_study.tscn.",
+      "prerequisites": "None",
+      "player_actions": "Inspect articulated equipment and poses.",
+      "completion": "Exercise the feature; no separate authored mission completion.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "STUDY-005",
+      "title": "Political exposure sandbox",
+      "kind": "study",
+      "delivery": "main",
+      "pr": null,
+      "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+      "branch": "main",
+      "source_path": "docs/POLITICAL_EXPOSURE_VISION.md",
+      "era": "Development fixture / Home prototype",
+      "launch": "Run res://world/political_home.tscn.",
+      "prerequisites": "None",
+      "player_actions": "Explore local perception and political exposure fixtures.",
+      "completion": "Exercise the feature; no separate authored mission completion.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "SYSTEM-001",
+      "title": "Hawk scouting",
+      "kind": "mechanic",
+      "delivery": "draft",
+      "pr": 73,
+      "commit": "153ed09fb0d843346402d771afb0053a5e1c3f39",
+      "branch": "feat/hawk-scout-v1-20261002",
+      "source_path": "docs/HAWK_SCOUT.md",
+      "era": "Development fixture / Home prototype",
+      "launch": "Run game/project.godot; choose Home territory. X releases/recalls the hawk.",
+      "prerequisites": "None",
+      "player_actions": "Fly, observe and tag bounded visible contacts.",
+      "completion": "Exercise the feature; no separate authored mission completion.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    },
+    {
+      "id": "SYSTEM-002",
+      "title": "Ground Focus",
+      "kind": "mechanic",
+      "delivery": "draft",
+      "pr": 75,
+      "commit": "79d23545ff8c62ffb782e478497d0bf532767ea2",
+      "branch": "feat/ground-focus-v1-20261002",
+      "source_path": "docs/GROUND_FOCUS.md",
+      "era": "Development fixture / Home prototype",
+      "launch": "Run game/project.godot; choose Home territory. Z toggles Focus.",
+      "prerequisites": "None",
+      "player_actions": "Observe nearby sensory evidence and temporary last-seen markers.",
+      "completion": "Exercise the feature; no separate authored mission completion.",
+      "parent_id": null,
+      "beats": [],
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "implementation": "Implemented prototype on the recorded revision."
+    }
+  ],
+  "backlog": [
+    {
+      "id": "YOUTH-bhangi_market_brawl",
+      "title": "The Bhangi Bazaar Brawl",
+      "status": "implemented_adaptation",
+      "related_ids": [
+        "HOME-013"
+      ],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-hashmat_ladewali",
+      "title": "The Hunt at Ladewali / Hashmat Khan",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-sodhran_command",
+      "title": "The Child at Sodhran",
+      "status": "planned",
+      "related_ids": [
+        "TALE-012"
+      ],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-throne_lahore_pardon",
+      "title": "The Throne of Lahore: Pardon",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-regency_escape",
+      "title": "Out of the Regents’ Sight",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-ammunition_rebellion",
+      "title": "The Inherited Ammunition",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-river_races",
+      "title": "Across the River",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-end_regency",
+      "title": "Taking the Reins",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-boar_hunt",
+      "title": "The Great Boar Hunt",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-nihang_camp",
+      "title": "A Night in the Nihang Camp",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-bazaar_revelry",
+      "title": "Nights in the Bazaar",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-afghan_raiders",
+      "title": "Against the Afghan Advance",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-pocket_money_companions",
+      "title": "A Pouch for the Playground",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-captured_falcon",
+      "title": "The Falcon in Another Courtyard",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-unwritten_king",
+      "title": "The Unwritten King",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-sodhran_naming",
+      "title": "The Day Budh Singh Became Ranjit",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-ancestral_mare",
+      "title": "Budha Singh and Desi",
+      "status": "planned",
+      "related_ids": [
+        "TALE-004"
+      ],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-jhang_night_raids",
+      "title": "The Fighting at Jhang",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-gujranwala_skirmishes",
+      "title": "The Village Alarm",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-palace_purge",
+      "title": "Keys to the Household",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-maan_singh_lethal",
+      "title": "The King of Thieves: Lethal Variant",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-kasur_night",
+      "title": "Night Encounter near Kasur",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-raj_kaur_mystery",
+      "title": "Raj Kaur: Conflicting Accounts",
+      "status": "planned",
+      "related_ids": [
+        "TALE-008"
+      ],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-ramnagar_cavalry",
+      "title": "The Clash at Ramnagar",
+      "status": "planned",
+      "related_ids": [
+        "TALE-013"
+      ],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-brick_kilns",
+      "title": "The Battle of the Brick Kilns",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-hound_confrontation",
+      "title": "The Hounds in the Courtyard",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-bazaar_arrest",
+      "title": "The Unrecognized Heir",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "YOUTH-sialkot_tribute",
+      "title": "The Sialkot Tribute Raid",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission."
+    },
+    {
+      "id": "PLAN-FATHER",
+      "title": "Required pre-Lahore Mahan campaign and childhood reprise",
+      "status": "contract_only",
+      "related_ids": [
+        "MAHA-001"
+      ],
+      "source_path": "docs/MAHAN_INTERLUDE.md",
+      "note": "Four sequencing placeholders; no completed 1797–1798 host or playable reprise."
+    },
+    {
+      "id": "PLAN-FALL",
+      "title": "Fall of Empire campaign",
+      "status": "contract_only",
+      "related_ids": [
+        "PRO-001"
+      ],
+      "source_path": "docs/FALL_OF_EMPIRE.md",
+      "note": "PR34: eight chapter contracts and a synthetic authoring desk; the later prologue does not implement those chapters."
+    },
+    {
+      "id": "BRIEF-001",
+      "title": "Punjab ecology and running skirmish encounters",
+      "status": "proposed",
+      "related_ids": [],
+      "source_path": "User reference intake, this conversation",
+      "note": "Grassland, river, scrub and wetland scenarios; mounted reload/retreat does not yet constitute a full misl skirmish mission."
+    },
+    {
+      "id": "BRIEF-002",
+      "title": "Maha’s smallpox vigil and childhood training",
+      "status": "proposed",
+      "related_ids": [],
+      "source_path": "User reference intake, this conversation",
+      "note": "Retain the supplied family tradition as a dramatic proposal; not an implemented bedside mission."
+    },
+    {
+      "id": "BRIEF-003",
+      "title": "Rasulnagar naming and the three-generation Chattha conflict",
+      "status": "proposed",
+      "related_ids": [],
+      "source_path": "User reference intake, this conversation",
+      "note": "Retain competing chronology; settlement recollection is not the complete siege campaign."
+    },
+    {
+      "id": "BRIEF-004",
+      "title": "Dal Singh and Sada Kaur’s secret alignment",
+      "status": "proposed",
+      "related_ids": [],
+      "source_path": "User reference intake, this conversation",
+      "note": "Regency recollection is related; a full conspiracy mission remains to be authored."
+    },
+    {
+      "id": "BRIEF-005",
+      "title": "Mathew and the royal caravan",
+      "status": "proposed",
+      "related_ids": [],
+      "source_path": "User reference intake, this conversation",
+      "note": "Foreign visitor/backchannel scenario proposed in the supplied brief."
+    },
+    {
+      "id": "BRIEF-006",
+      "title": "Lahore informants and the 1799 entry",
+      "status": "proposed",
+      "related_ids": [],
+      "source_path": "User reference intake, this conversation",
+      "note": "Intelligence, gate approach and political settlement need a complete authored mission."
+    },
+    {
+      "id": "BRIEF-007",
+      "title": "Palace correspondence and competing intelligence networks",
+      "status": "proposed",
+      "related_ids": [],
+      "source_path": "User reference intake, this conversation",
+      "note": "Household reports, interception and private motives remain attributed proposals."
+    },
+    {
+      "id": "BRIEF-008",
+      "title": "Cis-Sutlej estates and diplomatic protection",
+      "status": "proposed",
+      "related_ids": [],
+      "source_path": "User reference intake, this conversation",
+      "note": "Wadni/Himatpur petitions and boundary politics remain proposed."
+    },
+    {
+      "id": "BRIEF-009",
+      "title": "Rival misls, hill states and regional diplomacy",
+      "status": "proposed",
+      "related_ids": [],
+      "source_path": "User reference intake, this conversation",
+      "note": "Faction descriptions are worldbuilding, not one completed mission per state."
+    },
+    {
+      "id": "BRIEF-010",
+      "title": "Sindh, Shikarpur and the Mazari campaign",
+      "status": "proposed",
+      "related_ids": [],
+      "source_path": "User reference intake, this conversation",
+      "note": "Later-life southern campaign material remains proposed."
+    }
+  ],
+  "branch_coverage": [
+    {
+      "pr": 78,
+      "title": "Integrate ready 1792 stories, physics, scouting and production work",
+      "branch": "integrate/merge-ready-work-20261002",
+      "commit": "62b322c51726a7b60b662a64135d70819bc6a1e4",
+      "role": "integration_container",
+      "entry_ids": []
+    },
+    {
+      "pr": 77,
+      "title": "Add playable Sobraon opening and oral handoff into childhood",
+      "branch": "feat/sobraon-oral-opening-v1-20261002",
+      "commit": "e42ddd552879673b7477dbd4f926e389c1aa8e5b",
+      "role": "content_or_mechanic_source",
+      "entry_ids": [
+        "PRO-001"
+      ]
+    },
+    {
+      "pr": 76,
+      "title": "Add 13 playable family, court and frontier recollections",
+      "branch": "feat/punjab-chiefs-playable-v1-20261002",
+      "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+      "role": "content_or_mechanic_source",
+      "entry_ids": [
+        "TALE-001",
+        "TALE-002",
+        "TALE-003",
+        "TALE-004",
+        "TALE-005",
+        "TALE-006",
+        "TALE-007",
+        "TALE-008",
+        "TALE-009",
+        "TALE-010",
+        "TALE-011",
+        "TALE-012",
+        "TALE-013"
+      ]
+    },
+    {
+      "pr": 75,
+      "title": "Add ground Focus observations and correct hawk sensor geometry",
+      "branch": "feat/ground-focus-v1-20261002",
+      "commit": "79d23545ff8c62ffb782e478497d0bf532767ea2",
+      "role": "content_or_mechanic_source",
+      "entry_ids": [
+        "SYSTEM-002"
+      ]
+    },
+    {
+      "pr": 74,
+      "title": "Add bounded third-person hawk reconnaissance",
+      "branch": "feat/hawk-recon-v1-20261002",
+      "commit": "eb8bce6867f8e16be075493388db8fd7e23eb658",
+      "role": "alternative_delivery_of_SYSTEM-001",
+      "entry_ids": []
+    },
+    {
+      "pr": 73,
+      "title": "Add bounded third-person hawk scouting and last-seen tagging",
+      "branch": "feat/hawk-scout-v1-20261002",
+      "commit": "153ed09fb0d843346402d771afb0053a5e1c3f39",
+      "role": "content_or_mechanic_source",
+      "entry_ids": [
+        "SYSTEM-001"
+      ]
+    },
+    {
+      "pr": 72,
+      "title": "Stage shields, scabbard suspension and carry belts in the Gujranwala arms niche",
+      "branch": "feat/gujranwala-arms-staging-v1-20261002",
+      "commit": "a54d96f9b4c6d587dd0a11c1c6314a9608cf5fdf",
+      "role": "enhancement_or_infrastructure",
+      "entry_ids": []
+    },
+    {
+      "pr": 71,
+      "title": "Build family introduction and complete playable childhood beginning",
+      "branch": "feat/opening-game-v1-20261002",
+      "commit": "21f8cf824d6b5dd98b2bb44dfa37948adafd55e7",
+      "role": "content_or_mechanic_source",
+      "entry_ids": [
+        "MEM-001",
+        "HOME-014",
+        "STUDY-003"
+      ]
+    },
+    {
+      "pr": 68,
+      "title": "Add bounded ground contact physics and playable stairs/slopes course",
+      "branch": "feat/ground-contact-physics-v1-20261002",
+      "commit": "7ab4692886fa7bda97953a948db6ec4bfce50497",
+      "role": "content_or_mechanic_source",
+      "entry_ids": [
+        "STUDY-002"
+      ]
+    },
+    {
+      "pr": 67,
+      "title": "Connect Home passage, witnessed conduct and received memory",
+      "branch": "feat/shared-world-gate-memory-v1-20261002",
+      "commit": "116cbc4125d2b56e556b0f7d2a3e0082fe9cd2cc",
+      "role": "enhancement_or_infrastructure",
+      "entry_ids": []
+    },
+    {
+      "pr": 66,
+      "title": "Enrich Gujranwala at eye level: trim, timber reveals, repair fields and quiet storage",
+      "branch": "feat/gujranwala-microdetail-v1-20261001",
+      "commit": "d6d1739b68d77cd6fb7fa1d74db22545fd630b75",
+      "role": "enhancement_or_infrastructure",
+      "entry_ids": []
+    },
+    {
+      "pr": 63,
+      "title": "Deepen Gujranwala beauty: painted veranda, jali rhythm, planting and threshold light",
+      "branch": "feat/gujranwala-beauty-v1-20261001",
+      "commit": "f23d0e507d73d4acff98b1848fc635ce80770470",
+      "role": "enhancement_or_infrastructure",
+      "entry_ids": []
+    },
+    {
+      "pr": 59,
+      "title": "Add Gujranwala Slice 0.1 with durable visits",
+      "branch": "feat/gujranwala-slice-v01-20261001",
+      "commit": "988c89412e5dc8b39b4f9a31c5e07e82efa463bf",
+      "role": "launcher_or_preservation_wrapper",
+      "entry_ids": []
+    },
+    {
+      "pr": 58,
+      "title": "Capture playable childhood slice for Foundry and derive received-memory perspective",
+      "branch": "feat/childhood-preservation-slice-v1-20261001",
+      "commit": "bacf327b9d71a35833c7776a248a70bf15449d48",
+      "role": "launcher_or_preservation_wrapper",
+      "entry_ids": []
+    },
+    {
+      "pr": 53,
+      "title": "Small things worth stopping for: playable object stories and restrained character performance",
+      "branch": "feat/bazaar-listening-performance-20260929",
+      "commit": "acaefc087cb5f6ccb60aa3868bdb907765ed6859",
+      "role": "content_or_mechanic_source",
+      "entry_ids": [
+        "MICRO-001",
+        "MICRO-002",
+        "MICRO-003"
+      ]
+    },
+    {
+      "pr": 51,
+      "title": "Break follower symmetry: Mela eager outward, Jiva leading the withdrawal",
+      "branch": "feat/bazaar-companion-blocking-v1-20260929",
+      "commit": "6ca351b4b734aaa9ef652cedca11545699b125d2",
+      "role": "enhancement_or_infrastructure",
+      "entry_ids": []
+    },
+    {
+      "pr": 50,
+      "title": "Add facial micro-performance to bazaar supporting figures",
+      "branch": "feat/bazaar-facial-performance-v1-20260929",
+      "commit": "269a63f350c167ea284dfa3d0376911635c2d895",
+      "role": "enhancement_or_infrastructure",
+      "entry_ids": []
+    },
+    {
+      "pr": 49,
+      "title": "Direct bazaar eye-line and attention without inventing perception state",
+      "branch": "feat/bazaar-attention-v1-20260929",
+      "commit": "be3fdfda9d47eef1fb9c5d1891d4a0e3f332e42a",
+      "role": "enhancement_or_infrastructure",
+      "entry_ids": []
+    },
+    {
+      "pr": 41,
+      "title": "experiment: one live coding/vision agent revises the smith through unchanged workcell gates",
+      "branch": "experiment/single-agent-smith-20260929",
+      "commit": "2e1e66af5bf3fc913224a245a31478463b7b9d93",
+      "role": "enhancement_or_infrastructure",
+      "entry_ids": []
+    },
+    {
+      "pr": 39,
+      "title": "feat: title-owned smith workcell with baked art, native probes and source capsule",
+      "branch": "feat/smith-workcell-v1-20260929",
+      "commit": "5039f8b290cf9a39198ebb9a37709202b00e914f",
+      "role": "enhancement_or_infrastructure",
+      "entry_ids": []
+    },
+    {
+      "pr": 38,
+      "title": "Integrate accepted Foundry bench into playable workshop and qualify movement, pickup and saves",
+      "branch": "feat/accepted-workbench-integration-v1",
+      "commit": "4869eac467288b99c32268df99d4a06e573fb28d",
+      "role": "enhancement_or_infrastructure",
+      "entry_ids": []
+    },
+    {
+      "pr": 35,
+      "title": "docs: situated-history style, perspective tooling and production priorities",
+      "branch": "docs/historical-perspective-v1-20260929",
+      "commit": "dbf22a0014947eb254ead13de77efc15b4354c90",
+      "role": "enhancement_or_infrastructure",
+      "entry_ids": []
+    },
+    {
+      "pr": 34,
+      "title": "Fall of Empire: 1839–1859 DLC contract and opposing-perspective settlement desk",
+      "branch": "feat/fall-of-empire-foundation-v1",
+      "commit": "0dc67dd1ee77cdf0e758f8f45e645b5d2f097bf3",
+      "role": "planned_campaign_contract",
+      "entry_ids": []
+    },
+    {
+      "pr": 32,
+      "title": "Build funded recruitment, physical candidate escort and limited officer viewpoint; retain traversal contact",
+      "branch": "feat/funded-service-v1",
+      "commit": "ae3dffe2e2182a7692e0d430393c1fc5955f6b06",
+      "role": "content_or_mechanic_source",
+      "entry_ids": [
+        "HOME-017"
+      ]
+    },
+    {
+      "pr": 30,
+      "title": "feat: game-owned water-round operation for NET Foundry",
+      "branch": "feat/net-foundry-water-round-v1-20260929",
+      "commit": "fee822a3e0bde3b48dc6e196e5e43c20393816fa",
+      "role": "enhancement_or_infrastructure",
+      "entry_ids": []
+    },
+    {
+      "pr": 29,
+      "title": "feat: game-owned water-round workload for NET industrial production",
+      "branch": "feat/net-water-production-v1-20260929",
+      "commit": "70fcc477fb3783847fea56fa0ccaa5868413226f",
+      "role": "enhancement_or_infrastructure",
+      "entry_ids": []
+    },
+    {
+      "pr": 28,
+      "title": "docs: position 1792 under proposed Cartesian private layer and Notation Systems commons",
+      "branch": "docs/coupled-game-foundry-scope-20260929",
+      "commit": "f5f15f1a3e07104dee51ee64a61d390e957e0a81",
+      "role": "enhancement_or_infrastructure",
+      "entry_ids": []
+    },
+    {
+      "pr": 24,
+      "title": "PC platform foundation: native Steam runtime qualification and verified Windows builds",
+      "branch": "feat/platform-foundation-v1",
+      "commit": "53da0f4b0b91fcb2a9dffbae356306a8fbcd28b3",
+      "role": "enhancement_or_infrastructure",
+      "entry_ids": []
+    },
+    {
+      "pr": 23,
+      "title": "Playable oral memory: situated listening, differing accounts and attributed retelling",
+      "branch": "feat/oral-memory-v1",
+      "commit": "575b95f398059a8d26ca03c57c75a198eb1a8293",
+      "role": "content_or_mechanic_source",
+      "entry_ids": [
+        "HOME-016"
+      ]
+    },
+    {
+      "pr": 21,
+      "title": "Build a playable Gujranwala workshop commission and visible town crafts",
+      "branch": "feat/gujranwala-workshop-v1",
+      "commit": "51fae26d48348cb7e82ef5f8ff5b9567bfe37bd4",
+      "role": "older_delivery_of_HOME-011",
+      "entry_ids": []
+    },
+    {
+      "pr": 20,
+      "title": "Local social field v1: delayed actor beliefs and situated dialogue",
+      "branch": "feat/social-field-v1",
+      "commit": "de63cfb5ca522e3e3cbbe31d9f78a3e9b549a2ae",
+      "role": "enhancement_or_infrastructure",
+      "entry_ids": []
+    },
+    {
+      "pr": 19,
+      "title": "Connect Gujranwala's store and bazaar: carried provisions, reserve choices and household trade",
+      "branch": "feat/gujranwala-bazaar-v1",
+      "commit": "6ac5a4b159692b8f8835496efc9a1551cad4eb3a",
+      "role": "enhancement_or_infrastructure",
+      "entry_ids": []
+    },
+    {
+      "pr": 17,
+      "title": "Build connected Gujranwala neighbourhood: courtyards, bazaar, exploration and persistent town travel",
+      "branch": "feat/gujranwala-neighbourhood-v1",
+      "commit": "6e8f27715a0ae5de78d42b0696c620d66b0fd4cb",
+      "role": "enhancement_or_infrastructure",
+      "entry_ids": []
+    },
+    {
+      "pr": 16,
+      "title": "Build researched Gujranwala setting, Shah Muhammad narration and disputed-road caravan",
+      "branch": "feat/shah-caravan-road-v1",
+      "commit": "b251d6967ec46a95bcee4bbca55737d900b6c66d",
+      "role": "content_or_mechanic_source",
+      "entry_ids": [
+        "ROAD-001"
+      ]
+    },
+    {
+      "pr": 14,
+      "title": "Build Gujranwala: remount investigation and research-informed architecture",
+      "branch": "feat/missing-remounts-v1",
+      "commit": "06fccd1ededdfe203c8135efc4f844aeb78899d9",
+      "role": "content_or_mechanic_source",
+      "entry_ids": [
+        "HOME-015"
+      ]
+    },
+    {
+      "pr": 9,
+      "title": "Mahan Singh interlude: …→history→encounter→settlement→garhi + Gujranwala geography (draft)",
+      "branch": "feat/mahan-interlude-v1",
+      "commit": "8e858c00d4cd457f3a44174229462fd192b8cee0",
+      "role": "content_or_mechanic_source",
+      "entry_ids": [
+        "MAHA-001"
+      ]
+    }
+  ]
+}
