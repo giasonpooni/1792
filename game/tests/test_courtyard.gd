@@ -71,7 +71,7 @@ func run() -> void:
 	check(Pose.pose(c.model,Supply.QUARTERMASTER).is_empty(),"HUD fixture at quartermaster")
 	check(c.model.begin_allowance().is_empty(),"HUD allowance fixture")
 	c._apply();check(c.model.workshop_action("reserve").is_empty(),"HUD commission fixture");c._refresh();await frames(4)
-	check(d.hud.visible and not c._hud.visible,"compact task HUD · compact=%s · layer=%s · classic=%s · phase=%s · paused=%s" % [d.hud.compact,d.hud.visible,c._hud.visible,c.model.workshop_phase(),c._paused])
+	check(d.hud.visible and not c._hud.visible,"compact task HUD")
 	check(d.hud.words.text==c._message and d.hud.narrator.text==c._narrator_label.text,"existing speech and narration retained")
 	d.hud.compact=false;d.hud.sample();check(not d.hud.visible and c._hud.visible,"classic HUD restored")
 	d.hud.compact=true;c._refresh();c.open_art_study();state=c.model.snapshot()
