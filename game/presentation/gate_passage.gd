@@ -2,9 +2,11 @@
 extends Node3D
 ## Household-gate passage direction. Presentation only: no rank, AI, collision, route or save authority.
 const LANE_HALF_WIDTH := 1.9
+const ServiceGuard:=preload("res://presentation/service_guard.gd")
 var anchor := Vector3.ZERO
 var guard_root: Node3D
 var guard_hand: Node3D
+var guard_mail: Node3D
 var porter_root: Node3D
 var porter_base := Vector3.ZERO
 var cart_root: Node3D
@@ -86,18 +88,12 @@ func build(at: Vector3) -> void:
 	set_meta("historical_claim",false)
 
 	# Right-side household guard: gesture only, never a blocking body.
-	guard_root=Node3D.new()
-	guard_root.name="GateGuardStudy"
-	guard_root.position=Vector3(2.25,0,-.25)
+	guard_root=ServiceGuard.new()
+	guard_root.build()
+	guard_root.position=Vector3(2.40,0,-.25)
 	add_child(guard_root)
-	cylinder(guard_root,"GuardBody",.19,1.05,Vector3(0,.72,0),Color("59646a"))
-	sphere(guard_root,"GuardHead",Vector3(.18,.22,.18),Vector3(0,1.40,0),Color("a77f60"))
-	guard_hand=Node3D.new()
-	guard_hand.name="SignalArm"
-	guard_hand.position=Vector3(-.18,1.08,-.02)
-	guard_root.add_child(guard_hand)
-	cylinder(guard_hand,"SignalForearm",.045,.48,Vector3(0,-.20,0),Color("59646a"))
-	sphere(guard_hand,"SignalHand",Vector3(.075,.09,.075),Vector3(0,-.47,0),Color("a77f60"))
+	guard_hand=guard_root.signal_arm
+	guard_mail=guard_root.helmet.get_node("MailAventail")
 	remember("gate_guard",guard_root,"One guard marks the threshold and uses a small hand signal when a mounted rider approaches.")
 
 	# Left-side porter: shifts outward slightly instead of becoming a pathfinding agent.
@@ -191,7 +187,7 @@ func sample(tick: int,player_position: Vector3,mounted: bool,stage: String) -> v
 	var traffic_clearance: float=clampf((clear_radius-distance)/2.6,0.0,1.0)*active
 
 	# A readable but deliberately small hand signal.
-	guard_hand.rotation=Vector3(-1.02*mounted_clearance,0,-.08*mounted_clearance)
+	guard_root.sample_pose(tick,mounted_clearance)
 
 	# Yield outward, never into the lane.
 	porter_root.position=porter_base+Vector3(-.46*mounted_clearance,0,0)
@@ -208,8 +204,7 @@ func sample(tick: int,player_position: Vector3,mounted: bool,stage: String) -> v
 			crossing_right.position=crossing_right_edge
 
 	# The cart and pack remain where they were placed; they are not fake agents.
-	cart_root.rotation.y=.02*sin(float(tick)/95.0)
-	pack_root.rotation.y=.015*sin(float(tick)/120.0+1.1)
+	# Preserve their complete authored transforms, including rotation and scale.
 
 	# Wind/material motion is independent of social attention.
 	marker_cloth.rotation.z=.045*sin(float(tick)/37.0)
@@ -220,6 +215,8 @@ func passage_state() -> Dictionary:
 		"porter_position":porter_root.position if is_instance_valid(porter_root) else Vector3.ZERO,
 		"cart_position":cart_root.position if is_instance_valid(cart_root) else Vector3.ZERO,
 		"pack_position":pack_root.position if is_instance_valid(pack_root) else Vector3.ZERO,
+		"cart_transform":cart_root.transform if is_instance_valid(cart_root) else Transform3D.IDENTITY,
+		"pack_transform":pack_root.transform if is_instance_valid(pack_root) else Transform3D.IDENTITY,
 		"cloth_rotation":marker_cloth.rotation if is_instance_valid(marker_cloth) else Vector3.ZERO,
 		"crossing_left":crossing_left.position if is_instance_valid(crossing_left) else Vector3.ZERO,
 		"crossing_right":crossing_right.position if is_instance_valid(crossing_right) else Vector3.ZERO

@@ -39,6 +39,14 @@ jobs:
           sudo apt-get install --yes --no-install-recommends xvfb xauth libgl1-mesa-dri
           python3 tools/capture_home_art.py --xvfb --godot "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --output test-results/home-art-captures
           cp "$HOME/.local/share/godot/app_userdata/1792/home-art-tests.json" test-results/
+          mkdir -p test-results/equipment-captures
+          export EQUIPMENT_OUTPUT="$PWD/test-results/equipment-captures"
+          export SOURCE_COMMIT="$(git rev-parse HEAD)"
+          export SOURCE_TREE="$(git rev-parse HEAD^{tree})"
+          timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --path game --rendering-method gl_compatibility --audio-driver Dummy --fixed-fps 60 --script res://tests/render_service_equipment.gd > test-results/equipment-render.log 2>&1
+          cat test-results/equipment-render.log
+          if grep -Eq '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/equipment-render.log; then exit 1; fi
+          grep -q 'SERVICE_EQUIPMENT_RENDER: 9 captures, 0 failures' test-results/equipment-render.log
       - name: Retain source and execution identity
         if: always()
         run: |

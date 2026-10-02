@@ -1,0 +1,72 @@
+{
+  "schema": "1792.service-equipment.v1",
+  "classification": "authored-morphology-study",
+  "historical_claim": false,
+  "canonicalAdmission": false,
+  "references": [
+    {
+      "id": "user-curved-sword-20261002",
+      "filename": "d48fa22bdfc69d2d5285e6258fdd9f33.jpg",
+      "sha256": "a3ca1341128c1928ab0323bfa717fe36635050513aba09b08686e24489cb024f",
+      "observed": ["curved single-edged blade", "crossguard", "dark curved scabbard", "two suspension fittings", "contrasting metal fittings"],
+      "date": null,
+      "attribution": null,
+      "catalogue_record": null,
+      "measured_dimensions": null,
+      "image_rights": "unresolved; image not copied into repository or game"
+    },
+    {
+      "id": "user-helmet-shield-20261002",
+      "filename": "737bfccb97326dadc08199342115f1f1.jpg",
+      "sha256": "2a617cd5826b8feffd4a6a7b5e457aefcb722e331e55408b68a672930dbf250d",
+      "observed": ["domed helmet", "finial", "mail curtain", "round shield", "four bosses", "ornament and inscriptions"],
+      "date": null,
+      "attribution": null,
+      "catalogue_record": null,
+      "measured_dimensions": null,
+      "image_rights": "unresolved; image not copied into repository or game"
+    }
+  ],
+  "implementation": {
+    "origin": "Original procedural Godot mesh authoring by the coding assistant at the maintainer's request, 2026-10-02. References inform broad morphology only.",
+    "source_files": ["game/presentation/equipment_mesh.gd", "game/presentation/service_sword.gd", "game/presentation/service_defence.gd", "game/presentation/mail_aventail.gd", "game/presentation/service_guard.gd", "game/youth/performance/bazaar_figure.gd"],
+    "length_unit": "metre",
+    "authored_blade_circle_radius": 1.12,
+    "authored_blade_arc_radians": 0.78,
+    "authored_blade_arc_length": 0.8736,
+    "authored_blade_width_at_root": 0.042,
+    "authored_blade_thickness_at_root": 0.005,
+    "authored_shield_radius": 0.245,
+    "authored_shield_dish_depth": 0.052,
+    "authored_mail": {
+      "columns": 32,
+      "rows": 16,
+      "ring_instances": 512,
+      "ring_centre_radius": 0.0095,
+      "wire_radius": 0.00135,
+      "strip_pitch": 0.014,
+      "attachment": "Pinned upper row; fixed-length articulated strips",
+      "sampling": "Existing chapter tick; deterministic 480-tick cycle; guard amplitude 0.20",
+      "contact_simulation": false,
+      "historical_weave_verified": false
+    },
+    "mass_or_inertia_calibration": null,
+    "gameplay_authority": false,
+    "production_attachment": "Existing gate_guard, permanently sheathed",
+    "authored_guard_fit": {
+      "body_source": "Reused articulated bazaar figure, optional headwear disabled",
+      "gate_local_x": 2.40,
+      "helmet_uniform_scale": 1.13,
+      "shield_attachment": "Outer forearm socket, hand centre coincident with grip anchor",
+      "sword_attachment": "Torso socket with two belt-to-scabbard straps",
+      "pose_input": "Existing gate approach clearance; feet remain planted",
+      "contact_simulation": false
+    },
+    "gate_records": 7,
+    "new_collision_bodies": 0,
+    "new_save_fields": 0,
+    "human_art_review": "pending",
+    "historical_review": "pending"
+  },
+  "deferred": ["verified mail weave and interlink topology", "mail contact and material dynamics", "inscription/engraving reproduction", "measured physical parameters", "hand-rig drawing and combat animation", "weapon clearance collision", "actor ownership and provenance gameplay"]
+}

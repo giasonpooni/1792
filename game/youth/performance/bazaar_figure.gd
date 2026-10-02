@@ -9,6 +9,8 @@ var shoulders: Array[Node3D]=[]
 var elbows: Array[Node3D]=[]
 var hips: Array[Node3D]=[]
 var knees: Array[Node3D]=[]
+var hands: Array[MeshInstance3D]=[]
+var feet: Array[MeshInstance3D]=[]
 var eyes: Array[MeshInstance3D]=[]
 var eye_origins: Array[Vector3]=[]
 var eye_scales: Array[Vector3]=[]
@@ -28,7 +30,7 @@ func round_piece(parent: Node3D,size: Vector3,p: Vector3,color: Color) -> MeshIn
 func tapered(parent: Node3D,top: float,bottom: float,height: float,p: Vector3,color: Color,depth: float=1.0) -> void:
 	var mesh:=MeshInstance3D.new();var c:=CylinderMesh.new();c.top_radius=top;c.bottom_radius=bottom;c.height=height;c.radial_segments=12
 	mesh.mesh=c;mesh.position=p;mesh.scale.z=depth;mesh.material_override=surface(color);parent.add_child(mesh)
-func build(index: int) -> void:
+func build(index: int,with_headwear: bool=true) -> void:
 	actor_index=index
 	var coat: Color=[Color("806255"),Color("747161"),Color("8c7765"),Color("a56c44"),Color("526c70")][index]
 	var cloth: Color=[Color("b9a584"),Color("938968"),Color("cbc0a2"),Color("ddd0ac"),Color("bec6b6")][index]
@@ -40,10 +42,11 @@ func build(index: int) -> void:
 	tapered(torso,.13,.17,.10,Vector3(0,.605,0),cloth,.72)
 	head=joint(torso,"Head",Vector3(0,.68,0))
 	round_piece(head,Vector3(.26,.32,.26),Vector3(0,.07,-.006),skin)
-	round_piece(head,Vector3(.32,.18,.30),Vector3(0,.255,.005),cloth)
-	for y in [.22,.25,.28]:
-		var band:=MeshInstance3D.new();var ring:=TorusMesh.new();ring.inner_radius=.13;ring.outer_radius=.159;ring.rings=12;ring.ring_segments=8
-		band.mesh=ring;band.scale=Vector3(1,.48,.94);band.position.y=y;band.material_override=surface(cloth.darkened(.12));head.add_child(band)
+	if with_headwear:
+		round_piece(head,Vector3(.32,.18,.30),Vector3(0,.255,.005),cloth)
+		for y in [.22,.25,.28]:
+			var band:=MeshInstance3D.new();var ring:=TorusMesh.new();ring.inner_radius=.13;ring.outer_radius=.159;ring.rings=12;ring.ring_segments=8
+			band.mesh=ring;band.scale=Vector3(1,.48,.94);band.position.y=y;band.material_override=surface(cloth.darkened(.12));head.add_child(band)
 	round_piece(head,Vector3(.06,.095,.075),Vector3(0,.055,-.139),skin.lightened(.05))
 	for x in [-.065,.065]:
 		var eye:=round_piece(head,Vector3(.035,.018,.018),Vector3(x,.102,-.130),Color("322c25"));eyes.append(eye);eye_origins.append(eye.position);eye_scales.append(eye.scale)
@@ -55,12 +58,12 @@ func build(index: int) -> void:
 		tapered(h,.115,.095,.38,Vector3(0,-.19,0),trousers)
 		var k:=joint(h,"Knee",Vector3(0,-.38,0));knees.append(k)
 		tapered(k,.095,.065,.35,Vector3(0,-.175,0),trousers)
-		round_piece(k,Vector3(.18,.105,.29),Vector3(0,-.37,-.045),leather)
+		feet.append(round_piece(k,Vector3(.18,.105,.29),Vector3(0,-.37,-.045),leather))
 		var a:=joint(torso,"Shoulder%d"%side,Vector3(side*.265,.53,0));shoulders.append(a)
 		tapered(a,.09,.07,.29,Vector3(0,-.145,0),coat)
 		var e:=joint(a,"Elbow",Vector3(0,-.29,0));elbows.append(e)
 		tapered(e,.07,.06,.26,Vector3(0,-.13,0),cloth)
-		round_piece(e,Vector3(.115,.14,.12),Vector3(0,-.31,-.018),skin)
+		hands.append(round_piece(e,Vector3(.115,.14,.12),Vector3(0,-.31,-.018),skin))
 func sample(tick: int,speed: float,action: String,amount: float=0.0,speaking: bool=false) -> void:
 	pose_name=action
 	position=Vector3.ZERO

@@ -45,6 +45,8 @@ func run() -> void:
 	var before: Dictionary=scene.model.snapshot()
 	var actor_before: Transform3D=scene.avatar.global_transform
 	var gate: Vector3=Model.GATES[2]
+	var cart_before: Transform3D=passage.cart_root.transform
+	var pack_before: Transform3D=passage.pack_root.transform
 
 	passage.sample(0,gate+Vector3(0,0,9),false,"riding")
 	var far: Dictionary=passage.passage_state()
@@ -75,6 +77,18 @@ func run() -> void:
 	var caught: Dictionary=passage.passage_state()
 	check(caught.guard_hand==Vector3.ZERO and caught.porter_position==passage.porter_base,"caught phase clears social gesture without moving route props")
 	check(caught.crossing_left==passage.crossing_left_edge and caught.crossing_right==passage.crossing_right_edge,"caught phase returns sparse traffic to edge positions")
+	for pose in [far,near_foot,near_mounted,distant_cross,close_foot,mounted_early,caught]:
+		check(pose.cart_transform==cart_before and pose.pack_transform==pack_before,"complete cart/pack transforms stay fixed across far, foot, mounted and caught samples")
+	# Rewinding and long-running sampling must preserve non-identity authored bases too.
+	passage.cart_root.rotation.y=.13
+	passage.pack_root.scale=Vector3(.95,1.05,1.0)
+	var authored_cart: Transform3D=passage.cart_root.transform
+	var authored_pack: Transform3D=passage.pack_root.transform
+	for sample_tick in [720,1,99999,0]:
+		passage.sample(sample_tick,gate,true,"riding")
+		check(passage.cart_root.transform==authored_cart and passage.pack_root.transform==authored_pack,"sampling preserves authored rotation and scale at tick %d"%sample_tick)
+	passage.cart_root.transform=cart_before
+	passage.pack_root.transform=pack_before
 
 	check(scene.model.snapshot()==before,"gate choreography mutates no campaign state")
 	check(scene.avatar.global_transform==actor_before,"gate choreography never moves or rotates the authoritative player body")

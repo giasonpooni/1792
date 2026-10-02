@@ -1,12 +1,35 @@
-# 1792
+# 1792 — The One-Eyed King
+
+**The first game from Cartesian Graphics**, Notation Systems' games, graphics,
+physics and simulation label. **1792** remains the repository and shorthand name.
 
 **Build outward from home.**
 
-A Cartesian Graphics historical open-world game following **Buddh Singh** from
-Gujranwala and the Sukerchakia home territory toward wider command. Travel,
+A historical open-world biopic following **Buddh Singh**, later **Maharaja Ranjit
+Singh**, from Gujranwala and the Sukerchakia home territory toward wider command. Travel,
 relationships, provisions and incomplete knowledge matter before empire management.
 The stable character ID remains `ranjit_singh`; the childhood display name and
 later public names follow the [naming policy](docs/CHARACTER_NAMES.md).
+
+The planned narrative spans his childhood, rise and reign. Current production
+priority is childhood through the prelude to the Lahore campaign, followed by the
+rest of his life before historical-character DLC production.
+
+## Title and story
+
+The subtitle draws on the childhood smallpox that left Ranjit Singh with facial
+scarring and blindness in his left eye. [Biographical accounts](https://en.wikipedia.org/wiki/Ranjit_Singh#Early_years)
+describe infancy or childhood; the exact age remains open in our authoring notes.
+For the 1792 portrayal, he already has these lasting effects. An earlier illness
+and recovery sequence is planned as a childhood prologue or flashback, with later
+scenes exploring his adaptation, training and growing command.
+
+Popular stories surrounding his eye and kingship remain part of the cinematic
+material. Khushwant Singh recounts the story about seeing all religions with one
+eye and [identifies it as apocryphal](https://www.newindianexpress.com/cities/bengaluru/2019/Dec/18/ranjit-singh-has-been-poorly-served-by-his-biographers-2077708.html).
+Such traditions can appear as oral storytelling, retrospective narration and
+dramatized dialogue, with their attributed or legendary status retained in the
+authoring notes.
 
 **Playable greybox in development, not a finished city or historical survey.**
 
@@ -34,6 +57,14 @@ it does not advance Buddh's biography or replace a story chapter.
 Import `game/project.godot` in standard **Godot 4.5.1** and press **F5**.
 No .NET SDK, Python service, Bevy process or NET server is required to play.
 Choose **1792 · Buddh Singh · Home territory** for the integrated home chapter.
+
+The **Equipment study** entry inspects a curved service sword, independent scabbard,
+round shield and domed helmet with articulated ring mail. Draw, turn and mail-motion
+controls use the same procedural components attached to the Home gate guard;
+**H** opens a helmet close-up; **G** shows the equipped guard and its signal pose.
+The guard reuses the articulated bazaar figure with a forearm-supported shield and
+two belt-to-scabbard suspension straps. These are authored morphology studies;
+see [controls, references and qualification limits](docs/SERVICE_EQUIPMENT.md).
 
 Learn the yard, hear a letter read, ride, train, follow traces, survive an authored
 ambush, investigate and report home. After the inquiry, administer a limited
