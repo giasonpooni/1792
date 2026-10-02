@@ -15,7 +15,7 @@ authority. It extends the clean local family-opening commit
 The opening depends on the existing local material-fidelity and horsecraft work:
 `a642db9`, `0845b83`, `d32a601`, `673d539`, then `8046912`. These are explicit
 prerequisites, not claims that they were merged or previously hosted-qualified.
-The published base is microdetail PR #66 at
+The initial published base was microdetail PR #66 at
 `d6d1739b68d77cd6fb7fa1d74db22545fd630b75`. Gate-memory PR #67 and physics PR #68
 remain separate; do not absorb them or other unrelated unmerged work.
 
@@ -678,3 +678,100 @@ green runs and similar screenshots do not substitute for those checks. Keep
 unqualified work draft/unmerged. Remaining human/controller/Windows/physical-GPU
 checks, inherited exit warnings, production assets/voice and larger chronology
 remain pending as stated above. Do not merge main or absorb unrelated branches.
+
+## Checkpoint: strict hosted packs downloaded; integration base changed
+
+Published source `5023d5211882f2f1a85710658b35d55eb3ba0b9b`, tree
+`a333e0891f792d4111d904c1e6e395ee7c71346a`, completed all nine hosted workflows.
+Command run `37037132071` / job `110937995623` executed both fresh full routes:
+escort 23 frames / 327 native checks / zero failures; independent 23 / 338 /
+zero. All 60 verifier tests passed, together with guidance 464/zero and the
+inherited beginning 11 frames / 72 checks / zero. Native horsecraft completed
+five captures/zero in 134.626 seconds. Courtyard run `37037132037` / job
+`110937995050` passed 6,874 native assertions, 103 inherited Python contracts and
+six actual courtyard captures. Corrective HUD and active paused audio remain
+qualified: settled/final audio position was identical over at least 250 ms while
+the independent mixer advanced. Existing ObjectDB exit/V-Sync warnings remain;
+no script/shader errors were observed. Earlier failed runs remain failed.
+
+Both complete latest-head journey ZIPs and the source snapshot were actually
+downloaded, size/digest/CRC checked and safely extracted. Each journey has all
+23 PNGs and 34 unique files, including original source commit/archive, execution,
+renderer trace, verification and native save/checkpoint evidence. Every retained
+file still byte-matches its original ZIP after independent verification.
+
+| Downloaded hosted artifact | ID | ZIP bytes | Actual ZIP SHA-256 |
+| --- | --- | --- | --- |
+| Escort | `11240539392` | 24,412,995 | `7656f750f6f6e6df0f45487fcc6bedddbd2ad676e1029c9e830484350af1997e` |
+| Independent | `11240349673` | 24,403,703 | `6a92cd34c0fd73196dda260dab7cc2e18fa81b10e530980dafb62019f79f154c` |
+| Source snapshot | `11240519430` | 885,846 | `aecf06a3d488c4d76006ebbefdb0d3f6760b5a5946bba1730e8652e8fe3d6f41` |
+
+All 317 included source-snapshot files match their tracked bytes. Each journey's
+complete archive separately reproduces the whole 347-path Git tree and its raw
+commit, including the sole parent `8b1cc732e7f3bd2c645647cebe2148bbe5261fe9`.
+Aggregate artifact `11240344524` is 163,253,497 bytes and was not downloaded
+through the 32 MiB executor; both smaller complete packs retain unique evidence.
+Artifacts expire on 16 October 2026 under the existing retention profile.
+
+Hosted executions `0e4e70cd-b9e5-42a3-bc8c-c983ee9b11bf` and
+`60a5f01e-e982-45ea-8ae6-374ae37bea59` remain distinct from the local executions
+above. Downloaded independent verifications `fa836723-b6b3-4289-b388-e2171b5a4829`
+and `6a351323-7306-4310-90bb-cf75601f9b1d` passed exact source/tree/runtime/helper,
+requested/actual choice, whole cold save, receipt/custody, PNG/RGBA and both new
+live-clock/replay-mirror bindings. Their external file digests are
+`9687b2a4b38d71e7a489207c1476faf9704247d08013dcd5591a73040ce71158`
+and `d7377efd4b0902dd25b1b4edfed02cd1d943cd66ec838fcc91b070fd453216a0`.
+Hosted manifest digests are `d6ceef5141a389b5ecbb1b0689df45a493d9b8228e0b92ccd01f6dec77ad14f3`
+and `71fc9ab81e1e0e24d2560c13d79449fa6e174260bab8a9e3231b9f76dcee0b6d`.
+
+The independent visual audit inspected fourteen actual latest hosted frames
+(five task, family and choice per route). All fourteen byte/pixel-match the
+earlier ec3 hosted captures. Compared to current local captures, task differences
+are 2–11 pixels / maximum channel 3/255 for escort and 2–10 / 2/255 for independent;
+family frames are exact, choice differs by six pixels / 1/255. Each execution's
+own byte identities remain separately verified. HUD/camera/target/guard metadata
+agree; controls and completed handoff remain readable without clipping. No new
+demonstrated visual or saved-authority defect was found.
+
+At the 17:12 UTC metadata reconciliation on 2 October (API `updated_at`
+17:11:51 UTC), PR #71's base was observed retargeted from the original
+microdetail branch to `main`, at
+`8ae0e3a45a5137e4e1dcb92318297515f4b35ea9`. GitHub reports merge conflicts. PR #66
+remains open/unmerged at the original `d6d1739b68d77cd6fb7fa1d74db22545fd630b75`.
+The changed main base includes the separate PR #70 service-equipment merge.
+At that reconciliation the opening source had not been rebased, merged or
+changed to absorb those unrelated main changes.
+The opening head remains the exact independently qualified source above.
+Hosted checkout explicitly tests the head SHA; its success does not qualify a
+conflicted merge with the newly changed base. **Integration remains pending.**
+
+This new checkpoint changes documentation only. Reconcile its exact published
+head/CI and retained packs after publication; ancestor green results do not
+substitute for newer metadata. Preserve the qualified opening branch and keep
+PR #71 draft/unmerged. Do not resolve integration by silently importing unrelated
+work during this window. Further base changes require separate reconciliation.
+Remaining human/controller/Windows/physical-GPU and production-art qualifications
+remain as stated above. At the authorized cutoff, reconcile read-only and stop.
+
+## Checkpoint: original stack restored for exact-head CI
+
+The documentation-only head `57012b474623b9623f9366b2d7b648d9f0ad6f96`, tree
+`6a1f5c09867935f876a5c298bd377b3d7af007ca`, had no PR-triggered workflow runs in
+the repeated exact-commit reads while the main base was conflicted. This absence
+is not a passing or failing qualification. GitHub's primary
+[workflow troubleshooting documentation](https://docs.github.com/en/actions/how-tos/troubleshoot-workflows)
+confirms that merge conflicts inhibit ordinary `pull_request` workflow triggers.
+
+The originally authorized microdetail branch was inspected and still existed at
+`d6d1739b68d77cd6fb7fa1d74db22545fd630b75`, with PR #66 open/unmerged. At
+17:24:58 UTC on 2 October, only PR #71's base metadata was restored to
+`feat/gujranwala-microdetail-v1-20261001`. The opening head stayed exactly
+`57012b474623b9623f9366b2d7b648d9f0ad6f96`, draft/open/unmerged. No source import,
+rebase, force-push or main merge was performed. This restores the original
+explicit stack rather than treating unrelated main changes as qualified.
+
+The runtime/verifier/test sources remain unchanged from the qualified strict
+source above. Publish this documentation correction, inspect the new exact-head
+workflow runs and both complete artifacts, and record their results separately
+from the absent 570 runs. Integration with current main remains pending outside
+this window's source qualification; preserve the original stack and draft.

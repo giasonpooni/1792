@@ -732,6 +732,12 @@ class OpeningEvidenceChecks(unittest.TestCase):
         text = re.sub(r'("hour": )7\.030194444444445(?=[,}])', r'\g<1>7.03019444444444463', text)
         return text.replace("2.9739980697631836", "2.97399806976318359").encode()
 
+    def restored_parser_snapshot(self, raw):
+        """Model the production cold restore of a valid native save fixture."""
+        value = strict_json(raw, godot_numbers=True)
+        value["game_time"] = self.clock_for_tick(value["childhood"]["tick"])
+        return value
+
     def test_pinned_parser_reproduces_observed_original_numeric_lexemes(self):
         self.assertEqual(godot451_number("7.03019444444444463"), 7.030194444444444)
         self.assertEqual(godot451_number("2.97399806976318359"), 2.973998069763183)
@@ -741,7 +747,7 @@ class OpeningEvidenceChecks(unittest.TestCase):
 
     def test_native_save_binds_the_entire_exact_reconstructed_cold_snapshot(self):
         raw = self.parser_raw()
-        staged = strict_json(raw, godot_numbers=True)
+        staged = self.restored_parser_snapshot(raw)
         original = strict_json(raw)
         before = copy.deepcopy(staged)
         result = verify_native_save_bytes(raw, staged)
@@ -751,7 +757,8 @@ class OpeningEvidenceChecks(unittest.TestCase):
                          {"actors.ranjit_singh.position[0]", "actors.ranjit_singh.position[1]",
                           "player.position[0]", "player.position[1]", "game_time.hour"})
         self.assertEqual(original["game_time"]["hour"], self.clock_for_tick(6522)["hour"])
-        self.assertNotEqual(original["game_time"]["hour"], staged["game_time"]["hour"])
+        self.assertEqual(original["game_time"]["hour"], staged["game_time"]["hour"])
+        self.assertNotEqual(result["original_parsed_hour"], staged["game_time"]["hour"])
         self.assertEqual(staged, before)
 
     def test_native_save_raw_clock_refuses_both_immediate_ulp_neighbors(self):
@@ -779,14 +786,29 @@ class OpeningEvidenceChecks(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     verify_native_save_bytes(raw, strict_json(raw, godot_numbers=True))
 
-    def test_native_save_cold_clock_requires_the_single_exact_parser_result(self):
+    def test_native_save_cold_clock_requires_the_single_exact_native_restore_result(self):
         raw = self.parser_raw()
-        expected = strict_json(raw, godot_numbers=True)["game_time"]["hour"]
-        for hour in (self.clock_for_tick(6522)["hour"], math.nextafter(expected, -math.inf),
+        expected = self.clock_for_tick(6522)["hour"]
+        for hour in (strict_json(raw, godot_numbers=True)["game_time"]["hour"], math.nextafter(expected, -math.inf),
                      math.nextafter(expected, math.inf)):
             with self.subTest(hour=hour):
-                staged = strict_json(raw, godot_numbers=True)
+                staged = self.restored_parser_snapshot(raw)
                 staged["game_time"]["hour"] = hour
+                with self.assertRaisesRegex(ValueError, "Native cold authority mismatch"):
+                    verify_native_save_bytes(raw, staged)
+
+    def test_native_save_restored_clock_remains_exact_across_day_boundaries(self):
+        for tick in (3671999, 3672000, 3672001, 10000000):
+            with self.subTest(tick=tick):
+                value = self.clock_pose_snapshot()
+                value["childhood"]["tick"] = tick
+                value["game_time"] = self.clock_for_tick(tick)
+                raw = self.parser_raw(value)
+                staged = self.restored_parser_snapshot(raw)
+                result = verify_native_save_bytes(raw, staged)
+                self.assertEqual(staged["game_time"], value["game_time"])
+                self.assertEqual(result["reconstructed_cold_hour"], value["game_time"]["hour"])
+                staged["game_time"]["day"] += 1
                 with self.assertRaisesRegex(ValueError, "Native cold authority mismatch"):
                     verify_native_save_bytes(raw, staged)
 
@@ -794,7 +816,7 @@ class OpeningEvidenceChecks(unittest.TestCase):
         raw = self.parser_raw()
         for field in ("knowledge", "money", "hero", "player", "guard", "receipt", "clock_tick", "clock_year", "clock_day", "bool"):
             with self.subTest(field=field):
-                staged = strict_json(raw, godot_numbers=True)
+                staged = self.restored_parser_snapshot(raw)
                 if field == "knowledge":
                     staged["aftermath"]["memories"][0]["received_tick"] += 1
                 elif field == "money":
@@ -816,7 +838,7 @@ class OpeningEvidenceChecks(unittest.TestCase):
 
     def test_native_save_preserves_only_the_declared_escort_physical_projection(self):
         raw = self.parser_raw()
-        staged = strict_json(raw, godot_numbers=True)
+        staged = self.restored_parser_snapshot(raw)
         y = staged["aftermath"]["escort"]["position"][1]
         staged["aftermath"]["escort"]["position"][1] = math.nextafter(y, math.inf)
         result = verify_native_save_bytes(raw, staged)
@@ -843,7 +865,7 @@ class OpeningEvidenceChecks(unittest.TestCase):
 
     def test_native_save_limit_refuses_oversized_bytes_before_parser_work(self):
         raw = self.parser_raw()
-        staged = strict_json(raw, godot_numbers=True)
+        staged = self.restored_parser_snapshot(raw)
         at_limit = raw + b" " * (NATIVE_SAVE_LIMIT - len(raw))
         self.assertTrue(verify_native_save_bytes(at_limit, staged)["whole_cold_authority_exact"])
         with self.assertRaisesRegex(ValueError, "existing authority limit"):

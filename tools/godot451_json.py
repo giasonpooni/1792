@@ -6,8 +6,9 @@ finite, strict JSON emitted by the existing native save authority. Numeric
 lexemes are independently parsed with the pinned Godot 4.5.1 decimal algorithm;
 the complete reconstructed authority must match the recorded cold snapshot.
 Only the previously declared physical escort position/velocity/yaw receive the
-existing binary32 representation reconciliation. Player/hero and clock values
-are compared exactly to their reconstructed parser results, without tolerances.
+existing binary32 representation reconciliation. Player/hero values match their
+parser results exactly. The validated saved clock is then reconstructed from the
+integer tick, exactly as childhood_state.restore does, without tolerances.
 
 Primary source, tag 4.5.1-stable:
   core/io/json.cpp, blob 34f001a228237a8fc9c0d10f1908ba0034d11de8:
@@ -195,7 +196,7 @@ def differences(left, right, path="") -> list[dict]:
 
 
 def verify_native_save_bytes(raw: bytes, recorded_cold_snapshot: dict) -> dict:
-    """Require exact raw clock, reconstruct full cold parser authority, compare.
+    """Require exact raw clock, reconstruct native parser and restore, compare.
 
     Check digests against the declared manifest at the caller before this helper.
     This returns diagnostic binding information and never substitutes artifacts.
@@ -205,11 +206,22 @@ def verify_native_save_bytes(raw: bytes, recorded_cold_snapshot: dict) -> dict:
     exact_raw_clock(original)
     predicted = strict_json(raw, godot_numbers=True)
     drift = differences(original, predicted)
+    parsed_hour = predicted["game_time"]["hour"]
+    # The production restore validates the parsed save, then derives this cache
+    # from the authoritative integer tick. Preserve all other parser results.
+    parsed_tick = predicted["childhood"]["tick"]
+    require(type(parsed_tick) in (int, float) and parsed_tick == original["childhood"]["tick"],
+            "Native parser changed the authoritative integer tick")
+    hours = 7.0 + parsed_tick / 216000.0
+    predicted["game_time"]["day"] = 1 + int(hours / 24.0)
+    predicted["game_time"]["hour"] = math.fmod(hours, 24.0)
     mismatches = differences(guard_only_projection(predicted), guard_only_projection(recorded_cold_snapshot))
     require(not mismatches, "Native cold authority mismatch: " + json.dumps(mismatches[:12], sort_keys=True))
     return {"save_sha256": hashlib.sha256(raw).hexdigest(), "saved_tick": original["childhood"]["tick"],
             "raw_hour": original["game_time"]["hour"], "reconstructed_cold_hour": predicted["game_time"]["hour"],
+            "original_parsed_hour": parsed_hour,
             "all_numeric_parser_changes": drift, "whole_cold_authority_exact": True,
             "physical_projection": "aftermath.escort.position/velocity/yaw only; binary32",
             "parser": "Godot4.5.1-stable built_in_strtod; exact original numeric lexemes",
-            "raw_clock": "exact integer-tick derivation; no tolerance"}
+            "raw_clock": "exact integer-tick derivation; no tolerance",
+            "cold_clock": "validated save then exact childhood_state.restore integer-tick derivation; no tolerance"}

@@ -15,7 +15,7 @@ func check(condition: bool, label: String) -> void:
 
 func _initialize() -> void:
 	var original := State.new()
-	for target in [94,274,601,1430]:
+	for target in [94,274,601,1430,4809,6522,6525]:
 		while original.progress().tick<target: original.advance()
 		var before := original.snapshot()
 		check(original.save_to(SAVE).is_empty(),"clock regression save at "+str(target))

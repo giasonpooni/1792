@@ -460,7 +460,7 @@ def check_manifest(folder: Path, checkpoint: Path, final_save: Path, choice: str
             "household_task": task, "native_household_custody_rollback_verified": task == "smith-commission",
             "native_task_observation_clocks_verified": task == "smith-commission",
             "native_task_replay_tick_mirrors_verified": task == "smith-commission",
-            "native_save_comparison": "exact original save bytes hashed; raw clock must equal integer-tick derivation; all original numeric lexemes reconstructed by pinned Godot4.5.1 parser; whole cold authority exact except declared binary32 escort poses"}
+            "native_save_comparison": "exact original save bytes hashed; raw clock must equal integer-tick derivation; all original numeric lexemes reconstructed by pinned Godot4.5.1 parser; cold day/hour derived exactly as childhood_state.restore; whole cold authority exact except declared binary32 escort poses"}
 
 
 def archive_tree(path: Path) -> tuple[str, dict[str, bytes]]:
