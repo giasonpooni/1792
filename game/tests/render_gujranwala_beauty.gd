@@ -8,6 +8,7 @@ var camera: Camera3D
 var failures:=0
 var records: Array[Dictionary]=[]
 const OUTPUT:="user://gujranwala-beauty-images"
+var output_dir := OUTPUT
 const COURTYARD_POSITION:=Vector3(0,4.7,-3.0)
 const COURTYARD_TARGET:=Vector3(0,1.65,10.2)
 const COURTYARD_FOV:=52.0
@@ -50,7 +51,7 @@ func capture(id: String,preset: String,at: Vector3,target: Vector3,fov: float=48
 	if is_instance_valid(scene.art.detail) and is_instance_valid(scene.art.detail.hud): scene.art.detail.hud.hide()
 	await frames(4)
 	var image:=root.get_texture().get_image()
-	var path:=OUTPUT.path_join(id+".png")
+	var path:=output_dir.path_join(id+".png")
 	check(not image.is_empty(),"image exists "+id)
 	check(image.get_width()==1280 and image.get_height()==720,"expected 1280x720 "+id)
 	# A canonical decoded-pixel digest distinguishes light changes from PNG metadata.
@@ -80,7 +81,7 @@ func capture(id: String,preset: String,at: Vector3,target: Vector3,fov: float=48
 func run() -> void:
 	root.content_scale_size=Vector2i.ZERO
 	root.size=Vector2i(1280,720)
-	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUTPUT))
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output_dir))
 	home=Launch.make_world()
 	root.add_child(home)
 	scene=home.get_node("ChildhoodChapter")
@@ -121,7 +122,7 @@ func run() -> void:
 		"human_art_approval":false,
 		"inspection_camera_only":true
 	}
-	var file:=FileAccess.open(OUTPUT.path_join("manifest.json"),FileAccess.WRITE)
+	var file:=FileAccess.open(output_dir.path_join("manifest.json"),FileAccess.WRITE)
 	if file:
 		file.store_string(JSON.stringify(report,"\t",true,true))
 		file.close()

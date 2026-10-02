@@ -60,6 +60,15 @@ jobs:
             --capture-dir "$HOME/.local/share/godot/app_userdata/1792/gujranwala-beauty-images" \
             | tee test-results/gujranwala-beauty-verification.json
           cp -r "$HOME/.local/share/godot/app_userdata/1792/gujranwala-beauty-images" test-results/
+          timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_gujranwala_daily_detail.gd 2>&1 | tee test-results/gujranwala-daily-detail-render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/gujranwala-daily-detail-render.log; then exit 1; fi
+          grep -q 'GUJRANWALA_DAILY_DETAIL_RENDER: 6 captures; 0 failures' test-results/gujranwala-daily-detail-render.log
+          python3 tools/check_gujranwala_daily_detail_capture.py \
+            --capture-dir "$HOME/.local/share/godot/app_userdata/1792/gujranwala-daily-detail-images" \
+            | tee test-results/gujranwala-daily-detail-verification.json
+          cp -r "$HOME/.local/share/godot/app_userdata/1792/gujranwala-daily-detail-images" test-results/
           SOURCE_COMMIT="$(git rev-parse HEAD)" \
             SOURCE_CONTENT_SHA256="$(git archive --format=tar HEAD | sha256sum | cut -d ' ' -f1)" \
             GROUND_FOCUS_OUTPUT="$PWD/test-results/ground-focus-captures" timeout 120 xvfb-run -a \
@@ -68,6 +77,15 @@ jobs:
             --script res://tests/render_ground_focus.gd 2>&1 | tee test-results/ground-focus-render.log
           ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/ground-focus-render.log
           grep -q 'GROUND_FOCUS_RENDER: .* captures, 0 failures' test-results/ground-focus-render.log
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: gujranwala-daily-detail-captures
+          path: |
+            test-results/gujranwala-daily-detail-images/
+            test-results/gujranwala-daily-detail-render.log
+            test-results/gujranwala-daily-detail-verification.json
+          retention-days: 14
       - name: Retain source and execution identity
         if: always()
         run: |
