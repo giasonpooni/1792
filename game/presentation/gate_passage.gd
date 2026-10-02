@@ -10,6 +10,10 @@ var porter_base := Vector3.ZERO
 var cart_root: Node3D
 var pack_root: Node3D
 var marker_cloth: Node3D
+var crossing_left: Node3D
+var crossing_right: Node3D
+var crossing_left_edge:=Vector3(-2.72,0,-.72)
+var crossing_right_edge:=Vector3(2.72,0,.72)
 var records: Array[Dictionary]=[]
 var _materials: Dictionary={}
 
@@ -136,6 +140,44 @@ func build(at: Vector3) -> void:
 	box(marker_cloth,"Cloth",Vector3(.42,.62,.035),Vector3.ZERO,Color("8b6649"))
 	remember("cloth_marker",marker_cloth,"A small cloth marker gives the threshold wind response without implying a royal standard.")
 
+	# Sparse crossing figures: presentation only. They are allowed into the lane only while Buddh is distant.
+	crossing_left=_crossing_figure("CrossingCarrierLeft",crossing_left_edge,Color("776652"),Color("9c835e"),true)
+	remember("crossing_carrier_left",crossing_left,"A generic cloth carrier may cross the quiet opening, but clears back to the left edge as Buddh approaches.")
+	crossing_right=_crossing_figure("CrossingCarrierRight",crossing_right_edge,Color("5e6c69"),Color("8f744f"),false)
+	remember("crossing_carrier_right",crossing_right,"A generic basket carrier may cross from the opposite edge, but yields outward before close passage.")
+
+func _crossing_figure(id: String,edge: Vector3,coat: Color,load_color: Color,left_load: bool) -> Node3D:
+	var root:=Node3D.new()
+	root.name=id
+	root.position=edge
+	add_child(root)
+	cylinder(root,"Body",.18,.92,Vector3(0,.64,0),coat)
+	sphere(root,"Head",Vector3(.17,.21,.17),Vector3(0,1.28,0),Color("aa8262"))
+	if left_load:
+		box(root,"FoldedLoad",Vector3(.48,.18,.34),Vector3(-.25,.86,.02),load_color)
+	else:
+		var basket:=cylinder(root,"Basket",.20,.22,Vector3(.24,.82,.02),load_color,12)
+		basket.rotation.z=PI/2
+	return root
+
+func _traffic_cross_x(tick: int,start_left: bool) -> float:
+	# Eight-second sparse loop with long edge dwell; no separate simulation clock.
+	var cycle: float=fmod(float(tick),480.0)/480.0
+	var p: float=0.0
+	if cycle<.22:
+		p=0.0
+	elif cycle<.48:
+		p=(cycle-.22)/.26
+	elif cycle<.70:
+		p=1.0
+	elif cycle<.96:
+		p=1.0-(cycle-.70)/.26
+	else:
+		p=0.0
+	var a: float=-2.72 if start_left else 2.72
+	var b: float=2.72 if start_left else -2.72
+	return lerpf(a,b,p)
+
 func _planar_distance(a: Vector3,b: Vector3) -> float:
 	return Vector2(a.x,a.z).distance_to(Vector2(b.x,b.z))
 
@@ -145,6 +187,8 @@ func sample(tick: int,player_position: Vector3,mounted: bool,stage: String) -> v
 	var nearness: float=clampf((7.0-distance)/4.0,0.0,1.0)
 	var active: float=0.0 if stage=="caught" else 1.0
 	var mounted_clearance: float=nearness*(1.0 if mounted else .35)*active
+	var clear_radius: float=9.0 if mounted else 6.5
+	var traffic_clearance: float=clampf((clear_radius-distance)/2.6,0.0,1.0)*active
 
 	# A readable but deliberately small hand signal.
 	guard_hand.rotation=Vector3(-1.02*mounted_clearance,0,-.08*mounted_clearance)
@@ -152,6 +196,16 @@ func sample(tick: int,player_position: Vector3,mounted: bool,stage: String) -> v
 	# Yield outward, never into the lane.
 	porter_root.position=porter_base+Vector3(-.46*mounted_clearance,0,0)
 	porter_root.rotation.y=.10*nearness*active
+
+	# Sparse traffic may cross only while Buddh is distant. As he approaches, each figure returns to its own edge.
+	if is_instance_valid(crossing_left) and is_instance_valid(crossing_right):
+		var left_cross:=Vector3(_traffic_cross_x(tick,true),0,crossing_left_edge.z)
+		var right_cross:=Vector3(_traffic_cross_x(tick,false),0,crossing_right_edge.z)
+		crossing_left.position=left_cross.lerp(crossing_left_edge,traffic_clearance)
+		crossing_right.position=right_cross.lerp(crossing_right_edge,traffic_clearance)
+		if stage=="caught":
+			crossing_left.position=crossing_left_edge
+			crossing_right.position=crossing_right_edge
 
 	# The cart and pack remain where they were placed; they are not fake agents.
 	cart_root.rotation.y=.02*sin(float(tick)/95.0)
@@ -166,7 +220,9 @@ func passage_state() -> Dictionary:
 		"porter_position":porter_root.position if is_instance_valid(porter_root) else Vector3.ZERO,
 		"cart_position":cart_root.position if is_instance_valid(cart_root) else Vector3.ZERO,
 		"pack_position":pack_root.position if is_instance_valid(pack_root) else Vector3.ZERO,
-		"cloth_rotation":marker_cloth.rotation if is_instance_valid(marker_cloth) else Vector3.ZERO
+		"cloth_rotation":marker_cloth.rotation if is_instance_valid(marker_cloth) else Vector3.ZERO,
+		"crossing_left":crossing_left.position if is_instance_valid(crossing_left) else Vector3.ZERO,
+		"crossing_right":crossing_right.position if is_instance_valid(crossing_right) else Vector3.ZERO
 	}
 
 func central_lane_clear(local_position: Vector3) -> bool:

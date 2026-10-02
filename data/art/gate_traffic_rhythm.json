@@ -1,0 +1,29 @@
+{
+  "schema": "1792.gate-traffic-rhythm.v1",
+  "id": "household-gate-crossing-study",
+  "classification": "direct-craft presentation; not population simulation or historical traffic reconstruction",
+  "anchor": "childhood_state.GATES[2]",
+  "figures": [
+    {
+      "id": "crossing_carrier_left",
+      "meaning": "a generic cloth/load carrier may cross the opening when Buddh is distant, then returns to the left edge as he approaches"
+    },
+    {
+      "id": "crossing_carrier_right",
+      "meaning": "a generic basket carrier may cross from the opposite side when the opening is otherwise quiet, then yields back outward"
+    }
+  ],
+  "timing": {
+    "source": "existing childhood.tick only",
+    "separate_clock": false,
+    "persistence": false,
+    "near_clearance": "mounted approach begins clearing earlier than foot approach"
+  },
+  "invariants": [
+    "no collision, navigation or pathfinding authority",
+    "crossing figures never alter the player, horse, save, journal, economy, rank or witness state",
+    "at close approach both figures are visually outside the declared central lane",
+    "crossing is disabled in caught/ended presentation",
+    "traffic rhythm is deliberately sparse and may leave the gate empty"
+  ]
+}
