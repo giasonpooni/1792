@@ -45,10 +45,10 @@ func run() -> void:
 	check(Rules.valid_observation(sample) and sample.expires_tick==20+Rules.TAG_TTL_TICKS,"last-seen observation has bounded lifetime")
 
 	var home: Node3D = Launch.make_world()
-	var scene: Node3D = home.get_node("ChildhoodChapter")
+	var scene = home.get_node("ChildhoodChapter")
 	root.add_child(home)
 	await frames(8)
-	var scout: Node3D = scene.hawk_scout
+	var scout = scene.hawk_scout
 	check(is_instance_valid(scout),"hawk scout attaches to the current composed Home chapter")
 	check(scout.get_meta("classification","")=="authored-gameplay-scouting","scout declares its gameplay classification")
 	check(scout.get_meta("historical_claim",true)==false and scout.get_meta("save_authority",true)==false,"scout is neither historical proof nor save authority")
@@ -92,8 +92,14 @@ func run() -> void:
 	check(not String(blocked.error).is_empty() and scout.observations().is_empty(),"occluding collision prevents an aerial tag")
 	check(scene.model.snapshot()==blocked_before,"rejected tag leaves game authority unchanged")
 	wall.queue_free()
-
+	await frames(2)
+	scout.global_position = Vector3(0.0,10.0,4.0)
+	scout.rotation = Vector3.ZERO
+	scene.attacker.global_position = Vector3(0.0,0.14,-12.0)
 	scene.attacker.visible = true
+	scene.attacker.collision_layer = 1
+	scene.attacker.collision_mask = 1
+
 	scout.clear_tags()
 	scout.sample(100)
 	var retagged: Dictionary=scout.tag_best_target()
