@@ -30,7 +30,7 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if is_instance_valid(hawk_scout):
 		if hawk_scout.active:
-			var was_active:=hawk_scout.active
+			var was_active: bool=bool(hawk_scout.active)
 			if hawk_scout.handle_input(event):
 				if was_active and not hawk_scout.active: _refresh()
 				get_viewport().set_input_as_handled();return
