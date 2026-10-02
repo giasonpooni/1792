@@ -94,7 +94,7 @@ func _build_parapet_rhythm() -> void:
 func _build_skyline_clusters() -> void:
 	var positions: Array[Vector3]=[
 		Vector3(-20.5,3.35,27.9),Vector3(20.5,3.35,27.9),
-		Vector3(-27.8,3.35,16.8),Vector3(27.8,3.35,16.8)]
+		Vector3(-27.8,3.35,5.5),Vector3(27.8,3.35,5.5)]
 	for i in range(positions.size()):
 		var root:=Node3D.new()
 		root.name="PerimeterPavilionStudy%d"%i
