@@ -1,6 +1,6 @@
 # Playable mission and sequence ledger
 
-1792 – The One-Eyed King: playable mission and sequence ledger
+1792: The Lotus Throne — playable mission and sequence ledger
 
 Snapshot: **2026-10-02**. Main: `8ae0e3a45a5137e4e1dcb92318297515f4b35ea9`.
 
