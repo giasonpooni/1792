@@ -3,9 +3,10 @@
 Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 
 Open **Equipment study · sword, scabbard, shield and helmet** from the existing
-main menu. The upper slider draws and resheathes the two swords; the lower slider
-turns the display. Keyboard arrows, Home and End work on focused sliders. R resets
-the view; F1 returns to the menu. The menu scrolls on shorter windows so existing
+main menu. The three sliders draw and resheathe the two swords, turn the display,
+and scrub mail motion, in that order. H or the close-up toggle isolates the helmet.
+Keyboard arrows, Home and End work on focused sliders. R resets the poses and turn;
+F1 returns to the menu. The menu scrolls on shorter windows so existing
 entries remain reachable.
 
 The same modules attach a sheathed sidearm, round shield and domed helmet to the
@@ -29,8 +30,21 @@ Full-width blade/sheath clearances and manufacturing feasibility are not qualifi
 by this centreline test.
 
 The shield has a dished front/back shell, rim, four bosses and separate back grips.
-The helmet has a rigid dome, rim and finial. Mail and its deformation are deferred;
-there is no cloth substitute pretending to simulate mail.
+The helmet has a rigid dome, rim and finial. Its shell uses outward-facing triangles;
+the close-up exposed and corrected the original inward winding.
+
+The mail curtain uses 512 rigid torus instances in one `MultiMesh`: 32 strips of 16
+rings, with an authored ring centre radius of 9.5 mm, wire radius of 1.35 mm and strip
+pitch of 14 mm. The upper row stays pinned to helmet-local anchors in both position
+and orientation. Lower rows articulate while preserving each ring and the length
+of every strip segment. A front opening is an authored visibility choice.
+
+Motion samples the supplied tick on a 480-tick cycle and has no integration history
+or independent clock. The inspection slider uses full amplitude; the guard samples
+the existing chapter tick at amplitude 0.20. Rewinding a tick reproduces the same
+transforms. This is a kinematic presentation study. Adjacent strips are not solved
+as a connected mesh, and interlink topology, ring contact, body contact, mass and
+material response remain unqualified.
 
 All dimensions are authored working values, not measurements extracted from the
 photographs. Physical mass, balance, inertia, cutting behaviour and historical
@@ -46,8 +60,10 @@ Equipment supplies no collision, navigation, knowledge, access permission,
 reputation, combat decision, campaign receipt, clock or save field.
 
 Mesh AABB corners transformed into world space are checked against the existing
-1.9 m half-width passage and ground plane. This qualifies the authored static
-attachments; it does not qualify dynamic riders, crowd avoidance or weapon contact.
+1.9 m half-width passage and ground plane. The mail suite also transforms the shared
+ring mesh bounds through every sampled instance. These checks cover the authored
+attachments and sampled mail poses; dynamic riders, crowd avoidance and weapon
+contact remain outside this study.
 
 The same change repairs the earlier cart/pack invariant: `sample()` no longer
 rotates either resting object. Full transforms, non-identity rotation/scale and
@@ -55,11 +71,19 @@ rewound ticks are checked. Cloth retains the existing motion channel.
 
 ## Execution and review
 
-`tools/run_checks.py` includes `test_service_equipment.gd` and the strengthened
-gate suite. The Home-art workflow retains four actual engine views: sheathed,
-partially drawn, drawn, and equipment on the live Home guard. The capture checks
-different scene pixels across the draw poses and unchanged campaign/player state
-while inspecting Home. Source commit/tree and image hashes accompany the captures.
+`tools/run_checks.py` includes `test_service_equipment.gd`, `test_mail_aventail.gd`
+and the strengthened gate suite. Mail checks cover rigid transforms, fixed strip
+lengths, pinned anchors, bounds, rewind, invalid inputs, passage clearance and
+native keyboard controls. CPU poses are checked explicitly because Godot's dummy
+headless renderer does not retain the instance buffer.
+
+The Home-art workflow retains six actual engine views: sheathed, partially drawn,
+drawn, two helmet close-ups and equipment on the live Home guard. With the real
+renderer, it reads back all 512 instance transforms in each of three poses, and
+deliberately corrupts one uploaded transform to prove the comparison detects it.
+The capture checks different scene pixels across draw and mail poses, and unchanged
+campaign/player state while inspecting Home. Source commit/tree and image hashes
+accompany the captures. This renderer check does not qualify hardware performance.
 
 The renderer proves execution, not final art acceptance. Procedural silhouettes,
 simple surfaces and the blockout guard still require artist and human play review.

@@ -1,6 +1,7 @@
 # Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 extends RefCounted
 const Meshes:=preload("res://presentation/equipment_mesh.gd")
+const Mail:=preload("res://presentation/mail_aventail.gd")
 
 static func shield(fitted: bool=false) -> Node3D:
 	var root:=Node3D.new()
@@ -49,7 +50,8 @@ static func helmet() -> Node3D:
 				var phi: float=v.x/12.0*PI/2
 				var theta: float=v.y/32.0*TAU
 				points.append(Vector3(.115*cos(phi)*cos(theta),.15*sin(phi),.13*cos(phi)*sin(theta)))
-			Meshes.quad(st,points[0],points[1],points[2],points[3])
+			# Godot's clockwise front faces must point away from the head.
+			Meshes.quad(st,points[3],points[2],points[1],points[0])
 	Meshes.part(root,"RigidShell",Meshes.finish(st),steel)
 	var rim:=Meshes.torus(root,"Rim",.12,.006,Vector3.ZERO,steel)
 	rim.scale.z=1.09
@@ -59,4 +61,7 @@ static func helmet() -> Node3D:
 	spike.height=.072
 	spike.radial_segments=12
 	Meshes.part(root,"Finial",spike,steel,Vector3(0,.179,0))
+	var mail:=Mail.new()
+	root.add_child(mail)
+	mail.build()
 	return root

@@ -7,6 +7,7 @@ const ServiceDefence:=preload("res://presentation/service_defence.gd")
 var anchor := Vector3.ZERO
 var guard_root: Node3D
 var guard_hand: Node3D
+var guard_mail: Node3D
 var porter_root: Node3D
 var porter_base := Vector3.ZERO
 var cart_root: Node3D
@@ -114,6 +115,7 @@ func build(at: Vector3) -> void:
 	var helmet:=ServiceDefence.helmet()
 	helmet.position=Vector3(0,1.48,0)
 	guard_root.add_child(helmet)
+	guard_mail=helmet.get_node("MailAventail")
 	remember("gate_guard",guard_root,"One guard marks the threshold and uses a small hand signal when a mounted rider approaches.")
 
 	# Left-side porter: shifts outward slightly instead of becoming a pathfinding agent.
@@ -228,6 +230,7 @@ func sample(tick: int,player_position: Vector3,mounted: bool,stage: String) -> v
 
 	# Wind/material motion is independent of social attention.
 	marker_cloth.rotation.z=.045*sin(float(tick)/37.0)
+	if is_instance_valid(guard_mail): guard_mail.sample_tick(tick,.20)
 
 func passage_state() -> Dictionary:
 	return {

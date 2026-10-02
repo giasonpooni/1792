@@ -57,6 +57,11 @@ func run() -> void:
 	var helmet:=Defence.helmet()
 	root.add_child(helmet)
 	check(helmet.has_node("RigidShell") and helmet.has_node("Finial"),"helmet shell and finial are separate rigid components")
+	var shell_arrays: Array=helmet.get_node("RigidShell").mesh.surface_get_arrays(0)
+	var outward:=true
+	for i in range(shell_arrays[Mesh.ARRAY_VERTEX].size()):
+		outward=outward and shell_arrays[Mesh.ARRAY_VERTEX][i].dot(shell_arrays[Mesh.ARRAY_NORMAL][i])>0
+	check(outward,"helmet shell normals face outward so the front remains opaque")
 	var passage:=Gate.new()
 	passage.build(Vector3.ZERO)
 	root.add_child(passage)

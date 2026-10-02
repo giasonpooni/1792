@@ -11,6 +11,11 @@ var camera: Camera3D
 var draw_slider: HSlider
 var turn_slider: HSlider
 var status: Label
+var helmet: Node3D
+var shield: Node3D
+var mail_slider: HSlider
+var helmet_toggle: CheckButton
+var close_view:=false
 
 func _ready() -> void:
 	Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
@@ -47,10 +52,10 @@ func _ready() -> void:
 	fitted.position=Vector3(-.12,0,0)
 	fitted.rotation.y=PI/2
 	display_root.add_child(fitted)
-	var shield:=Defence.shield()
+	shield=Defence.shield()
 	shield.position=Vector3(1.08,-.44,.0)
 	display_root.add_child(shield)
-	var helmet:=Defence.helmet()
+	helmet=Defence.helmet()
 	helmet.position=Vector3(1.08,.06,0)
 	display_root.add_child(helmet)
 	camera=Camera3D.new()
@@ -77,7 +82,7 @@ func _build_ui() -> void:
 	title.add_theme_font_size_override("font_size",26)
 	header.add_child(title)
 	var subtitle:=Label.new()
-	subtitle.text="Curved sidearm · independent sheath · dished shield · rigid helmet"
+	subtitle.text="Curved sidearm · independent sheath · dished shield · helmet and ring mail"
 	subtitle.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	header.add_child(subtitle)
 	var panel:=VBoxContainer.new()
@@ -85,7 +90,7 @@ func _build_ui() -> void:
 	panel.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	panel.offset_left=24
 	panel.offset_right=-24
-	panel.offset_top=-144
+	panel.offset_top=-214
 	panel.offset_bottom=-16
 	canvas.add_child(panel)
 	status=Label.new()
@@ -103,12 +108,46 @@ func _build_ui() -> void:
 	turn_slider.min_value=-180
 	turn_slider.max_value=180
 	turn_slider.custom_minimum_size.y=24
-	turn_slider.value_changed.connect(func(value: float): display_root.rotation.y=deg_to_rad(value))
+	turn_slider.value_changed.connect(func(value: float):
+		display_root.rotation.y=deg_to_rad(value)
+		update_camera())
 	panel.add_child(turn_slider)
+	mail_slider=HSlider.new()
+	mail_slider.name="MailSlider"
+	mail_slider.max_value=480
+	mail_slider.step=1
+	mail_slider.custom_minimum_size.y=24
+	mail_slider.value_changed.connect(func(value: float): helmet.get_node("MailAventail").sample_tick(int(value)))
+	panel.add_child(mail_slider)
+	helmet_toggle=CheckButton.new()
+	helmet_toggle.text="Helmet close-up [H]"
+	helmet_toggle.toggled.connect(func(enabled: bool):
+		close_view=enabled
+		service.visible=not enabled
+		fitted.visible=not enabled
+		shield.visible=not enabled
+		update_camera()
+		refresh())
+	panel.add_child(helmet_toggle)
 	var note:=Label.new()
-	note.text="Upper slider: draw / resheathe · Lower: turn · R reset · F1 menu\nAuthored dimensions and fittings; historical attribution unverified."
+	note.text="Sliders: draw · turn · mail motion  |  R reset · H close-up · F1 menu\nAuthored forms and motion; historical attribution unverified."
 	note.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	panel.add_child(note)
+	helmet_initial_pose()
+
+func helmet_initial_pose() -> void:
+	helmet.get_node("MailAventail").sample_tick(0)
+	update_camera()
+
+func update_camera() -> void:
+	if close_view:
+		camera.size=.95
+		camera.global_position=helmet.global_position+Vector3(.47,.15,.60)
+		camera.look_at(helmet.global_position+Vector3(0,-.13,0))
+	else:
+		camera.size=3.5
+		camera.position=Vector3(1.55,1.0,5)
+		camera.look_at(Vector3(.1,-.25,0))
 
 func set_draw(value: float) -> void:
 	service.sample_draw(value)
@@ -117,7 +156,7 @@ func set_draw(value: float) -> void:
 
 func refresh() -> void:
 	if is_instance_valid(status):
-		status.text="%s  ·  Plain service / fitted study  ·  Blade and hilt travel together; sheath stays put"%service.presentation_state().capitalize()
+		status.text="Rigid rings · attached upper row · articulated strips" if close_view else "%s  ·  Plain service / fitted study"%service.presentation_state().capitalize()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not event is InputEventKey or not event.pressed or event.echo: return
@@ -126,3 +165,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.keycode==KEY_R:
 		draw_slider.value=0
 		turn_slider.value=0
+		mail_slider.value=0
+		helmet.get_node("MailAventail").sample_tick(0)
+	elif event.keycode==KEY_H:
+		helmet_toggle.button_pressed=not helmet_toggle.button_pressed

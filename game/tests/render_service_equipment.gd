@@ -5,11 +5,25 @@ const Launch:=preload("res://childhood/home_launch.gd")
 var output: String
 var records: Array[Dictionary]=[]
 var failures:=0
+var mail_readback_instances:=0
 
 func _initialize() -> void: run.call_deferred()
 func frames() -> void:
 	for _i in range(4): await process_frame
 	await RenderingServer.frame_post_draw
+
+func mail_readback_matches(mail: Node3D) -> bool:
+	var batch: MultiMesh=mail.links.multimesh
+	# The dummy renderer returns identity transforms and an empty buffer. It cannot qualify this.
+	if batch.buffer.size()!=512*12 or batch.instance_count!=512: return false
+	for i in range(512):
+		if not batch.get_instance_transform(i).is_equal_approx(mail.ring_transforms[i]): return false
+	return true
+
+func check_mail_readback(mail: Node3D) -> void:
+	await frames()
+	if not mail_readback_matches(mail): failures+=1
+	else: mail_readback_instances+=512
 
 func capture(id: String, camera_kind: String) -> void:
 	await frames()
@@ -43,6 +57,23 @@ func run() -> void:
 	await capture("equipment-drawn","native-equipment-study")
 	if records.size()!=3 or records[0].scene_pixels_sha256==records[1].scene_pixels_sha256 or records[1].scene_pixels_sha256==records[2].scene_pixels_sha256:
 		failures+=1
+	study.helmet_toggle.button_pressed=true
+	study.mail_slider.value=120
+	await capture("helmet-mail-120","native-equipment-study-close-up")
+	await check_mail_readback(study.helmet.get_node("MailAventail"))
+	study.mail_slider.value=360
+	await capture("helmet-mail-360","native-equipment-study-close-up")
+	var mail: Node3D=study.helmet.get_node("MailAventail")
+	await check_mail_readback(mail)
+	# Prove that CPU-only correctness cannot mask a broken instance upload.
+	var saved: Transform3D=mail.ring_transforms[20]
+	mail.links.multimesh.set_instance_transform(20,Transform3D.IDENTITY)
+	await frames()
+	if mail_readback_matches(mail): failures+=1
+	mail.links.multimesh.set_instance_transform(20,saved)
+	await frames()
+	if not mail_readback_matches(mail): failures+=1
+	if records.size()!=5 or records[3].scene_pixels_sha256==records[4].scene_pixels_sha256: failures+=1
 	study.queue_free()
 	await process_frame
 	var home:=Launch.make_world()
@@ -61,11 +92,12 @@ func run() -> void:
 	camera.fov=42
 	camera.current=true
 	await capture("gate-service-equipment","inspection-of-live-home")
+	await check_mail_readback(chapter.gate_passage.guard_mail)
 	if chapter.model.snapshot()!=state or chapter.avatar.global_transform!=player: failures+=1
 	var report: Dictionary={"schema":"1792.service-equipment-render.v1","operation_id":"service-equipment-render.v1",
 		"source_commit":OS.get_environment("SOURCE_COMMIT"),"source_tree":OS.get_environment("SOURCE_TREE"),
 		"engine":Engine.get_version_info().string,"renderer":RenderingServer.get_video_adapter_name(),
-		"hardware_performance_qualified":false,"historical_attribution_verified":false,"records":records,"failures":failures}
+		"hardware_performance_qualified":false,"historical_attribution_verified":false,"mail_readback_instances":mail_readback_instances,"records":records,"failures":failures}
 	var file:=FileAccess.open(output.path_join("equipment-captures.json"),FileAccess.WRITE)
 	if file==null: failures+=1
 	else:
@@ -74,4 +106,4 @@ func run() -> void:
 	home.queue_free()
 	await process_frame
 	print("SERVICE_EQUIPMENT_RENDER: %d captures, %d failures"%[records.size(),failures])
-	quit(1 if failures or records.size()!=4 else 0)
+	quit(1 if failures or records.size()!=6 or mail_readback_instances!=1536 else 0)

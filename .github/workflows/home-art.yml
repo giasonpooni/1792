@@ -46,7 +46,7 @@ jobs:
           timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --path game --rendering-method gl_compatibility --audio-driver Dummy --fixed-fps 60 --script res://tests/render_service_equipment.gd > test-results/equipment-render.log 2>&1
           cat test-results/equipment-render.log
           if grep -Eq '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/equipment-render.log; then exit 1; fi
-          grep -q 'SERVICE_EQUIPMENT_RENDER: 4 captures, 0 failures' test-results/equipment-render.log
+          grep -q 'SERVICE_EQUIPMENT_RENDER: 6 captures, 0 failures' test-results/equipment-render.log
       - name: Retain source and execution identity
         if: always()
         run: |

@@ -49,6 +49,8 @@ def main() -> int:
         "gate-passage-direction", "GATE_PASSAGE_DIRECTION_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_service_equipment.gd"],
         "service-equipment", "SERVICE_EQUIPMENT_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_mail_aventail.gd"],
+        "mail-aventail", "MAIL_AVENTAIL_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_aftermath.gd"],
         "aftermath", "AFTERMATH_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_fixed_interlude.gd"],

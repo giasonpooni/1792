@@ -29,7 +29,7 @@
   ],
   "implementation": {
     "origin": "Original procedural Godot mesh authoring by the coding assistant at the maintainer's request, 2026-10-02. References inform broad morphology only.",
-    "source_files": ["game/presentation/equipment_mesh.gd", "game/presentation/service_sword.gd", "game/presentation/service_defence.gd"],
+    "source_files": ["game/presentation/equipment_mesh.gd", "game/presentation/service_sword.gd", "game/presentation/service_defence.gd", "game/presentation/mail_aventail.gd"],
     "length_unit": "metre",
     "authored_blade_circle_radius": 1.12,
     "authored_blade_arc_radians": 0.78,
@@ -38,6 +38,18 @@
     "authored_blade_thickness_at_root": 0.005,
     "authored_shield_radius": 0.245,
     "authored_shield_dish_depth": 0.052,
+    "authored_mail": {
+      "columns": 32,
+      "rows": 16,
+      "ring_instances": 512,
+      "ring_centre_radius": 0.0095,
+      "wire_radius": 0.00135,
+      "strip_pitch": 0.014,
+      "attachment": "Pinned upper row; fixed-length articulated strips",
+      "sampling": "Existing chapter tick; deterministic 480-tick cycle; guard amplitude 0.20",
+      "contact_simulation": false,
+      "historical_weave_verified": false
+    },
     "mass_or_inertia_calibration": null,
     "gameplay_authority": false,
     "production_attachment": "Existing gate_guard, permanently sheathed",
@@ -47,5 +59,5 @@
     "human_art_review": "pending",
     "historical_review": "pending"
   },
-  "deferred": ["mail construction and secondary motion", "inscription/engraving reproduction", "measured physical parameters", "hand-rig drawing and combat animation", "weapon clearance collision", "actor ownership and provenance gameplay"]
+  "deferred": ["verified mail weave and interlink topology", "mail contact and material dynamics", "inscription/engraving reproduction", "measured physical parameters", "hand-rig drawing and combat animation", "weapon clearance collision", "actor ownership and provenance gameplay"]
 }

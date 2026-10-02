@@ -36,8 +36,9 @@ No .NET SDK, Python service, Bevy process or NET server is required to play.
 Choose **1792 · Buddh Singh · Home territory** for the integrated home chapter.
 
 The **Equipment study** entry inspects a curved service sword, independent scabbard,
-round shield and domed helmet. Its draw and turn controls use the same procedural
-components attached to the Home gate guard. These are authored morphology studies;
+round shield and domed helmet with articulated ring mail. Draw, turn and mail-motion
+controls use the same procedural components attached to the Home gate guard;
+**H** opens a helmet close-up. These are authored morphology studies;
 see [controls, references and qualification limits](docs/SERVICE_EQUIPMENT.md).
 
 Learn the yard, hear a letter read, ride, train, follow traces, survive an authored
