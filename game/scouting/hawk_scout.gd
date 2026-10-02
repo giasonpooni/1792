@@ -35,8 +35,8 @@ func bind(chapter_node: Node3D, avatar_node: CharacterBody3D, horse_node: Charac
 	chapter = chapter_node
 	avatar = avatar_node
 	horse = horse_node
-	_bird.hide()
-	_hud_layer.hide()
+	_bird.visible = false
+	_hud_layer.visible = false
 
 func register_target(target_id: String, node: Node3D, label: String) -> void:
 	if target_id.is_empty() or not is_instance_valid(node):
@@ -60,8 +60,8 @@ func launch() -> String:
 	global_position = Rules.bound_position(launch_origin, launch_origin + Vector3.UP * 8.5 + forward * 2.0)
 	rotation = Vector3(0.0, avatar.pivot.global_rotation.y, 0.0)
 	_camera_pivot.rotation.x = -0.22
-	_bird.show()
-	_hud_layer.show()
+	_bird.visible = true
+	_hud_layer.visible = true
 	camera.current = true
 	active = true
 	_status = "Scout airborne. E / click tags a clear hostile; X or Esc returns."
@@ -73,8 +73,8 @@ func return_to_player() -> void:
 	if not active:
 		return
 	active = false
-	_bird.hide()
-	_hud_layer.hide()
+	_bird.visible = false
+	_hud_layer.visible = false
 	camera.current = false
 	if is_instance_valid(avatar):
 		var player_camera := avatar.get_node_or_null("CameraPivot/SpringArm3D/Camera3D") as Camera3D
@@ -198,13 +198,16 @@ func tag_best_target() -> Dictionary:
 func observations() -> Array:
 	var result: Array = []
 	for id in _tags:
-		result.append((_tags[id].observation as Dictionary).duplicate(true))
+		var record: Dictionary = _tags[id]
+		var observation: Dictionary = record.observation
+		result.append(observation.duplicate(true))
 	result.sort_custom(func(a, b): return String(a.id) < String(b.id))
 	return result
 
 func clear_tags() -> void:
 	for id in _tags:
-		var marker: Node3D = _tags[id].marker
+		var record: Dictionary = _tags[id]
+		var marker: Node3D = record.marker
 		if is_instance_valid(marker):
 			marker.queue_free()
 	_tags.clear()
@@ -239,7 +242,8 @@ func _write_tag(observation: Dictionary) -> void:
 	var id := String(observation.id)
 	var marker: Node3D
 	if _tags.has(id):
-		marker = _tags[id].marker
+		var previous: Dictionary = _tags[id]
+		marker = previous.marker
 	else:
 		marker = Node3D.new()
 		marker.name = "Tag_" + id
@@ -269,9 +273,9 @@ func _write_tag(observation: Dictionary) -> void:
 func _update_hud() -> void:
 	if not active or not is_instance_valid(_hud):
 		return
-	var range := Vector2(global_position.x - launch_origin.x, global_position.z - launch_origin.z).length()
+	var radius := Vector2(global_position.x - launch_origin.x, global_position.z - launch_origin.z).length()
 	var altitude := global_position.y - launch_origin.y
-	_hud.text = "HAWK SCOUT · authored gameplay sensor\nRange %.1f / %.0f m · altitude %.1f m\nWASD fly · Shift fast · Space/Ctrl altitude · mouse look\nE / left click tag · X / Esc return\n%s" % [range, Rules.MAX_RADIUS, altitude, _status]
+	_hud.text = "HAWK SCOUT · authored gameplay sensor\nRange %.1f / %.0f m · altitude %.1f m\nWASD fly · Shift fast · Space/Ctrl altitude · mouse look\nE / left click tag · X / Esc return\n%s" % [radius, Rules.MAX_RADIUS, altitude, _status]
 
 func _build_visuals() -> void:
 	_bird = Node3D.new()
