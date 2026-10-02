@@ -53,7 +53,7 @@ func _ready() -> void:
 	_add_button(panel, "Horsecraft · paired riding and mounted matchlocks", "res://mounts/horsecraft_study.tscn")
 	_add_button(panel, "Ground contact practice · stairs and slopes", "res://mechanics/ground_course.tscn")
 	_add_button(panel, "1790 · Mahan Singh · Field camp (interlude)", "res://world/mahan_camp.tscn")
-	_add_button(panel, "Punjab Chiefs · six playable recollections", "res://history/punjab_chiefs_home.tscn")
+	_add_button(panel, "Punjab Chiefs · thirteen playable recollections", "res://history/punjab_chiefs_home.tscn")
 	var note := Label.new()
 	note.text = "Early development prototypes. The figures, dialogue and scenes are authored studies.\nThe sandbox captain, missions and geography are fictional placeholders."
 	note.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
@@ -62,6 +62,7 @@ func _ready() -> void:
 
 func _slice_button(parent: Node,text: String,mode: String,enabled: bool=true) -> void:
 	var button:=Button.new();button.text=text;button.custom_minimum_size.y=48
+	button.set_meta("slice_mode",mode)
 	button.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;button.disabled=not enabled
 	button.pressed.connect(func(): SliceLaunch.enter.call_deferred(get_tree(),mode))
 	parent.add_child(button)

@@ -184,15 +184,23 @@ func main_menu_contract() -> void:
 	for node in panel.get_children():
 		if node is Label and node.text == "DEVELOPMENT STUDIES": group_index = node.get_index()
 	check(group_index > begin.get_index(), "development studies are visibly grouped after the primary beginning")
-	var studies := 0
 	for node in panel.get_children():
 		if node is Button and node != begin:
-			studies += 1
 			check(node.get_index() > group_index, "retained study entry follows the development group")
-	check(studies == 5, "all five existing development study entries remain available")
+	var buttons := menu.find_children("*", "Button", true, false)
+	for destination in ["res://world/political_home.tscn", "res://world/command_sandbox.tscn",
+			"res://world/house_sandbox.tscn", "res://mechanics/course.tscn",
+			"res://presentation/equipment_study.tscn", "res://mounts/horsecraft_study.tscn",
+			"res://mechanics/ground_course.tscn", "res://world/mahan_camp.tscn",
+			"res://history/punjab_chiefs_home.tscn"]:
+		var retained := buttons.filter(func(button): return button.get_meta("destination_scene", "") == destination)
+		check(retained.size() == 1, "retained development study remains available: " + destination)
+	for mode in ["continue", "new"]:
+		var retained := buttons.filter(func(button): return button.get_meta("slice_mode", "") == mode)
+		check(retained.size() == 1, "retained Slice action remains available: " + mode)
 	begin.pressed.emit(); await frames(3)
 	home = current_scene; chapter = home.get_node("ChildhoodChapter")
-	check(home != menu and is_instance_valid(chapter.intro_session) and chapter.model.stage() == "orientation", "real Begin action opens the production family introduction before original Home play")
+	check(home != menu and is_instance_valid(chapter.intro_session) and chapter.model.stage() == "orientation", "real Begin action opens the production prologue before original Home play")
 	check(chapter.model.progress().walked == 0.0 and chapter.model.progress().looked == 0.0 and chapter.model.journal().is_empty(), "menu entry invents no childhood progress or memories")
 	current_scene = null; home.queue_free(); home = null; chapter = null; await frames(4)
 

@@ -50,7 +50,16 @@ func qualify_menu(menu: Control) -> void:
 	var scroll: ScrollContainer = scrolls[0]
 	check(within_viewport(scroll),"Main menu scroll bounds fit " + str(root.size))
 	var buttons := menu.find_children("*","Button",true,false)
-	check(buttons.size() == 7,"Both Slice actions and five retained entries are present")
+	for mode in ["continue","new"]:
+		var actions := buttons.filter(func(button): return button.get_meta("slice_mode","") == mode)
+		check(actions.size() == 1,"Exactly one Slice action remains: " + mode)
+	for destination in ["res://world/home_territory.tscn","res://world/political_home.tscn",
+			"res://world/command_sandbox.tscn","res://world/house_sandbox.tscn",
+			"res://mechanics/course.tscn","res://presentation/equipment_study.tscn",
+			"res://mounts/horsecraft_study.tscn","res://mechanics/ground_course.tscn",
+			"res://world/mahan_camp.tscn","res://history/punjab_chiefs_home.tscn"]:
+		var retained := buttons.filter(func(button): return button.get_meta("destination_scene","") == destination)
+		check(retained.size() == 1,"Exactly one retained destination remains: " + destination)
 	for node in buttons:
 		var button: Button = node
 		scroll.ensure_control_visible(button)
@@ -95,6 +104,8 @@ func capture(id: String, kind: String, chapter: Node3D = null) -> void:
 		var camera: Camera3D = chapter.avatar.get_node("CameraPivot/SpringArm3D/Camera3D")
 		record.camera_position = [camera.global_position.x,camera.global_position.y,camera.global_position.z]
 		record.camera_rotation = [chapter.avatar.pivot.rotation.x,chapter.avatar.pivot.rotation.y]
+		if is_instance_valid(chapter.art.detail.hud) and chapter.art.detail.hud.visible:
+			record.hud_text = chapter.art.detail.hud.task.text + "\n" + chapter.art.detail.hud.controls.text
 	captures.append(record)
 
 func run() -> void:
@@ -140,13 +151,21 @@ func run() -> void:
 	await frames(12)
 	# Freeze only to capture the actual default gameplay camera/HUD consistently.
 	# There is no pose, economic state, training progress or historical-fact injection.
-	chapter._paused = true
 	chapter.avatar.input_enabled = false
-	chapter.avatar.set_physics_process(false)
 	chapter._refresh()
-	check(within_viewport(chapter._hud),"Concise gameplay HUD fits the full viewport")
-	check(chapter._hud.text.contains("O route") and chapter._hud.text.contains("E speak"),"Core controls remain visible in the gameplay HUD")
+	# Freeze the actual hierarchy without presenting it as a paused conversation,
+	# which deliberately hides the guided gameplay HUD.
+	home.process_mode = Node.PROCESS_MODE_DISABLED
+	var display = chapter.art.detail.hud
+	if is_instance_valid(display) and display.visible:
+		check(within_viewport(display.top) and within_viewport(display.bottom),"Visible guided gameplay HUD fits the full viewport")
+		check(not display.task.text.is_empty() and display.controls.text.contains("O  Route"),"Current objective and Slice route control remain visible")
+	else:
+		check(chapter._hud.is_visible_in_tree() and within_viewport(chapter._hud),"Visible legacy gameplay HUD fits the full viewport")
+		check(chapter._hud.text.contains("O route") and chapter._hud.text.contains("E speak"),"Core controls remain visible in the gameplay HUD")
+	var captured_state: Dictionary = chapter.model.snapshot()
 	await capture("courtyard-gameplay","native fresh-courtyard gameplay camera after resuming the actual briefing",chapter)
+	check(chapter.model.snapshot() == captured_state,"Gameplay capture preserves the complete frozen world")
 	check(captures.size() == 5,"Five expected native captures completed")
 	var original_sources: Dictionary = source_files.duplicate(true)
 	source_files = {}

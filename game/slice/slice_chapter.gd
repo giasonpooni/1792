@@ -123,6 +123,11 @@ func _refresh() -> void:
 		if water.phase=="drawing": cargo="\nDrawing · %.1f seconds remaining"%[maxi(0,int(water.started_tick)+Water.DRAW_TICKS-int(model.progress().tick))/60.0]
 		elif water.carried>0: cargo="\nWater · %d carried · %d returned"%[water.carried,water.stored]
 	_hud.text="1792 · GUJRANWALA\n\n"+task+cargo+"\n\nWASD / Mouse · E speak · F horse · Q guard · O route · J journal"
+	# The inherited beginning can present its compact, objective-specific HUD.
+	# Keep this visit's route shortcut visible alongside those current controls.
+	if is_instance_valid(art) and is_instance_valid(art.detail) and is_instance_valid(art.detail.hud):
+		var display = art.detail.hud
+		if display.visible: display.controls.text += "    O  Route"
 
 func _open_journal() -> void:
 	super._open_journal()
