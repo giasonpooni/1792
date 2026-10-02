@@ -40,7 +40,7 @@ A tag is admitted only when:
 2. the target falls inside the hawk camera's bounded view cone and range;
 3. the hawk has direct physics line of sight to the target.
 
-The initial Home integration registers the existing **Unknown Assailant**. Future hostile actors may join the **hawk_scout_hostile** group and provide **hawk_scout_id**, **hawk_scout_label**, and optional **hawk_scout_height** metadata without modifying the flight controller.
+The initial Home integration provides two **fictional distant scout contacts** behind the household sightline and also registers the existing **Unknown Assailant**. The distant contacts are deterministic projections of the existing chapter tick; they add no second clock or persistent enemy ledger. Future hostile actors may join the **hawk_scout_hostile** group and provide **hawk_scout_id**, **hawk_scout_label**, and optional **hawk_scout_height** metadata without modifying the flight controller.
 
 A successful tag stores the target identity, last observed world position, observation tick, and expiry tick.
 
@@ -57,6 +57,7 @@ While scouting:
 - the existing chapter clock continues;
 - the hawk does not write campaign state, money, relationships, inventory, journal entries, or mission receipts;
 - aerial tags are transient runtime observations and are **not saved**;
+- applying/restoring campaign state clears transient tags, so checkpoint/load cannot carry future reconnaissance backward;
 - returning restores the original player camera.
 
 The runtime metadata declares **classification = authored-gameplay-scouting**, **historical_claim = false**, **save_authority = false**, and **observation_semantics = transient-last-seen**. This keeps the sensor/execution identity separate from the campaign state authority.
