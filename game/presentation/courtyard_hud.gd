@@ -10,6 +10,7 @@ var words: Label
 var narrator: Label
 var top: PanelContainer
 var bottom: PanelContainer
+var control_strip: PanelContainer
 var title: Label
 var controls: Label
 var _chapter: Node3D
@@ -34,11 +35,15 @@ func build(chapter: Node3D) -> void:
 	task=_label(17,Color("ece8dc"));v.add_child(task);narrator=_label(13,Color("cbc6b4"));v.add_child(narrator)
 	bottom=_panel();v=VBoxContainer.new();v.add_theme_constant_override("separation",6);bottom.add_child(v)
 	words=_label(15,Color("eee9da"));v.add_child(words)
-	controls=_label(11,Color("bcbcae"));controls.text="E  Speak    Z  Focus    X  Hawk    B  Accounts    J  Journal    F5 / F9  Save / Load    F7  Visual controls";v.add_child(controls)
+	# Controls survive a quiet caption interval. A separate panel lets silence
+	# leave actual screen space, rather than an empty subtitle background.
+	control_strip=_panel()
+	controls=_label(11,Color("bcbcae"));controls.text="E  Speak    Z  Focus    X  Hawk    B  Accounts    J  Journal    F5 / F9  Save / Load    F7  Visual controls";control_strip.add_child(controls)
 	sample()
 func sample() -> void:
 	if not is_instance_valid(_chapter): return
-	var beginning: Dictionary=Beginning.read(_chapter)
+	var moving: bool=Vector2(_chapter.avatar.velocity.x,_chapter.avatar.velocity.z).length()>.3
+	var beginning: Dictionary=Beginning.read(_chapter,moving)
 	var childhood: bool=not beginning.is_empty()
 	var eligible: bool=compact and (childhood or (_chapter.model.has_economy() and _chapter.model.workshop_phase() in ["fuel","working","ready","tools"] and Beginning.household_uncommitted(_chapter.model)))
 	var active: bool=eligible and not _chapter._paused;visible=active
@@ -51,13 +56,17 @@ func sample() -> void:
 	if active:
 		var size:=_chapter.get_viewport().get_visible_rect().size
 		top.position=Vector2(18,18);top.size=Vector2(minf(420 if childhood else 370,size.x-36),0);bottom.size=Vector2(minf(760,size.x-36),0)
+		control_strip.size=Vector2(minf(760,size.x-36),0)
 		if childhood:
 			title.text=beginning.title;task.text=beginning.task;narrator.text=beginning.progress;controls.text=beginning.controls
+			title.visible=beginning.attention_mode=="rest"
+			narrator.visible=beginning.show_progress and not narrator.text.is_empty()
 			_chapter._marker.visible=beginning.show_target
 			if beginning.show_target:
 				_chapter._marker.position=beginning.target+Vector3.UP*2.1
 				_chapter._marker.text=beginning.marker
 		else:
+			title.show()
 			title.text="GUJRANWALA  /  HOUSEHOLD COMMISSION"
 			task.text=_chapter.workshop_hint().replace(" [E]","");narrator.text=_chapter._narrator_label.text
 			controls.text="E  Speak    B  Accounts    J  Journal    F5 / F9  Save / Load    F7  Visual controls"
@@ -71,9 +80,11 @@ func sample() -> void:
 				controls.text="W  Forward     A / D  Steer     S / Space  Brake     F  Dismount when stopped"
 				_chapter._marker.text="Smith · dismount first"
 			_chapter._marker.visible=true
-		narrator.visible=not narrator.text.is_empty()
-		words.text=_chapter._message
-		bottom.position=Vector2((size.x-bottom.size.x)*.5,size.y-bottom.get_combined_minimum_size().y-18)
+			narrator.visible=not narrator.text.is_empty()
+		words.text=_chapter.story_caption() if _chapter.has_method("story_caption") else _chapter._message
+		bottom.visible=not words.text.is_empty()
+		control_strip.position=Vector2((size.x-control_strip.size.x)*.5,size.y-control_strip.get_combined_minimum_size().y-18)
+		bottom.position=Vector2((size.x-bottom.size.x)*.5,control_strip.position.y-bottom.get_combined_minimum_size().y-8)
 	for r in _labels:
 		if is_instance_valid(r.node):
 			r.node.visible=r.visible and (not active or r.node.global_position.distance_to(_chapter.avatar.global_position)<6.5)

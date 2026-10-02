@@ -72,7 +72,7 @@ func run() -> void:
 	check(c.model.begin_allowance().is_empty(),"HUD allowance fixture")
 	c._apply();check(c.model.workshop_action("reserve").is_empty(),"HUD commission fixture");c._refresh();await frames(4)
 	check(d.hud.visible and not c._hud.visible,"compact task HUD")
-	check(d.hud.words.text==c._message and d.hud.narrator.text==c._narrator_label.text,"existing speech and narration retained")
+	check(d.hud.words.text==c.story_caption() and d.hud.narrator.text==c._narrator_label.text,"directed speech and existing workshop narration retained")
 	d.hud.compact=false;d.hud.sample();check(not d.hud.visible and c._hud.visible,"classic HUD restored")
 	d.hud.compact=true;c._refresh();c.open_art_study();state=c.model.snapshot()
 	check(not d.hud.visible,"modal immediately suppresses compact HUD")

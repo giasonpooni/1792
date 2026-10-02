@@ -49,6 +49,9 @@ IDs, launch instructions and source revisions, separating prototypes from future
 The next [childhood development pass](docs/CHILDHOOD_ARC_DEVELOPMENT.md) connects
 riding, practice, tracking, the ambush and the household inquiry with clearer
 staging, feedback and responses shaped by what the player experienced.
+The [story pacing pass](docs/STORY_PACING_AND_ATTENTION.md) adds timed captions,
+quiet intervals, adaptive guidance and dialogue recall, with individual literary
+and cinematic direction for all 33 sequence cards.
 
 ## Title and story
 
@@ -459,6 +462,8 @@ See [the arms-craft scope and limits](docs/GUJRANWALA_ARMS_CRAFT.md).
 A third reversible eye-level craft pass adds restrained trim, dark timber reveals, plinth accents, selective repair fields, sparse wall hardware and two quiet storage corners. See [the microdetail scope and limits](docs/GUJRANWALA_MICRODETAIL.md).
 
 The next increment improves the existing assets: metre-scaled plaster, directional timber grain, filtered cloth weave and twelve fitted hollow vessels inside their original envelopes. Six engine inspection views include a same-camera daylight/golden-hour/evening comparison with independent PNG verification. Explicit CI error guards and renderer cleanup address shutdown errors that previously escaped qualification. See [material fidelity, verification scope and limits](docs/GUJRANWALA_MATERIAL_FIDELITY.md).
+
+Close construction and daily-use detail adds paired door ring pulls, three latches, selective threshold wear, two open woven baskets fitted to the solid market counter, and masonry/sheave fittings within the existing well footprint. The layer shares the F7 comparison and retains the existing routes, collisions and water operation. Paired engine captures compare only this layer. See [daily-detail scope and qualification](docs/GUJRANWALA_DAILY_DETAIL.md).
 
 The main menu also offers a playable horsecraft study: the existing motor drives two independent horse bodies, with a supported standing stance, counterbalance, four separate matchlock charge slots and collision-checked target shots. It develops a candidate Maha Singh remembered feat while preserving the campaign, riding-save and father-interlude contracts. The specific two-horse/four-matchlock anecdote remains source-unlocated. [Controls, evidence and production limits](docs/HORSECRAFT_STUDY.md).
 

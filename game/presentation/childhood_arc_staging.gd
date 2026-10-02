@@ -3,10 +3,12 @@ extends Node3D
 ## Original lesson staging, sampled from Home's existing clock and authority.
 ## No process loop, collision, hidden knowledge, independent agent or save state.
 const Home := preload("res://childhood/childhood_state.gd")
+const TrailFocus := preload("res://presentation/childhood_trail_focus.gd")
 const ACTIVE := Color("b78649")
 const COMPLETE := Color("64785c")
 const REMAINING := Color("81796a")
 const STOP_OFFSET := Vector3(0, 0, 4.1)
+var trail_focus: Node3D
 var gate_flags: Array[Dictionary] = []
 var trace_roots: Array[Node3D] = []
 var stop_marker: Node3D
@@ -105,6 +107,9 @@ func build(chapter: Node3D) -> void:
 	for index in range(Home.GATES.size()): _build_gate(index)
 	_build_stop()
 	_build_traces()
+	trail_focus = TrailFocus.new()
+	add_child(trail_focus)
+	trail_focus.build(chapter)
 	_trainer = chapter.trainer
 	_trainer_rest = _trainer.transform
 	trainer_arm = _build_arm(_trainer, "PracticeArm", Vector3(0.31, 0.48, -0.04), Color("a98459"))
@@ -164,10 +169,13 @@ func _scrub(parent: Node3D, at: Vector3, seed_offset: int) -> void:
 func _build_traces() -> void:
 	var prints := _node(self, "SplitPrints", Home.SITES.track_1)
 	trace_roots.append(prints)
+	# A quiet patch of exposed soil separates the small dark impressions from
+	# the busy market surface; it stays present without selection or emission.
+	_build_exposed_soil(prints)
 	for step in range(3):
 		var center := Vector3(-0.28 + (step % 2) * 0.38, 0.025, -step * 0.32)
 		for side in [-1, 1]:
-			_oval(prints, "HoofImpression", center + Vector3(side * 0.036, 0, 0), Vector3(0.068, 0.016, 0.21), Color("655b45"))
+			_oval(prints, "HoofImpression", center + Vector3(side * 0.036, 0, 0), Vector3(0.068, 0.016, 0.21), Color("514635"))
 	_scrub(prints, Vector3(-0.95, 0, -0.25), 1)
 	var reeds := _node(self, "DisturbedReeds", Home.SITES.track_2)
 	trace_roots.append(reeds)
@@ -185,6 +193,38 @@ func _build_traces() -> void:
 		_rod(grass, "FlattenedBlade", from, from + Vector3(0.08, 0.006, -0.51), 0.009, Color("b4ac76"))
 	_scrub(grass, Vector3(-1.0, 0, -0.65), 4)
 
+func _build_exposed_soil(parent: Node3D) -> void:
+	# Soft vertex alpha keeps a dust variation from reading like a solid quest
+	# decal. No light, pulse, camera-facing billboard or selection state.
+	var surface := SurfaceTool.new()
+	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var color := Color("b29d76")
+	for index in range(12):
+		for corner in [0, 1, 2]:
+			var point := Vector3.ZERO
+			var tint := Color(color, 0.0)
+			if corner == 0:
+				tint.a = 0.80
+			else:
+				var edge: int = index + corner - 1
+				var angle := TAU * float(edge) / 12.0
+				var radius := 1.0 + 0.09 * sin(float(edge) * 2.3)
+				point = Vector3(cos(angle) * 0.78, 0, sin(angle) * 0.87) * radius
+			surface.set_color(tint)
+			surface.set_normal(Vector3.UP)
+			surface.add_vertex(point)
+	var patch := MeshInstance3D.new()
+	patch.name = "ExposedSoil"
+	patch.mesh = surface.commit()
+	patch.position = Vector3(-0.1, 0.012, -0.32)
+	var material := StandardMaterial3D.new()
+	material.vertex_color_use_as_albedo = true
+	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	material.roughness = 1.0
+	patch.material_override = material
+	patch.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	parent.add_child(patch)
+
 func _build_arm(parent: Node3D, label: String, at: Vector3, color: Color) -> Node3D:
 	var arm := _node(parent, label, at)
 	_rod(arm, "Sleeve", Vector3.ZERO, Vector3(0.03, -0.29, -0.08), 0.065, color)
@@ -195,6 +235,7 @@ func _build_arm(parent: Node3D, label: String, at: Vector3, color: Color) -> Nod
 func sample() -> void:
 	if not is_instance_valid(_chapter) or not is_instance_valid(trainer_arm): return
 	_bind_trainer_costume()
+	trail_focus.sample()
 	var progress: Dictionary = _chapter.model.progress()
 	var stage: String = _chapter.model.stage()
 	var tick: int = int(progress.tick)

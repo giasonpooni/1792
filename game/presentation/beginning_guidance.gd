@@ -16,11 +16,14 @@ static func household_uncommitted(model) -> bool:
 	var ledger: Dictionary=model.economy().ledger
 	return ledger.caravan!="active" and ledger.delivery!="outbound"
 
-static func read(chapter: Node3D) -> Dictionary:
+static func read(chapter: Node3D, moving: bool = false) -> Dictionary:
 	var model=chapter.model
 	var state: Dictionary=model.progress()
 	var stage: String=model.stage()
-	var result:={"title":"GUJRANWALA  /  LEARNING HOME","task":"","progress":"","controls":"","target":Vector3.ZERO,"marker":"","show_target":false}
+	# Secondary guidance returns as soon as the player stops on foot. This is a
+	# presentation observation, not a timer, save field, or lesson prerequisite.
+	var attention_mode := "threat" if stage == "active" else "mounted" if model.mounted() else "moving" if moving else "rest"
+	var result:={"title":"GUJRANWALA  /  LEARNING HOME","task":"","progress":"","controls":"","target":Vector3.ZERO,"marker":"","show_target":false,"attention_mode":attention_mode,"show_progress":attention_mode == "rest"}
 	match stage:
 		"orientation":
 			result.task="Explore the courtyard"

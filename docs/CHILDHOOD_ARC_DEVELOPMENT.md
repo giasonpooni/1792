@@ -72,6 +72,8 @@ and three production staging views rendered successfully. The visual checks caug
 and corrected reversed wind-up rotation and a duplicate costume arm; native tests
 now check the weapon's world height and the shared costume treatment.
 
-Further environment work is still needed around the first two traces, where older
-market dressing partly obscures the ground. Their interactions and paths remain
-playable; this pass does not claim a finished trail layout or final character art.
+The follow-up [story pacing and attention pass](STORY_PACING_AND_ATTENTION.md)
+adds caption timing, quiet intervals, dialogue recall, adaptive guidance and a
+recurring training-to-inquiry motif. It also clears the two identified dressing
+overlaps at the first traces. Broader approach angles and finished character and
+environment art remain development work.

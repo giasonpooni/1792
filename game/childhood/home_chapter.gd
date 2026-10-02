@@ -14,6 +14,7 @@ const Navigation := preload("res://patrol/patrol_navigator.gd")
 const LessonDirection := preload("res://childhood/lesson_direction.gd")
 const InquiryPresentation := preload("res://childhood/inquiry_presentation.gd")
 const ArcStaging := preload("res://presentation/childhood_arc_staging.gd")
+const StoryAttention := preload("res://presentation/story_attention.gd")
 var model := Story.new()
 var save_path := Story.AFTER_SAVE # checkpoints derive from this path; tests stay isolated
 var avatar: CharacterBody3D
@@ -54,6 +55,10 @@ var _inquiry_choices: Array[String] = []
 var arc_staging: Node3D
 var _practice_feedback := ""
 var _practice_feedback_until := -1
+var story_attention := StoryAttention.new()
+var _last_story_message := ""
+var _last_story_context := ""
+var _keep_story_recall_once := false
 
 func _ready() -> void:
 	avatar = get_parent().get_node("Player")
@@ -301,6 +306,8 @@ func _menu_action(action: String) -> void:
 		return
 	match action:
 		"resume": _resume()
+		"journal": _open_journal()
+		"dialogue": _open_scene_dialogue()
 		"save": _save_requested = true
 		"load": _load_requested = true
 		"retry": _retry_requested = true
@@ -322,13 +329,18 @@ func _open_journal() -> void:
 	text += "An account is not its confirmation. The readable text here represents remembered speech and experience, not Buddh reading a document.\n\nSOURCE PROFILE: Latif's History of the Panjab (1891), selected passages; the lessons, dialogue, map and escape outcome are authored. Eye loss is already present; F4 changes only subjective framing. There is no historically established progressive-blindness schedule here."
 	text += "\n\n" + _checkpoint_note + "\nRestoring a checkpoint replaces this whole chapter state, including memories and decisions."
 	_panel_text.text = text
-	_set_actions([["Resume","resume"],["Save chapter","save"],["Load chapter","load"],
+	_set_actions([["Resume","resume"],["Recent scene dialogue","dialogue"],["Save chapter","save"],["Load chapter","load"],
 		["Restore last checkpoint [R] — replaces current progress","retry"],
 		["Import previous childhood save","import"],["Main menu (unsaved changes lost)","menu"]])
 	_panel.show()
 	_hud.hide()
 	_caption.hide()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+func _open_scene_dialogue() -> void:
+	var lines := story_attention.history()
+	_show_dialog("RECENT SCENE DIALOGUE", "\n\n".join(lines) if not lines.is_empty() else "No recent scene dialogue to replay.",
+		[["Return to the journal", "journal"], ["Resume", "resume"]])
 
 func _resume() -> void:
 	_inquiry_choices.clear()
@@ -452,7 +464,7 @@ func _interact() -> void:
 				_message = LessonDirection.TRACE_DETAILS[expected]
 		elif model.near("quarry",6.0) and _seen(Model.SITES.quarry+Vector3.UP*0.8,7.0):
 			error = model.observe_quarry(Input.is_key_pressed(KEY_C))
-			_message = "Buddh · The quarry is here. Time to return; I remember the bend."
+			_message = "Buddh · It has not noticed me. I can leave it so."
 			if error.is_empty(): _capture_checkpoint("return_trail")
 		else: error = "Look toward the nearby trace, then examine it [E]."
 	else: _message = "Read the current lesson above. Move, look, and practise in the world."
@@ -536,13 +548,13 @@ func _step_practice() -> void:
 	trainer.rotation.z = -0.4 if phase >= 90 and phase < 120 else 0.0
 	if not model.near("spar",3.3) or model.mounted(): return
 	var facing := _facing(Model.SITES.spar)
-	if phase == 60: _message = "Trainer · Settle your feet. My arm will rise before the blow."
-	if phase >= 90 and phase < 120: _message = "Trainer · Watch the raised arm. Face me and hold Q to guard."
+	if phase == 60: _message = "Trainer · Look first. Let the arm tell you when."
+	if phase >= 90 and phase < 120: _message = "Trainer · Here it comes. Face me; hold Q."
 	if phase == 120:
 		_practice_feedback_until = -1
 		if Input.is_key_pressed(KEY_Q) and facing:
 			model.spar_result("parry")
-			_message = "Trainer · Guard held. After two guards, counter during my recovery [left click]."
+			_message = "Trainer · Once more. Keep watching the arm." if int(model.progress().parries) < 2 else "Trainer · Now answer. Counter as my arm falls [left click]."
 		else: _message = "Trainer · Turn toward the strike and guard. Again."
 	if _strike_requested:
 		_message = LessonDirection.swing_feedback(phase, int(model.progress().parries), facing)
@@ -564,7 +576,7 @@ func _step_ambush(delta: float) -> void:
 	if model.stage() == "ready" and model.near("bend",3.0):
 		model.start_ambush()
 		attacker.global_position = Model.point(model.progress().ambush.position)
-		_message = "[A sharp movement beside the path.] Buddh · Someone is coming at me. Get back to the courtyard!"
+		_message = "[Sudden movement beside the path.] Get back to the courtyard!"
 	attacker.visible = model.stage() in ["active","caught"]
 	attacker.collision_layer = 1 if attacker.visible else 0
 	attacker.collision_mask = 1 if attacker.visible else 0
@@ -583,7 +595,7 @@ func _step_ambush(delta: float) -> void:
 	var error := model.record_threat(attacker.global_position,delta)
 	if not error.is_empty(): attacker.global_position = Model.point(a.position)
 	if not stopped and d < 3.0:
-		if phase >= 90: _message = "[Nearby movement: a strike is being raised.] Face it and guard [Q], or create distance."
+		if phase >= 90: _message = "[A raised strike nearby.] Face it; guard [Q] or get clear."
 		if phase == 119:
 			if not model.mounted() and Input.is_key_pressed(KEY_Q) and _facing(attacker.global_position):
 				model.parry_threat()
@@ -607,6 +619,7 @@ func _toggle_mount() -> void:
 	elif not horse.clear_mount_path(avatar): error = "A wall blocks the horse."
 	else: error = model.mount()
 	if error.is_empty():
+		_keep_story_recall_once = true
 		_apply()
 		_message = "Mounted: W forward; A/D steer; Shift canter; S/Space brake." if model.mounted() else "Dismounted. The horse stays here."
 	else: _message = error
@@ -616,6 +629,12 @@ func _toggle_mount() -> void:
 func _apply() -> void:
 	_practice_feedback_until = -1
 	_practice_feedback = ""
+	# Every inherited save/checkpoint loader converges here. Only the admitted
+	# mount/dismount path may retain this session's incidental dialogue recall.
+	story_attention.reset(int(model.progress().tick), _keep_story_recall_once)
+	_keep_story_recall_once = false
+	_last_story_message = ""
+	_last_story_context = _story_context()
 	avatar.global_position = model.position()
 	avatar.velocity = Vector3.ZERO
 	horse.apply_record(model.horse_record())
@@ -663,7 +682,9 @@ func _load(path: String = "") -> void:
 	var error := staged.load_from(save_path if path.is_empty() else path)
 	if error.is_empty(): error = _candidate_error(staged)
 	if error.is_empty(): error = model.restore(staged.snapshot())
-	if error.is_empty(): _apply()
+	if error.is_empty():
+		story_attention.reset(int(model.progress().tick))
+		_apply()
 	_message = "Chapter loaded; accounts, agreements and poses retained." if error.is_empty() else error
 	_clear_pending_actions()
 	_resume()
@@ -714,12 +735,38 @@ func _refresh() -> void:
 			if after.escort.active: instructions += " · Guard: " + after.escort.instruction + " [G toggles, within 10 m]"
 
 	_hud.text = "1792 · BUDDH SINGH · HOME CHAPTER\n%s\n\n%s\n\nWASD move · Mouse look · F horse · E examine/speak · Q guard · C quiet approach\nF4 peripheral framing: %s · J journal · F5/F9 save/load · R checkpoint · F1 menu" % [("HOUSEHOLD / " + model.aftermath_phase().to_upper()) if lesson == "escaped" else lesson.to_upper(),instructions,"subjective" if _subjective else "clear"]
-	_caption.text = "  " + _message + "  "
+	_sample_story_attention()
+	var caption := story_caption()
+	_caption.text = "  " + caption + "  "
+	_caption.get_parent().visible = not caption.is_empty() and not _paused
 	_marker.position = target+Vector3.UP*2.1
 	_marker.text = "Practice waypoint" if lesson in ["orientation","riding","sparring","tracking"] else "Speaker" if lesson=="letter" else "Return"
 	_marker.visible = lesson not in ["orientation","caught"] and model.aftermath_phase() != "complete"
 	_sync_aftermath_visuals()
 	if is_instance_valid(arc_staging): arc_staging.sample()
+
+func _story_context() -> String:
+	return "escaped:" + model.aftermath_phase() if model.stage() == "escaped" else model.stage()
+
+func _sample_story_attention() -> void:
+	if _paused: return
+	var tick: int = int(model.progress().tick)
+	var context := _story_context()
+	var previous := _last_story_context
+	story_attention.enter_context(context, tick)
+	if _message != _last_story_message:
+		var priority := StoryAttention.ACCOUNT
+		if model.stage() == "active": priority = StoryAttention.DANGER
+		elif model.stage() == "sparring" and model.near("spar", 3.3) and not model.mounted(): priority = StoryAttention.ACTION
+		story_attention.offer(_message, tick, priority)
+		_last_story_message = _message
+	if not previous.is_empty() and previous != context:
+		var beat := LessonDirection.transition_line(previous, context)
+		if not beat.is_empty(): story_attention.offer(beat, tick, StoryAttention.STORY)
+	_last_story_context = context
+
+func story_caption() -> String:
+	return story_attention.read(int(model.progress().tick))
 
 func _set_actions(specs: Array) -> void:
 	for node in _actions.get_children():
@@ -885,6 +932,7 @@ func _restore_checkpoint() -> void:
 		_show_dialog("CHECKPOINT NOT RESTORED",error+"\nYour current chapter is unchanged.",
 			[["Return","resume"],["Load manual save","load"],["Main menu","menu"]])
 		return
+	story_attention.reset(int(model.progress().tick))
 	_apply()
 	avatar.pivot.rotation = Vector3(result.envelope.camera[0],result.envelope.camera[1],0)
 	_clear_pending_actions()

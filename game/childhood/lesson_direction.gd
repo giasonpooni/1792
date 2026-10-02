@@ -18,11 +18,11 @@ static func practice_phase(tick: int) -> String:
 
 static func swing_feedback(phase: int, parries: int, facing: bool) -> String:
 	phase = posmod(phase, 150)
-	if not facing: return "Trainer · Face me. A blow behind your shoulder teaches neither of us anything."
-	if parries < 2: return "Trainer · Hold your guard through two blows first. You are learning when to answer."
-	if phase <= 89: return "Trainer · Too late for the last opening. Settle your feet and watch the next raised arm."
-	if phase <= 120: return "Trainer · Too early. My guard is still up. Wait until the blow has passed."
-	return "Trainer · There. You waited, then answered. Now take that patience onto the trail."
+	if not facing: return "Trainer · Face me. Keep the raised arm in view."
+	if parries < 2: return "Trainer · Two guards first. Learn when to answer."
+	if phase <= 89: return "Trainer · Too late. Settle your feet; watch the next raised arm."
+	if phase <= 120: return "Trainer · Too early. Wait until my arm falls."
+	return "Trainer · There. Look first, then answer. Take that patience onto the trail."
 
 static func trail_task(tracks: int) -> String:
 	return "Examine the " + str(TRACE_NAMES[tracks]).to_lower() if tracks < 3 else "Reach the quarry quietly"
@@ -32,4 +32,14 @@ static func gate_reaction(completed: int) -> String:
 		1: return "Buddh · Through the first gate. Look toward the next turn before asking for more speed."
 		2: return "Buddh · Two turns. Bring the horse back under control for the gate into the yard."
 		3: return "Trainer · All three. Bring him to a walk, stop on clear ground, and come to me on foot."
+	return ""
+
+static func transition_line(previous: String, current: String) -> String:
+	# Internal reactions use only a completed transition. No hidden enemy cue,
+	# invented report, attributed quotation or automatic historical conclusion.
+	match previous + ">" + current:
+		"letter>riding": return "Buddh · A horse may be easier to understand than two men telling different stories."
+		"sparring>tracking": return "Buddh · Look first, then answer. Perhaps a trail can be read the same way."
+		"active>escaped:accounts": return "Buddh · The same gate. I did not expect to be so glad to see it."
+		"escaped:return>escaped:complete": return "Buddh · I wanted a name to bring home. I brought what I could see."
 	return ""

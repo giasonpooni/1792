@@ -560,8 +560,78 @@ The 28 youth catalogue entries contain **one existing adaptation alias** (HOME-0
 | BRIEF-009 | Rival misls, hill states and regional diplomacy — proposed. | Choose a specific negotiable obligation for each future faction encounter; worldbuilding descriptions alone do not establish missions. |
 | BRIEF-010 | Sindh, Shikarpur and the Mazari campaign — proposed. | Separate Shikarpur ambitions, river access and the Mazari operation into research-and-outline tasks before promising a southern campaign. |
 
+## Literary, cinematic and attention direction
+
+The 33 cards now each include a `narrative_direction` block in the structured source. These are **original planned directions**, including a dramatic turn, setup and payoff, playable staging, attention rhythm, quiet recovery, bounded agency and an observable acceptance condition. They extend the existing cards; they add no missions and do not replace their historical treatment.
+
+The current runtime attention pass targets the shared childhood presentation and HOME-003–007. Its caption and HUD changes are a concrete first step toward that arc's attention direction. They do not implement the other sequences' proposed performances, scenery, sound or camera work. Existing prototype receipts and the new direction's acceptance conditions remain separate.
+
+### The connected childhood arc
+
+Use the yard threshold as the first recurring image: ordinary home, a place of departure, then the place the child needs to reach under threat. The riding lesson develops restraint, sparring develops patience, and tracking develops observation. The ambush gives those skills immediate stakes; the inquiry then asks what the child can honestly say about the event. The same terrain returns with a changed meaning. This is a proposed dramatic structure, not a claim that the fictional attack caused a documented historical policy.
+
+The emotional rhythm is **curiosity → confidence → concentration → discovery → alarm → reflection**. Do not keep increasing noise or urgency across all six states. During riding, the player needs the next gate; during sparring, the next tell; during tracking, a surface worth examining; during pursuit, an escape route; during inquiry, room to hear and compare accounts. Reflective lines belong after an action has made them relevant.
+
+### Attention rules for implementation
+
+- Give each active beat one dominant question and one immediately useful action. Additional context can remain in reviewable records or optional conversation.
+- Make important information persistent or recallable. A short caption disappearing is never permission to remove the player's only account of an objective or decision.
+- Let imminent danger interrupt flavor, and let a useful correction survive long enough to be read. Repeated interactions should not flood the same line or conceal a new response.
+- Build compositions through actual approach, silhouette, distance, movement and sound. Preserve player camera control and avoid hiding navigation or evidence behind cinematic scenery.
+- Use quiet after success, danger and testimony. Quiet is a change in demand, not a mandatory wait or a disabled interface.
+- Keep choice consequences local and visible: a person waits, a supply is spent, a report changes, a companion reacts. Do not use rewards to certify disputed history or force every scene into a moral verdict.
+- Review attention through comprehension, agency and recovery. Time spent playing is not by itself evidence that a sequence works.
+
+### Direction matrix
+
+Each row names the planned turn and its particular staging rhythm. The JSON cards contain the complete implementation and acceptance direction.
+
+| Sequence | Dramatic turn | Setup and payoff | Attention and recovery |
+| --- | --- | --- | --- |
+| HOME-001 · Learning the yard | Wandering becomes a first responsibility. | The courtyard threshold establishes Home. | Broad exploration narrows to the waiting courier; no repeated summons. |
+| HOME-002 · The sealed message | A delivery becomes a choice about uncertainty. | Seal, limited witness account, trainer receipt. | Hear the gap, choose an approach, finish on one acknowledgment. |
+| HOME-003 · First riding gates | Speed gives way to restraint. | Completed gate stitches and a deliberate stop. | One active gate; brief reactions between steering demands. |
+| HOME-004 · Guard and counter | Immediate retaliation gives way to timing. | Raised weapon and exposed recovery. | Readable combat rhythm; stillness after the admitted counter. |
+| HOME-005 · Tracks beyond Home | Pursuit gives way to observation. | Three different traces resolve into a breathing animal. | Search and inspect, with quiet gaps and an unhurried reveal. |
+| HOME-006 · The return-path ambush | A familiar route becomes dangerous. | The opening threshold returns as the escape destination. | Quiet approach, clear warning, urgent retreat, then release. |
+| HOME-007 · The household inquiry | Protection becomes a question of accompaniment and account. | The same bend returns as evidence. | Offer, revisit, observe, report; leave uncertainty room to remain. |
+| HOME-008 · Four-food delivery | A titled promise meets an ordinary tally. | The departure count returns at handover. | Short contract, free travel, one exchange, market resumes. |
+| HOME-009 · Bring the carrier Home | Reaching the gate is not yet bringing someone home. | The carrier’s pace pays off in waiting or regrouping. | Movement and contact checks; breathing room after reunion. |
+| HOME-010 · Water for the household | Routine water becomes visible labor. | The same rope and vessels mean more on the second trip. | Teach once, vary the human observation, finish without a speech. |
+| HOME-011 · The smith’s commission | Wanting tools becomes paying for skilled time. | Blanks become the completed pair at the same bench. | Commit, leave room for other activity, collect once. |
+| HOME-012 · Sukerchakia household service | An order creates an absence and a later account. | The guard’s place at the gate is occupied, empty, then filled. | Need, departure, ordinary activity, received report. |
+| HOME-013 · The Bhangi Bazaar Brawl | Public courage meets the friends’ private judgment. | Three conversational rhythms break and reform. | Warmth, challenge, action, a quieter shared return. |
+| HOME-014 · Maha’s horsecraft lesson | Spectacle becomes controlled recovery and withdrawal. | Settling the horse recurs across three exercises. | One new demand at a time; reset between exercises. |
+| HOME-015 · Missing remounts | Visible horses do not settle the explanation. | The gate becomes part of the witness account. | Route choice, specific evidence, quiet walk before report. |
+| HOME-016 · The borrowed rope | One object holds incompatible meanings. | The rope’s worn place receives two different emphases. | Distinct tellings, comparison, one attributed retelling. |
+| HOME-017 · A funded instructor | A contract becomes attendance and practical care. | The instructor’s concern returns as a real interruption. | Expose only the current unmet condition; let repaired practice run. |
+| CMD-001 · Lahore road patrol | A court order acquires its cost on the road. | The same order returns qualified by a report. | One decision per viewpoint; no unreceived distant discoveries. |
+| MAHA-001 · Mahan’s field camp | A narrowing horizon makes unfinished duties intimate. | Ford and ridge reports shape the last handover. | Decision and delayed report; reduced noise around the final instruction. |
+| PRO-001 · Sobraon to the oral telling | Defeat becomes a decision about whom to carry. | A bodily burden becomes part of the later telling. | Legible survival first; river danger gives way to substantial quiet. |
+| TALE-001 · The Wedding Road | Ceremony is interrupted by a rival claim. | Gift bearers wait while a messenger changes the arrival. | Establish celebration before interruption; settle bearers before report. |
+| TALE-002 · The Unequal Victory | Victory’s public account exposes an omitted cost. | An announcement sounds different beside the wounded companion. | One claim, one human interruption, one finite allocation. |
+| TALE-003 · A Stranger at the Threshold | Uncertain warning becomes immediate protection. | Outer access contrasts with inner shelter. | Question, compare, warn, escort; no closing proof of guilt. |
+| TALE-004 · Desi Remembers the Reins | An extraordinary reputation meets ordinary horse care. | A sweeping boast settles into Desi’s breathing at water. | Brief legend, mostly riding, reflective rest. |
+| TALE-005 · What Can Be Carried | Lost standing meets a follower’s need for shelter. | A salvaged bundle becomes an offer. | Political pressure narrows to hospitality; let the follower rest. |
+| TALE-006 · The Water of Bahrwal | Repeated labor becomes remembrance of a miracle. | The same rope draws water before and after the blessing. | Plain first draw, attentive welcome, quiet second draw. |
+| TALE-007 · The Door to the Young Chief | A doorway makes access into political authority. | The audience door and register preserve a local exclusion. | Immediate claims first; let the closed door carry the pause. |
+| TALE-008 · The Whisper After Midnight | An accusation meets a narrower witness account. | Unsigned sheet and official register expose inscription’s power. | Hear allegation once; give testimony equal space; end without a verdict. |
+| TALE-009 · Two Names in the Dispatch | An announcement risks carrying an accusation farther. | Two names travel from speech to a sealed packet. | Separate accounts before one transmission choice; no parentage reveal. |
+| TALE-010 · The Fortress in the Letter | A large offer meets a limited mandate. | A distant fortress contrasts with a small handoff. | Build the approach, clarify authority, end on receipt alone. |
+| TALE-011 · Behind the Lowered Curtain | A closing route makes treatment the remaining choice. | Curtain, visible bearers and the final gate. | Reduce exposition as movement narrows; give detention an unhurried aftermath. |
+| TALE-012 · When the Camp Falls Quiet | Authority passes through a duty of care. | The father’s order changes weight across three listeners. | Purposeful work gradually thins; make room for the last message. |
+| TALE-013 · Names at the Gate | A future agreement leaves grief unfinished. | An enemy gate becomes a clerk’s reception. | Hear one concern, clarify one promise, avoid a victory celebration. |
+
+### Review the designed effect
+
+For each implemented direction, watch a fresh attempt and a returning attempt. Ask the player what changed, what they chose, what they actually know, and what they expect to do next. Record missed cues, repeated lines, blocked sightlines and involuntary waits. A player taking time to look or think is different from a player unable to identify the next action. Use that distinction before shortening dialogue or adding a marker.
+
+The first childhood check should cover an overshot gate, an early counter, a slow trail search, both retreat approaches and both inquiry routes. Verify that important corrections can be read, immediate danger remains visible, a completed beat gets space, and the player can recover the objective after looking away. These are review targets; a written direction alone does not demonstrate them.
+
 ## Implementation receipts
 
-No receipt is written by this design pass. HOME-001/002 are actively being built; the remaining increments are queued. Before marking a card complete, record the revision, the concrete player-visible change, the relevant acceptance result, and any remaining limitation. Existing prototype status remains separate from completion of these new cards.
+The existing opening and childhood prototype passes have `current_pass` records in HOME-001–007. Their remaining performance and visual work stays open. All 33 `narrative_direction` blocks are planned original direction, with their own acceptance conditions still awaiting implementation and review. The runtime attention pass is limited to shared childhood presentation and HOME-003–007; record its concrete behavior and verification separately from these design intentions.
+
+Before marking a direction complete, record the revision, the player-visible change, its observed acceptance result and any remaining limitation. An inherited prototype, a literary outline and a reviewed playable increment are different evidence of progress. No new sequence count is claimed here.
 
 Coverage snapshot: 2026-10-02; ledger commit `4e85c2a469aae1cb567162b87ccf23eeaaa8d7a3`.

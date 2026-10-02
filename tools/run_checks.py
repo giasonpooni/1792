@@ -29,6 +29,7 @@ def main() -> int:
     parser.add_argument("--godot", default=shutil.which("godot") or shutil.which("godot4"))
     args = parser.parse_args()
     run([sys.executable, "tools/check_project.py"], "structure")
+    run([sys.executable, "tools/test_check_gujranwala_daily_detail_capture.py"], "gujranwala-daily-capture-contracts")
     run([sys.executable, "tools/check_smith_workcell.py"], "smith-workcell-capsule")
     run([sys.executable, "tools/check_net_profile.py"], "net-water-profile")
     if not args.godot:
@@ -57,6 +58,14 @@ def main() -> int:
         "childhood-arc-staging", "CHILDHOOD_ARC_STAGING_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_inquiry_presentation.gd"],
         "inquiry-presentation", "INQUIRY_PRESENTATION_TESTS:")
+    run([args.godot, "--headless", "--path", "game", "--script", "res://tests/test_story_attention.gd"],
+        "story-attention", "STORY_ATTENTION_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_story_attention_scene.gd"],
+        "story-attention-scene", "STORY_ATTENTION_SCENE_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_attention_guidance.gd"],
+        "attention-guidance", "ATTENTION_GUIDANCE_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_childhood_trail_focus.gd"],
+        "childhood-trail-focus", "CHILDHOOD_TRAIL_FOCUS_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_hawk_scout.gd"],
         "hawk-scout", "HAWK_SCOUT_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_ground_focus.gd"],
@@ -109,6 +118,7 @@ def main() -> int:
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_gujranwala_depth.gd"],"gujranwala-depth","GUJRANWALA_DEPTH_TESTS:")
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_gujranwala_arms_craft.gd"],"gujranwala-arms-craft","GUJRANWALA_ARMS_CRAFT_TESTS:")
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_gujranwala_microdetail.gd"],"gujranwala-microdetail","GUJRANWALA_MICRODETAIL_TESTS:")
+    run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_gujranwala_daily_detail.gd"],"gujranwala-daily-detail","GUJRANWALA_DAILY_DETAIL_TESTS:")
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_vessel_profile.gd"],"vessel-profile","VESSEL_PROFILE_TESTS:")
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_gujranwala_material_fidelity.gd"],"gujranwala-material-fidelity","GUJRANWALA_MATERIAL_FIDELITY_TESTS:")
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_horsecraft_state.gd"],"horsecraft-state","HORSECRAFT_STATE_TESTS:")
