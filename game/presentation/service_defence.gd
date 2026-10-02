@@ -32,8 +32,12 @@ static func shield(fitted: bool=false) -> Node3D:
 		var boss:=Meshes.sphere(root,"Boss%d"%i,.026,Vector3(.113*cos(angle),.113*sin(angle),.046),trim)
 		boss.scale.z=.65
 	for x in [-.065,.065]:
-		var grip:=Meshes.cylinder(root,"BackGripLeft" if x<0 else "BackGripRight",.012,.13,Vector3(x,0,-.033),Meshes.material("4b3830"))
-		grip.rotation.x=PI/2
+		var grip:=Meshes.torus(root,"BackGripLeft" if x<0 else "BackGripRight",.057,.007,Vector3(x,0,-.015),Meshes.material("4b3830"))
+		grip.rotation.z=PI/2
+	var anchor:=Node3D.new()
+	anchor.name="GripAnchor"
+	anchor.position=Vector3(.065,0,-.045)
+	root.add_child(anchor)
 	return root
 
 static func helmet() -> Node3D:

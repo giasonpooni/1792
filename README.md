@@ -38,7 +38,9 @@ Choose **1792 · Buddh Singh · Home territory** for the integrated home chapter
 The **Equipment study** entry inspects a curved service sword, independent scabbard,
 round shield and domed helmet with articulated ring mail. Draw, turn and mail-motion
 controls use the same procedural components attached to the Home gate guard;
-**H** opens a helmet close-up. These are authored morphology studies;
+**H** opens a helmet close-up; **G** shows the equipped guard and its signal pose.
+The guard reuses the articulated bazaar figure with a forearm-supported shield and
+two belt-to-scabbard suspension straps. These are authored morphology studies;
 see [controls, references and qualification limits](docs/SERVICE_EQUIPMENT.md).
 
 Learn the yard, hear a letter read, ride, train, follow traces, survive an authored

@@ -74,6 +74,14 @@ func run() -> void:
 	await frames()
 	if not mail_readback_matches(mail): failures+=1
 	if records.size()!=5 or records[3].scene_pixels_sha256==records[4].scene_pixels_sha256: failures+=1
+	study.guard_toggle.button_pressed=true
+	study.draw_slider.value=0.0
+	await capture("guard-rest","native-equipment-study-guard")
+	study.draw_slider.value=1.0
+	await capture("guard-signal","native-equipment-study-guard")
+	study.turn_slider.value=130
+	await capture("guard-back","native-equipment-study-guard")
+	if records.size()!=8 or records[5].scene_pixels_sha256==records[6].scene_pixels_sha256 or records[6].scene_pixels_sha256==records[7].scene_pixels_sha256: failures+=1
 	study.queue_free()
 	await process_frame
 	var home:=Launch.make_world()
@@ -106,4 +114,4 @@ func run() -> void:
 	home.queue_free()
 	await process_frame
 	print("SERVICE_EQUIPMENT_RENDER: %d captures, %d failures"%[records.size(),failures])
-	quit(1 if failures or records.size()!=6 or mail_readback_instances!=1536 else 0)
+	quit(1 if failures or records.size()!=9 or mail_readback_instances!=1536 else 0)

@@ -29,7 +29,7 @@
   ],
   "implementation": {
     "origin": "Original procedural Godot mesh authoring by the coding assistant at the maintainer's request, 2026-10-02. References inform broad morphology only.",
-    "source_files": ["game/presentation/equipment_mesh.gd", "game/presentation/service_sword.gd", "game/presentation/service_defence.gd", "game/presentation/mail_aventail.gd"],
+    "source_files": ["game/presentation/equipment_mesh.gd", "game/presentation/service_sword.gd", "game/presentation/service_defence.gd", "game/presentation/mail_aventail.gd", "game/presentation/service_guard.gd", "game/youth/performance/bazaar_figure.gd"],
     "length_unit": "metre",
     "authored_blade_circle_radius": 1.12,
     "authored_blade_arc_radians": 0.78,
@@ -53,6 +53,15 @@
     "mass_or_inertia_calibration": null,
     "gameplay_authority": false,
     "production_attachment": "Existing gate_guard, permanently sheathed",
+    "authored_guard_fit": {
+      "body_source": "Reused articulated bazaar figure, optional headwear disabled",
+      "gate_local_x": 2.40,
+      "helmet_uniform_scale": 1.13,
+      "shield_attachment": "Outer forearm socket, hand centre coincident with grip anchor",
+      "sword_attachment": "Torso socket with two belt-to-scabbard straps",
+      "pose_input": "Existing gate approach clearance; feet remain planted",
+      "contact_simulation": false
+    },
     "gate_records": 7,
     "new_collision_bodies": 0,
     "new_save_fields": 0,

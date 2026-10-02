@@ -66,22 +66,20 @@ func run() -> void:
 	passage.build(Vector3.ZERO)
 	root.add_child(passage)
 	var guard: Node3D=passage.guard_root
-	var attached: Node3D=guard.get_node("ServiceSword")
+	var attached: Node3D=guard.sidearm
 	var attachments: Array[Transform3D]=[]
-	for part in guard.get_children():
-		if part.name in ["ServiceSword","RoundShield","DomedHelmet"]:
-			attachments.append(part.transform)
+	for part in [guard.sidearm,guard.shield,guard.helmet]:
+		attachments.append(part.transform)
 	check(attachments.size()==3 and passage.records.size()==7,"equipment attaches to the same seven-record passage")
 	for phase in ["riding","caught"]:
 		for mounted in [false,true]:
 			passage.sample(460,Vector3.ZERO,mounted,phase)
 			var index:=0
-			for part in guard.get_children():
-				if part.name in ["ServiceSword","RoundShield","DomedHelmet"]:
-					check(part.transform==attachments[index],"equipment attachment unaffected by approach/caught choreography")
-					index+=1
+			for part in [guard.sidearm,guard.shield,guard.helmet]:
+				check(part.transform==attachments[index],"equipment retains its socket-local fit during approach/caught choreography")
+				index+=1
 	check(attached.presentation_state()=="SHEATHED","production guard retains sheathed equipment")
-	for part in [attached,guard.get_node("RoundShield"),guard.get_node("DomedHelmet")]:
+	for part in [attached,guard.shield,guard.helmet]:
 		for mesh in part.find_children("*","MeshInstance3D",true,false):
 			var bounds: AABB=mesh.mesh.get_aabb()
 			var clear:=true

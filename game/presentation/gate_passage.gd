@@ -2,8 +2,7 @@
 extends Node3D
 ## Household-gate passage direction. Presentation only: no rank, AI, collision, route or save authority.
 const LANE_HALF_WIDTH := 1.9
-const ServiceSword:=preload("res://presentation/service_sword.gd")
-const ServiceDefence:=preload("res://presentation/service_defence.gd")
+const ServiceGuard:=preload("res://presentation/service_guard.gd")
 var anchor := Vector3.ZERO
 var guard_root: Node3D
 var guard_hand: Node3D
@@ -89,33 +88,12 @@ func build(at: Vector3) -> void:
 	set_meta("historical_claim",false)
 
 	# Right-side household guard: gesture only, never a blocking body.
-	guard_root=Node3D.new()
-	guard_root.name="GateGuardStudy"
-	guard_root.position=Vector3(2.25,0,-.25)
+	guard_root=ServiceGuard.new()
+	guard_root.build()
+	guard_root.position=Vector3(2.40,0,-.25)
 	add_child(guard_root)
-	cylinder(guard_root,"GuardBody",.19,1.05,Vector3(0,.72,0),Color("59646a"))
-	sphere(guard_root,"GuardHead",Vector3(.18,.22,.18),Vector3(0,1.40,0),Color("a77f60"))
-	guard_hand=Node3D.new()
-	guard_hand.name="SignalArm"
-	guard_hand.position=Vector3(-.18,1.08,-.02)
-	guard_root.add_child(guard_hand)
-	cylinder(guard_hand,"SignalForearm",.045,.48,Vector3(0,-.20,0),Color("59646a"))
-	sphere(guard_hand,"SignalHand",Vector3(.075,.09,.075),Vector3(0,-.47,0),Color("a77f60"))
-	# Outer-side attachments stay clear of the signal arm and the passage lane.
-	# Equipment remains part of the existing guard record, not another actor.
-	var sidearm:=ServiceSword.new()
-	sidearm.build()
-	sidearm.position=Vector3(.23,.88,.03)
-	sidearm.rotation.x=-.18
-	guard_root.add_child(sidearm)
-	var shield:=ServiceDefence.shield()
-	shield.position=Vector3(.35,.91,.02)
-	shield.rotation.y=PI/2
-	guard_root.add_child(shield)
-	var helmet:=ServiceDefence.helmet()
-	helmet.position=Vector3(0,1.48,0)
-	guard_root.add_child(helmet)
-	guard_mail=helmet.get_node("MailAventail")
+	guard_hand=guard_root.signal_arm
+	guard_mail=guard_root.helmet.get_node("MailAventail")
 	remember("gate_guard",guard_root,"One guard marks the threshold and uses a small hand signal when a mounted rider approaches.")
 
 	# Left-side porter: shifts outward slightly instead of becoming a pathfinding agent.
@@ -209,7 +187,7 @@ func sample(tick: int,player_position: Vector3,mounted: bool,stage: String) -> v
 	var traffic_clearance: float=clampf((clear_radius-distance)/2.6,0.0,1.0)*active
 
 	# A readable but deliberately small hand signal.
-	guard_hand.rotation=Vector3(-1.02*mounted_clearance,0,-.08*mounted_clearance)
+	guard_root.sample_pose(tick,mounted_clearance)
 
 	# Yield outward, never into the lane.
 	porter_root.position=porter_base+Vector3(-.46*mounted_clearance,0,0)
@@ -230,7 +208,6 @@ func sample(tick: int,player_position: Vector3,mounted: bool,stage: String) -> v
 
 	# Wind/material motion is independent of social attention.
 	marker_cloth.rotation.z=.045*sin(float(tick)/37.0)
-	if is_instance_valid(guard_mail): guard_mail.sample_tick(tick,.20)
 
 func passage_state() -> Dictionary:
 	return {

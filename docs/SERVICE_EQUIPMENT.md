@@ -5,6 +5,9 @@ Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 Open **Equipment study · sword, scabbard, shield and helmet** from the existing
 main menu. The three sliders draw and resheathe the two swords, turn the display,
 and scrub mail motion, in that order. H or the close-up toggle isolates the helmet.
+G shows the equipped guard; its first slider changes the gate signal pose. H and G
+select mutually exclusive views. The sliders have visible labels, and the draw
+slider is disabled in the helmet close-up.
 Keyboard arrows, Home and End work on focused sliders. R resets the poses and turn;
 F1 returns to the menu. The menu scrolls on shorter windows so existing
 entries remain reachable.
@@ -30,6 +33,7 @@ Full-width blade/sheath clearances and manufacturing feasibility are not qualifi
 by this centreline test.
 
 The shield has a dished front/back shell, rim, four bosses and separate back grips.
+Its back grips are now raised loops with an explicit hand anchor.
 The helmet has a rigid dome, rim and finial. Its shell uses outward-facing triangles;
 the close-up exposed and corrected the original inward winding.
 
@@ -45,6 +49,19 @@ the existing chapter tick at amplitude 0.20. Rewinding a tick reproduces the sam
 transforms. This is a kinematic presentation study. Adjacent strips are not solved
 as a connected mesh, and interlink topology, ring contact, body contact, mass and
 material response remain unqualified.
+
+The gate guard reuses `bazaar_figure.gd`'s articulated torso, head, arms, hands, legs
+and feet. Existing bazaar figures keep their default headwear; the guard uses an
+optional uncovered head beneath the helmet. The helmet is uniformly scaled by 1.13
+on its head socket and turned to align the mail opening with the face. This is an
+authored fit, not a measured helmet or costume reconstruction.
+
+The shield is parented to the outer forearm, with its hand anchor coincident with
+the figure's actual hand centre. It follows the supporting arm during the existing
+approach signal. The sword is parented to a torso socket, and two visible straps
+join belt anchors to the actual scabbard suspension rings. Both feet stay planted.
+These are rigid joint attachments and authored poses; grip forces, strap mechanics,
+body contact, cloth dynamics and combat transitions are not solved.
 
 All dimensions are authored working values, not measurements extracted from the
 photographs. Physical mass, balance, inertia, cutting behaviour and historical
@@ -64,6 +81,8 @@ Mesh AABB corners transformed into world space are checked against the existing
 ring mesh bounds through every sampled instance. These checks cover the authored
 attachments and sampled mail poses; dynamic riders, crowd avoidance and weapon
 contact remain outside this study.
+The guard moves 0.15 m farther toward the outer edge (gate-local X = 2.40 m) so the
+larger articulated figure and its complete signal remain outside that passage.
 
 The same change repairs the earlier cart/pack invariant: `sample()` no longer
 rotates either resting object. Full transforms, non-identity rotation/scale and
@@ -71,14 +90,19 @@ rewound ticks are checked. Cloth retains the existing motion channel.
 
 ## Execution and review
 
-`tools/run_checks.py` includes `test_service_equipment.gd`, `test_mail_aventail.gd`
-and the strengthened gate suite. Mail checks cover rigid transforms, fixed strip
+`tools/run_checks.py` includes `test_service_equipment.gd`, `test_mail_aventail.gd`,
+`test_service_guard.gd` and the strengthened gate suite. Guard checks use the actual
+hand mesh, shield anchor, strap endpoints, belt anchors and scabbard rings across
+signal and rewound poses. They cover planted feet, body/equipment bounds, invalid
+sampling and the native G/H/slider/reset controls. Deliberately detaching the shield
+produces a detected grip mismatch. Mail checks cover rigid transforms, fixed strip
 lengths, pinned anchors, bounds, rewind, invalid inputs, passage clearance and
 native keyboard controls. CPU poses are checked explicitly because Godot's dummy
 headless renderer does not retain the instance buffer.
 
-The Home-art workflow retains six actual engine views: sheathed, partially drawn,
-drawn, two helmet close-ups and equipment on the live Home guard. With the real
+The Home-art workflow retains nine actual engine views: sheathed, partially drawn,
+drawn, two helmet close-ups, guard at rest/signalling/from behind, and equipment on
+the live Home guard. With the real
 renderer, it reads back all 512 instance transforms in each of three poses, and
 deliberately corrupts one uploaded transform to prove the comparison detects it.
 The capture checks different scene pixels across draw and mail poses, and unchanged
@@ -86,6 +110,7 @@ campaign/player state while inspecting Home. Source commit/tree and image hashes
 accompany the captures. This renderer check does not qualify hardware performance.
 
 The renderer proves execution, not final art acceptance. Procedural silhouettes,
-simple surfaces and the blockout guard still require artist and human play review.
-The shield and sword remain distinct components for later attachment to an actual
-character rig without replacing the game's state or movement authority.
+simple surfaces and the reused supporting-character figure still require artist
+and human play review. The equipment remains in separate attachment hierarchies
+for later character-art refinement without replacing the game's state or movement
+authority.

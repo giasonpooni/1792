@@ -3,6 +3,7 @@ extends Node3D
 ## Native inspection scene using exactly the same modules attached to the Home guard.
 const Sword:=preload("res://presentation/service_sword.gd")
 const Defence:=preload("res://presentation/service_defence.gd")
+const Guard:=preload("res://presentation/service_guard.gd")
 const Meshes:=preload("res://presentation/equipment_mesh.gd")
 var service: Node3D
 var fitted: Node3D
@@ -15,7 +16,12 @@ var helmet: Node3D
 var shield: Node3D
 var mail_slider: HSlider
 var helmet_toggle: CheckButton
+var guard: Node3D
+var guard_toggle: CheckButton
+var pose_label: Label
+var note: Label
 var close_view:=false
+var guard_view:=false
 
 func _ready() -> void:
 	Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
@@ -58,6 +64,10 @@ func _ready() -> void:
 	helmet=Defence.helmet()
 	helmet.position=Vector3(1.08,.06,0)
 	display_root.add_child(helmet)
+	guard=Guard.new()
+	guard.build()
+	guard.visible=false
+	display_root.add_child(guard)
 	camera=Camera3D.new()
 	camera.projection=Camera3D.PROJECTION_ORTHOGONAL
 	camera.size=3.05
@@ -102,7 +112,7 @@ func _build_ui() -> void:
 	draw_slider.step=.01
 	draw_slider.custom_minimum_size.y=24
 	draw_slider.value_changed.connect(set_draw)
-	panel.add_child(draw_slider)
+	pose_label=slider_row(panel,"Draw",draw_slider)
 	turn_slider=HSlider.new()
 	turn_slider.name="TurnSlider"
 	turn_slider.min_value=-180
@@ -111,36 +121,66 @@ func _build_ui() -> void:
 	turn_slider.value_changed.connect(func(value: float):
 		display_root.rotation.y=deg_to_rad(value)
 		update_camera())
-	panel.add_child(turn_slider)
+	slider_row(panel,"Turn",turn_slider)
 	mail_slider=HSlider.new()
 	mail_slider.name="MailSlider"
 	mail_slider.max_value=480
 	mail_slider.step=1
 	mail_slider.custom_minimum_size.y=24
-	mail_slider.value_changed.connect(func(value: float): helmet.get_node("MailAventail").sample_tick(int(value)))
-	panel.add_child(mail_slider)
+	mail_slider.value_changed.connect(func(value: float):
+		helmet.get_node("MailAventail").sample_tick(int(value))
+		guard.sample_pose(int(value),draw_slider.value))
+	slider_row(panel,"Mail motion",mail_slider)
+	var views:=HBoxContainer.new()
+	panel.add_child(views)
 	helmet_toggle=CheckButton.new()
 	helmet_toggle.text="Helmet close-up [H]"
-	helmet_toggle.toggled.connect(func(enabled: bool):
-		close_view=enabled
-		service.visible=not enabled
-		fitted.visible=not enabled
-		shield.visible=not enabled
-		update_camera()
-		refresh())
-	panel.add_child(helmet_toggle)
-	var note:=Label.new()
-	note.text="Sliders: draw · turn · mail motion  |  R reset · H close-up · F1 menu\nAuthored forms and motion; historical attribution unverified."
+	helmet_toggle.toggled.connect(func(enabled: bool): set_view("helmet" if enabled else "overview"))
+	views.add_child(helmet_toggle)
+	guard_toggle=CheckButton.new()
+	guard_toggle.text="Equipped guard [G]"
+	guard_toggle.toggled.connect(func(enabled: bool): set_view("guard" if enabled else "overview"))
+	views.add_child(guard_toggle)
+	note=Label.new()
 	note.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	panel.add_child(note)
 	helmet_initial_pose()
+
+func slider_row(parent: Control,caption: String,slider: HSlider) -> Label:
+	var row:=HBoxContainer.new()
+	parent.add_child(row)
+	var label:=Label.new()
+	label.text=caption
+	label.custom_minimum_size.x=110
+	row.add_child(label)
+	slider.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	row.add_child(slider)
+	return label
+
+func set_view(mode: String) -> void:
+	close_view=mode=="helmet"
+	guard_view=mode=="guard"
+	helmet_toggle.set_pressed_no_signal(close_view)
+	guard_toggle.set_pressed_no_signal(guard_view)
+	guard.visible=guard_view
+	helmet.visible=not guard_view
+	service.visible=not close_view and not guard_view
+	fitted.visible=service.visible
+	shield.visible=service.visible
+	draw_slider.editable=not close_view
+	update_camera()
+	refresh()
 
 func helmet_initial_pose() -> void:
 	helmet.get_node("MailAventail").sample_tick(0)
 	update_camera()
 
 func update_camera() -> void:
-	if close_view:
+	if guard_view:
+		camera.size=3.7
+		camera.global_position=guard.global_position+Vector3(2.2,1.65,-4)
+		camera.look_at(guard.global_position+Vector3(0,.7,0))
+	elif close_view:
 		camera.size=.95
 		camera.global_position=helmet.global_position+Vector3(.47,.15,.60)
 		camera.look_at(helmet.global_position+Vector3(0,-.13,0))
@@ -152,11 +192,14 @@ func update_camera() -> void:
 func set_draw(value: float) -> void:
 	service.sample_draw(value)
 	fitted.sample_draw(value)
+	guard.sample_pose(int(mail_slider.value) if is_instance_valid(mail_slider) else 0,value)
 	refresh()
 
 func refresh() -> void:
 	if is_instance_valid(status):
-		status.text="Rigid rings · attached upper row · articulated strips" if close_view else "%s  ·  Plain service / fitted study"%service.presentation_state().capitalize()
+		status.text="Equipped guard · forearm support · belt suspension" if guard_view else ("Rigid rings · attached upper row · articulated strips" if close_view else "%s  ·  Plain service / fitted study"%service.presentation_state().capitalize())
+		pose_label.text="Signal" if guard_view else "Draw"
+		note.text="R reset · H helmet · G guard · F1 menu\nAuthored forms and motion; historical attribution unverified."
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not event is InputEventKey or not event.pressed or event.echo: return
@@ -167,5 +210,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		turn_slider.value=0
 		mail_slider.value=0
 		helmet.get_node("MailAventail").sample_tick(0)
+		guard.sample_pose(0,0.0)
 	elif event.keycode==KEY_H:
 		helmet_toggle.button_pressed=not helmet_toggle.button_pressed
+	elif event.keycode==KEY_G:
+		guard_toggle.button_pressed=not guard_toggle.button_pressed
