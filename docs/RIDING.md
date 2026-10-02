@@ -61,7 +61,9 @@ cannot attest collision geometry by itself; the trusted scene adapter performs t
 An empty result preserves mounted state and displays a reason. The scene is still the old,
 compressed, flat greybox. A separate native 30-degree fixture qualifies uphill movement,
 turning, braking, side and longitudinal dismounts, remounting and mounted-pose reload. It
-does not establish arbitrary uneven-terrain, discontinuous-ground or streamed-world support.
+is followed by input-driven 15-degree convex-crest and concave-trough fixtures plus a
+2 m drop edge. It does not establish arbitrary uneven-terrain, discontinuous-ground or
+streamed-world support.
 
 ## Saves and compatibility
 
@@ -88,7 +90,8 @@ Run `python tools/run_checks.py --godot /path/to/godot` for all structural, impo
 house-reporting and riding checks. The riding suite exercises actual physics/input over a
 round trip, acceleration/braking, safe and blocked dismounts, mounting through walls,
 low-barrier and offset-hull clearance, collision stopping, airborne landing, mounted
-save/load, a bounded 30-degree horse/rider slope fixture, legacy imports and commission rules.
+save/load, a bounded 30-degree horse/rider slope fixture, compound crest/trough support,
+a real-gravity drop, legacy imports and commission rules.
 Original tests are retained unchanged; new tests do not weaken their assertions.
 
 `render_riding.gd` creates five controlled render fixtures. They are actual Godot images,
@@ -101,7 +104,7 @@ The reference engine is Godot 4.5.1, matching the existing project. API referenc
 - https://docs.godotengine.org/en/4.5/classes/class_physicsbody3d.html
 
 Next gaps: mouse/keyboard feel on Windows, small-window/controller input, proper horse/rider
-rigs, compound uneven ground, mounted companions and actual encounter combat. The bounded
+rigs, oblique compound terrain, mounted companions and actual encounter combat. The bounded
 flat-world dismounted companion patrol and its physical return are covered by `COMPANIONS.md`.
 No historical biographies, clan relations or source claims are
 changed by this riding slice. Tahal Singh Chhachhi has not replaced the fictional captain.

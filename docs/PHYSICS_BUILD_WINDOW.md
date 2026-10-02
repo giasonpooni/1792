@@ -173,3 +173,15 @@ this is fixture qualification, not a global terrain feature. Next unresolved wor
 compound horse support across slope changes, convex crests, concave troughs and drop edges.
 Moving supports, human feel, production animation and arbitrary world geometry remain
 unqualified.
+
+The compound-support pass then joined two 15-degree faces into separate convex-crest and
+concave-trough fixtures. Actual mapped riding input crossed both complete profiles with
+zero unsupported ticks and no horizontal motion above the inherited 6.5 m/s trot budget.
+No controller change was justified. A separate 2 m platform edge produced one 26-tick
+native-gravity interval and landed grounded on the lower floor; it did not retain or
+fabricate support across the gap. Maximum observed vertical displacement was 0.153 m/tick,
+within the pinned gravity integration.
+
+These fixtures qualify straight longitudinal passage only. Oblique crest/trough entries,
+lateral camber changes, horse-scale steps, moving supports, production-world terrain and
+human control feel remain outside the admitted claim. The production scene is unchanged.
