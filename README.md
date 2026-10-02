@@ -1,12 +1,35 @@
-# 1792
+# 1792 — The One-Eyed King
+
+**The first game from Cartesian Graphics**, Notation Systems' games, graphics,
+physics and simulation label. **1792** remains the repository and shorthand name.
 
 **Build outward from home.**
 
-A Cartesian Graphics historical open-world game following **Buddh Singh** from
-Gujranwala and the Sukerchakia home territory toward wider command. Travel,
+A historical open-world biopic following **Buddh Singh**, later **Maharaja Ranjit
+Singh**, from Gujranwala and the Sukerchakia home territory toward wider command. Travel,
 relationships, provisions and incomplete knowledge matter before empire management.
 The stable character ID remains `ranjit_singh`; the childhood display name and
 later public names follow the [naming policy](docs/CHARACTER_NAMES.md).
+
+The planned narrative spans his childhood, rise and reign. Current production
+priority is childhood through the prelude to the Lahore campaign, followed by the
+rest of his life before historical-character DLC production.
+
+## Title and story
+
+The subtitle draws on the childhood smallpox that left Ranjit Singh with facial
+scarring and blindness in his left eye. [Biographical accounts](https://en.wikipedia.org/wiki/Ranjit_Singh#Early_years)
+describe infancy or childhood; the exact age remains open in our authoring notes.
+For the 1792 portrayal, he already has these lasting effects. An earlier illness
+and recovery sequence is planned as a childhood prologue or flashback, with later
+scenes exploring his adaptation, training and growing command.
+
+Popular stories surrounding his eye and kingship remain part of the cinematic
+material. Khushwant Singh recounts the story about seeing all religions with one
+eye and [identifies it as apocryphal](https://www.newindianexpress.com/cities/bengaluru/2019/Dec/18/ranjit-singh-has-been-poorly-served-by-his-biographers-2077708.html).
+Such traditions can appear as oral storytelling, retrospective narration and
+dramatized dialogue, with their attributed or legendary status retained in the
+authoring notes.
 
 **Playable greybox in development, not a finished city or historical survey.**
 
