@@ -111,11 +111,21 @@ scenarios, not completed transitions in the childhood-to-Lahore biography.
 | E / B | Interact / oral household accounts |
 | Q / left click / C | Childhood guard / counter / quiet approach |
 | G / J / F1 | Follow or hold where available / journal / pause |
+| X | Release / recall the bounded hawk scout in the Home chapter |
 | F2 | Paused reconstruction notebook in the home chapter |
 | F5 / F9 / R | Save / load / restore childhood checkpoint |
 
 The detailed guide covers mounted gaits, alternate modes and optional framing.
 Loading and checkpoints retain their existing validation and rollback semantics.
+
+
+## Hawk scout — bounded aerial reconnaissance
+
+The composed Home chapter now includes a third-person hawk scouting prototype. Press **X** on foot to release the hawk, use **WASD / Shift / Space / Ctrl / mouse** to fly, and press **E** or **left click** to tag a hostile that is actually inside the hawk view with unobstructed line of sight. **X** or **Esc** returns to Buddh.
+
+Two fictional distant scout contacts sit beyond the household's ordinary ground sightline. A tag records only the **last observed position** for 30 seconds of the existing chapter clock; it does not follow a target through walls. The hawk has a 52 m horizontal release radius and a 5–24 m altitude envelope. Buddh's authoritative body remains in place, campaign state continues on the existing clock, and transient tags are cleared by save/checkpoint rehydration rather than carried backward through a rewind.
+
+[Controls, observation semantics, limits and qualification](docs/HAWK_SCOUT.md)
 
 ## Architecture
 
