@@ -7,8 +7,10 @@ const CourtyardEnvelope := preload("res://reconstruction/courtyard_envelope.gd")
 const WorkshopView := preload("res://workshops/workshop_world.gd")
 const BazaarPerformance := preload("res://youth/performance/bazaar_director.gd")
 const HawkScout := preload("res://scouting/hawk_scout.gd")
+const HomeScoutContacts := preload("res://scouting/home_scout_contacts.gd")
 var bazaar_performance: Node
 var hawk_scout: Node3D
+var scout_contacts: Node3D
 var workplace: Node3D
 var _workshop_action := ""
 var _workshop_choices: Array[String]=[]
@@ -19,6 +21,7 @@ func _init() -> void:
 func _ready() -> void:
 	super._ready()
 	bazaar_performance=BazaarPerformance.new();bazaar_performance.name="BazaarPerformance";add_child(bazaar_performance);bazaar_performance.build(self)
+	scout_contacts=HomeScoutContacts.new();add_child(scout_contacts);scout_contacts.build()
 	hawk_scout=HawkScout.new();hawk_scout.name="HawkScout";add_child(hawk_scout);hawk_scout.bind(self,avatar,horse)
 	attacker.set_meta("hawk_scout_id","unknown_assailant");attacker.set_meta("hawk_scout_label","Unknown assailant")
 	hawk_scout.register_target("unknown_assailant",attacker,"Unknown assailant")
@@ -55,6 +58,9 @@ func _launch_hawk() -> void:
 	if error.is_empty(): error=hawk_scout.launch()
 	_message=error if not error.is_empty() else "Buddh releases the hawk. Its view can mark only hostiles it actually sees."
 	_refresh()
+	if error.is_empty():
+		if is_instance_valid(_hud): _hud.hide()
+		if is_instance_valid(_caption): _caption.hide()
 
 func _show_dialog(title: String,body: String,actions: Array) -> void:
 	super._show_dialog(title,body,actions)
@@ -136,6 +142,7 @@ func _physics_process(delta: float) -> void:
 		_message=error if not error.is_empty() else Craft.WORDS[kind]
 		_sync_economy();_resume();_sync_workshop();return
 	super._physics_process(delta)
+	if is_instance_valid(scout_contacts): scout_contacts.sample(int(model.progress().tick))
 	if is_instance_valid(hawk_scout):
 		if hawk_scout.active and (_paused or model.mounted() or model.stage() in ["active","caught"] or model.brawl_busy()):
 			hawk_scout.return_to_player()
@@ -163,6 +170,10 @@ func _sync_water() -> void:
 
 func _apply() -> void:
 	super._apply();_sync_workshop()
+	if is_instance_valid(hawk_scout):
+		if hawk_scout.active: hawk_scout.return_to_player()
+		hawk_scout.clear_tags()
+	if is_instance_valid(scout_contacts): scout_contacts.sample(int(model.progress().tick))
 	if is_instance_valid(bazaar_performance): bazaar_performance.rehydrate()
 
 func workshop_hint() -> String:
@@ -172,6 +183,8 @@ func workshop_hint() -> String:
 
 func _refresh() -> void:
 	super._refresh();_sync_workshop()
+	if is_instance_valid(_hud) and is_instance_valid(hawk_scout) and not hawk_scout.active:
+		_hud.text+="\nX: release hawk scout · aerial tags retain only the last seen position"
 	if not is_instance_valid(_hud) or not model.has_economy():
 		if is_instance_valid(bazaar_performance): bazaar_performance.sample()
 		return
@@ -180,7 +193,6 @@ func _refresh() -> void:
 		_hud.text="1792 · BUDDH SINGH · HOME COURTYARD\n\nSMITH'S COMMISSION · "+workshop_hint()+"\nHousehold coffers %d · timber %d · stored tools %d · personal purse %d" % [ledger.treasury,ledger.stock.timber,ledger.stock.tools,ledger.purse]
 		_hud.text+="\nE speak · B supplies · J journal · F5/F9 save/load · F7 visual comparison"
 	else: _hud.text+="\nWORKSHOP · "+workshop_hint()
-	if is_instance_valid(hawk_scout) and not hawk_scout.active: _hud.text+="\nX: release hawk scout · aerial tags retain only the last seen position"
 	if is_instance_valid(art) and is_instance_valid(art.detail) and is_instance_valid(art.detail.hud): art.detail.hud.sample()
 	if is_instance_valid(bazaar_performance): bazaar_performance.sample()
 
