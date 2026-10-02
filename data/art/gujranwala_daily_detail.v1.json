@@ -1,0 +1,36 @@
+{
+  "schema": "1792.gujranwala-daily-detail.v1",
+  "id": "gujranwala-construction-and-use-v1",
+  "classification": "original-construction-and-use-study",
+  "georeferenced": false,
+  "historical_truth_verified": false,
+  "gameplay_authority": false,
+  "origin": "Original repository-native procedural geometry, using the existing workshop kit and authored courtyard anchors; no new external assets.",
+  "components": {
+    "door_hardware_batches": 8,
+    "ring_pulls": 16,
+    "latched_doors": 3,
+    "selective_threshold_wear": 5,
+    "open_woven_baskets": 2,
+    "well_fitting_batches": 3
+  },
+  "anchors": [
+    "The eight retained AuthoredBay roots; their imported meshes and transforms are untouched.",
+    "The existing solid market counter: 3 by 1 metres, top at MARKET + [0, 1.1, -2.6].",
+    "The existing household_well root; fittings stay within its 1.25 metre radial footprint."
+  ],
+  "geometry_budget": {"maximum_mesh_submissions": 24, "maximum_triangles": 20000},
+  "qualification": {
+    "native_test": "game/tests/test_gujranwala_daily_detail.gd",
+    "renderer": "game/tests/render_gujranwala_daily_detail.gd",
+    "independent_png_check": "tools/check_gujranwala_daily_detail_capture.py",
+    "capture_pairs": ["door", "market", "well"]
+  },
+  "limits": [
+    "No measured 1792 hardware, basket form, wear pattern, masonry course or lifting mechanism is authenticated.",
+    "Closed doors gain no entrance, interaction or inventory.",
+    "The static sheave is an appearance study; the existing water-round operation retains all drawing, carrying and ledger authority.",
+    "No collision, navigation, actor, light, timer, save, knowledge or economy state is introduced.",
+    "Mesh/triangle budgets describe source geometry, not GPU draw-call counts or a measured frame-rate result."
+  ]
+}
