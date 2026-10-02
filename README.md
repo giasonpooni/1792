@@ -238,3 +238,5 @@ This is direct game content, not another terminal feature. [Play and limits](doc
 The existing Home visual study now adds a reversible beauty layer over the authored courtyard: shallow plaster/ochre accents, dark jali depth, six garden pockets, clustered market pottery/textiles, a low reflective basin and warm practical lights for the existing golden-hour/evening F7 presets. It changes presentation only; collision, navigation, water gameplay, economy, saves and historical authority remain unchanged.
 
 See [the beauty-pass scope and limits](docs/GUJRANWALA_BEAUTY_PASS.md).
+
+A second reversible depth/patina pass extends the composition beyond the immediate courtyard with wall-top rhythm, peripheral pavilion silhouettes, selective plaster aging, high household cloth, distant foliage and warm evening opening glows. See [the depth/patina scope and limits](docs/GUJRANWALA_DEPTH_PATINA.md).
