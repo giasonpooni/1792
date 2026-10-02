@@ -127,7 +127,7 @@ func build(chapter: Node3D) -> void:
 
 	var root:=Node3D.new()
 	root.name="HouseholdArmsCraftNiche"
-	root.position=Vector3(18.72,1.62,8.4)
+	root.position=Vector3(18.72,1.62,.5)
 	root.rotation.y=-PI/2
 	add_child(root)
 	display_roots.append(root)
