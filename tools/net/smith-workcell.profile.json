@@ -39,8 +39,8 @@
       "bytes": 2468
     },
     "workcells/baked_smith.gd": {
-      "sha256": "sha256:f92a2be73c505e533d86bec2192bf7b242b4ce9b655a465ed2a4e7faae6633e2",
-      "bytes": 1210
+      "sha256": "sha256:a39f69773988f2cc8115be0204a2b81dd7706898eed97bc8338793c4974ff924",
+      "bytes": 1706
     },
     "workcells/smith_probe.gd": {
       "sha256": "sha256:73103f615471eab8f518abfcd3107deabd92515489e9df29b02ccb4958afe03c",
@@ -55,8 +55,8 @@
       "bytes": 4965
     },
     "workshops/workshop_world.gd": {
-      "sha256": "sha256:f34709ec4dc2b7a396d4d702b411c1671e1d8c97233a285c178ced977a208c0f",
-      "bytes": 6065
+      "sha256": "sha256:756a3b1fb23e8992448447a9c07df8f236f5cd51d45776fa3d8b8f89ec58eb79",
+      "bytes": 7352
     }
   },
   "writable": [

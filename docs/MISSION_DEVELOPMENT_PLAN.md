@@ -1,8 +1,8 @@
 # Mission and sequence development
 
-This is the working development plan for **1792 – The One-Eyed King**. It turns the [playable ledger](PLAYABLE_MISSION_LEDGER.md) into **33 individual development cards**, plus a secondary queue and the remaining story backlog. The structured source is [mission_development.json](../data/production/mission_development.json).
+This is the working development plan for **1792: The Lotus Throne**. It turns the [playable ledger](PLAYABLE_MISSION_LEDGER.md) into **33 individual development cards**, plus a secondary queue and the remaining story backlog. The structured source is [mission_development.json](../data/production/mission_development.json).
 
-**Current increment:** HOME-003–007 are in development: the connected riding, sparring, tracking, ambush and inquiry arc. [This pass](CHILDHOOD_ARC_DEVELOPMENT.md) adds readable staging, corrective feedback, distinct traces and evidence-bound household reactions. The earlier opening-message pass remains included.
+**Current increment:** HOME-008–012 are in development: delivery, carrier escort, the water round, the smith’s commission and household guard service. [This pass](HOUSEHOLD_STORY_DEVELOPMENT.md) develops distinct dramatic turns, repeated visual motifs, original dialogue and guidance for accepted responsibilities. The earlier [childhood arc](CHILDHOOD_ARC_DEVELOPMENT.md) and opening-message work remain included. The individual cards below retain their wider intended direction; the current-pass guide states the implemented subset.
 
 The first prototype pass is now implemented and locally verified: orientation lead-in, both optional message routes, physical reporting, remembered receipts and save/load. See [The Words Between Us](MESSAGE_FOLLOWUP.md) for the actual playable scope. The P0 cards remain in development for performance and visual polish; their cinematic ideas are not claims of completed animation.
 
@@ -23,7 +23,7 @@ The ledger records prototypes on different revisions and branches. These cards d
 | --- | --- | ---: | --- |
 | P0 | Opening decisions | 2 | In development |
 | P1 | Complete the childhood dramatic arc | 5 | In development |
-| P2 | Make Gujranwala relationships playable | 10 | Planned |
+| P2 | Make Gujranwala relationships playable | 10 | HOME-008–012 in development; HOME-013–017 planned |
 | P3 | Individualize the historical recollections | 13 | Planned |
 | P4 | Connect command and the retrospective frame | 3 | Planned |
 
@@ -131,7 +131,7 @@ These priorities group development work; they do not reorder historical events o
 
 ### HOME-008 · Four-food delivery
 
-**P2 · Planned**. Baseline: main prototype; 1792.
+**P2 · In development**. Baseline: main prototype; 1792.
 
 - **Dramatic question:** Can the young heir keep an ordinary promise when rank does not carry the food for him?
 - **Playable objective:** Accept the four-food contract, collect its actual cargo and deliver it to the market recipient.
@@ -143,9 +143,11 @@ These priorities group development work; they do not reorder historical events o
 
 **Historical treatment:** Original authored gameplay; historical setting does not authenticate the episode.
 
+**Implemented increment:** See [the household story pass](HOUSEHOLD_STORY_DEVELOPMENT.md) for current behavior, verification and remaining performance work.
+
 ### HOME-009 · Bring the carrier Home
 
-**P2 · Planned**. Baseline: main prototype; 1792.
+**P2 · In development**. Baseline: main prototype; 1792.
 
 - **Dramatic question:** Does giving an escort order matter if the person entrusted to you cannot keep up?
 - **Playable objective:** Meet the return carrier, keep physical contact during the journey, and check the same carrier and cargo into Home.
@@ -157,9 +159,11 @@ These priorities group development work; they do not reorder historical events o
 
 **Historical treatment:** Original authored gameplay; historical setting does not authenticate the episode.
 
+**Implemented increment:** See [the household story pass](HOUSEHOLD_STORY_DEVELOPMENT.md) for current behavior, verification and remaining performance work.
+
 ### HOME-010 · Water for the household
 
-**P2 · Planned**. Baseline: main prototype; 1792.
+**P2 · In development**. Baseline: main prototype; 1792.
 
 - **Dramatic question:** Will the heir notice how much labor sits beneath the household’s ordinary comfort?
 - **Playable objective:** Draw three units at the well twice, carry each load on foot, and return six units to the household.
@@ -171,9 +175,11 @@ These priorities group development work; they do not reorder historical events o
 
 **Historical treatment:** Original authored gameplay; historical setting does not authenticate the episode.
 
+**Implemented increment:** See [the household story pass](HOUSEHOLD_STORY_DEVELOPMENT.md) for current behavior, verification and remaining performance work.
+
 ### HOME-011 · The smith’s commission
 
-**P2 · Planned**. Baseline: main prototype; 1792.
+**P2 · In development**. Baseline: main prototype; 1792.
 
 - **Dramatic question:** Can a promise to improve the household survive the cost and waiting that skilled work requires?
 - **Playable objective:** Reserve fuel and fee, hand over the commission, return when the smith has finished, and deliver the two tools Home.
@@ -185,9 +191,11 @@ These priorities group development work; they do not reorder historical events o
 
 **Historical treatment:** Original authored gameplay; historical setting does not authenticate the episode.
 
+**Implemented increment:** See [the household story pass](HOUSEHOLD_STORY_DEVELOPMENT.md) for current behavior, verification and remaining performance work.
+
 ### HOME-012 · Sukerchakia household service
 
-**P2 · Planned**. Baseline: main prototype; 1792.
+**P2 · In development**. Baseline: main prototype; 1792.
 
 - **Dramatic question:** Can the child accept responsibility for someone else’s service without pretending to have seen what the guard saw?
 - **Playable objective:** Hear the market and well requests, provision an already hired guard, dispatch him, and receive his returned accounts.
@@ -198,6 +206,8 @@ These priorities group development work; they do not reorder historical events o
 - **Acceptance criterion:** Dispatch respects hire and provision requirements, both requests finish once, and returned information appears only after the player hears the guard.
 
 **Historical treatment:** Original authored gameplay; historical setting does not authenticate the episode.
+
+**Implemented increment:** See [the household story pass](HOUSEHOLD_STORY_DEVELOPMENT.md) for current behavior, verification and remaining performance work.
 
 ### HOME-013 · The Bhangi Bazaar Brawl
 

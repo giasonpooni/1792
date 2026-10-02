@@ -2,6 +2,7 @@
 extends CanvasLayer
 ## Existing words and task state, in a reversible compact layout; no new knowledge.
 const Beginning:=preload("res://presentation/beginning_guidance.gd")
+const HouseholdGuidance:=preload("res://presentation/household_guidance.gd")
 const Craft:=preload("res://workshops/workshop_rules.gd")
 const Household:=preload("res://territory/misl_rules.gd")
 var compact := true
@@ -43,7 +44,8 @@ func build(chapter: Node3D) -> void:
 func sample() -> void:
 	if not is_instance_valid(_chapter): return
 	var moving: bool=Vector2(_chapter.avatar.velocity.x,_chapter.avatar.velocity.z).length()>.3
-	var beginning: Dictionary=Beginning.read(_chapter,moving)
+	var beginning: Dictionary=HouseholdGuidance.read(_chapter,moving)
+	if beginning.is_empty(): beginning=Beginning.read(_chapter,moving)
 	var childhood: bool=not beginning.is_empty()
 	var eligible: bool=compact and (childhood or (_chapter.model.has_economy() and _chapter.model.workshop_phase() in ["fuel","working","ready","tools"] and Beginning.household_uncommitted(_chapter.model)))
 	var active: bool=eligible and not _chapter._paused;visible=active
@@ -66,7 +68,7 @@ func sample() -> void:
 				_chapter._marker.position=beginning.target+Vector3.UP*2.1
 				_chapter._marker.text=beginning.marker
 		else:
-			title.show()
+			title.visible=not moving and not _chapter.model.mounted()
 			title.text="GUJRANWALA  /  HOUSEHOLD COMMISSION"
 			task.text=_chapter.workshop_hint().replace(" [E]","");narrator.text=_chapter._narrator_label.text
 			controls.text="E  Speak    B  Accounts    J  Journal    F5 / F9  Save / Load    F7  Visual controls"
@@ -80,7 +82,7 @@ func sample() -> void:
 				controls.text="W  Forward     A / D  Steer     S / Space  Brake     F  Dismount when stopped"
 				_chapter._marker.text="Smith · dismount first"
 			_chapter._marker.visible=true
-			narrator.visible=not narrator.text.is_empty()
+			narrator.visible=not narrator.text.is_empty() and not moving and not _chapter.model.mounted()
 		words.text=_chapter.story_caption() if _chapter.has_method("story_caption") else _chapter._message
 		bottom.visible=not words.text.is_empty()
 		control_strip.position=Vector2((size.x-control_strip.size.x)*.5,size.y-control_strip.get_combined_minimum_size().y-18)

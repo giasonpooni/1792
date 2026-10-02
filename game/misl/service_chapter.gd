@@ -4,9 +4,12 @@ extends "res://territory/researched_chapter.gd"
 const ServiceState:=preload("res://misl/service_state.gd")
 const Service:=preload("res://misl/service_rules.gd")
 const Notes:=preload("res://misl/service_notes.gd")
+const ServicePresentation:=preload("res://misl/service_presentation.gd")
 var service_agent: CharacterBody3D
 var _service_action:=""
 var _service_speaker: Node3D
+var _service_choices: Array[String]=[]
+var _service_satchel: Node3D
 
 func _init() -> void:
 	model=ServiceState.new();save_path=ServiceState.SERVICE_SAVE
@@ -17,15 +20,30 @@ func _build_world() -> void:
 	service_agent.name="HouseholdServiceDetail";service_agent.move_speed=Service.SPEED
 	add_child(service_agent);service_agent.caption.text="Household guard · service detail"
 	service_agent.add_collision_exception_with(avatar);service_agent.add_collision_exception_with(horse)
+	_service_satchel=Node3D.new();_service_satchel.name="ServiceSatchel";service_agent.add_child(_service_satchel)
+	_service_piece(Vector3(0.3,0.33,0.18),Vector3.ZERO,Color("856646"))
+	_service_piece(Vector3(0.34,0.055,0.21),Vector3(0,0.17,0),Color("c0a581"))
+	var strap:=_service_piece(Vector3(0.045,0.7,0.035),Vector3(-0.17,0.32,-0.12),Color("4d392b"))
+	strap.rotation.z=-0.5
 	# Original, fictional dispatch corner; no monument or footprint reconstruction claim.
 	_box(Vector3(3.5,0.025,2),Vector3(-8,0.145,8.5),Color("89765d"))
 	_box(Vector3(1.5,0.12,0.7),Vector3(-8,0.85,9),Color("66503a"))
 	for x in [-8.6,-7.4]: _box(Vector3(0.1,0.75,0.1),Vector3(x,0.46,9),Color("66503a"))
 	for x in [-8.35,-8,-7.65]: _box(Vector3(0.23,0.03,0.32),Vector3(x,0.93,9),Color("cab792"))
 	_service_speaker=_box(Vector3(0.5,1.6,0.4),Vector3(26.3,0.94,10),Color("7c7165")).get_parent()
+	var vessel:=MeshInstance3D.new();vessel.name="CarrierPot"
+	var clay:=CylinderMesh.new();clay.top_radius=0.17;clay.bottom_radius=0.25;clay.height=0.38;vessel.mesh=clay
+	var clay_material:=StandardMaterial3D.new();clay_material.albedo_color=Color("a3714e");vessel.material_override=clay_material
+	vessel.position=Vector3(-0.33,-0.12,-0.08);_service_speaker.add_child(vessel)
 	var sign:=Label3D.new();sign.text="Local water carrier [E]";sign.position=Vector3(26.3,2.6,10)
 	sign.billboard=BaseMaterial3D.BILLBOARD_ENABLED;sign.font_size=20;add_child(sign)
 	_sync_service(true)
+
+func _service_piece(size: Vector3,at: Vector3,color: Color) -> MeshInstance3D:
+	var visual:=MeshInstance3D.new();var mesh:=BoxMesh.new();mesh.size=size;visual.mesh=mesh;visual.position=at
+	var material:=StandardMaterial3D.new();material.albedo_color=color;visual.material_override=material
+	_service_satchel.add_child(visual)
+	return visual
 
 func _sync_service(reset: bool=false) -> void:
 	if not is_instance_valid(service_agent): return
@@ -35,6 +53,16 @@ func _sync_service(reset: bool=false) -> void:
 		var s: Dictionary=model.service()
 		_guard_posts[int(s.ledger.slot)].visible=false
 		service_agent.entity_id=Service.identity(int(s.ledger.slot))
+		service_agent.caption.text="Household guard · ready to give account" if s.ledger.stage=="awaiting_account" else "Household guard · service detail"
+		# Existing dispatch tick drives a brief adjustment of the carried prop.
+		# The bag contains no invented stock and has no independent clock/collider.
+		var departure_tick:=int(model.progress().tick)
+		for e in s.events:
+			if e.kind=="dispatch": departure_tick=int(e.tick)
+		var settle:=clampf(float(int(model.progress().tick)-departure_tick)/42.0,0.0,1.0)
+		_service_satchel.position=Vector3(0.34,1.18,0.12).lerp(Vector3(0.34,0.86,0.12),settle)
+		_service_satchel.rotation.z=lerpf(-0.2,0.0,settle)
+	_service_satchel.visible=active
 	if reset: service_agent.apply(model.service().agent if model.has_service() else Service.motion(-1))
 
 func _sync_economy(reset: bool=false) -> void:
@@ -45,19 +73,41 @@ func _apply() -> void:
 	super._apply();_sync_service(true)
 
 func _clear_pending_actions() -> void:
-	super._clear_pending_actions();_service_action=""
+	super._clear_pending_actions();_service_action="";_service_choices.clear()
+
+func _resume() -> void:
+	_service_action="";_service_choices.clear();super._resume()
+
+func _show_dialog(title: String,body: String,actions: Array) -> void:
+	super._show_dialog(title,body,actions)
+	for action in actions:
+		if str(action[1]).begins_with("service:"): _service_choices.append(str(action[1]).trim_prefix("service:"))
 
 func _menu_action(action: String) -> void:
-	if action.begins_with("service:"): _service_action=action.trim_prefix("service:")
+	if action.begins_with("service:"):
+		var choice:=action.trim_prefix("service:")
+		if _paused and choice in _service_choices and _service_action.is_empty(): _service_action=choice
 	else: super._menu_action(action)
+
+func _service_contact(kind: String,arg: String) -> bool:
+	if kind=="import_supply": return true
+	if kind=="hear" and arg=="well":
+		return not model.mounted() and avatar.is_on_floor() and avatar.global_position.distance_to(model.position())<=0.25 and model.position().distance_to(Service.SITES.well)<=3 and _seen(Vector3(26.3,1.7,10),5)
+	# The request is voiced by the same visible trader as the market menu;
+	# Service.SITES.market is the guard's loading-place destination nearby.
+	return _economy_contact(Rules.MARKET if kind=="hear" else Rules.QUARTERMASTER)
 
 func _physics_process(delta: float) -> void:
 	if not _service_action.is_empty():
-		var parts:=_service_action.split("|",true,1);_service_action=""
+		var queued:=_service_action;_service_action=""
+		if not _paused or queued not in _service_choices: return
+		var parts:=queued.split("|",true,1)
 		var kind: String=parts[0];var arg: String=parts[1] if parts.size()>1 else ""
+		if not _service_contact(kind,arg):
+			_message="Return to the speaker on clear, standing ground before answering.";_resume();return
 		if kind=="import_supply": _load(Territory.TERRITORY_SAVE);return
 		var error: String=model.begin_service() if kind=="begin" else model.service_action(kind,arg)
-		_message=error if not error.is_empty() else ("Quartermaster · One hired guard can attend one request. A service commitment is not ownership of a village." if kind=="begin" else "Quartermaster · "+Service.ACCOUNTS[model.service().ledger.completed[-1]] if kind=="debrief" else "Recorded: "+kind+" "+arg)
+		_message=error if not error.is_empty() else ServicePresentation.reply(kind,arg,model.service().ledger)
 		_sync_economy();_sync_service(true);_resume();return
 	var before: int=int(model.progress().tick)
 	super._physics_process(delta)
@@ -75,10 +125,12 @@ func _extra_action(label: String,action: String) -> void:
 	var button:=Button.new();button.text=label;button.custom_minimum_size.y=42
 	button.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	button.pressed.connect(_menu_action.bind("service:"+action));_actions.add_child(button);_actions.move_child(button,0);_layout()
+	_service_choices.append(action)
 
 func _open_quartermaster() -> void:
 	super._open_quartermaster()
 	if not model.has_economy(): return
+	_panel_text.text+="\n\n"+ServicePresentation.quartermaster_context(model.service().ledger if model.has_service() else {})
 	if not model.has_service(): _extra_action("Hear the Sukerchakia household-service brief","begin")
 	else:
 		var s: Dictionary=model.service().ledger
@@ -98,7 +150,7 @@ func _interact() -> void:
 		else:
 			var actions: Array=[["Return","resume"]]
 			if "well" not in model.service().ledger.heard: actions.push_front(["Hear the well-approach request","service:hear|well"])
-			_show_dialog("WATER CARRIER · LOCAL REQUEST","Ask your household to send someone to hear us at the well approach. I do not speak for every village or claim the land for you.",actions)
+			_show_dialog("WATER CARRIER · LOCAL REQUEST","The carrier shifts a full pot to make space on the approach.\n\n"+(ServicePresentation.request("well") if "well" in model.service().ledger.heard else "Water carrier · A word, Buddh. Before you go back to the yard."),actions)
 		return
 	super._interact()
 
@@ -125,9 +177,10 @@ func _refresh() -> void:
 	if not is_instance_valid(_hud) or not model.has_service(): return
 	var s: Dictionary=model.service().ledger
 	var text: String="Hear requests at the market or eastern well approach."
-	if s.stage!="idle": text="One guard committed to "+Service.NAMES[s.active]+". Hear the account after return."
+	if s.stage!="idle": text="One guard away on service. Hear the account after return."
+	if s.stage=="awaiting_account": text="Guard returned. Hear his account at the quartermaster."
 	if s.stage!="idle" and not model.service_ready(): text+=" Supplies/pay insufficient: duty held until the next provisioned watch."
-	if s.completed.size()==2: text="Two local accounts received. Neither grants territory or proves regional safety."
+	if s.completed.size()==2: text="Both local accounts received. The guard is back on household duty."
 	_hud.text+="\nSERVICE · "+text
 
 func _candidate_error(staged: Story) -> String:

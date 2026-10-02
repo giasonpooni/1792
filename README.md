@@ -1,7 +1,9 @@
-# 1792 — The One-Eyed King
+# 1792: The Lotus Throne
 
 **The first game from Cartesian Graphics**, Notation Systems' games, graphics,
-physics and simulation label. **1792** remains the repository and shorthand name.
+physics and simulation label. **1792: The Lotus Throne** is the public title;
+**1792** remains the repository, shorthand and Godot storage identifier so existing
+save locations and tooling references remain stable.
 
 <!-- foundry-delivery-v1 -->
 **Foundry integration on this branch:** [game-owned adapter, terminal connection, and complete retained delivery](docs/FOUNDRY.md). The adapter is a development workload, not a required game service.
@@ -52,11 +54,26 @@ staging, feedback and responses shaped by what the player experienced.
 The [story pacing pass](docs/STORY_PACING_AND_ATTENTION.md) adds timed captions,
 quiet intervals, adaptive guidance and dialogue recall, with individual literary
 and cinematic direction for all 33 sequence cards.
+The [household story pass](docs/HOUSEHOLD_STORY_DEVELOPMENT.md) develops five more existing sequences with distinct dialogue, visible cargo and work states, recoverable escort cues, and guidance that keeps the immediate responsibility in view.
 
 ## Title and story
 
-The subtitle draws on the childhood smallpox that left Ranjit Singh with facial
-scarring and blindness in his left eye. [Biographical accounts](https://en.wikipedia.org/wiki/Ranjit_Singh#Early_years)
+**The Lotus Throne** draws on Maharaja Ranjit Singh's golden throne at Lahore.
+The [V&A collection record](https://collections.vam.ac.uk/item/O18891/maharaja-ranjit-singhs-throne-throne-chair-hafiz-muhammad-multani/)
+describes two tiers of lotus petals and the lotus as a metaphor of purity in Sikh
+scripture. Its [construction study](https://www.vam.ac.uk/blog/museum-life/a-closer-look-at-the-golden-throne-of-maharaja-ranjit-singh)
+identifies the goldsmith Hafez Muhammad Multani and a wooden frame covered in gold
+sheet. The subtitle connects the childhood-to-kingship biography with this later
+object; it is our creative title, not a claim about the throne's historical name
+or Ranjit's documented intentions. The throne belongs to his nineteenth-century
+court and is not placed in the 1792 childhood setting.
+
+[Throne details and Lahore photographic reference intake](docs/REFERENCE_BATCH_20261002_LOTUS_LAHORE.md).
+
+### Childhood portrayal and oral tradition
+
+Childhood smallpox left Ranjit Singh with facial scarring and blindness in his
+left eye. [Biographical accounts](https://en.wikipedia.org/wiki/Ranjit_Singh#Early_years)
 describe infancy or childhood; the exact age remains open in our authoring notes.
 For the 1792 portrayal, he already has these lasting effects. An earlier illness
 and recovery sequence is planned as a childhood prologue or flashback, with later

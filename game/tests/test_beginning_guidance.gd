@@ -6,6 +6,7 @@ extends SceneTree
 const Launch := preload("res://childhood/home_launch.gd")
 const Base := preload("res://childhood/childhood_state.gd")
 const Guidance := preload("res://presentation/beginning_guidance.gd")
+const HouseholdGuidance := preload("res://presentation/household_guidance.gd")
 const Menu := preload("res://ui/main_menu.tscn")
 const Household := preload("res://territory/misl_rules.gd")
 const Workshop := preload("res://workshops/workshop_state.gd")
@@ -336,7 +337,11 @@ func check_priority_presentation(subject: GuidanceSubject,label: String) -> void
 	chapter._apply();chapter._refresh()
 	var before: Dictionary=chapter.model.snapshot();var journal: Array=chapter.model.journal();var bodies:=physics_identity()
 	for _i in range(4): chapter.art.detail.hud.sample()
-	check(not chapter.art.detail.hud.visible and chapter._hud.is_visible_in_tree(),"compact household presentation yields to existing "+label+" UI")
+	var foreground: Dictionary=HouseholdGuidance.read(chapter)
+	if foreground.is_empty():
+		check(not chapter.art.detail.hud.visible and chapter._hud.is_visible_in_tree(),"compact household presentation yields to existing "+label+" UI")
+	else:
+		check(chapter.art.detail.hud.visible and not chapter._hud.is_visible_in_tree() and chapter.art.detail.hud.task.text==foreground.task,"accepted responsibility replaces optional commission in compact "+label+" UI")
 	check(chapter.model.snapshot()==before and chapter.model.journal()==journal and physics_identity()==bodies,"priority sampling preserves whole state, journal and collision identities for "+label)
 	check(chapter.model.restore(previous).is_empty(),"previous presentation world restored after "+label)
 	chapter._message=previous_message;chapter._apply();chapter._refresh();home.process_mode=old_process

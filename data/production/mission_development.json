@@ -1,6 +1,6 @@
 {
   "schema": "1792.mission-development.v1",
-  "title": "1792 – The One-Eyed King: mission development cards",
+  "title": "1792: The Lotus Throne — mission development cards",
   "as_of": "2026-10-02",
   "ledger_path": "data/production/playable_ledger.json",
   "ledger_snapshot_commit": "4e85c2a469aae1cb567162b87ccf23eeaaa8d7a3",
@@ -10,18 +10,18 @@
     "backlog_entries": 40,
     "meaning": "These cards define the next development increment for inventoried prototypes. They do not add playable sequences or certify their new features as implemented.",
     "active_increment": [
-      "HOME-003",
-      "HOME-004",
-      "HOME-005",
-      "HOME-006",
-      "HOME-007"
+      "HOME-008",
+      "HOME-009",
+      "HOME-010",
+      "HOME-011",
+      "HOME-012"
     ],
     "status_policy": "development_status refers to the proposed increment only. baseline describes the ledger snapshot. implementation_receipt stays null until the increment has a concrete reviewed revision and verification.",
     "count_policy": "Child beats, alternate approaches, presentations, mechanics and source retellings are not extra missions. The 28-entry youth slate includes one implemented adaptation alias and 27 planned entries.",
     "history_policy": "Keep legends, miracles, conflicting allegations and dramatic invention. Preserve the ledger’s historical basis beside every card. Player choice may alter local care, communication or immediate outcomes without silently proving an allegation or overwriting a declared fixed historical endpoint.",
     "cinematic_policy": "Build cinema from playable approach, staging, sound, performance and consequential action. A proposed cinematic moment is not a claim that cinematics, voice, animation or finished art already exist.",
-    "verification_policy": "Acceptance criteria are intended pass conditions for future implementation. This authoring pass checks coverage and consistency only; it does not rerun the games on their separate draft branches.",
-    "narrative_direction_policy": "All 33 narrative_direction blocks are original planned literary, staging and attention directions. Their acceptance statements are intended review conditions, not test receipts. The current runtime attention pass targets the shared childhood presentation and HOME-003–007; it does not implement the other cards or add sequences.",
+    "verification_policy": "The original authoring pass checked card coverage and consistency. Runtime increments record targeted local checks in their current_pass guides; the other draft branches have not all been freshly played or integrated.",
+    "narrative_direction_policy": "All 33 narrative_direction blocks retain original planned literary, staging and attention directions. Their acceptance statements are intended review conditions, not test receipts. Current runtime work develops HOME-008–012 and retains the earlier HOME-001–007 increments; current_pass records the implemented subset and remaining limits. This adds no sequences.",
     "attention_policy": "Prioritize the next meaningful action, protect imminent threat cues, reduce repeated prose, and leave recoverable quiet intervals. Never force attention with hidden failure timers, disable player control for a camera composition, or treat continued play time as evidence of narrative quality. Persistent objectives and reviewable information remain available."
   },
   "phases": [
@@ -437,7 +437,7 @@
       "id": "HOME-008",
       "title": "Four-food delivery",
       "phase_priority": "P2",
-      "development_status": "planned",
+      "development_status": "in_development",
       "baseline": {
         "kind": "playable_sequence",
         "delivery": "main",
@@ -469,13 +469,29 @@
         "recovery": "Leave space after payment for the market to resume. Do not turn a completed delivery into an immediate chain of new orders.",
         "agency": "The player chooses the route and whether to confirm terms first; the recipient evaluates the actual delivery rather than choosing between flattering dialogue options.",
         "acceptance": "A player can recall what was owed and recognize the same cargo at arrival; repeated interaction neither repeats the reward nor continually restates a finished objective."
+      },
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/HOUSEHOLD_STORY_DEVELOPMENT.md",
+        "branch": "feat/household-story-development-v1-20261002",
+        "behavior": "Four-portion briefing and matching handover acknowledgment; four visible carried parcels; active cargo guidance and local offered-action checks.",
+        "literary_technique": "A four-part visual tally makes an ordinary promise concrete; the recipient acknowledges the delivery rather than the heir’s rank.",
+        "verification": {
+          "focused_test": "game/tests/test_delivery_story.gd",
+          "shared_tests": [
+            "game/tests/test_household_attention.gd",
+            "game/tests/test_household_action_priority.gd"
+          ],
+          "results": "See the guide and development PR for observed results and fixture limits."
+        },
+        "limits": "Original dialogue and procedural staging; final performance, audio, cinematic art and first-time human attention evaluation remain future work. This implements a subset of the planned narrative_direction, not every proposed moment."
       }
     },
     {
       "id": "HOME-009",
       "title": "Bring the carrier Home",
       "phase_priority": "P2",
-      "development_status": "planned",
+      "development_status": "in_development",
       "baseline": {
         "kind": "playable_sequence",
         "delivery": "main",
@@ -507,13 +523,29 @@
         "recovery": "A reunited carrier is allowed to catch breath; the final unload resolves the shared trip before any further supply request.",
         "agency": "Choose pace and route, recover a separation, or use the disputed crossing. Waiting is a meaningful act of escort, not a hidden timer penalty.",
         "acceptance": "A player who reaches Home alone understands whom to recover; ordinary and disputed routes conclude through the same physical check-in and one cargo receipt."
+      },
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/HOUSEHOLD_STORY_DEVELOPMENT.md",
+        "branch": "feat/household-story-development-v1-20261002",
+        "behavior": "Physical separation, reunion and arrival cues; one carrier and load; accepted check-in puts down the same cosmetic load; recoverable carrier guidance.",
+        "literary_technique": "An apparent finish at the gate becomes a decision to wait or return for the person entrusted to the player.",
+        "verification": {
+          "focused_test": "game/tests/test_delivery_story.gd",
+          "shared_tests": [
+            "game/tests/test_household_attention.gd",
+            "game/tests/test_household_action_priority.gd"
+          ],
+          "results": "See the guide and development PR for observed results and fixture limits."
+        },
+        "limits": "Original dialogue and procedural staging; final performance, audio, cinematic art and first-time human attention evaluation remain future work. This implements a subset of the planned narrative_direction, not every proposed moment."
       }
     },
     {
       "id": "HOME-010",
       "title": "Water for the household",
       "phase_priority": "P2",
-      "development_status": "planned",
+      "development_status": "in_development",
       "baseline": {
         "kind": "playable_sequence",
         "delivery": "main",
@@ -545,13 +577,29 @@
         "recovery": "Finish on the settled vessels and worker acknowledgment. The player can leave without waiting through an extra ceremonial speech.",
         "agency": "The player chooses a usable walking route and whether to listen; listening is not a prerequisite for the water’s practical value.",
         "acceptance": "The second trip adds a changed human observation without replaying the full tutorial; six deposited units are visible in accounting and interrupted draws cannot duplicate water."
+      },
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/HOUSEHOLD_STORY_DEVELOPMENT.md",
+        "branch": "feat/household-story-development-v1-20261002",
+        "behavior": "Concise first-draw instruction, changed second-trip inner observation, live fill/deposit dialogue, visible vessel levels and contextual load guidance.",
+        "literary_technique": "Repetition with variation: the same road shifts from an errand to an awareness of everyday labor. The implemented voice is Buddh’s inner observation, not the planned worker exchange.",
+        "verification": {
+          "focused_test": "game/tests/test_water_round_story.gd",
+          "shared_tests": [
+            "game/tests/test_household_attention.gd",
+            "game/tests/test_household_action_priority.gd"
+          ],
+          "results": "See the guide and development PR for observed results and fixture limits."
+        },
+        "limits": "Original dialogue and procedural staging; final performance, audio, cinematic art and first-time human attention evaluation remain future work. This implements a subset of the planned narrative_direction, not every proposed moment."
       }
     },
     {
       "id": "HOME-011",
       "title": "The smith’s commission",
       "phase_priority": "P2",
-      "development_status": "planned",
+      "development_status": "in_development",
       "baseline": {
         "kind": "playable_sequence",
         "delivery": "main",
@@ -583,13 +631,29 @@
         "recovery": "Collection gives one satisfying handover; the Home delivery closes the promise with a practical use implied by staging rather than another lengthy briefing.",
         "agency": "Commit or cancel before handover, then choose when to return. Avoid forcing the player to stare at a progress bar to demonstrate patience.",
         "acceptance": "A returning player can tell reserved, working and ready states apart; cancellation and completion retain their existing resource rules and repeated queries do not replay the original pitch."
+      },
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/HOUSEHOLD_STORY_DEVELOPMENT.md",
+        "branch": "feat/household-story-development-v1-20261002",
+        "behavior": "State-specific commitment dialogue and matching receipt; unfinished blanks, work underway, completed pair and empty collected bench; compiled workcell rebinds these props.",
+        "literary_technique": "The two rough blanks return as two completed tools; the empty bench and carried pair make the continuing obligation visible.",
+        "verification": {
+          "focused_test": "game/tests/test_workshop_story_staging.gd",
+          "shared_tests": [
+            "game/tests/test_household_attention.gd",
+            "game/tests/test_household_action_priority.gd"
+          ],
+          "results": "See the guide and development PR for observed results and fixture limits."
+        },
+        "limits": "Original dialogue and procedural staging; final performance, audio, cinematic art and first-time human attention evaluation remain future work. This implements a subset of the planned narrative_direction, not every proposed moment."
       }
     },
     {
       "id": "HOME-012",
       "title": "Sukerchakia household service",
       "phase_priority": "P2",
-      "development_status": "planned",
+      "development_status": "in_development",
       "baseline": {
         "kind": "playable_sequence",
         "delivery": "main",
@@ -621,6 +685,22 @@
         "recovery": "Allow ordinary activity during absence. The report ends with the guard returning to duty instead of repeated reminders that delegation occurred.",
         "agency": "Choose which finite request to serve first and resolve real provision gaps. Receiving a report remains an action the player performs.",
         "acceptance": "The two requests are distinguishable in a retelling, absence produces no fabricated firsthand knowledge, and only hearing the return report updates the child’s account."
+      },
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/HOUSEHOLD_STORY_DEVELOPMENT.md",
+        "branch": "feat/household-story-development-v1-20261002",
+        "behavior": "Distinct local requests, departure acknowledgment, carried satchel, empty guard post and received-account closure; distant progress stays out of compact guidance.",
+        "literary_technique": "An order creates a visible absence; its meaning returns through another person’s attributed account.",
+        "verification": {
+          "focused_test": "game/tests/test_service_story.gd",
+          "shared_tests": [
+            "game/tests/test_household_attention.gd",
+            "game/tests/test_household_action_priority.gd"
+          ],
+          "results": "See the guide and development PR for observed results and fixture limits."
+        },
+        "limits": "Original dialogue and procedural staging; final performance, audio, cinematic art and first-time human attention evaluation remain future work. This implements a subset of the planned narrative_direction, not every proposed moment."
       }
     },
     {

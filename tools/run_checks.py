@@ -86,6 +86,14 @@ def main() -> int:
         "fixed-interlude", "FIXED_INTERLUDE_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_gujranwala.gd"],
         "gujranwala", "GUJRANWALA_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_delivery_story.gd"],
+        "delivery-story", "DELIVERY_STORY_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_water_round_story.gd"],
+        "water-round-story", "WATER_ROUND_STORY_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_service_story.gd"],
+        "service-story", "SERVICE_STORY_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_workshop_story_staging.gd"],
+        "workshop-story-staging", "WORKSHOP_STORY_STAGING_TESTS:")
     run([sys.executable, "tools/check_reconstruction.py"], "reconstruction-contracts")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_reconstruction.gd"],
         "reconstruction", "RECONSTRUCTION_TESTS:")

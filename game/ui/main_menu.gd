@@ -1,5 +1,6 @@
 extends Control
 
+const GAME_TITLE := "1792: The Lotus Throne"
 const HomeLaunch := preload("res://childhood/home_launch.gd")
 const MahanLaunch := preload("res://mahan/mahan_launch.gd")
 const Names := preload("res://characters/character_names.gd")
@@ -7,6 +8,7 @@ const SliceLaunch := preload("res://slice/slice_launch.gd")
 const Continuation := preload("res://slice/continuation_store.gd")
 
 func _ready() -> void:
+	get_window().title = GAME_TITLE
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	var background := ColorRect.new()
 	background.color = Color("172321")
@@ -26,8 +28,9 @@ func _ready() -> void:
 	panel.add_theme_constant_override("separation", 14)
 	center.add_child(panel)
 	var title := Label.new()
-	title.text = "1792"
-	title.add_theme_font_size_override("font_size", 64)
+	title.text = GAME_TITLE
+	title.add_theme_font_size_override("font_size", 40)
+	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	panel.add_child(title)
 	var subtitle := Label.new()
 	subtitle.text = "Escape Sobraon. Hear the story carried through defeat.\nFollow Shah Muhammad's telling into Ranjit Singh's childhood in Gujranwala."

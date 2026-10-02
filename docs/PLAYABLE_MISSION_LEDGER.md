@@ -1,6 +1,6 @@
 # Playable mission and sequence ledger
 
-1792 – The One-Eyed King: playable mission and sequence ledger
+1792: The Lotus Throne — playable mission and sequence ledger
 
 Snapshot: **2026-10-02**. Main: `cd3a473b6725872d4c03f190cd1b07ae940d72c9`.
 
@@ -18,9 +18,9 @@ Snapshot: **2026-10-02**. Main: `cd3a473b6725872d4c03f190cd1b07ae940d72c9`.
 
 ## Active development
 
-HOME-003, HOME-004, HOME-005, HOME-006, HOME-007 on `feat/childhood-arc-development-v1-20261002`. Riding-to-inquiry development continues the opening-message pass. These changes elaborate existing sequences; the total remains 33. Source guides remain pinned to their inspected revisions.
+HOME-008, HOME-009, HOME-010, HOME-011, HOME-012 on `feat/household-story-development-v1-20261002`. Five household sequences receive original dialogue, procedural staging and responsibility-based guidance. Earlier opening and childhood increments remain included. These elaborate existing sequences; the inventoried total remains 33. Source guides stay pinned to their inspected revisions; this is not a refreshed census of every remote branch.
 
-See [the active playable increment](CHILDHOOD_ARC_DEVELOPMENT.md) and [development cards for every sequence](MISSION_DEVELOPMENT_PLAN.md).
+See [the active playable increment](HOUSEHOLD_STORY_DEVELOPMENT.md) and [development cards for every sequence](MISSION_DEVELOPMENT_PLAN.md).
 
 ## Counting and maintenance
 
