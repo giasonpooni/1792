@@ -51,7 +51,7 @@ func launch() -> String:
 	avatar.input_enabled = false
 	avatar.velocity = Vector3.ZERO
 	launch_origin = avatar.global_position
-	var forward := -avatar.pivot.global_basis.z
+	var forward: Vector3 = -avatar.pivot.global_basis.z
 	forward.y = 0.0
 	if forward.length_squared() < 0.000001:
 		forward = Vector3.FORWARD
