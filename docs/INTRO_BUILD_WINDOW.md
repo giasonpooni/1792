@@ -524,3 +524,157 @@ the executed source above; its added documentation has not been mislabelled as
 an already executed source tree. Keep draft/unmerged. Human/controller/Windows/
 physical-GPU qualification, production figures/animation/voice, authenticated
 historical dialogue and the full chronological campaign remain pending.
+
+## Checkpoint: published task head and complete hosted artifact reconciliation
+
+Published draft head `ec3b3ea6e131237db620e07d2b7d9d0f776bae4b`, tree
+`1bc0a918ecfe66727d61cb3d1541f5013bf4a30b`, passed **all nine** PR-triggered
+hosted workflows. Command run `37031583185` / job `110919451331` completed fresh
+escorted **23 frames / 327 checks / zero failures** and independent
+**23 / 338 / zero**, followed by strict verify-only for each exact head/tree.
+Hosted executions are `707f0b54-13ca-4558-99ab-108eeee12a47` and
+`f270a4d7-18ac-4b74-aae1-5f70644cf017`. Runtime/verifier/parser/PNG-decoder hashes
+match the final local identities above; no previous head's green result is reused.
+The inherited horsecraft renderer completed all five captures/zero failures in
+**81.194 seconds**. Actual Command markers include mounted guidance **464 / zero**,
+verifier **57 tests / zero**, and the existing eleven-frame beginning sequence
+**72 checks / zero**. Earlier failed runs remain failed.
+
+Courtyard run `37031583177` / job `110919451266` passed its native contracts and
+six actual courtyard captures. Corrective intro/audio **613 / zero** and aftermath
+**166 / zero** are present in the exact-head log. Its active paused audio settled
+and stayed fixed for at least 250 ms while the independent mixer advanced. The
+legacy HUD/whole-state freeze and measured horsecraft timeout corrections remain
+qualified. Two inherited test-exit ObjectDB leak warnings and software V-Sync
+warnings remain visible; they were not suppressed or called script failures.
+Retained decoded Command/Courtyard log SHA-256 values are
+`64076cc8681fc48b01d32635dc7c38f535cd680df3e9d0f624f4f02a722baba5`
+and `2f6fdd4b12c9793eecea762d89ff6ae6ed5c9df5d1096aade4bccffa178f336f`.
+
+Both complete hosted journey ZIPs were actually downloaded, size/digest/CRC
+checked, safely extracted and independently reverified locally. Each has **34
+entries and all 23 frames**, original native saves/checkpoint, source archive/raw
+commit, execution, verification and renderer trace, without duplicate user-data.
+
+| Hosted artifact | ID | ZIP bytes | Actual ZIP SHA-256 |
+| --- | --- | --- | --- |
+| Escorted journey | `11238465598` | 24,407,830 | `a6c9172c12d6d9087c9d82b631035f9fcc3896026225969c63b9230b25ea693d` |
+| Independent journey | `11238645409` | 24,398,540 | `a7b736698d2cef94ab8647ce5f955927594805c23a046d92021b3dcbf2869f29` |
+| Source snapshot | `11238270861` | 881,116 | `53c119a50a7f33c3a711306bafa1cc3062386952afdcd54e7e4824422cbaa35c` |
+
+All **317** source-snapshot files byte-match their tracked files in the published
+source tree. Separately, each complete journey's archive reproduces the exact
+whole Git tree, including all 347 tracked paths. The 163,245,442-byte combined
+forensic artifact `11238430608` remains available; it was not downloaded through
+the 32 MiB executor. The successful smaller artifacts resolve that earlier transfer
+blocker without dropping unique evidence. These CI artifacts expire 16 October
+2026 under the existing 14-day retention policy.
+
+Downloaded escort verification `b5babd91-dff1-41ea-aec5-2fd29c5a120d` passed with
+manifest `d6ceef5141a389b5ecbb1b0689df45a493d9b8228e0b92ccd01f6dec77ad14f3`;
+independent `cfc5fadd-2c2e-49d0-bce6-c70905205e0d` passed with
+`71fc9ab81e1e0e24d2560c13d79449fa6e174260bab8a9e3231b9f76dcee0b6d`.
+External verification-file digests are
+`ed5286e12982af3db4baae690bb94862b28a48e5c1b2c816b4a06d6cbb000706`
+and `a25917967817593a5c8d4a12a9261c9320120f59057b0ef75be5daecb05fdc3a`.
+Original hosted verification files remain unchanged. Exact source commit/tree,
+requested/actual choice, smith endpoint, raw clocks, whole cold saves/rollback,
+receipt/custody and PNG/RGBA checks all passed.
+
+The independent visual audit inspected fourteen actual downloaded hosted frames:
+five task frames plus family and choice for each route. Objectives, dialogue,
+controls and completion are readable without clipping; target sites remain exact.
+Hosted task frames differ from local by only 2-11 pixels, maximum channel delta
+3/255; each pack retains its own exact byte/pixel identities. Matching is never
+inferred merely from similar screenshots. Escort is physically present/retired;
+independent remains instantiated/hidden/layer zero/inactive. No blocking visual
+or save defect was found in this qualified scope.
+
+This reconciliation is documentation-only; runtime, controllers, authority and
+qualified operation sources are unchanged. Inspect the exact latest PR head and
+CI after publishing this checkpoint rather than infer its newer metadata from
+these ancestor results. Remaining work is measured additional onboarding/control
+qualification, inherited test-exit cleanup, human/controller/Windows/physical-GPU
+checks, production figures/animation/voice and the full childhood-to-Lahore route.
+Preserve authored/source-informed status and the original single runtime. Do not
+merge main or absorb unrelated work during this window. At the stated cutoff,
+perform read-only final reconciliation and stop implementation.
+
+## Checkpoint: live task clock and replay mirror qualification
+
+The documentation-only published head `8b1cc732e7f3bd2c645647cebe2148bbe5261fe9`,
+tree `6ec5f9d7d83807e65249bd1ef5df3101ded7b36e`, completed all nine hosted workflows.
+Command run `37034757543` / job `110930074647` recorded both fresh 23-frame
+journeys, 327/338 native checks, zero failures, and 57 verifier tests. Courtyard
+run `37034757555` / job `110930075129` completed six native captures and its
+inherited contracts. The five-frame horsecraft renderer took 129.378 seconds,
+within the already corrected 240-second budget. These exact ancestor results
+remain bound to the previous verifier; they do not qualify the correction below.
+The new 8b journey artifact metadata was inspected, but those archives were not
+downloaded or called independently reconciled here.
+
+A further independent audit reproduced acceptance of a one-hour change to a
+live smith-collection observation and `False` in the unexamined progressed/final
+tick mirrors, without changing native save bytes. It also reproduced an
+inconsistent duplicated final persistence snapshot. Three new adversarial
+methods first exposed 21 failing subcases. The verifier now checks all five live
+task capture clocks plus progressed and final observations against the exact
+original integer-tick clock, binds all four saved/restored/progressed/final tick
+mirrors to their corresponding whole snapshots, and requires the completed flag
+and whole duplicated final persistence to agree. Adjacent ULP clock changes,
+missing/nonfinite clocks and mirrors, Boolean/number aliases and detached state
+are refused. All **60 tests pass**, including the earlier receipt, custody,
+save/parser and source adversaries.
+
+Cold inquiry, fuel and final save snapshots retain their distinct exact
+original-byte/native-decimal-parser bindings. No epsilon, clock rewriting or
+raw-to-cold reinterpretation was added. The game, renderer, controllers,
+capsules, clock authority, economy and receipts are unchanged. Verifier SHA-256
+is now `b94eb5d217d46d8e2999cca2568bb30553d2d0d335db08d6637ceb6fc3790f0e`;
+runtime/parser/PNG-decoder identities remain the pinned values above.
+
+Both routes were executed again from separate fresh evidence directories at
+clean source `5137de8ec967a5dce8cfec84829421c5ce6e7668`, tree
+`53a320f5d1cab333ac383f61e70dfd8587f1e622`. The immutable complete source archive
+SHA-256 is `aa8401e1f1d1077fe57868f998b584d4ff1f6dd9c2de3801f6994897254c39ef`.
+Actual native input/motors, production cameras and declared F5/F9 recoveries
+remain; progress, pose and capability receipts were never seeded.
+
+| Fresh corrected route | Native result | Execution | Independent verification |
+| --- | --- | --- | --- |
+| Escort + first smith commission | 23 frames / 327 checks / zero failures | `570b43b8-47aa-4d5e-a3f9-203dbcf066df` | `9ce5d54f-36c5-4d2e-916f-0a6752619657` |
+| Independent Insist + first commission | 23 / 338 / zero | `ea92c615-4a20-4362-9312-c0db67d841ca` | `903ceffd-3a94-41a0-852a-31330774a381` |
+
+Escort ran 16:42:57.505217–16:45:38.385623 UTC; independent ran
+16:46:27.218079–16:49:15.504455 UTC on 2 October 2026. Each independent audit
+passed both new observation-clock and replay-mirror verification flags and
+confirmed all 84 retained local evidence files unchanged. Audit-file SHA-256
+values are `e3b2489a27a63de349a4a6cf59002905dee3723e9b405aa3a9e1c04897558a67`
+and `75d658929fa822a5f6db6f13f1c931f211ccff130955801d337a3480a6f70bcd`.
+The manifests remain exactly `812bff11400edcd0d5c138e24497ab6d09ec6406353c8cd79643eda19398a561`
+and `060546a879a4b5fe98fb0a135e1424899c8ff457cce56455ab1c128a67e6b52e`.
+
+Fuel saved/restored ticks are 4988/4988 and 4809/4809; progressed ticks 5549
+and 5370; live final ticks 6704 and 6525. Final cold manual-save ticks 6701
+and 6522 remain separate. All four original saves reproduce whole cold authority
+exactly, including the independent final decimal-parser drift previously
+reproduced. Five native smith receipts and conserved final ledger are intact.
+Independent guard remains instantiated, hidden/layer zero/inactive at its home
+pose across all 51 capture/route observations. Escort remains physically present
+and retired. Ten original native body identities are retained.
+
+All five task PNGs per new route byte-match the corresponding earlier local
+qualified pack: zero changed pixels. The actual new allowance and completion
+frames were inspected for each route, with readable objectives, costs, controls
+and completion; all five target/camera bindings remain exact. The existing
+mounted/modal/pointer HUD source is unchanged from its 464/zero qualification.
+No additional demonstrated control or visual defect was found.
+
+Next: publish only this bounded verifier/test correction and documentation
+checkpoint to the same draft PR; inspect that exact new published head's hosted
+CI, download its two complete journey packs, and independently verify their
+original source/runtime/operation/execution/save/frame identities. Ancestor
+green runs and similar screenshots do not substitute for those checks. Keep
+unqualified work draft/unmerged. Remaining human/controller/Windows/physical-GPU
+checks, inherited exit warnings, production assets/voice and larger chronology
+remain pending as stated above. Do not merge main or absorb unrelated branches.

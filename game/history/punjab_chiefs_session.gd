@@ -3,7 +3,7 @@ extends "res://mounts/riding_training_session.gd"
 ## A source-inspired story visit reuses the retained Home lifecycle. No Home grants.
 const OWNER_META := "punjab_chiefs_story_session"
 const STORY_SCENE := "res://history/punjab_chiefs_playable.tscn"
-const SEQUENCES := ["delegation", "alliance", "revenge", "desi", "exile", "well"]
+const SEQUENCES := ["delegation", "alliance", "revenge", "desi", "exile", "well", "regency", "rumours", "heirs", "overture", "litter", "sodhra", "settlement"]
 var sequence_id := ""
 
 static func entry_error(host: Node3D) -> String:

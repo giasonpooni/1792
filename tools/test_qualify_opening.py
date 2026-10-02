@@ -209,7 +209,9 @@ class OpeningEvidenceChecks(unittest.TestCase):
         persistence = {"inquiry_snapshot": inquiry, "saved_snapshot": saved,
                        "restored_snapshot": copy.deepcopy(saved),
                        "progressed_snapshot": copy.deepcopy(records[2]["snapshot"]),
-                       "saved_tick": 2030, "restored_tick": 2030,
+                       "saved_tick": 2030, "restored_tick": 2030, "progressed_tick": 2103,
+                       "final_snapshot": copy.deepcopy(final), "final_tick": 2806,
+                       "final_task_completed": True,
                        "declared_saved_pose_restored": True, "retained_file": "household-fuel-save.json"}
         manual = copy.deepcopy(final)
         manual["childhood"]["tick"] = 2803
@@ -334,7 +336,10 @@ class OpeningEvidenceChecks(unittest.TestCase):
 
     def test_commission_capture_cannot_precede_its_custody_receipt(self):
         manifest = self.task_manifest()
-        manifest["captures"][2]["snapshot"]["childhood"]["tick"] = 2099
+        record = manifest["captures"][2]
+        record["snapshot"]["childhood"]["tick"] = 2099
+        record["snapshot"]["game_time"] = self.clock_for_tick(2099)
+        record["home_tick"] = 2099
         with self.assertRaises(ValueError):
             self.verify_task(manifest)
 
@@ -371,12 +376,16 @@ class OpeningEvidenceChecks(unittest.TestCase):
                 if boundary == "fuel":
                     for key in ("saved_snapshot", "restored_snapshot"):
                         persistence[key]["childhood"]["tick"] = 2019
+                        persistence[key]["game_time"] = self.clock_for_tick(2019)
                     persistence["saved_tick"] = persistence["restored_tick"] = 2019
                     self.task_save(manifest)
                 elif boundary == "progressed":
                     persistence["progressed_snapshot"]["childhood"]["tick"] = 2099
+                    persistence["progressed_snapshot"]["game_time"] = self.clock_for_tick(2099)
+                    persistence["progressed_tick"] = 2099
                 else:
                     manifest["final_manual_save"]["snapshot"]["childhood"]["tick"] = 2799
+                    manifest["final_manual_save"]["snapshot"]["game_time"] = self.clock_for_tick(2799)
                 with self.assertRaises(ValueError):
                     self.verify_task(manifest)
 
@@ -523,6 +532,75 @@ class OpeningEvidenceChecks(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "report/escort retirement"):
             self.verify()
         self.assertEqual([sha(path.read_bytes()) for path in retained], raw_hashes)
+
+    def test_commission_fresh_observation_clock_must_match_its_exact_tick(self):
+        for boundary in ("capture", "progressed", "final"):
+            for field in ("hour", "year", "day", "tick_boolean", "hour_lower_ulp", "hour_upper_ulp", "nonfinite_hour", "missing_clock"):
+                with self.subTest(boundary=boundary, field=field):
+                    manifest = self.task_manifest()
+                    if boundary == "capture":
+                        state = manifest["captures"][3]["snapshot"]
+                    elif boundary == "progressed":
+                        state = manifest["household_task_persistence"]["progressed_snapshot"]
+                    else:
+                        state = manifest["final_snapshot"]
+                    if field == "tick_boolean":
+                        state["childhood"]["tick"] = True
+                    elif field in ("hour_lower_ulp", "hour_upper_ulp"):
+                        direction = -math.inf if field == "hour_lower_ulp" else math.inf
+                        state["game_time"]["hour"] = math.nextafter(state["game_time"]["hour"], direction)
+                    elif field == "nonfinite_hour":
+                        state["game_time"]["hour"] = math.inf
+                    elif field == "missing_clock":
+                        state.pop("game_time")
+                    else:
+                        state["game_time"][field] += 1
+                    raw_hash = sha((self.images / "household-fuel-save.json").read_bytes())
+                    with self.assertRaises(ValueError):
+                        self.verify_task(manifest)
+                    self.assertEqual(sha((self.images / "household-fuel-save.json").read_bytes()), raw_hash)
+
+    def test_commission_all_native_tick_mirrors_require_whole_matching_numbers(self):
+        for field in ("saved_tick", "restored_tick", "progressed_tick", "final_tick"):
+            for defect in ("boolean", "string", "fractional", "wrong_tick", "nonfinite", "missing"):
+                with self.subTest(field=field, defect=defect):
+                    manifest = self.task_manifest()
+                    persistence = manifest["household_task_persistence"]
+                    original = persistence[field]
+                    if defect == "missing":
+                        persistence.pop(field)
+                    else:
+                        persistence[field] = {"boolean": False, "string": str(original),
+                                              "fractional": original + .5, "wrong_tick": original + 1,
+                                              "nonfinite": math.inf}[defect]
+                    raw_hash = sha((self.images / "household-fuel-save.json").read_bytes())
+                    with self.assertRaises((ValueError, KeyError) if defect == "missing" else ValueError):
+                        self.verify_task(manifest)
+                    self.assertEqual(sha((self.images / "household-fuel-save.json").read_bytes()), raw_hash)
+        manifest = self.task_manifest()
+        manifest["household_task_persistence"]["inquiry_snapshot"]["childhood"]["tick"] = True
+        with self.assertRaises(ValueError):
+            self.verify_task(manifest)
+        manifest = self.task_manifest()
+        for field in ("saved_tick", "restored_tick", "progressed_tick", "final_tick"):
+            manifest["household_task_persistence"][field] = float(manifest["household_task_persistence"][field])
+        self.verify_task(manifest)
+
+    def test_commission_final_persistence_requires_the_actual_complete_whole_observation(self):
+        for defect in ("boolean_alias", "incomplete", "clock", "whole_state"):
+            with self.subTest(defect=defect):
+                manifest = self.task_manifest()
+                persistence = manifest["household_task_persistence"]
+                if defect == "boolean_alias":
+                    persistence["final_task_completed"] = 1
+                elif defect == "incomplete":
+                    persistence["final_task_completed"] = False
+                elif defect == "clock":
+                    persistence["final_snapshot"]["game_time"]["hour"] += 1
+                else:
+                    persistence["final_snapshot"]["player"]["invented_progress"] = True
+                with self.assertRaises(ValueError):
+                    self.verify_task(manifest)
 
     def test_commission_receipt_sequence_and_capture_prefix_refuse_boolean_one(self):
         for boundary in ("prefix", "final"):

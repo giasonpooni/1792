@@ -142,7 +142,7 @@ func _companion() -> void:
 		check(scene.avatar.get_collision_exceptions().has(actor) and actor.get_collision_exceptions().has(scene.avatar), "restored escort installs both exceptions")
 		check(scene.model.step_index == 2, "restored escort resumes its arrival objective")
 	# Corrupt payloads must leave the retained companion and native player intact.
-	for kind in ["extra", "progress", "player_wall", "companion_wall", "companion_id", "camera", "riding", "distance"]:
+	for kind in ["extra", "progress", "player_wall", "companion_wall", "companion_id", "companion_yaw", "camera", "riding", "distance"]:
 		var bad: Dictionary = active.duplicate(true)
 		match kind:
 			"extra": bad["campaign_tick"] = 100
@@ -150,6 +150,7 @@ func _companion() -> void:
 			"player_wall": bad.player = [19,0,0]
 			"companion_wall": bad.companion = [19,0,0]
 			"companion_id": bad.companion_id = "keeper"
+			"companion_yaw": bad.companion_yaw = INF
 			"camera": bad.camera = [0,"bad",0]
 			"riding": bad.mounted = true
 			"distance": bad.ride_distance = INF
@@ -237,9 +238,40 @@ func _rider() -> void:
 	check(scene.load_checkpoint() == "Checkpoint recalled.", "actual saved mounted JSON loads after reopening")
 	await dispose()
 
+func _litter() -> void:
+	await create("litter")
+	var initial := keep("before covered-litter departure")
+	var waiting_pose: Transform3D = scene._covered_litter.global_transform
+	while not scene.model.complete() and scene.model.current_beat().mode != "escort":
+		check(await walk(scene.target_position()), "native walk reaches litter preparation")
+		if not await choose_here(): await dispose(); return
+	check(is_instance_valid(scene.companion), "litter departure has a physical bearer")
+	if not is_instance_valid(scene.companion): await dispose(); return
+	check(await walk(Vector3(3,0,2)), "native walk leads the covered party")
+	await frames(60)
+	var active := keep("covered-litter party on the path")
+	var travelling_pose: Transform3D = scene._covered_litter.global_transform
+	check(not travelling_pose.origin.is_equal_approx(waiting_pose.origin), "covered litter moves with the earned escort")
+	scene.set_physics_process(false)
+	scene.avatar.set_physics_process(false)
+	if recalled(initial,"pre-departure recall restores covered-litter staging"):
+		check(scene._covered_litter.global_transform.is_equal_approx(waiting_pose), "covered litter returns to its waiting pose")
+		check(not is_instance_valid(scene.companion), "recalled preparations do not retain a following bearer")
+	if recalled(active,"active departure recall restores covered party"):
+		check(scene._covered_litter.global_transform.is_equal_approx(travelling_pose), "covered litter resumes the saved bearer pose")
+		check(scene.model.current_beat().mode == "escort", "active recall still requires arrival at the gate")
+	var legacy: Dictionary = active.duplicate(true)
+	legacy.schema = "1792.punjab-chiefs.visit.v1"
+	legacy.erase("companion_yaw")
+	if recalled(legacy,"earlier checkpoint format remains readable"):
+		check(scene.companion.global_position.is_equal_approx(scene._point(active.companion)), "legacy recall retains the earned companion position")
+		check(scene.model.current_beat().mode == "escort", "legacy recall retains the pending arrival")
+	await dispose()
+
 func _run() -> void:
 	await _companion()
 	await _rider()
+	await _litter()
 	for suffix in ["",".tmp"]: DirAccess.remove_absolute(ProjectSettings.globalize_path(SAVE+suffix))
 	print("PUNJAB_CHIEFS_CHECKPOINT_TESTS: %d passed, %d failed" % [passed,failed])
 	quit(1 if failed else 0)

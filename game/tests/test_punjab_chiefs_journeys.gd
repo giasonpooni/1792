@@ -1,9 +1,9 @@
 # Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 extends SceneTree
-## All six tellings are reached through ordinary input and the existing native
+## All thirteen tellings are reached through ordinary input and the existing native
 ## player/horse motors. Dialogue choices run only after physical admission.
 const Playable := preload("res://history/punjab_chiefs_playable.tscn")
-const IDS := ["delegation", "alliance", "revenge", "desi", "exile", "well"]
+const IDS := ["delegation", "alliance", "revenge", "desi", "exile", "well", "regency", "rumours", "heirs", "overture", "litter", "sodhra", "settlement"]
 var passed := 0
 var failed := 0
 var scene: Node3D
@@ -113,6 +113,10 @@ func _run() -> void:
 			var progress_before: Dictionary = scene.model.snapshot()
 			if id == "desi" and beat.id == "desi_remember":
 				check(await walk_to(Vector3(0, 0, -8)), "on-foot route walks around the well masonry")
+			if not scene.mounted and scene._station_kind(beat.target) == "gate":
+				# Enter through the opening rather than driving a straight line into
+				# its side post when the preceding speaker stands across the court.
+				check(await walk_to(target + Vector3(0,0,3.5),0.6), "native route approaches the gate opening")
 			var moved: bool = await ride_to(target, 2.35 if beat.target == "water" else 2.2) if scene.mounted else await walk_to(target, 2.25 if scene._station_kind(beat.target) == "well" else 1.9)
 			check(moved, "native movement reaches " + str(beat.id))
 			if not moved:
@@ -170,7 +174,7 @@ func _run() -> void:
 		current_scene = null
 		scene.queue_free()
 		await frames(3)
-	check(completed.size() == IDS.size(), "all six playable sequences completed through their native routes")
+	check(completed.size() == IDS.size(), "all thirteen playable sequences completed through their native routes")
 	check(witnessed_escort_delay, "at least one route actually observed and waited for a lagging companion")
 	check(witnessed_ride, "Desi route actually used mounted motor travel")
 	print("PUNJAB_CHIEFS_JOURNEY_TESTS: %d passed, %d failed" % [passed, failed])

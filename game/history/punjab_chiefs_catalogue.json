@@ -6,7 +6,8 @@
     "year": 1940,
     "revision_date": "1939-07-01",
     "file_id": "file_0000000040f481f5986ef7b122de871c",
-    "limitations": "Retrospective compilation drawing on written records, chiefs, bards and family priests. Printed page references identify this uploaded edition. Recorded traditions, allegations and miracles are retained with their identities. All playable errands, spoken dialogue, choices and local outcomes are original adaptations, never claimed as verbatim testimony or actions historically performed by the fictional player roles. These recollections retain distinct periods rather than becoming one 1792 event."
+    "limitations": "Retrospective compilation drawing on written records, chiefs, bards and family priests. Printed page references identify this uploaded edition. Recorded traditions, allegations and miracles are retained with their identities. All playable errands, spoken dialogue, choices and local outcomes are original adaptations, never claimed as verbatim testimony or actions historically performed by the fictional player roles. These recollections retain distinct periods rather than becoming one 1792 event.",
+    "scope": "Foundational source for the first six sequences. Later court entries carry their own source_ids and references."
   },
   "sequences": [
     {
@@ -1341,6 +1342,1705 @@
         "ground": "#8c8060",
         "sky": "#d0c5a8"
       }
+    },
+    {
+      "id": "regency",
+      "title": "The Door to the Young Chief",
+      "period": "1792; the Sukerchakia household",
+      "role": "Fictional adult clerk of the Sukerchakia household",
+      "display_role": "Clerk of the Sukerchakia household",
+      "location": "An exterior audience court at Gujranwala",
+      "source_ids": [
+        "centenary_1939",
+        "buxi_1992",
+        "user_sada_court_brief"
+      ],
+      "source_pages": [
+        "Centenary Memorial: printed 99–100 / PDF 127–128",
+        "Buxi: printed 6–7 / PDF 20–21"
+      ],
+      "source_kind": "conflicting_regency_accounts_with_original_dramatization",
+      "adaptation": "The Memorial records Lakhpat Rai quarrelling with Dal Singh, Maha Singh's maternal uncle, and a temporary reconciliation. Buxi supplies the household power struggle. The user-selected 1792 frame retains the project chronology beside the Memorial's 1790 succession. Sada's participation in this particular access dispute and all dialogue are original adaptations of the supplied political plot. This Dal is the elder regency figure, distinct from Dal son of Hira Singh of Bahrwal, killed in the revenge account.",
+      "opening": "Three people wait for one door to open. Lakhpat Rai has the account books. Dal Singh has the authority of kinship. Sada Kaur has arrived with an answer of her own. You hold the audience list, and every person in the court understands that the order of names can become an order of power.",
+      "stations": [
+        {
+          "id": "lakhpat",
+          "label": "Diwan Lakhpat Rai",
+          "kind": "npc",
+          "position": [
+            -10,
+            0,
+            8
+          ]
+        },
+        {
+          "id": "dal",
+          "label": "Sardar Dal Singh",
+          "kind": "npc",
+          "position": [
+            10,
+            0,
+            8
+          ]
+        },
+        {
+          "id": "dispatch_table",
+          "label": "Audience register",
+          "kind": "bundle",
+          "position": [
+            0,
+            0,
+            -2
+          ]
+        },
+        {
+          "id": "sada",
+          "label": "Sada Kaur",
+          "kind": "npc",
+          "position": [
+            -10,
+            0,
+            -8
+          ]
+        },
+        {
+          "id": "audience_gate",
+          "label": "Audience entrance",
+          "kind": "gate",
+          "position": [
+            10,
+            0,
+            -14
+          ]
+        }
+      ],
+      "beats": [
+        {
+          "id": "regency_accounts",
+          "target": "lakhpat",
+          "objective": "Receive Lakhpat Rai's order for the audience list.",
+          "line": "Lakhpat Rai: A household cannot spend the same rupee twice. Put the accounts before the petitions, and let those who demand soldiers explain how they will feed them.",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "accounts_first",
+              "label": "Give the accounts first place",
+              "line": "You put the accounts at the head of the list. Lakhpat closes the ledger with satisfaction, while a waiting petitioner watches his own name move downward.",
+              "effects": {
+                "accounts_first": true
+              }
+            },
+            {
+              "id": "reserve_petitions",
+              "label": "Reserve time for the petitions",
+              "line": "You give the ledger its place but mark an hour for petitions. Lakhpat studies the additional line before allowing the register back into your hands.",
+              "effects": {
+                "petition_time": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "regency_kinship",
+          "target": "dal",
+          "objective": "Hear Dal Singh's objection at the waiting place.",
+          "line": "Dal Singh: I knew this family before a clerk could admit me to it. If Lakhpat speaks for its wealth, someone must speak for its obligations.",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "record_objection",
+              "label": "Record his objection beside his name",
+              "line": "You enter the objection without erasing the Diwan's place. Dal agrees that the young chief should hear the disagreement, although he dislikes having to wait.",
+              "effects": {
+                "dal_objection": true
+              }
+            },
+            {
+              "id": "offer_joint_hearing",
+              "label": "Propose that both men be heard together",
+              "line": "You suggest a joint hearing, with neither account presented behind the other's back. Dal permits you to carry the proposal, reserving his answer until he hears Lakhpat's.",
+              "effects": {
+                "joint_hearing": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "regency_sada",
+          "target": "sada",
+          "objective": "Receive Sada Kaur and choose how to announce her arrival.",
+          "line": "Sada Kaur: They argue over who holds the door. I would know what waits beyond it. Take me in, and leave enough room for the boy to answer.",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "announce_sada",
+              "label": "Announce her openly before entering",
+              "line": "You tell the waiting court that Sada Kaur is approaching the audience. She follows without hurrying, allowing every face to see who has chosen to accompany her.",
+              "effects": {
+                "sada_public": true,
+                "escort_following": true
+              }
+            },
+            {
+              "id": "quiet_sada",
+              "label": "Take her in after a quiet notice",
+              "line": "You send a quiet notice ahead and ask the waiting men to keep the approach clear. Sada follows, with her arrival known before her intentions are.",
+              "effects": {
+                "sada_quiet": true,
+                "escort_following": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "regency_threshold",
+          "target": "audience_gate",
+          "objective": "Escort Sada Kaur to the audience entrance.",
+          "line": "At the threshold, an attendant asks whether Dal Singh and Lakhpat should enter together. Their quarrel can be heard here, or continue through messages outside.",
+          "mode": "escort",
+          "choices": [
+            {
+              "id": "open_hearing",
+              "label": "Call both men into the hearing",
+              "line": "You ask the attendant to admit both men in the same announcement. The order creates a meeting neither can later describe as having excluded him.",
+              "effects": {
+                "open_hearing": true
+              }
+            },
+            {
+              "id": "separate_hearing",
+              "label": "Keep the scheduled separate hearings",
+              "line": "You ask the attendant to keep the appointments as written. Each man will have his interval to speak, and each will wonder what the other said.",
+              "effects": {
+                "separate_hearing": true
+              }
+            }
+          ],
+          "requires_flags": [
+            "escort_following"
+          ]
+        },
+        {
+          "id": "regency_record",
+          "target": "dispatch_table",
+          "objective": "Complete the audience register after the door closes.",
+          "line": "The court grows quiet enough to hear the reed pen. Your final line will tell tomorrow's attendants whether today ended a quarrel or merely interrupted it.",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "record_compromise",
+              "label": "Record a temporary working agreement",
+              "line": "You write that the accounts and petitions will both be heard, with the existing appointments retained for now. The words leave room for tomorrow's disagreement.",
+              "effects": {
+                "temporary_agreement": true
+              }
+            },
+            {
+              "id": "record_objections",
+              "label": "Preserve the objections beside the agreement",
+              "line": "You preserve both objections beneath the working agreement. No name disappears, and anyone reopening the matter must confront what was said in this court.",
+              "effects": {
+                "objections_preserved": true
+              }
+            }
+          ]
+        }
+      ],
+      "endings": [
+        {
+          "requires_flags": [
+            "open_hearing",
+            "temporary_agreement"
+          ],
+          "text": "Both men entered the same hearing, and the register records a temporary agreement. You have secured an interval in which the household can act, while preserving the reasons its elders disagree."
+        },
+        {
+          "requires_flags": [
+            "separate_hearing",
+            "objections_preserved"
+          ],
+          "text": "The appointments remain separate, and the objections remain on the page. Your orderly register carries the rivalry forward without pretending that a closed door has settled it."
+        },
+        {
+          "requires_flags": [],
+          "text": "The audience begins and the household has a written order for its business. Your route through the court decides whose authority was displayed and whose objection survives the day."
+        }
+      ],
+      "palette": {
+        "ground": "#8c7250",
+        "sky": "#c0ad8c"
+      }
+    },
+    {
+      "id": "rumours",
+      "title": "The Whisper After Midnight",
+      "period": "Late 1790s; the household at night",
+      "role": "Fictional adult attendant carrying a household report",
+      "display_role": "Attendant carrying a household report",
+      "location": "A lamp-lit outer court at Gujranwala",
+      "source_ids": [
+        "griffin_1905",
+        "buxi_1992",
+        "user_sada_court_brief"
+      ],
+      "source_pages": [
+        "Griffin: printed 159–160 / PDF 167–168",
+        "Buxi: printed 6–7 / PDF 20–21"
+      ],
+      "source_kind": "conflicting_accusations_with_original_witness_story",
+      "adaptation": "Griffin repeats allegations about Raj Kaur, Lakhpat Rai and matricide, then doubts the killing stories. Buxi describes the struggle over authority and cites Sinha's rejection of Smyth's accusation. Neither establishes guilt. This night, its letter, the witnesses and every spoken line are invented. Poison remains an allegation voiced by a character, never an acquired poison item or biological finding. Timing is deliberately broad; no death in 1801 is asserted.",
+      "opening": "A lamp is still burning where the household has ordered darkness. Someone says the room was locked. Someone else says poison. Between those two statements, a frightened attendant has become a person everyone wants to question. You must bring her across the court before the story reaches the gate without her.",
+      "stations": [
+        {
+          "id": "gossip",
+          "label": "Waiting messenger",
+          "kind": "npc",
+          "position": [
+            -10,
+            0,
+            8
+          ]
+        },
+        {
+          "id": "witness",
+          "label": "Frightened household attendant",
+          "kind": "npc",
+          "position": [
+            10,
+            0,
+            8
+          ]
+        },
+        {
+          "id": "packet",
+          "label": "Unsigned account",
+          "kind": "bundle",
+          "position": [
+            0,
+            0,
+            -2
+          ]
+        },
+        {
+          "id": "receiving_clerk",
+          "label": "Keeper of the night register",
+          "kind": "npc",
+          "position": [
+            -10,
+            0,
+            -8
+          ]
+        },
+        {
+          "id": "quiet_gate",
+          "label": "Sheltered passage",
+          "kind": "gate",
+          "position": [
+            10,
+            0,
+            -14
+          ]
+        }
+      ],
+      "beats": [
+        {
+          "id": "rumours_hear",
+          "target": "gossip",
+          "objective": "Hear what the waiting messenger intends to repeat.",
+          "line": "Messenger: They are saying the mother drank poison, and that the order came from above. If I wait for permission, every rival household will hear another man's version first.",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "ask_origin",
+              "label": "Ask where his account began",
+              "line": "You ask him to name the person who spoke first. His certainty softens into a chain of other voices, none of whom stood beside the cup.",
+              "effects": {
+                "origin_requested": true
+              }
+            },
+            {
+              "id": "hold_messenger",
+              "label": "Ask him to wait for the attendant",
+              "line": "You ask him to stay until the attendant has spoken. He complains that delay looks like concealment, but accepts that a living voice may alter the message.",
+              "effects": {
+                "messenger_held": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "rumours_packet",
+          "target": "packet",
+          "objective": "Examine the unsigned account before it leaves the court.",
+          "line": "The sheet names Raj Kaur and Lakhpat Rai, then changes from events to accusations without a new line. Its writer has left no signature.",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "mark_uncertain",
+              "label": "Mark the accusations as unconfirmed",
+              "line": "You mark where the account moves beyond a witnessed event. The sheet still carries the allegations, but its next reader will see the change in certainty.",
+              "effects": {
+                "marked_unconfirmed": true
+              }
+            },
+            {
+              "id": "preserve_sheet",
+              "label": "Keep the sheet intact for the hearing",
+              "line": "You fold the sheet without changing it. Preserving the whole accusation may expose its author's intention, provided someone asks who wrote it.",
+              "effects": {
+                "sheet_preserved": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "rumours_witness",
+          "target": "witness",
+          "objective": "Hear the attendant before taking her away from the gathering.",
+          "line": "Attendant: I saw the door shut. I heard an argument. That is all. They keep asking what was in the cup as though fear could make me remember it.",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "promise_privacy",
+              "label": "Promise a private hearing",
+              "line": "You promise to bring her to a sheltered place before taking her account. She follows because the promise concerns where she will speak, not what she must say.",
+              "effects": {
+                "private_hearing": true,
+                "escort_following": true
+              }
+            },
+            {
+              "id": "promise_witnesses",
+              "label": "Promise that others will hear her accurately",
+              "line": "You promise that her exact words will be heard by more than one person. She follows, asking you to stay if someone tries to finish her sentences.",
+              "effects": {
+                "witnessed_hearing": true,
+                "escort_following": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "rumours_cross",
+          "target": "quiet_gate",
+          "objective": "Escort the attendant to the sheltered passage.",
+          "line": "At the passage, a guard wants her name for his list. She stops beside you, suddenly more afraid of being recorded than of the darkness behind.",
+          "mode": "escort",
+          "choices": [
+            {
+              "id": "shield_identity",
+              "label": "Ask that her name stay within the hearing",
+              "line": "You give the guard enough to admit her and ask that her name remain with the hearing. He agrees to keep curious messengers outside.",
+              "effects": {
+                "identity_shielded": true
+              }
+            },
+            {
+              "id": "register_presence",
+              "label": "Record her presence with protection requested",
+              "line": "You enter her presence and request protection against pressure. The record makes her visible to authority, with your own name beside the request.",
+              "effects": {
+                "protection_recorded": true
+              }
+            }
+          ],
+          "requires_flags": [
+            "escort_following"
+          ]
+        },
+        {
+          "id": "rumours_report",
+          "target": "receiving_clerk",
+          "objective": "Choose how the night register will carry the accusation.",
+          "line": "Keeper: I can seal this for an inquiry, or read the accusation before the assembled household. Either way, people will ask why you chose it.",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "seal_inquiry",
+              "label": "Seal it for a private inquiry",
+              "line": "You seal the account with the attendant's limited statement. The poison allegation remains inside, waiting beside the words of someone who will not claim to have seen it.",
+              "effects": {
+                "inquiry_sealed": true
+              }
+            },
+            {
+              "id": "public_accusation",
+              "label": "Read the allegation and its limits publicly",
+              "line": "You read the accusation aloud, then state what the attendant actually witnessed. The gathering hears both, although you cannot control which part people carry away.",
+              "effects": {
+                "public_allegation": true
+              }
+            }
+          ]
+        }
+      ],
+      "endings": [
+        {
+          "requires_flags": [
+            "identity_shielded",
+            "inquiry_sealed"
+          ],
+          "text": "The attendant reaches shelter and the accusation enters a sealed inquiry. The court keeps its troubling story, while one person is protected from being forced to supply its missing certainty."
+        },
+        {
+          "requires_flags": [
+            "public_allegation"
+          ],
+          "text": "The accusation becomes public beside the attendant's narrower account. You have preserved her words, but their limits must now travel through a household hungry for a culprit."
+        },
+        {
+          "requires_flags": [],
+          "text": "The attendant reaches the passage and the report is delivered. Nothing you carried proves poison or guilt; your choices determine how a dangerous allegation enters the household's memory."
+        }
+      ],
+      "palette": {
+        "ground": "#3a302e",
+        "sky": "#182333"
+      }
+    },
+    {
+      "id": "heirs",
+      "title": "Two Names in the Dispatch",
+      "period": "1807; a dispatch from Batala",
+      "role": "Fictional adult courier of the Batala household",
+      "display_role": "Courier of the Batala household",
+      "location": "An exterior household court at Batala",
+      "source_ids": [
+        "griffin_1905",
+        "centenary_1939",
+        "user_sada_court_brief"
+      ],
+      "source_pages": [
+        "Griffin: printed 107–108 / PDF 115–116",
+        "Centenary Memorial: printed 25 / PDF 45; printed 251–252 / PDF 291–292"
+      ],
+      "source_kind": "conflicting_birth_and_legitimacy_accounts",
+      "adaptation": "Griffin alleges substituted children and later political acknowledgement; the Memorial records the twins' birth announcement, thanksgiving and Mehtab's maternity. Neither the courier nor the choices establish biological truth. All dialogue, dispatch handling and minor witnesses are original. The scene preserves competing accusations without encoding strict male primogeniture or deciding future accession. Its authored 1807 frame follows the selected announcement variant and does not silently reconcile every source chronology.",
+      "opening": "Two names have been written before the dispatch is dry. Beyond the courtyard curtain, the household prepares a celebration. At the gate, another story is already waiting to travel. You have been asked to carry the announcement to Ranjit Singh, and every person you meet wants a different sentence placed beside it.",
+      "stations": [
+        {
+          "id": "household_steward",
+          "label": "Mehtab Kaur's steward",
+          "kind": "npc",
+          "position": [
+            -10,
+            0,
+            8
+          ]
+        },
+        {
+          "id": "waiting_rider",
+          "label": "Waiting escort rider",
+          "kind": "npc",
+          "position": [
+            10,
+            0,
+            8
+          ]
+        },
+        {
+          "id": "dispatch_table",
+          "label": "Birth announcement",
+          "kind": "bundle",
+          "position": [
+            0,
+            0,
+            -2
+          ]
+        },
+        {
+          "id": "sada",
+          "label": "Sada Kaur",
+          "kind": "npc",
+          "position": [
+            -10,
+            0,
+            -8
+          ]
+        },
+        {
+          "id": "departure_gate",
+          "label": "Departure entrance",
+          "kind": "gate",
+          "position": [
+            10,
+            0,
+            -14
+          ]
+        }
+      ],
+      "beats": [
+        {
+          "id": "heirs_receive",
+          "target": "household_steward",
+          "objective": "Receive the household announcement from Mehtab Kaur's steward.",
+          "line": "Steward: Sher Singh and Tara Singh. Write the names clearly. My mistress asks that the message reach their father before the courtyard begins answering questions from strangers.",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "names_first",
+              "label": "Put the names before political titles",
+              "line": "You place the children's names at the beginning and leave the household's requested address intact. The dispatch starts with people before it reaches the question of rank.",
+              "effects": {
+                "names_first": true
+              }
+            },
+            {
+              "id": "honours_first",
+              "label": "Preserve the household's full formal address",
+              "line": "You retain every formal address requested by the household. The wording carries its claim with dignity, without giving you the authority to decide how it will be received.",
+              "effects": {
+                "formal_address": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "heirs_sada",
+          "target": "sada",
+          "objective": "Hear Sada Kaur's instruction before sealing the message.",
+          "line": "Sada Kaur: A rumour can cross a courtyard faster than a horse crosses a field. Carry our announcement with your own eyes open, and do not let another man write your arrival.",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "request_receipt",
+              "label": "Ask for an acknowledged delivery",
+              "line": "You ask for instructions to obtain a named receipt at the other end. Sada agrees that no officer should be able to deny the message arrived.",
+              "effects": {
+                "receipt_requested": true
+              }
+            },
+            {
+              "id": "request_audience",
+              "label": "Ask to deliver the words before witnesses",
+              "line": "You ask to read the announcement before witnesses if access is granted. Sada permits it, knowing that a public arrival can also invite a public refusal.",
+              "effects": {
+                "audience_requested": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "heirs_seal",
+          "target": "dispatch_table",
+          "objective": "Decide how the dispatch should carry the competing allegation.",
+          "line": "A second slip alleges that a weaver's child and another child were brought into the household. It offers no witness who will travel with you.",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "separate_allegation",
+              "label": "Keep the accusation in a separate marked enclosure",
+              "line": "You place the allegation in a separate enclosure marked as an unsupported report. The announcement remains whole, while the recipient can inspect what is being said against it.",
+              "effects": {
+                "allegation_separated": true
+              }
+            },
+            {
+              "id": "retain_for_steward",
+              "label": "Leave the unsigned allegation with the steward",
+              "line": "You leave the unsigned slip for the steward to investigate. Your dispatch carries the entrusted announcement, and the allegation retains a place where someone may seek its author.",
+              "effects": {
+                "allegation_retained": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "heirs_companion",
+          "target": "waiting_rider",
+          "objective": "Gather the escort rider before leaving Batala.",
+          "line": "Rider: At the first halt someone will ask what we carry. Tell me what I am allowed to answer, and I will keep to those words.",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "announce_births",
+              "label": "Permit only the birth announcement",
+              "line": "You tell him to repeat the two names and that the household has sent an announcement. He follows, with no authority to embellish the message.",
+              "effects": {
+                "limited_announcement": true,
+                "escort_following": true
+              }
+            },
+            {
+              "id": "keep_dispatch_private",
+              "label": "Keep the dispatch private until delivery",
+              "line": "You ask him to say only that you carry a household dispatch. He follows, understanding that privacy may protect the message and also invite speculation.",
+              "effects": {
+                "private_dispatch": true,
+                "escort_following": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "heirs_depart",
+          "target": "departure_gate",
+          "objective": "Escort the rider to the departure entrance with the dispatch.",
+          "line": "The gatekeeper offers to enter the journey as a celebration or as confidential service. Your companion waits beside the sealed packet while the road brightens beyond the wall.",
+          "mode": "escort",
+          "choices": [
+            {
+              "id": "record_family_message",
+              "label": "Register a household birth announcement",
+              "line": "You register the journey as a birth announcement entrusted by the household. Its arrival can be checked without turning the gatebook into a verdict on descent.",
+              "effects": {
+                "birth_dispatch_recorded": true
+              }
+            },
+            {
+              "id": "record_confidential",
+              "label": "Register confidential household service",
+              "line": "You register confidential service and name the sender and receiving office. The message has a traceable journey while its contents remain with its keepers.",
+              "effects": {
+                "confidential_recorded": true
+              }
+            }
+          ],
+          "requires_flags": [
+            "escort_following"
+          ]
+        }
+      ],
+      "endings": [
+        {
+          "requires_flags": [
+            "allegation_separated",
+            "receipt_requested"
+          ],
+          "text": "The birth announcement leaves Batala with a separate allegation and a requested receipt. You have kept two competing claims from becoming one sentence; the courier's journey cannot settle what the court will believe."
+        },
+        {
+          "requires_flags": [
+            "allegation_retained",
+            "confidential_recorded"
+          ],
+          "text": "The household's announcement leaves under confidential service, while the unsigned accusation remains with the steward. Your restraint protects the entrusted message, but it cannot silence the story waiting at the gate."
+        },
+        {
+          "requires_flags": [],
+          "text": "Two names leave Batala in a sealed dispatch. Your choices shape the manner of delivery and the reach of the allegation, without deciding the children's descent or their later political fortunes."
+        }
+      ],
+      "palette": {
+        "ground": "#a18461",
+        "sky": "#c8b6a1"
+      }
+    },
+    {
+      "id": "overture",
+      "title": "The Fortress in the Letter",
+      "period": "Late 1808; a diplomatic approach",
+      "role": "Fictional adult courier entrusted by Sada Kaur",
+      "display_role": "Courier entrusted by Sada Kaur",
+      "location": "A compressed exterior dispatch court near Atalgarh",
+      "source_ids": [
+        "eos_sada",
+        "discover_sada",
+        "user_sada_court_brief"
+      ],
+      "source_pages": [
+        "Encyclopaedia of Sikhism: Sada Kaur entry, secret British negotiations",
+        "Discover Sikhism: Sardarni Sada Kaur, paragraph beginning In November 1808"
+      ],
+      "source_kind": "secondary_diplomatic_account_with_original_courier_scene",
+      "adaptation": "The university entry records secret negotiations with British officers. Discover Sikhism describes a November 1808 offer of Atalgarh to Metcalfe tied to restoration of possessions. The packet, route, receiving agent and conditions voiced here are invented. This stage ends with an approach delivered, never a completed alliance, an invented interception or a transfer of the fort. Atalgarh here belongs to Sada's diplomatic story, not Dal Singh's Akalgarh identity.",
+      "opening": "A fortress has become a line in a folded letter. Around you, its people continue counting grain and opening the morning gate. You carry an approach to an outside power, but the receiving agent has promised only to listen. Before the packet leaves your hands, you must decide what record its journey will leave behind.",
+      "stations": [
+        {
+          "id": "sada",
+          "label": "Sada Kaur",
+          "kind": "npc",
+          "position": [
+            -10,
+            0,
+            8
+          ]
+        },
+        {
+          "id": "receiving_agent",
+          "label": "Receiving agent",
+          "kind": "npc",
+          "position": [
+            10,
+            0,
+            8
+          ]
+        },
+        {
+          "id": "dispatch_table",
+          "label": "Sealed diplomatic packet",
+          "kind": "bundle",
+          "position": [
+            0,
+            0,
+            -2
+          ]
+        },
+        {
+          "id": "storekeeper",
+          "label": "Fort storekeeper",
+          "kind": "npc",
+          "position": [
+            -10,
+            0,
+            -8
+          ]
+        },
+        {
+          "id": "dispatch_gate",
+          "label": "Outer dispatch entrance",
+          "kind": "gate",
+          "position": [
+            10,
+            0,
+            -14
+          ]
+        }
+      ],
+      "beats": [
+        {
+          "id": "overture_instruction",
+          "target": "sada",
+          "objective": "Receive Sada Kaur's instruction for the sealed approach.",
+          "line": "Sada Kaur: They count my walls when they speak of my loyalty. Let them consider what those walls are worth, and what it would cost to leave their keeper unheard.",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "stress_restoration",
+              "label": "Ask that restoration remain the first condition",
+              "line": "You ask her to place the restoration of her position before every practical offer. She agrees that the receiving party must hear a condition, not an unconditional gift.",
+              "effects": {
+                "restoration_first": true
+              }
+            },
+            {
+              "id": "stress_audience",
+              "label": "Ask for a hearing before practical promises",
+              "line": "You ask for a hearing before anyone measures stores or billets. She agrees to send the approach as an opening whose next terms must still be answered.",
+              "effects": {
+                "hearing_first": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "overture_inventory",
+          "target": "storekeeper",
+          "objective": "Consult the storekeeper before carrying any practical assurance.",
+          "line": "Storekeeper: A visiting officer will see empty ground and call it room for his men. I see families, carts and grain already promised elsewhere. Which account will travel?",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "include_obligations",
+              "label": "Include the existing obligations in your oral account",
+              "line": "You undertake to describe the people and stores already committed here. The storekeeper gives you the names of those whose work a casual promise might displace.",
+              "effects": {
+                "obligations_noted": true
+              }
+            },
+            {
+              "id": "withhold_capacity",
+              "label": "Give no capacity figures without a written request",
+              "line": "You promise no figures from memory and ask him to prepare a written inventory if requested. He keeps his book closed until a definite question arrives.",
+              "effects": {
+                "capacity_withheld": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "overture_packet",
+          "target": "dispatch_table",
+          "objective": "Secure the packet and choose its delivery record.",
+          "line": "The outer wrapper bears a receiving name, while the inner fold remains sealed. Beside it lies space for a date, a witness and an answer that has not come.",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "record_seal",
+              "label": "Record the intact seal before handing it over",
+              "line": "You record the seal's condition with the packet still on the table. A later denial of receipt must now answer an account made before the exchange.",
+              "effects": {
+                "seal_recorded": true
+              }
+            },
+            {
+              "id": "record_witness",
+              "label": "Ask a household witness to record your departure",
+              "line": "You ask an attendant to record the packet leaving in your care. The contents remain concealed, but your own responsibility begins in another person's sight.",
+              "effects": {
+                "departure_witness": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "overture_agent",
+          "target": "receiving_agent",
+          "objective": "Meet the receiving agent and establish the limit of his authority.",
+          "line": "Agent: I can carry an approach. I cannot promise protection, troops or an answer. Walk with me to the gate, and say plainly what acknowledgement you require.",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "require_receipt",
+              "label": "Require a receipt for delivery alone",
+              "line": "You ask for a receipt that acknowledges delivery without pretending agreement. The agent accepts those terms and follows you toward the outer entrance.",
+              "effects": {
+                "delivery_receipt": true,
+                "escort_following": true
+              }
+            },
+            {
+              "id": "require_return",
+              "label": "Require a named route for the reply",
+              "line": "You ask him to name the office through which a reply can return. He supplies that route and follows, while keeping every political promise outside his answer.",
+              "effects": {
+                "return_route": true,
+                "escort_following": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "overture_handoff",
+          "target": "dispatch_gate",
+          "objective": "Escort the agent to the outer entrance and complete the handoff.",
+          "line": "At the entrance, the agent turns once more toward the fort. Nothing has changed hands except a packet, but the keeper of the gate asks what he should report.",
+          "mode": "escort",
+          "choices": [
+            {
+              "id": "record_approach",
+              "label": "Report that an approach has been delivered",
+              "line": "You report the delivery and leave the response open. The gatekeeper enters a completed journey, while the political meaning remains for those who must answer it.",
+              "effects": {
+                "approach_delivered": true
+              }
+            },
+            {
+              "id": "record_conditions",
+              "label": "Report the conditions repeated at handoff",
+              "line": "You report which conditions were repeated and which promises were withheld. The gatekeeper records an exchange whose limits may matter as much as its offer.",
+              "effects": {
+                "conditions_recorded": true
+              }
+            }
+          ],
+          "requires_flags": [
+            "escort_following"
+          ]
+        }
+      ],
+      "endings": [
+        {
+          "requires_flags": [
+            "obligations_noted",
+            "delivery_receipt",
+            "approach_delivered"
+          ],
+          "text": "The agent leaves with a packet, an acknowledged delivery and a record of existing obligations. The approach remains open; the people who occupy the fort have not disappeared into the language of an offer."
+        },
+        {
+          "requires_flags": [
+            "return_route",
+            "conditions_recorded"
+          ],
+          "text": "The courier has a route for a reply and a clear account of the conditions. A guarded opening has been made, with neither protection nor possession awarded by your handoff."
+        },
+        {
+          "requires_flags": [],
+          "text": "The diplomatic packet crosses the outer entrance. Your record distinguishes the journey you completed from the agreement its sender hopes may follow."
+        }
+      ],
+      "palette": {
+        "ground": "#8d836c",
+        "sky": "#c0b99f"
+      }
+    },
+    {
+      "id": "litter",
+      "title": "Behind the Lowered Curtain",
+      "period": "1820–1821; departure from a watched camp",
+      "role": "Fictional adult retainer serving Sada Kaur",
+      "display_role": "Retainer serving Sada Kaur",
+      "location": "A compressed night camp and outer entrance",
+      "source_ids": [
+        "griffin_1905",
+        "eos_sada",
+        "discover_sada",
+        "user_sada_court_brief"
+      ],
+      "source_pages": [
+        "Griffin: printed 165–166 / PDF 173–174",
+        "Encyclopaedia of Sikhism: Sada Kaur entry, covered-litter escape",
+        "Discover Sikhism: Sardarni Sada Kaur, paragraph beginning But instead of giving fresh jagirs"
+      ],
+      "source_kind": "source_attributed_escape_with_original_retainer_viewpoint",
+      "adaptation": "Griffin and the university entry preserve a covered-litter escape followed by detention. Discover Sikhism dates its account to 1820 and names Vasakha Singh as the informing retainer and Desa Singh as the pursuer. This 1820–1821 frame retains chronology variants. The player is a fictional additional retainer; dialogue, papers and movement choices are original. Detention is fixed. Local agency determines the treatment of bearers, the wording of a report and how the party reaches its last gate, never a successful alternate escape.",
+      "opening": "The curtain has been lowered before the lamps are put out. The bearers know they have been called for a journey nobody wishes to announce. Somewhere beyond the camp, a horse is being saddled. You serve the woman inside the litter, and your smallest instruction may decide who is blamed when the road closes.",
+      "stations": [
+        {
+          "id": "sada",
+          "label": "Sada Kaur",
+          "kind": "npc",
+          "position": [
+            -10,
+            0,
+            8
+          ]
+        },
+        {
+          "id": "covered_litter",
+          "label": "Covered litter and bearers",
+          "kind": "npc",
+          "position": [
+            10,
+            0,
+            8
+          ]
+        },
+        {
+          "id": "departure_bundle",
+          "label": "Travel papers and a small bundle",
+          "kind": "bundle",
+          "position": [
+            0,
+            0,
+            -2
+          ]
+        },
+        {
+          "id": "vasakha",
+          "label": "Vasakha Singh",
+          "kind": "npc",
+          "position": [
+            -10,
+            0,
+            -8
+          ]
+        },
+        {
+          "id": "outer_gate",
+          "label": "Outer camp entrance",
+          "kind": "gate",
+          "position": [
+            10,
+            0,
+            -14
+          ]
+        }
+      ],
+      "beats": [
+        {
+          "id": "litter_order",
+          "target": "sada",
+          "objective": "Receive Sada Kaur's instruction before the curtain is lowered.",
+          "line": "Sada Kaur: I have heard enough advice spoken over my possessions. Bring the bearers quietly. Whatever another man calls this journey tomorrow, tonight I intend to choose its first step.",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "promise_care",
+              "label": "Promise that the bearers will not be coerced",
+              "line": "You promise to explain the immediate journey to the bearers and let them name their concerns. She allows it, impatient with delay but unwilling to begin with a quarrel.",
+              "effects": {
+                "bearers_consulted": true
+              }
+            },
+            {
+              "id": "promise_discretion",
+              "label": "Promise a discreet departure without a false order",
+              "line": "You promise to keep the departure quiet without inventing a command in another person's name. She gives a short nod and asks you to be quick.",
+              "effects": {
+                "no_false_order": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "litter_papers",
+          "target": "departure_bundle",
+          "objective": "Choose what account of the departure to leave with the papers.",
+          "line": "A travel wrapper lies open beside the bundle. It can carry the household's request as spoken, or a brief account of who received the instruction.",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "record_request",
+              "label": "Leave the household's request in writing",
+              "line": "You leave a plain account that the household requested a journey. The paper gives no false promise of permission and places no order in the bearers' mouths.",
+              "effects": {
+                "request_recorded": true
+              }
+            },
+            {
+              "id": "name_your_role",
+              "label": "Record your own responsibility for the preparations",
+              "line": "You put your own role in the preparations on the sheet. If someone later searches for a convenient culprit, the bearers need not stand alone.",
+              "effects": {
+                "responsibility_named": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "litter_retainer",
+          "target": "vasakha",
+          "objective": "Confront Vasakha Singh before returning to the bearers.",
+          "line": "Vasakha Singh: Every road out of this camp returns to someone's account of it. I have sent my word. If yours differs, make certain you can defend it when the riders arrive.",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "challenge_report",
+              "label": "Ask him to distinguish departure from armed defiance",
+              "line": "You ask that his account distinguish a departure from an armed challenge. He gives no promise to stop the riders, but hears the difference you insist upon.",
+              "effects": {
+                "departure_not_revolt": true
+              }
+            },
+            {
+              "id": "protect_bearers",
+              "label": "Ask him to name the bearers as hired workers",
+              "line": "You ask him to make clear that the bearers carry a passenger rather than command a faction. He agrees to mention their position in his account.",
+              "effects": {
+                "bearers_identified": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "litter_lift",
+          "target": "covered_litter",
+          "objective": "Gather the bearers and begin the short approach to the gate.",
+          "line": "Bearer: Once we lift, we cannot set her down at every shout. Tell us whether to stop at the first guard, or keep together until the entrance.",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "stop_together",
+              "label": "Keep everyone together and stop for a clear challenge",
+              "line": "You ask the bearers to stay together and stop if a guard gives a clear challenge. They lift carefully and follow your pace toward the entrance.",
+              "effects": {
+                "orderly_stop": true,
+                "escort_following": true
+              }
+            },
+            {
+              "id": "reach_gate",
+              "label": "Keep the litter together until the entrance",
+              "line": "You ask them to keep the party together through the open court. They lift and follow, knowing that a scattered group would be easier to accuse.",
+              "effects": {
+                "party_together": true,
+                "escort_following": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "litter_last_gate",
+          "target": "outer_gate",
+          "objective": "Escort the covered litter to the outer camp entrance.",
+          "line": "The entrance closes before the party can pass. Riders have brought an order to return. Behind the curtain there is a long silence, and the bearers wait for your voice.",
+          "mode": "escort",
+          "choices": [
+            {
+              "id": "accept_recorded_return",
+              "label": "Acknowledge the order and demand a recorded return",
+              "line": "You acknowledge the order and ask the guard to record who returns under it. The bearers lower their burden carefully while you remain beside the litter.",
+              "effects": {
+                "recorded_return": true
+              }
+            },
+            {
+              "id": "protest_with_names",
+              "label": "State a protest and name everyone placed in custody",
+              "line": "You state the household's protest, then name the people being taken back. The gate stays closed, but the return begins with an account that includes its witnesses.",
+              "effects": {
+                "protest_recorded": true
+              }
+            }
+          ],
+          "requires_flags": [
+            "escort_following"
+          ]
+        }
+      ],
+      "endings": [
+        {
+          "requires_flags": [
+            "bearers_identified",
+            "recorded_return"
+          ],
+          "text": "The party is detained. Your account separates the hired bearers from the political dispute and records the return, preserving a small measure of protection when you cannot reopen the road."
+        },
+        {
+          "requires_flags": [
+            "responsibility_named",
+            "protest_recorded"
+          ],
+          "text": "The gate remains closed and the detention proceeds. You have put your own responsibility beside a named protest, so the last part of this journey cannot be told entirely without its attendants."
+        },
+        {
+          "requires_flags": [],
+          "text": "Sada Kaur is taken back into detention. Your choices shape the report and the treatment of the people beside her; the closed road remains part of the recollection's fixed ending."
+        }
+      ],
+      "palette": {
+        "ground": "#332c34",
+        "sky": "#111c2c"
+      }
+    },
+    {
+      "id": "sodhra",
+      "title": "When the Camp Falls Quiet",
+      "period": "1792; the camp at Sodhra",
+      "role": "Fictional young runner serving a veteran of Maha Singh's household",
+      "location": "A compressed Sodhra camp and evacuation gate",
+      "source_pages": [
+        157,
+        158
+      ],
+      "source_ids": [
+        "father_griffin_1905",
+        "father_memorial_1939",
+        "father_maha_eos",
+        "father_mana_jatchiefs",
+        "father_user_dramatic_brief"
+      ],
+      "source_kind": "retrospective_history_with_declared_dramatic_handover",
+      "adaptation": "This scene selects Griffin's 1792 illness and withdrawal, not the Memorial's 1790 child-victory outcome. The father's private words, delegated tasks, veteran, young runner, evacuation staging and choices are original drama. Authority passes through a small order to care for the camp; this is not evidence for a documented bedside investiture. Maha's death after his return remains fixed. Mana Singh is a research lead, not the identity assigned to the fictional veteran.",
+      "chronology_variant_group": "sodhra_father_endpoint",
+      "opening": "A moment ago, men shouted over one another to be heard by the chief. Now every voice has dropped. Maha Singh sits beneath the shelter, trying to hide the shaking in his hands. His son waits outside. The veteran who sent you for water has served this household longer than you have been alive; for the first time, he does not know what to tell the boy.",
+      "stations": [
+        {
+          "id": "father",
+          "label": "Maha Singh",
+          "kind": "npc",
+          "position": [
+            -10,
+            0,
+            8
+          ]
+        },
+        {
+          "id": "veteran",
+          "label": "Household veteran",
+          "kind": "npc",
+          "position": [
+            10,
+            0,
+            8
+          ]
+        },
+        {
+          "id": "gate",
+          "label": "Evacuation gate",
+          "kind": "gate",
+          "position": [
+            10,
+            0,
+            -14
+          ]
+        },
+        {
+          "id": "son",
+          "label": "Young Ranjit",
+          "kind": "npc",
+          "position": [
+            -10,
+            0,
+            -8
+          ]
+        },
+        {
+          "id": "supplies",
+          "label": "Water and travel cloths",
+          "kind": "bundle",
+          "position": [
+            0,
+            0,
+            -2
+          ]
+        }
+      ],
+      "beats": [
+        {
+          "id": "sodhra_father",
+          "target": "father",
+          "objective": "Receive the father's order before the camp moves.",
+          "line": "Maha steadies the cup against his knee. \"My son thinks I cannot hear him outside. Tell him I heard every question. Then tell him this: nobody leaves the camp forgotten. He can begin with that.\"",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "carry_exact_words",
+              "label": "Carry his exact words",
+              "line": "You repeat the order back. Maha closes his eyes, then opens them when you reach the last sentence. \"Yes. That one matters.\"",
+              "effects": {
+                "father_words_kept": true
+              }
+            },
+            {
+              "id": "ask_for_veteran",
+              "label": "Ask who will stand beside his son",
+              "line": "\"The men who stood beside me,\" Maha says. \"A boy may need an answer twice. Let them have the patience to give it.\" You ask the veteran to hear this himself.",
+              "effects": {
+                "veteran_charge": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "sodhra_veteran",
+          "target": "veteran",
+          "objective": "Bring the veteran into the evacuation work.",
+          "line": "The veteran rolls his sleeve and takes the cord for the waiting bearers. \"I have followed his orders through worse noise than this. It is the quiet I cannot bear. Come. His boy must see us doing something useful.\"",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "share_fear",
+              "label": "Admit that you are frightened",
+              "line": "\"Good,\" he says softly. \"Then we shall count twice.\" He asks you to walk beside him while he checks the passage.",
+              "effects": {
+                "shared_fear": true,
+                "escort_following": true
+              }
+            },
+            {
+              "id": "ask_old_memory",
+              "label": "Ask how Maha first trusted him",
+              "line": "He smiles without looking up. \"With a task too small to boast about, and too necessary to neglect. Much like yours.\" He takes his place beside you.",
+              "effects": {
+                "veteran_memory": true,
+                "escort_following": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "sodhra_passage",
+          "target": "gate",
+          "objective": "Escort the veteran to the evacuation gate.",
+          "line": "The opening is crowded with people waiting for instructions. The veteran raises an empty hand. \"Make room. We are bringing our chief home. The rest of you are coming home with him.\"",
+          "mode": "escort",
+          "choices": [
+            {
+              "id": "count_dependents",
+              "label": "Count attendants and dependents",
+              "line": "You call for the people behind the bundles to answer by name. A cook returns for a helper who has been waiting for someone to notice him.",
+              "effects": {
+                "dependents_counted": true
+              }
+            },
+            {
+              "id": "assign_gate_witness",
+              "label": "Leave a witness at the gate",
+              "line": "You ask a trusted attendant to remain until each departing group has been heard from. The veteran makes the same promise aloud: nobody shuts this gate early.",
+              "effects": {
+                "gate_witness": true
+              }
+            }
+          ],
+          "requires_flags": [
+            "escort_following"
+          ]
+        },
+        {
+          "id": "sodhra_supplies",
+          "target": "supplies",
+          "objective": "Prepare what the returning party needs.",
+          "line": "A clean cloth lies beside the last covered water jar. The keeper looks toward the shelter. \"For him, or for the bearers? Say it plainly. I cannot fill an empty jar with respect.\"",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "divide_water",
+              "label": "Divide the water between chief and bearers",
+              "line": "You fill the chief's cup, then portion the remainder for the people carrying him. The keeper ties a cloth around the jar so another hand can find it quickly.",
+              "effects": {
+                "shared_water": true
+              }
+            },
+            {
+              "id": "seek_household_reserve",
+              "label": "Request the household's reserved jar",
+              "line": "You ask the keeper to open the household reserve and take responsibility for the request. He sends an attendant for it; the chief's portion can now remain beside him.",
+              "effects": {
+                "reserve_requested": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "sodhra_son",
+          "target": "son",
+          "objective": "Give Ranjit his father's message.",
+          "line": "The boy has been watching the gate. \"Everyone tells me what my father ordered,\" he says. \"Did he ask for me?\" Beyond the shelter, the veteran waits for your answer.",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "give_private_message",
+              "label": "Tell him his father heard him",
+              "line": "You give the private words before the camp order. His face changes at the first sentence. \"Then I will ask him again when we reach home.\" He turns to help count the departing groups.",
+              "effects": {
+                "father_son_message": true
+              }
+            },
+            {
+              "id": "invite_shared_burden",
+              "label": "Ask him to check the camp with the veteran",
+              "line": "You give the order and bring the veteran forward. \"Your father trusted me with many things,\" the older man tells him. \"Today he has trusted us with the same thing.\"",
+              "effects": {
+                "shared_command": true
+              }
+            }
+          ]
+        }
+      ],
+      "endings": [
+        {
+          "requires_flags": [
+            "father_son_message",
+            "dependents_counted"
+          ],
+          "text": "The boy carries his father's words into the thinning camp. The attendants answer one by one, and the departure begins with their names accounted for. You have changed how this household leaves Sodhra, not the father's approaching death."
+        },
+        {
+          "requires_flags": [
+            "shared_command",
+            "veteran_charge"
+          ],
+          "text": "The veteran stands beside the young heir while the gate clears. Their first shared duty is small enough to finish: bring the waiting people through. The authority being inherited already has faces attached to it."
+        },
+        {
+          "requires_flags": [],
+          "text": "The camp empties toward Gujranwala. The boy watches the bearers carry his father home, with the veteran walking beside them. Maha Singh will not return to this field; the people leaving it have begun to look toward his son."
+        }
+      ],
+      "palette": {
+        "ground": "#8a7961",
+        "sky": "#b9aca0"
+      },
+      "display_role": "Young camp runner"
+    },
+    {
+      "id": "settlement",
+      "title": "Names at the Gate",
+      "period": "Late 1790s; after the Ramnagar conflict",
+      "role": "Fictional young retainer assisting a household veteran",
+      "location": "A compressed reception courtyard outside Rasulnagar/Ramnagar",
+      "source_pages": [],
+      "source_ids": [
+        "frontier_jan_eos",
+        "frontier_district_portal",
+        "father_user_dramatic_brief"
+      ],
+      "source_kind": "secondary_reference_with_original_local_negotiation",
+      "adaptation": "The entry takes the reported estates and military employment offered to Jan Muhammad's sons as its historical anchor. The unnamed family representative, veteran, clerk, guarantees, supplies, dialogue and local outcomes are original. These people speak for particular households, never every Chattha family. The sequence follows the conflict without replaying its killing; jobs and provision do not erase bereavement. The late-1790s period is separate from the 1792 opening.",
+      "chronology_variant_group": "chattha_settlement_year",
+      "opening": "The courtyard gate is open, but the visitors have stopped outside it. A clerk waits with the terms of a grant and an offer of service. The eldest visitor keeps looking at the covered bundles brought from his household. You have been sent to bring him in. The veteran beside you knows that an open gate and a promise of safety are not yet the same thing.",
+      "stations": [
+        {
+          "id": "veteran",
+          "label": "Household veteran",
+          "kind": "npc",
+          "position": [
+            -10,
+            0,
+            8
+          ]
+        },
+        {
+          "id": "representative",
+          "label": "Family representative",
+          "kind": "npc",
+          "position": [
+            10,
+            0,
+            8
+          ]
+        },
+        {
+          "id": "gate",
+          "label": "Reception gate",
+          "kind": "gate",
+          "position": [
+            10,
+            0,
+            -14
+          ]
+        },
+        {
+          "id": "clerk",
+          "label": "Grant clerk",
+          "kind": "npc",
+          "position": [
+            -10,
+            0,
+            -8
+          ]
+        },
+        {
+          "id": "bundles",
+          "label": "Household provisions",
+          "kind": "bundle",
+          "position": [
+            0,
+            0,
+            -2
+          ]
+        }
+      ],
+      "beats": [
+        {
+          "id": "settlement_charge",
+          "target": "veteran",
+          "objective": "Learn what you may promise the waiting family.",
+          "line": "\"Bring them to hear the terms,\" the veteran says. \"Do not promise their grief will end when the clerk closes his book. And if you give your word about this gate, stay here to keep it.\"",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "ask_guarantee_limits",
+              "label": "Establish who can guarantee passage",
+              "line": "You ask whose word the gatekeepers will obey. The veteran names himself and agrees to stand where the visitors can see him.",
+              "effects": {
+                "named_guarantor": true
+              }
+            },
+            {
+              "id": "ask_family_needs",
+              "label": "Ask what the household needs first",
+              "line": "The veteran points toward the bundles. \"Ask them. We have already done enough deciding what they ought to want.\"",
+              "effects": {
+                "needs_first": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "settlement_receive",
+          "target": "representative",
+          "objective": "Hear the representative before entering together.",
+          "line": "\"They have written our names beside an estate and a place in service,\" the visitor says. \"Have they written the names of those who must eat while we consider it? My family has come for an answer, not a celebration.\"",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "hear_dependents",
+              "label": "Hear the dependents' needs first",
+              "line": "You ask him to name who remains at home and what cannot wait. He gives you a short list, then agrees to walk beside you to the clerk.",
+              "effects": {
+                "dependents_heard": true,
+                "escort_following": true
+              }
+            },
+            {
+              "id": "hear_service_terms",
+              "label": "Hear his questions about service first",
+              "line": "You ask what must be made clear before anyone accepts service. \"Who calls us, and who hears us if the promise is broken.\" He follows you toward the entrance.",
+              "effects": {
+                "service_questions": true,
+                "escort_following": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "settlement_gate",
+          "target": "gate",
+          "objective": "Escort the representative through the reception gate.",
+          "line": "A gatekeeper asks the visitor to wait while the household is announced. He stops at once. \"A moment ago you asked me to trust the road. Now I must trust the doorway too?\"",
+          "mode": "escort",
+          "choices": [
+            {
+              "id": "call_named_guarantor",
+              "label": "Call the veteran forward as guarantor",
+              "line": "You call the veteran by his role and ask him to repeat the passage promise before both parties. The gatekeeper steps aside only after hearing it.",
+              "effects": {
+                "public_passage": true
+              }
+            },
+            {
+              "id": "remain_together",
+              "label": "Remain beside the visitor while waiting",
+              "line": "You stay at his side and send the announcement ahead. When permission returns, you both pass through the same opening, at the same pace.",
+              "effects": {
+                "shared_wait": true
+              }
+            }
+          ],
+          "requires_flags": [
+            "escort_following"
+          ]
+        },
+        {
+          "id": "settlement_terms",
+          "target": "clerk",
+          "objective": "Ask the clerk to state what provision and service require.",
+          "line": "The clerk reads the proposed grant and employment aloud. The visitor listens without sitting. \"An estate has boundaries. An obligation should have them too. Tell me where each ends.\"",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "separate_obligations",
+              "label": "Read provision and service separately",
+              "line": "You ask the clerk to distinguish the family's maintenance from the duties expected in service. He repeats each part, leaving room for questions before assent.",
+              "effects": {
+                "terms_separated": true
+              }
+            },
+            {
+              "id": "name_local_witnesses",
+              "label": "Name witnesses who can be found again",
+              "line": "You ask both sides to choose witnesses who live within reach. Their names are repeated aloud; the promise will have people attached to it after the officials depart.",
+              "effects": {
+                "local_witnesses": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "settlement_provision",
+          "target": "bundles",
+          "objective": "Settle one immediate need before the household leaves.",
+          "line": "Outside, a dependant lifts a light grain sack and says nothing. The representative finally puts down the document. \"If I return with fine words and this, they will know which one can be cooked.\"",
+          "mode": "interact",
+          "choices": [
+            {
+              "id": "issue_provisions",
+              "label": "Ask for grain to be issued now",
+              "line": "You bring the keeper and representative together to count an immediate provision. The family takes away something useful while the larger arrangement is still being understood.",
+              "effects": {
+                "provision_delivered": true
+              }
+            },
+            {
+              "id": "secure_return_visit",
+              "label": "Arrange a witnessed return to the household",
+              "line": "You ask the veteran to visit with the representative and hear the household's remaining claims. A time and meeting place are agreed in front of the local witnesses.",
+              "effects": {
+                "return_visit": true
+              }
+            }
+          ]
+        }
+      ],
+      "endings": [
+        {
+          "requires_flags": [
+            "terms_separated",
+            "provision_delivered"
+          ],
+          "text": "The family leaves with the grant explained and an immediate provision counted. Service may follow; neither a signature nor a sack of grain makes the losses disappear. This household has reasons to test the new arrangement before trusting it."
+        },
+        {
+          "requires_flags": [
+            "local_witnesses",
+            "return_visit"
+          ],
+          "text": "The agreement travels out of the courtyard with named witnesses and a promised visit. You have made this household's claim harder to lose in a clerk's papers. Whether the promise survives will be learned at the next meeting."
+        },
+        {
+          "requires_flags": [],
+          "text": "The visitors have crossed the gate and heard the offer. A grant and a place in service begin a particular negotiation; they do not settle the loyalties of an entire clan. Your choices determine what this family can ask of the people who received them."
+        }
+      ],
+      "palette": {
+        "ground": "#977e5a",
+        "sky": "#c0b196"
+      },
+      "display_role": "Attendant at the settlement hearing"
     }
-  ]
+  ],
+  "additional_sources": {
+    "griffin_1905": {
+      "title": "Ranjit Singh and the Sikh Barrier Between Our Growing Empire and Central Asia",
+      "author": "Sir Lepel Griffin",
+      "year": 1905,
+      "file": "ranjitsinghsikh00grif.pdf"
+    },
+    "centenary_1939": {
+      "title": "Maharaja Ranjit Singh: First Death Centenary Memorial",
+      "editors": [
+        "Teja Singh",
+        "Ganda Singh"
+      ],
+      "year": 1939,
+      "file": "Maharaja.Ranjit.Singh.(GurmatVeechar.com).pdf"
+    },
+    "buxi_1992": {
+      "title": "Maharaja Ranjit Singh",
+      "author": "L. S. Buxi",
+      "translator": "Ajit Uniyal",
+      "year": 1992,
+      "file": "maharajaranjitsi00buxi.pdf"
+    },
+    "eos_sada": {
+      "title": "Sada Kaur Sardarni (1762–1832)",
+      "url": "https://eos.learnpunjabi.org/SADA%20KAUR%20SARDARNI%20(1762-1832)%20.html"
+    },
+    "discover_sada": {
+      "title": "Sardarni Sada Kaur",
+      "url": "https://www.discoversikhism.com/sikhs/sardarni_sada_kaur.html"
+    },
+    "user_sada_court_brief": {
+      "kind": "creative_direction_and_supplied_claims",
+      "scope": "Playable court intrigues, disputed accounts retained, cinematic treatment and local agency."
+    },
+    "father_griffin_1905": {
+      "id": "father_griffin_1905",
+      "title": "Ranjit Singh and the Sikh Barrier Between Our Growing Empire and Central Asia",
+      "author": "Lepel Griffin",
+      "edition": "Oxford, Clarendon Press, 1905; Fifth Thousand",
+      "kind": "retrospective_colonial_history",
+      "printed_pages": [
+        157,
+        158
+      ],
+      "pdf_pages": [
+        165,
+        166
+      ],
+      "file": "ranjitsinghsikh00grif.pdf"
+    },
+    "father_memorial_1939": {
+      "id": "father_memorial_1939",
+      "title": "Maharaja Ranjit Singh: First Death Centenary Memorial",
+      "editors": [
+        "Teja Singh",
+        "Ganda Singh"
+      ],
+      "publisher": "Khalsa College, Amritsar",
+      "year": 1939,
+      "kind": "retrospective_commemorative_essay_collection",
+      "printed_pages": [
+        15
+      ],
+      "pdf_pages": [
+        31
+      ],
+      "file": "Maharaja.Ranjit.Singh.(GurmatVeechar.com).pdf"
+    },
+    "father_maha_eos": {
+      "id": "father_maha_eos",
+      "title": "MAHAN SINGH (d. 1790)",
+      "url": "https://www.thesikhencyclopedia.com/mahan-singh-2/",
+      "kind": "online_secondary_reference"
+    },
+    "father_mana_jatchiefs": {
+      "id": "father_mana_jatchiefs",
+      "title": "Mana Singh Mann",
+      "url": "https://jatchiefs.com/mana-singh-mann/",
+      "kind": "modern_genealogical_web_summary"
+    },
+    "frontier_jan_eos": {
+      "id": "frontier_jan_eos",
+      "title": "JAN MUHAMMAD CHATTHA",
+      "url": "https://www.thesikhencyclopedia.com/jan-muhammad-chattha/",
+      "kind": "online_secondary_reference"
+    },
+    "frontier_district_portal": {
+      "id": "frontier_district_portal",
+      "title": "Establishment of the Sikh Monarchy",
+      "url": "https://gujranwala.punjab.gov.pk/sikh_monarchy",
+      "publisher": "District Gujranwala, Government of Punjab",
+      "kind": "official_web_historical_summary"
+    },
+    "father_user_dramatic_brief": {
+      "id": "father_user_dramatic_brief",
+      "title": "User father-and-frontier story brief",
+      "kind": "creative_direction_and_supplied_tradition"
+    }
+  }
 }

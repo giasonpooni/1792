@@ -82,9 +82,9 @@ func saddle_support_point() -> Vector3:
 
 func bridle_points_world() -> Array[Vector3]:
 	return _visual.bridle_points_world()
-func _avatar_collider(avatar: CharacterBody3D) -> CollisionShape3D:
+func _avatar_collider(avatar: CharacterBody3D, allow_disabled: bool = false) -> CollisionShape3D:
 	var collider: CollisionShape3D=avatar.get_node_or_null("CollisionShape3D")
-	if collider==null or collider.disabled or collider.shape==null: return null
+	if collider==null or (collider.disabled and not allow_disabled) or collider.shape==null: return null
 	if not avatar.global_transform.is_finite() or not collider.transform.is_finite(): return null
 	return collider
 
@@ -109,17 +109,26 @@ func clear_mount_path(avatar: CharacterBody3D) -> bool:
 	# miss a low wall that the avatar capsule cannot cross.
 	var collider:=_avatar_collider(avatar)
 	if collider==null or collision_mask==0: return false
-	var query:=_avatar_query(avatar,collider,avatar.global_transform)
+	var space:=get_world_3d().direct_space_state
+	var clear_start:Variant=_raised_clear_avatar(space,avatar,collider,avatar.global_transform)
 	var destination:=avatar.global_transform;destination.origin=global_position
+	var clear_destination:Variant=_raised_clear_avatar(space,avatar,collider,destination)
+	# Resting player and horse contacts can differ by a few millimetres. Use the
+	# same bounded support clearance as dismounting before sweeping the full hull.
+	if clear_start==null or clear_destination==null: return false
+	var query:=_avatar_query(avatar,collider,clear_start)
+	destination=clear_destination
 	query.motion=(destination*collider.transform).origin-query.transform.origin
-	var fraction:=get_world_3d().direct_space_state.cast_motion(query)
+	var fraction:=space.cast_motion(query)
 	return fraction.size()==2 and fraction[0]>=0.999
 
 func dismount_position(avatar: CharacterBody3D) -> Variant:
 	# Try both sides, then rear/front. Ray ground, then clear and sweep the same
 	# collision shape/local transform that resumes walking after dismount.
 	var space := get_world_3d().direct_space_state
-	var collider:=_avatar_collider(avatar)
+	# A seated scene may disable its walking shape. Admission still sweeps that
+	# configured shape before the scene reenables it at the accepted landing.
+	var collider:=_avatar_collider(avatar,true)
 	if collider==null or collision_mask==0: return null
 	var exclusions: Array[RID]=[get_rid(),avatar.get_rid()]
 	for offset in [global_basis.x * 1.8, -global_basis.x * 1.8, global_basis.z * 2.1, -global_basis.z * 2.1]:
