@@ -1,0 +1,30 @@
+{
+  "schema": "1792.gujranwala-depth-patina.v1",
+  "id": "gujranwala-depth-patina-v1",
+  "classification": "direct-craft presentation study",
+  "georeferenced": false,
+  "historical_truth_verified": false,
+  "gameplay_authority": false,
+  "components": {
+    "perimeter_parapet_segments": 20,
+    "pavilion_silhouette_studies": 4,
+    "selective_wall_patina_patches": 8,
+    "high_hanging_cloth": 4,
+    "distant_foliage_masses": 8,
+    "distant_opening_glows": 4
+  },
+  "composition": [
+    "wall-top rhythm should break the box silhouette without becoming a second fortification system",
+    "pavilion studies remain above or behind existing perimeter walls",
+    "patina is selective and asymmetrical rather than a uniform dirt overlay",
+    "high cloth introduces household softness without occupying walk height",
+    "distant foliage interrupts the hard skyline and provides depth",
+    "warm distant openings appear only in golden-hour/evening presentation presets"
+  ],
+  "invariants": [
+    "no collision, navigation, economy, journal, receipt, clock or save authority",
+    "all skyline structures remain visually peripheral to childhood routes",
+    "no religious building or named historical structure is asserted",
+    "patina and pavilion placement are authored visual grammar, not measured reconstruction"
+  ]
+}
