@@ -24,7 +24,7 @@ import uuid
 import zlib
 
 from check_gujranwala_beauty_capture import decode_png
-from godot451_json import differences, verify_native_save_bytes
+from godot451_json import differences, exact_raw_clock, verify_native_save_bytes
 
 ROOT = Path(__file__).resolve().parents[1]
 OPERATION = "1792.opening-household-inquiry.v1"
@@ -220,6 +220,9 @@ def task_check(folder: Path, manifest: dict, receipt: dict, choice: str) -> None
     for name, phase in zip(TASK_CAPTURES, expected_phases):
         record = task_records[name]
         state = states[name]
+        # These are live observations after native ticks, not cold save loads.
+        # Cold snapshots remain bound to their original bytes/parser below.
+        exact_raw_clock(state)
         require(semantic_equal(record.get("home_tick"), state["childhood"]["tick"])
                 and semantic_equal(record.get("progress"), state["childhood"])
                 and semantic_equal(record.get("economy"), state["misl"])
@@ -257,13 +260,12 @@ def task_check(folder: Path, manifest: dict, receipt: dict, choice: str) -> None
         else:
             require(ledger["workshop"]["phase"] == phase, "Missing physically earned commission phase: " + phase)
     saved, restored, progressed = (persistence[field] for field in ("saved_snapshot", "restored_snapshot", "progressed_snapshot"))
+    exact_raw_clock(progressed)
     for state in (saved, restored, progressed):
         snapshot_check(state, receipt, "complete", choice)
         require(semantic_equal(native_save_projection(state)["aftermath"], native_save_projection(inquiry)["aftermath"]),
                 "Fuel recovery changed its completed inquiry or retired guard")
     require(persistence["declared_saved_pose_restored"] is True and semantic_equal(saved, restored)
-            and persistence["saved_tick"] == saved["childhood"]["tick"]
-            and persistence["restored_tick"] == restored["childhood"]["tick"]
             and progressed["childhood"]["tick"] > saved["childhood"]["tick"]
             and saved["misl"]["ledger"]["workshop"]["phase"] == "fuel"
             and progressed["misl"]["ledger"]["workshop"]["phase"] == "working",
@@ -273,6 +275,7 @@ def task_check(folder: Path, manifest: dict, receipt: dict, choice: str) -> None
             and verify_native_save_bytes((folder / persistence["retained_file"]).read_bytes(), saved),
             "Household fuel save bytes or whole authority mismatch")
     final = manifest["final_snapshot"]
+    exact_raw_clock(final)
     for state in (*states.values(), saved, restored, progressed, final, manifest["final_manual_save"]["snapshot"]):
         economy = state["misl"]
         prior = economy["origin_tick"]
@@ -338,6 +341,14 @@ def task_check(folder: Path, manifest: dict, receipt: dict, choice: str) -> None
             "Settled commission fields disagree with native custody receipts")
     require(semantic_equal(manifest["final_manual_save"]["snapshot"]["misl"], final["misl"]),
             "Final manual save lost its settled household custody")
+    require(persistence["final_task_completed"] is True
+            and semantic_equal(persistence["final_snapshot"], final),
+            "Household final persistence disagrees with its whole authority")
+    for name, state in (("saved", saved), ("restored", restored),
+                        ("progressed", progressed), ("final", final)):
+        tick = persistence[name + "_tick"]
+        require(whole(tick) and semantic_equal(tick, state["childhood"]["tick"]),
+                "Household replay tick mirror disagrees with its whole authority: " + name)
 
 
 def check_manifest(folder: Path, checkpoint: Path, final_save: Path, choice: str = "household_escort", task: str = "none") -> dict:
@@ -447,6 +458,8 @@ def check_manifest(folder: Path, checkpoint: Path, final_save: Path, choice: str
             "earned_receipt_sha256": receipt["completion_sha256"],
             "native_midreturn_rollback_verified": True, "final_phase": "complete", "decision": choice,
             "household_task": task, "native_household_custody_rollback_verified": task == "smith-commission",
+            "native_task_observation_clocks_verified": task == "smith-commission",
+            "native_task_replay_tick_mirrors_verified": task == "smith-commission",
             "native_save_comparison": "exact original save bytes hashed; raw clock must equal integer-tick derivation; all original numeric lexemes reconstructed by pinned Godot4.5.1 parser; whole cold authority exact except declared binary32 escort poses"}
 
 
