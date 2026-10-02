@@ -303,7 +303,7 @@ func dismount_horse(landing: Vector3) -> String:
 		return "No clear dismount position."
 	var delta := landing - Riding.position(h)
 	var horizontal := Vector2(delta.x, delta.z).length()
-	if horizontal < 1.2 or horizontal > 2.8 or absf(delta.y) > 0.7:
+	if horizontal < 1.2 or horizontal > 2.8 or absf(delta.y) > Riding.MAX_DISMOUNT_VERTICAL:
 		return "Dismount position is too far from the horse."
 	h.rider_id = ""
 	h.speed = 0.0

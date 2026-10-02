@@ -51,12 +51,17 @@ hard-coded capsule. Dismounting requires a grounded, nearly stopped horse. The s
 both sides, then rear/front, requiring a ground ray, standable normal, standing-shape
 clearance and swept path. A knee-height or thin wall cannot be bypassed simply because an
 eye ray or the final landing is clear. The campaign additionally rejects nonfinite or
-distant landing proposals.
+distant landing proposals. On admitted slopes, the ground probe spans the vertical change
+possible across the declared exit offset and the actual actor shape may use only a bounded
+16 cm clearance lift. The opt-in campaign guardrail admits at most 2 m of vertical change;
+the scene still has to prove real support, clearance and a swept route.
 
 These are local single-player invariants, not a network anti-cheat boundary. The campaign
 cannot attest collision geometry by itself; the trusted scene adapter performs the probes.
 An empty result preserves mounted state and displays a reason. The scene is still the old,
-compressed, flat greybox. This does not establish uneven-terrain or streamed-world support.
+compressed, flat greybox. A separate native 30-degree fixture qualifies uphill movement,
+turning, braking, side and longitudinal dismounts, remounting and mounted-pose reload. It
+does not establish arbitrary uneven-terrain, discontinuous-ground or streamed-world support.
 
 ## Saves and compatibility
 
@@ -83,7 +88,7 @@ Run `python tools/run_checks.py --godot /path/to/godot` for all structural, impo
 house-reporting and riding checks. The riding suite exercises actual physics/input over a
 round trip, acceleration/braking, safe and blocked dismounts, mounting through walls,
 low-barrier and offset-hull clearance, collision stopping, airborne landing, mounted
-save/load, legacy imports and commission rules.
+save/load, a bounded 30-degree horse/rider slope fixture, legacy imports and commission rules.
 Original tests are retained unchanged; new tests do not weaken their assertions.
 
 `render_riding.gd` creates five controlled render fixtures. They are actual Godot images,
@@ -96,6 +101,7 @@ The reference engine is Godot 4.5.1, matching the existing project. API referenc
 - https://docs.godotengine.org/en/4.5/classes/class_physicsbody3d.html
 
 Next gaps: mouse/keyboard feel on Windows, small-window/controller input, proper horse/rider
-rigs, uneven ground, mounted companions and actual encounter combat. The bounded flat-world
-dismounted companion patrol and its physical return are covered by `COMPANIONS.md`. No historical biographies, clan relations or source claims are
+rigs, compound uneven ground, mounted companions and actual encounter combat. The bounded
+flat-world dismounted companion patrol and its physical return are covered by `COMPANIONS.md`.
+No historical biographies, clan relations or source claims are
 changed by this riding slice. Tahal Singh Chhachhi has not replaced the fictional captain.

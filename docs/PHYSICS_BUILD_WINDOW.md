@@ -152,3 +152,24 @@ fixtures, including turning, stopping and mount transitions on slopes. The prese
 scene remains a flat graybox, so this checkpoint makes no such claim. Human feel,
 production animation, moving supports and arbitrary world geometry also remain
 unqualified.
+
+The deliberate horse/rider pass first measured the committed motor on real sloped support.
+No motor-policy expansion was needed: a 30-degree uphill run, steered climb and braking
+sequence retained native floor support, stayed within the 6.5 m/s trot command budget and
+stopped within 0.721 m. The steered fixture changed both longitudinal and lateral position.
+
+Transition measurement did expose a separate defect. The flat-ground 4 cm landing offset
+left the real upright player capsule intersecting a 30-degree plane, while the fixed ground
+ray missed both longitudinal exits when side exits were blocked. The otherwise valid
+longitudinal landing also exceeded the campaign's old 0.7 m vertical guardrail. Dismounting
+now searches a declared 0–16 cm lift with the actual actor shape, sizes the ground ray from
+the exit offset and admitted floor angle, and bounds the opt-in authority at 2 m vertical
+change. It still requires a real standable hit, clear final hull and complete shape sweep.
+
+Native checks exercise the actual input-driven uphill/turn/stop path, open-side and
+blocked-side dismount selection, the F-key dismount/remount transition and mounted-pose
+reload on the 30-degree fixture. The production scene remains the inherited flat graybox;
+this is fixture qualification, not a global terrain feature. Next unresolved work is
+compound horse support across slope changes, convex crests, concave troughs and drop edges.
+Moving supports, human feel, production animation and arbitrary world geometry remain
+unqualified.

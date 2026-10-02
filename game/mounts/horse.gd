@@ -8,6 +8,7 @@ const TROT := 6.5
 const ACCELERATION := 4.5
 const BRAKING := 9.0
 const GRAVITY := 22.0
+const DISMOUNT_CLEARANCE_LIFTS := [0.0,0.02,0.04,0.06,0.08,0.12,0.16]
 var speed := 0.0
 var gait_speed_limit := Rules.MAX_SPEED # Optional supplied-condition cap; original default preserved.
 var _rider: Node3D
@@ -71,6 +72,15 @@ func _avatar_query(avatar: CharacterBody3D,collider: CollisionShape3D,body_trans
 	query.collision_mask=collision_mask;query.exclude=[get_rid(),avatar.get_rid()]
 	return query
 
+func _raised_clear_avatar(space: PhysicsDirectSpaceState3D,avatar: CharacterBody3D,collider: CollisionShape3D,body_transform: Transform3D) -> Variant:
+	# An upright capsule needs slightly more vertical clearance on a slope than
+	# on a flat plane. Search a small declared lift; never alter the real shape.
+	for lift in DISMOUNT_CLEARANCE_LIFTS:
+		var candidate:=body_transform;candidate.origin+=Vector3.UP*lift
+		if space.intersect_shape(_avatar_query(avatar,collider,candidate),1).is_empty():
+			return candidate
+	return null
+
 func clear_mount_path(avatar: CharacterBody3D) -> bool:
 	# Mounting removes the walking body only after admission. Sweep its actual
 	# configured shape and local transform to the horse; an eye-height ray could
@@ -92,21 +102,24 @@ func dismount_position(avatar: CharacterBody3D) -> Variant:
 	var exclusions: Array[RID]=[get_rid(),avatar.get_rid()]
 	for offset in [global_basis.x * 1.8, -global_basis.x * 1.8, global_basis.z * 2.1, -global_basis.z * 2.1]:
 		var p: Vector3 = global_position + offset
-		var ray := PhysicsRayQueryParameters3D.create(p + Vector3.UP * 0.65, p - Vector3.UP * 0.8, 1, exclusions)
+		# Cover the full vertical change possible across this horizontal offset at
+		# the horse's admitted floor angle. The old fixed ray missed both the
+		# uphill and downhill exits on a 30-degree support.
+		var reach:=maxf(0.8,offset.length()*tan(floor_max_angle)+0.2)
+		var ray:=PhysicsRayQueryParameters3D.create(p+Vector3.UP*reach,p-Vector3.UP*reach,collision_mask,exclusions)
 		var hit := space.intersect_ray(ray)
 		if hit.is_empty() or hit.normal.y < cos(deg_to_rad(40.0)):
 			continue
-		var landing: Vector3 = hit.position + Vector3.UP * 0.04
-		var destination:=avatar.global_transform;destination.origin=landing
-		var query:=_avatar_query(avatar,collider,destination)
-		if not space.intersect_shape(query, 1).is_empty():
-			continue
-		var target_origin: Vector3=query.transform.origin
-		query.transform=avatar.global_transform*collider.transform
+		var destination:=avatar.global_transform;destination.origin=hit.position+Vector3.UP*0.04
+		var clear_destination:Variant=_raised_clear_avatar(space,avatar,collider,destination)
+		var clear_start:Variant=_raised_clear_avatar(space,avatar,collider,avatar.global_transform)
+		if clear_destination==null or clear_start==null: continue
+		var query:=_avatar_query(avatar,collider,clear_start)
+		var target_origin: Vector3=(clear_destination*collider.transform).origin
 		query.motion=target_origin-query.transform.origin
 		var fraction := space.cast_motion(query)
 		if fraction.size() == 2 and fraction[0] >= 0.999:
-			return landing
+			return clear_destination.origin
 	return null
 
 func record_fits_world(record: Dictionary, avatar: CharacterBody3D) -> bool:
