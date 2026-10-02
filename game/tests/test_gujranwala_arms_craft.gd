@@ -31,7 +31,8 @@ func run() -> void:
 	check(is_instance_valid(arms) and arms.get_meta("classification","")=="direct-craft-arms-display","arms-craft niche attached and explicitly presentation-only")
 	check(arms.display_roots.size()==1 and arms.longarms.size()==2,"single wall niche with paired long-arm studies")
 	check(arms.blades.size()==3,"bounded curved-blade / compact-sidearm study count")
-	check(arms.fittings.size()>=10 and arms.repair_cloth.size()>=2,"localized fitting/repair detail inventory present")
+	check(arms.shields.size()==1 and arms.carry_studies.size()==1,"one resting shield and one carry-belt study")
+	check(arms.fittings.size()>=17 and arms.repair_cloth.size()>=2,"localized fitting/repair/suspension detail inventory present")
 	check(arms.find_children("*","CollisionShape3D",true,false).is_empty() and arms.find_children("*","StaticBody3D",true,false).is_empty(),"arms-craft adds no collision/static physics")
 	check(arms.find_children("*","NavigationRegion3D",true,false).is_empty(),"arms-craft adds no navigation authority")
 
