@@ -1,0 +1,195 @@
+{
+  "schema": "1792.arms-craft-reference.v1",
+  "id": "user-arms-reference-20261002",
+  "binaries_embedded": false,
+  "redistribution": "not_performed",
+  "source_status": "user-supplied visual references; file hashes verified locally, object provenance/date not independently authenticated here",
+  "entries": [
+    {
+      "sha256": "0f42d44c3d7c64258d3b2c2db1305a0bad5f90b10b55f3fe69e2bded8cd1a509",
+      "tier": "C",
+      "motif": "paired long decorated firearms",
+      "allowed": [
+        "dark metal/wood contrast",
+        "fine inlay density",
+        "paired display composition"
+      ],
+      "forbidden": [
+        "exact firearm model/date/provenance",
+        "functional lock reconstruction"
+      ],
+      "file": "0ad9c0c643898d90d653eb1cce86889f.jpg"
+    },
+    {
+      "sha256": "3e307497406e7f919b63625ad14f10250a460b40db9cb86fb8f9d85a7b27298c",
+      "tier": "C",
+      "motif": "paired decorated firearms with wrapped grips",
+      "allowed": [
+        "repair wrapping as material history",
+        "aged metal beside cloth",
+        "asymmetric wear"
+      ],
+      "forbidden": [
+        "exact weapon attribution",
+        "functional mechanism"
+      ],
+      "file": "968a322534770127bbdb731a83ddce90.jpg"
+    },
+    {
+      "sha256": "76e46d8ff66d3f0292ffaf86b73f516ff58cacb192f3b1a5643ac3a93be03d7d",
+      "tier": "D",
+      "motif": "mounted dual-firearm action photograph",
+      "allowed": [
+        "dynamic hand/weapon separation only",
+        "mounted silhouette contrast"
+      ],
+      "forbidden": [
+        "Punjab/Sikh historical inference",
+        "costume",
+        "weapon chronology",
+        "animation truth"
+      ],
+      "file": "0efb2ba8e11093deeb1d7f3661990668.jpg"
+    },
+    {
+      "sha256": "e36fefe6f4516eb2ddce9704276f7dc3cf5b8c11d42de08e82b906de7d81ebf4",
+      "tier": "C",
+      "motif": "crossed ornate pistols",
+      "allowed": [
+        "crossed display geometry",
+        "black/gold material contrast",
+        "focal medallion density"
+      ],
+      "forbidden": [
+        "literal object copy",
+        "provenance/date"
+      ],
+      "file": "640e591ec21593b0da6e3a2f1ba64b43.jpg"
+    },
+    {
+      "sha256": "665f54018fcd477ab890bbf0d91567d3ea490033965626754a064acf5803697d",
+      "tier": "C",
+      "motif": "bifurcated ceremonial blade",
+      "allowed": [
+        "forked silhouette as comparative weapon-shape reference only",
+        "dark steel/gold inscription contrast"
+      ],
+      "forbidden": [
+        "placing forked blade in 1792 without separate historical evidence",
+        "inscription copying"
+      ],
+      "file": "961c433a845f4989a5bfe4a621a66280.jpg"
+    },
+    {
+      "sha256": "2d5a195ab0aeac2d7c0dfd516e7146a76b361a520fe82ffba8d431402f5d00f4",
+      "tier": "C",
+      "motif": "framed dagger group",
+      "allowed": [
+        "paired/grouped display",
+        "pale grip vs jeweled mount contrast",
+        "scabbard ornament density"
+      ],
+      "forbidden": [
+        "exact dagger provenance",
+        "gem/material identification"
+      ],
+      "file": "98f03117ba1636a4a8d7222abaf8657f.jpg"
+    },
+    {
+      "sha256": "9c9fa28612408c7e5dadb485a11cea9111720494a92c7a605dc099e004a77002",
+      "tier": "C",
+      "motif": "paired pale-grip daggers",
+      "allowed": [
+        "pale curved grip silhouette",
+        "small floral mount accents",
+        "paired symmetry"
+      ],
+      "forbidden": [
+        "ivory/jade identification without source record",
+        "exact regional attribution"
+      ],
+      "file": "78d72c458a2b249e592aa08d28e967b3.jpg"
+    },
+    {
+      "sha256": "97519cc3329016d0ba4ca50d88c12efc6fc9834e9f51b16dbaaf72353ce878f4",
+      "tier": "C",
+      "motif": "dark-handled dagger",
+      "allowed": [
+        "dark grip/bright fitting hierarchy",
+        "blade texture questions"
+      ],
+      "forbidden": [
+        "Damascus/wootz claim without source record",
+        "exact blade geometry"
+      ],
+      "file": "768c58d26ae8d75209c746dc821bcee8.jpg"
+    },
+    {
+      "sha256": "036ed83348911af3697a380ceb75bf2c2170d666ed9392a5fab23f0f01b8f605",
+      "tier": "C",
+      "motif": "green/pale curved grip dagger",
+      "allowed": [
+        "colored stone-like grip contrast",
+        "gold-toned mount",
+        "compact sidearm silhouette"
+      ],
+      "forbidden": [
+        "jade identification",
+        "exact provenance/date"
+      ],
+      "file": "d85bbfd3dffb21b6f3a73e948bc96e77.jpg"
+    },
+    {
+      "sha256": "2399ea62f545a0f99cf855ead542a5c7d0d435658b576a85b3a967bfe2071fc4",
+      "tier": "C",
+      "motif": "curved sword with dark scabbard",
+      "allowed": [
+        "long curved silhouette",
+        "dark scabbard with bright mounts",
+        "suspension-ring spacing"
+      ],
+      "forbidden": [
+        "exact ownership/date",
+        "inscription inference"
+      ],
+      "file": "f4f9c58bbb4de0fa7e94f0095be218a5(1).jpg"
+    },
+    {
+      "sha256": "a3ca1341128c1928ab0323bfa717fe36635050513aba09b08686e24489cb024f",
+      "tier": "C",
+      "motif": "highly ornamented dagger/scabbard",
+      "allowed": [
+        "dense jeweled mount as prestige contrast",
+        "dark scabbard field",
+        "localized ornament concentration"
+      ],
+      "forbidden": [
+        "gem identification",
+        "literal copy",
+        "ownership claim"
+      ],
+      "file": "d48fa22bdfc69d2d5285e6258fdd9f33(1).jpg"
+    },
+    {
+      "sha256": "ad7491f56bb1d20ebb3136088693a734a9eb3dce529b800f8560b73c9d2a5f6a",
+      "tier": "C",
+      "motif": "decorated blade/fittings reference",
+      "allowed": [
+        "metal finish hierarchy",
+        "ornament concentrated at hilt/scabbard terminals"
+      ],
+      "forbidden": [
+        "exact attribution",
+        "functional reconstruction"
+      ],
+      "file": "dec5a197fc472192c1bc1b6dc64bb920(1).jpg"
+    }
+  ],
+  "direction": [
+    "ordinary household arms should remain materially plainer than prestige pieces",
+    "ornament concentrates at grips, guards, scabbard mounts and focal bands rather than coating every surface",
+    "repair wrapping and replaced fittings are desirable evidence of use",
+    "dark steel/wood fields make small warm-metal accents legible at gameplay distance",
+    "this batch informs presentation and material contrast only; it does not authenticate weapon types for 1792"
+  ]
+}
