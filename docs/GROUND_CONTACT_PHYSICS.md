@@ -54,6 +54,13 @@ Zero input, full reversal and a perpendicular turn release retained stair contac
 in one physics tick. The shared acceleration still governs stopping and direction
 change; contact release does not add an impulse or autonomous horizontal travel.
 
+The side turn-terrace station qualifies 0°, ±30° and ±45° entries against
+a broad 18 cm tread. Its authored route then turns 90 degrees onto a perpendicular
+12 cm rise and returns down the same edge. The rise stays supported; the descent is
+a short native-gravity transition. A separate 30-degree diagonal approach confirms
+that the complete capsule still refuses an otherwise walkable tread under a low
+ceiling. These are bounded graybox collision fixtures, not global traversal promises.
+
 ## State and measurement
 
 The retained motion snapshot stores the motor's integration state. Its velocity
@@ -94,8 +101,9 @@ pause and save/replay, and challenges height, ceiling, edge and geometry changes
 The dedicated workflow retains executed traces, a paused plateau snapshot, exact
 source commit/tree and source archive, runtime archive checksum, native logs and
 separate rendering evidence. The renderer restores the already executed snapshot
-through the same course authority, freezes motion and verifies that drawing leaves
-its decoded state and original evidence bytes unchanged.
+through the same course authority, validates the spatial-control summary against its
+declared angle, support, descent, travel and clearance bounds, freezes motion and
+verifies that drawing leaves its decoded state and original evidence bytes unchanged.
 
 The source-bound screenshot represents that retained point in the executed route;
 it is not an additional movement execution or a claim of human playtesting.

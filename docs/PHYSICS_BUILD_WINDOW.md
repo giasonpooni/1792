@@ -117,3 +117,18 @@ contact, rise bound and commanded travel budget. Inputs arbitrarily close to the
 remains unqualified. Horse changes
 still require a concrete, isolated integration with the current horsecraft source;
 the concurrent family/horsecraft checkout remains untouched.
+
+The following spatial-control pass measured broad 18 cm tread entries at 0, ±30
+and ±45 degrees, a 90-degree turn onto a perpendicular 12 cm terrace and the return
+step-down. No runtime-policy defect was observed: entries stayed supported without
+reversed progress, the rise remained supported, and the descent used a short real
+gravity transition. A 30-degree low-ceiling approach refused the rise with the full
+capsule clear. These cases now have a playable side station, native checks and a
+separate `spatial_control` record in the retained evidence JSON. Exact counts and
+hosted status belong to the published-head checkpoint after execution, not this
+pre-execution source note.
+
+Next unresolved work: measure longitudinal-to-lateral direction changes on sloped
+support and evaluate actor-specific mount/dismount clearance against a clean,
+concrete horsecraft source. Do not copy the concurrent dirty family/horsecraft work
+into this branch. Human feel and production animation remain unqualified.

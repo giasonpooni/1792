@@ -9,6 +9,7 @@ var isolated_slot := "user://test-ground-contact-isolated-%d.json" % OS.get_proc
 var passed := 0
 var failed := 0
 var summary: Dictionary = {}
+var spatial_summary: Dictionary = {}
 var journey_trace: Array = []
 var retained_snapshot: Dictionary = {}
 
@@ -63,6 +64,10 @@ func observed_motion(actor: CharacterBody3D) -> Dictionary:
 		"camera": M.array(actor.pivot.rotation),"mode": actor.motion_mode_name,"event": actor.last_ground_event,
 		"rise": actor.last_ground_rise,"displacement": M.array(actor.last_ground_displacement),"contact": contact,
 		"capture": actor.capture_motion()}
+
+func manual_tick(actor: CharacterBody3D,stick: Vector2) -> String:
+	await physics_frame
+	return actor.step_motion(1.0/60.0,stick,false)
 
 func physical_contact_modes(samples: Array, actor: CharacterBody3D) -> bool:
 	# Upward corner transfer is explicit bounded contact. Descending stair nosings
@@ -157,7 +162,8 @@ func played_journey() -> void:
 		if f != null:
 			f.store_string(JSON.stringify({"schema": "ground-contact-evidence.v1","source_commit": commit,"source_tree": tree,
 				"source_digest": course.source_digest(),"geometry_digest": course.geometry_digest(),"motor_digest": course.motor_digest(),
-				"physics_hz": Engine.physics_ticks_per_second,"journey": {"trace": journey_trace,"summary": summary},"snapshot": retained_snapshot},"\t",true,true))
+				"physics_hz": Engine.physics_ticks_per_second,"journey": {"trace": journey_trace,"summary": summary},
+				"spatial_control": spatial_summary,"snapshot": retained_snapshot},"\t",true,true))
 			f.flush(); check(f.get_error() == OK,"executed journey and paused plateau snapshot retained"); f.close()
 	await dispose(course)
 
@@ -221,6 +227,99 @@ func fine_control_fixtures() -> void:
 		else: check(actor.global_position.x > before.x+0.2,"turn input exits laterally from the stair")
 		check(actor.is_on_floor() and no_overlap(course),kind+" result ends supported and capsule-clear")
 		await dispose(course)
+
+func spatial_control_fixtures() -> void:
+	var oblique_results: Array = []
+	for angle in [-45.0,-30.0,0.0,30.0,45.0]:
+		var course = await new_course(); var actor: CharacterBody3D = course.avatar
+		collision_box(course,"oblique_floor",Vector3(20,-0.2,3),Vector3(14,0.4,8))
+		collision_box(course,"oblique_step",Vector3(20,0.09,-2),Vector3(14,0.18,2))
+		await fixture(course,Vector3(20,0.04,2.5))
+		course.set_physics_process(false); actor.set_physics_process(false); actor.input_enabled = true
+		var stick := Vector2(sin(deg_to_rad(angle)),-cos(deg_to_rad(angle)))*0.6
+		var errors: Array = []; var ticks := 0; var air := 0; var contact_run := 0; var maximum_contact := 0
+		var maximum_horizontal := 0.0; var reversed := false; var clearance := true
+		for _i in range(180):
+			var error := await manual_tick(actor,stick); ticks += 1
+			if not error.is_empty(): errors.append(error)
+			var horizontal := Vector2(actor.last_ground_displacement.x,actor.last_ground_displacement.z)
+			maximum_horizontal = maxf(maximum_horizontal,horizontal.length())
+			reversed = reversed or horizontal.dot(stick)<-0.0001
+			air += int(not actor.is_on_floor() and actor.motion_mode_name=="air")
+			if actor.ground_contact_active(): contact_run += 1; maximum_contact=maxi(maximum_contact,contact_run)
+			else: contact_run = 0
+			clearance = clearance and no_overlap(course)
+			if actor.global_position.z < -2: break
+		check(actor.global_position.z < -2 and absf(actor.global_position.y-0.18)<=0.012,"oblique "+str(angle)+" degree approach reaches real 18cm tread")
+		check(actor.is_on_floor() and clearance,"oblique "+str(angle)+" degree approach remains supported and capsule-clear")
+		check(errors.is_empty() and air==0,"oblique "+str(angle)+" degree approach has no motor refusal or fall cycle")
+		check(not reversed,"oblique "+str(angle)+" degree approach never reverses commanded progress")
+		check(maximum_horizontal<=actor.walk_speed*0.6/60.0+0.002,"oblique "+str(angle)+" degree approach respects commanded travel budget")
+		check(maximum_contact<=60,"oblique "+str(angle)+" degree retained contact remains finite")
+		oblique_results.append({"degrees":angle,"ticks":ticks,"end":M.array(actor.global_position),"air_ticks":air,
+			"maximum_contact_ticks":maximum_contact,"maximum_horizontal_per_tick":maximum_horizontal})
+		await dispose(course)
+	# The authored side station performs a 90-degree turn from an 18cm tread onto
+	# a perpendicular 12cm rise, then returns down that edge under native gravity.
+	var course = await new_course(); var actor: CharacterBody3D = course.avatar
+	await fixture(course,Vector3(9,0.04,2.5))
+	course.set_physics_process(false); actor.set_physics_process(false); actor.input_enabled = true
+	var errors: Array = []; var maximum_horizontal := 0.0; var clearance := true; var step_events := 0
+	for _i in range(180):
+		var error := await manual_tick(actor,Vector2(0,-0.6))
+		if not error.is_empty(): errors.append(error)
+		maximum_horizontal=maxf(maximum_horizontal,Vector2(actor.last_ground_displacement.x,actor.last_ground_displacement.z).length())
+		clearance=clearance and no_overlap(course); step_events+=int(actor.last_ground_event=="step_up")
+		if actor.global_position.z < -2: break
+	var entry := actor.global_position; var turn_air := 0
+	for _i in range(180):
+		var error := await manual_tick(actor,Vector2(0.6,0))
+		if not error.is_empty(): errors.append(error)
+		maximum_horizontal=maxf(maximum_horizontal,Vector2(actor.last_ground_displacement.x,actor.last_ground_displacement.z).length())
+		clearance=clearance and no_overlap(course); step_events+=int(actor.last_ground_event=="step_up")
+		turn_air+=int(not actor.is_on_floor() and actor.motion_mode_name=="air")
+		if actor.global_position.x > 12.5: break
+	var high := actor.global_position; var down_air := 0; var down_run := 0; var maximum_down_run := 0
+	for _i in range(180):
+		var error := await manual_tick(actor,Vector2(-0.6,0))
+		if not error.is_empty(): errors.append(error)
+		maximum_horizontal=maxf(maximum_horizontal,Vector2(actor.last_ground_displacement.x,actor.last_ground_displacement.z).length())
+		clearance=clearance and no_overlap(course)
+		if not actor.is_on_floor() and actor.motion_mode_name=="air": down_air+=1; down_run+=1; maximum_down_run=maxi(maximum_down_run,down_run)
+		else: down_run=0
+		if actor.global_position.x < 10.5: break
+	var returned := actor.global_position
+	check(entry.z < -2 and absf(entry.y-0.18)<=0.012,"authored turn terrace reaches the first real tread")
+	check(high.x>12.5 and absf(high.y-0.30)<=0.012,"perpendicular turn reaches the higher real terrace")
+	check(turn_air==0,"perpendicular uneven-ground turn stays natively supported")
+	check(returned.x<10.5 and absf(returned.y-0.18)<=0.012 and actor.is_on_floor(),"terrace return follows the 12cm step down to support")
+	check(down_air>0 and maximum_down_run<=12,"step down is a short bounded native-gravity transition")
+	check(step_events>=2,"two real rises publish explicit upward contact observations")
+	check(errors.is_empty() and clearance,"turn terrace has no motor refusal or capsule overlap")
+	check(maximum_horizontal<=actor.walk_speed*0.6/60.0+0.002,"turn and step-down motion respects commanded travel budget")
+	var turn_result := {"entry":M.array(entry),"high":M.array(high),"returned":M.array(returned),
+		"turn_air_ticks":turn_air,"down_air_ticks":down_air,"maximum_down_air_run":maximum_down_run,
+		"step_up_events":step_events,"maximum_horizontal_per_tick":maximum_horizontal}
+	await dispose(course)
+	# Clearance is directional too: a diagonal approach beneath a low ceiling must
+	# remain on the lower floor rather than accepting the otherwise walkable rise.
+	course = await new_course(); actor = course.avatar
+	collision_box(course,"diagonal_ceiling_floor",Vector3(-20,-0.2,3),Vector3(14,0.4,8))
+	collision_box(course,"diagonal_ceiling_step",Vector3(-20,0.09,-2),Vector3(14,0.18,2))
+	collision_box(course,"diagonal_low_ceiling",Vector3(-20,1.8,-2),Vector3(14,0.3,6))
+	await fixture(course,Vector3(-21,0.04,2.5))
+	course.set_physics_process(false); actor.set_physics_process(false); actor.input_enabled = true
+	var ceiling_events := 0; var ceiling_clear := true; var ceiling_error := false
+	var ceiling_stick := Vector2(sin(deg_to_rad(30.0)),-cos(deg_to_rad(30.0)))*0.6
+	for _i in range(180):
+		ceiling_error = ceiling_error or not (await manual_tick(actor,ceiling_stick)).is_empty()
+		ceiling_events += int(actor.last_ground_event=="step_up"); ceiling_clear=ceiling_clear and no_overlap(course)
+	check(actor.global_position.y<0.02 and actor.global_position.z>-1.0,"diagonal low ceiling refuses the walkable rise / "+str(actor.global_position))
+	check(ceiling_events==0 and not ceiling_error,"diagonal clearance refusal publishes no step admission or motor error")
+	check(actor.is_on_floor() and ceiling_clear,"diagonal clearance refusal stays supported and capsule-clear")
+	spatial_summary={"oblique_steps":oblique_results,"turn_terrace":turn_result,
+		"diagonal_ceiling":{"end":M.array(actor.global_position),"step_up_events":ceiling_events}}
+	await dispose(course)
 
 func physical_fixtures() -> void:
 	var course = await new_course(); var actor: CharacterBody3D = course.avatar
@@ -539,6 +638,7 @@ func save_fixtures() -> void:
 
 func run() -> void:
 	check(Engine.physics_ticks_per_second == 60,"native runtime physics clock is 60Hz")
+	await spatial_control_fixtures()
 	await played_journey()
 	await quarter_speed_journey()
 	await fine_control_fixtures()

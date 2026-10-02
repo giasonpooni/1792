@@ -166,6 +166,43 @@ func physical_trace_error(trace: Array, course: Node3D) -> String:
 		previous = row
 	return ""
 
+func spatial_error(value: Variant) -> String:
+	if not fields(value,["oblique_steps","turn_terrace","diagonal_ceiling"]): return "Malformed spatial-control evidence."
+	if not value.oblique_steps is Array or value.oblique_steps.size()!=5: return "Spatial evidence requires five declared oblique entries."
+	var angles := [-45.0,-30.0,0.0,30.0,45.0]
+	for index in range(angles.size()):
+		var item: Variant=value.oblique_steps[index]
+		if not fields(item,["degrees","ticks","end","air_ticks","maximum_contact_ticks","maximum_horizontal_per_tick"]):
+			return "Malformed oblique entry evidence."
+		if item.degrees!=angles[index] or not Motion.finite(item.ticks) or item.ticks<1 or item.ticks>180 or item.ticks!=floor(item.ticks):
+			return "Unknown oblique angle or tick count."
+		if not Motion.vector(item.end,100) or absf(item.end[1]-0.18)>0.012 or item.end[2]>=-2:
+			return "Oblique entry did not finish on its qualified real tread."
+		if item.air_ticks!=0 or not Motion.finite(item.maximum_contact_ticks) or item.maximum_contact_ticks<0 or item.maximum_contact_ticks>60 or item.maximum_contact_ticks!=floor(item.maximum_contact_ticks):
+			return "Oblique entry exceeded its support or contact bounds."
+		if not Motion.finite(item.maximum_horizontal_per_tick) or item.maximum_horizontal_per_tick>2.7/60.0+0.002:
+			return "Oblique entry exceeded its commanded travel budget."
+	var turn: Variant=value.turn_terrace
+	if not fields(turn,["entry","high","returned","turn_air_ticks","down_air_ticks","maximum_down_air_run","step_up_events","maximum_horizontal_per_tick"]):
+		return "Malformed turn-terrace evidence."
+	if not Motion.vector(turn.entry,100) or turn.entry[2]>=-2 or absf(turn.entry[1]-0.18)>0.012:
+		return "Turn terrace did not reach its first tread."
+	if not Motion.vector(turn.high,100) or turn.high[0]<=12.5 or absf(turn.high[1]-0.30)>0.012:
+		return "Perpendicular turn did not reach the higher terrace."
+	if not Motion.vector(turn.returned,100) or turn.returned[0]>=10.5 or absf(turn.returned[1]-0.18)>0.012:
+		return "Turn terrace did not return to lower support."
+	for key in ["turn_air_ticks","down_air_ticks","maximum_down_air_run","step_up_events"]:
+		if not Motion.finite(turn[key]) or turn[key]<0 or turn[key]!=floor(turn[key]): return "Invalid turn-terrace counter."
+	if turn.turn_air_ticks!=0 or turn.down_air_ticks<1 or turn.maximum_down_air_run<1 or turn.maximum_down_air_run>12 or turn.step_up_events<2:
+		return "Turn-terrace support, descent or rise evidence is outside bounds."
+	if not Motion.finite(turn.maximum_horizontal_per_tick) or turn.maximum_horizontal_per_tick>2.7/60.0+0.002:
+		return "Turn terrace exceeded its commanded travel budget."
+	var ceiling: Variant=value.diagonal_ceiling
+	if not fields(ceiling,["end","step_up_events"]) or not Motion.vector(ceiling.end,100): return "Malformed diagonal-ceiling evidence."
+	if ceiling.end[1]>=0.02 or ceiling.end[2]<=-1 or ceiling.step_up_events!=0:
+		return "Diagonal ceiling did not refuse the otherwise walkable rise."
+	return ""
+
 func run() -> void:
 	var directory := OS.get_environment("GROUND_CAPTURE_OUTPUT")
 	if not check(not directory.is_empty() and DirAccess.dir_exists_absolute(directory), "executed-journey output directory exists"):
@@ -177,7 +214,7 @@ func run() -> void:
 		finish(); return
 	var source_bytes := file.get_buffer(file.get_length()); file.close()
 	var parsed: Variant = JSON.parse_string(source_bytes.get_string_from_utf8())
-	if not check(fields(parsed, ["schema", "source_commit", "source_tree", "source_digest", "geometry_digest", "motor_digest", "physics_hz", "journey", "snapshot"]) and parsed.get("schema") == "ground-contact-evidence.v1", "retained native evidence has the exact versioned field set"):
+	if not check(fields(parsed, ["schema", "source_commit", "source_tree", "source_digest", "geometry_digest", "motor_digest", "physics_hz", "journey", "spatial_control", "snapshot"]) and parsed.get("schema") == "ground-contact-evidence.v1", "retained native evidence has the exact versioned field set"):
 		finish(); return
 	var record: Dictionary = parsed
 	var commit := OS.get_environment("SOURCE_COMMIT")
@@ -195,6 +232,9 @@ func run() -> void:
 		finish(); return
 	var error := trace_error(record.journey, snapshot)
 	if not check(error.is_empty(), "retained native journey is structurally coherent: " + error):
+		finish(); return
+	error = spatial_error(record.spatial_control)
+	if not check(error.is_empty(), "retained spatial-control evidence is within its declared bounds: " + error):
 		finish(); return
 	if not check(DisplayServer.get_name() != "headless", "native pixels require an actual display renderer"):
 		finish(); return

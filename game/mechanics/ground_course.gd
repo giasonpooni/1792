@@ -124,6 +124,7 @@ func _ready() -> void:
 	label("HIGH RISER", Vector3(6,2.7,3))
 	label("LOW CEILING", Vector3(-6,2.7,3))
 	label("CURB AND DROP", Vector3(6,1.9,-2))
+	label("TURN TERRACES", Vector3(10.5,2.3,-2))
 	avatar = Player.instantiate(); avatar.name = "Player"
 	avatar.movement_profile = 1; avatar.traversal_enabled = true; avatar.ground_contact_enabled = true
 	avatar.gamepad_camera = true; avatar.menu_shortcut = false; avatar.position = Motion.point(layout().spawn)
