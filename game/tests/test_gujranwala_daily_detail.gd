@@ -26,7 +26,10 @@ func run() -> void:
 	root.add_child(home)
 	await frames(8)
 	var scene = home.get_node("ChildhoodChapter")
-	home.process_mode = Node.PROCESS_MODE_DISABLED
+	# Keep CollisionObject3D nodes active in the physics space while scripts are frozen.
+	for node in [home] + home.find_children("*", "Node", true, false):
+		node.set_process(false)
+		node.set_physics_process(false)
 	var art: Node3D = scene.art
 	var layer: Node3D = art.daily_detail
 	var before: Dictionary = scene.model.snapshot()
@@ -47,11 +50,21 @@ func run() -> void:
 		check(AABB(Vector3(-.8, .25, .10), Vector3(1.6, 1.50, .28)).encloses(mesh.mesh.get_aabb()), "hardware stays flush to the closed door")
 	for mesh in layer.threshold_wear:
 		check(AABB(Vector3(-.94, .159, 0), Vector3(1.88, .004, .4)).encloses(mesh.mesh.get_aabb()), "wear stays within the existing threshold top")
+		var arrays: Array = mesh.mesh.surface_get_arrays(0)
+		var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+		check((vertices[1]-vertices[0]).cross(vertices[2]-vertices[0]).y < 0, "threshold uses the engine's upward-facing clockwise winding")
 	var counter := Rules.MARKET+Vector3(0, 1.10, -2.6)
 	for mesh in layer.baskets:
 		check(contained(mesh, AABB(counter+Vector3(-1.5, 0, -.5), Vector3(3, .22, 1))), "every woven basket fits the solid counter top")
-		check(mesh.mesh.get_aabb().size.y > .13, "basket has a real open lattice silhouette")
+		check(mesh.mesh.get_aabb().size.y > .13, "basket rises above the solid counter")
+		var bounds: AABB = mesh.global_transform * mesh.mesh.get_aabb()
+		for x in [bounds.position.x, bounds.end.x]:
+			for z in [bounds.position.z, bounds.end.z]:
+				var query := PhysicsRayQueryParameters3D.create(Vector3(x, counter.y+.4, z), Vector3(x, counter.y-.3, z), 1)
+				var hit: Dictionary = scene.get_world_3d().direct_space_state.intersect_ray(query)
+				check(not hit.is_empty() and absf(hit.position.y-counter.y)<.001, "every basket footprint corner is supported by the actual retained collider")
 	var well: Node3D = scene.fabric.get_node("household_well")
+	check(layer.well_body.mesh == layer.fitted_well_mesh and layer.original_well_mesh.top_radius == 1.25, "well appearance fits inward without editing the original mesh resource")
 	for mesh in layer.well_fittings:
 		check(mesh.global_position == well.global_position, "well fittings share the original well anchor")
 		var vertices: PackedVector3Array = mesh.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
@@ -68,12 +81,15 @@ func run() -> void:
 	for _i in range(3):
 		art.set_refinement(false)
 		check(not layer.is_visible_in_tree(), "F7 comparison removes the detail")
+		check(layer.well_body.mesh == layer.original_well_mesh, "F7 restores the exact original well mesh")
 		art.set_refinement(true)
 		check(layer.is_visible_in_tree(), "F7 restores the detail")
+		check(layer.well_body.mesh == layer.fitted_well_mesh, "F7 reapplies the fitted well mesh")
 		art.set_enabled(false)
 		check(not layer.is_visible_in_tree(), "greybox removes the detail")
 		art.set_enabled(true)
 		check(layer.is_visible_in_tree(), "authored mode restores the detail")
+		check(layer.well_body.mesh == layer.fitted_well_mesh, "full greybox cycle reapplies the fitted well resource")
 		for preset in ["golden_hour", "evening", "daylight"]: check(art.set_preset(preset).is_empty(), "inherited lighting preset retained")
 		check(physical(home) == bodies, "full switch cycle preserves collision references, transforms and enabled state")
 		check(scene.model.snapshot() == before and scene.model.journal() == journal, "full switch cycle preserves campaign, clock, knowledge and journal")

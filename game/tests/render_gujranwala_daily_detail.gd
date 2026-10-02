@@ -11,7 +11,10 @@ func run() -> void:
 	root.add_child(home)
 	scene = home.get_node("ChildhoodChapter")
 	await frames(8)
-	home.process_mode = Node.PROCESS_MODE_DISABLED
+	# Freeze script callbacks while retaining the same live collider composition.
+	for node in [home] + home.find_children("*", "Node", true, false):
+		node.set_process(false)
+		node.set_physics_process(false)
 	var initial: Dictionary = scene.model.snapshot()
 	camera = Camera3D.new()
 	camera.name = "DailyDetailInspectionCamera"

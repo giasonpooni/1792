@@ -8,6 +8,9 @@ var door_hardware: Array[MeshInstance3D] = []
 var threshold_wear: Array[MeshInstance3D] = []
 var baskets: Array[MeshInstance3D] = []
 var well_fittings: Array[MeshInstance3D] = []
+var well_body: MeshInstance3D
+var original_well_mesh: CylinderMesh
+var fitted_well_mesh: CylinderMesh
 var enabled := true
 var _built := false
 
@@ -59,6 +62,16 @@ func build(chapter: Node3D, art: Node3D) -> String:
 		bays.append(bay)
 	var well: Node3D = chapter.fabric.get_node_or_null("household_well")
 	if well == null: return "Daily detail requires the retained household well."
+	for mesh in well.find_children("*", "MeshInstance3D", true, false):
+		if mesh.mesh is CylinderMesh and is_equal_approx(mesh.mesh.height, 1.0) and is_equal_approx(mesh.mesh.top_radius, 1.25):
+			well_body = mesh
+			break
+	if well_body == null: return "Daily detail requires the retained solid well cylinder."
+	original_well_mesh = well_body.mesh
+	fitted_well_mesh = original_well_mesh.duplicate()
+	# Reversible inward visual fit exposes course edges inside the unchanged collision hull.
+	fitted_well_mesh.top_radius = 1.225
+	fitted_well_mesh.bottom_radius = 1.225
 	name = "GujranwalaDailyDetail"
 	set_meta("classification", "original-construction-and-use-study")
 	set_meta("historical_claim", false)
@@ -97,7 +110,7 @@ func _build_wear(origin: Vector3, index: int) -> void:
 		var irregular: float = 1.0 + .055*sin(i*2.1+index*.8)
 		points.append(Vector3(cos(angle)*(.68+.025*(index%3))*irregular, .161, .20+sin(angle)*.125*irregular))
 	for i in range(points.size()):
-		for vertex in [Vector3(0, .161, .20), points[(i+1)%points.size()], points[i]]:
+		for vertex in [Vector3(0, .161, .20), points[i], points[(i+1)%points.size()]]:
 			surface.set_normal(Vector3.UP)
 			surface.add_vertex(vertex)
 	var mesh := _finish(surface, "ThresholdWear%d" % index, origin, kit.plain("a89577"))
@@ -144,7 +157,7 @@ func _build_well(origin: Vector3) -> void:
 	for y in [.27, .55, .83]:
 		_append(masonry, _ring(1.205, 1.247, 48), Vector3(0, y, 0))
 	_append(masonry, _ring(1.10, 1.248, 64), Vector3(0, 1.0, 0))
-	well_fittings.append(_finish(masonry, "WellMasonryCourses", origin, kit.plain("a48c6c")))
+	well_fittings.append(_finish(masonry, "WellMasonryCourses", origin, kit.surface("a38a65", 1)))
 	var wheel := _batch()
 	# The supplied rope meets the back tangent of this static sheave study.
 	_append(wheel, _ring(.105, .18, 32), Vector3(0, 2.60, .18), Vector3(0, 0, PI/2))
@@ -162,3 +175,7 @@ func _build_well(origin: Vector3) -> void:
 func set_enabled(value: bool) -> void:
 	enabled = value
 	visible = value
+	if is_instance_valid(well_body): well_body.mesh = fitted_well_mesh if value else original_well_mesh
+
+func _exit_tree() -> void:
+	set_enabled(false)

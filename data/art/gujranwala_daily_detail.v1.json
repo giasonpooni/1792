@@ -19,6 +19,7 @@
     "The existing solid market counter: 3 by 1 metres, top at MARKET + [0, 1.1, -2.6].",
     "The existing household_well root; fittings stay within its 1.25 metre radial footprint."
   ],
+  "reversible_appearance_fit": "A separate well cylinder mesh narrows the visual radius from 1.25 to 1.225 metres to expose the fitted courses; F7/greybox removal restores the exact original mesh. Collision and water meshes remain unchanged.",
   "geometry_budget": {"maximum_mesh_submissions": 24, "maximum_triangles": 20000},
   "qualification": {
     "native_test": "game/tests/test_gujranwala_daily_detail.gd",
