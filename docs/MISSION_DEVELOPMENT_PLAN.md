@@ -2,7 +2,7 @@
 
 This is the working development plan for **1792: The Lotus Throne**. It turns the [playable ledger](PLAYABLE_MISSION_LEDGER.md) into **33 individual development cards**, plus a secondary queue and the remaining story backlog. The structured source is [mission_development.json](../data/production/mission_development.json).
 
-**Current increment:** HOME-013/014 are in development: the bazaar outing with Mela and Jiva and the remembered horsecraft lesson. [This pass](FRIENDS_AND_HORSECRAFT_STORY.md) develops friendship, the changing meaning of confidence, current-action guidance and responses to actual outcomes. The earlier [household](HOUSEHOLD_STORY_DEVELOPMENT.md), [childhood arc](CHILDHOOD_ARC_DEVELOPMENT.md) and opening work remain included. The cards retain their wider intended direction; current-pass guides state implemented scope.
+**Current increment:** HOME-015/016 are in development: Missing Remounts and The Borrowed Rope. [This pass](ROPE_AND_REMOUNT_STORY.md) composes the two retained stories into current Home, develops their distinct revelations and keeps the current action readable. Earlier [friends and horsecraft](FRIENDS_AND_HORSECRAFT_STORY.md), [household](HOUSEHOLD_STORY_DEVELOPMENT.md), [childhood arc](CHILDHOOD_ARC_DEVELOPMENT.md) and opening work remain included. Current-pass guides state the implemented subset of the wider card direction.
 
 The first prototype pass is now implemented and locally verified: orientation lead-in, both optional message routes, physical reporting, remembered receipts and save/load. See [The Words Between Us](MESSAGE_FOLLOWUP.md) for the actual playable scope. The P0 cards remain in development for performance and visual polish; their cinematic ideas are not claims of completed animation.
 
@@ -23,7 +23,7 @@ The ledger records prototypes on different revisions and branches. These cards d
 | --- | --- | ---: | --- |
 | P0 | Opening decisions | 2 | In development |
 | P1 | Complete the childhood dramatic arc | 5 | In development |
-| P2 | Make Gujranwala relationships playable | 10 | HOME-008–014 in development; HOME-015–017 await integration |
+| P2 | Make Gujranwala relationships playable | 10 | HOME-008–016 in development; HOME-017 awaits integration |
 | P3 | Individualize the historical recollections | 13 | Planned |
 | P4 | Connect command and the retrospective frame | 3 | Planned |
 
@@ -31,7 +31,7 @@ These priorities group development work; they do not reorder historical events o
 
 ## Remaining childhood branch integration
 
-HOME-015–017 currently use older sibling chapter/state chains. Their structured cards now record inspected integration requirements. Bring **Borrowed Rope** into the current Home first, resolving its F7 conflict and preserving received-content digests; then fit **Missing Remounts** to the current district, and compose **Funded Instructor** with shared workshop/upkeep and camera ownership. These are concrete follow-up tasks, not newly integrated missions. See the active pass guide for the reviewed revisions.
+**Borrowed Rope** and **Missing Remounts** now extend the current Home chain; the active guide records their integration and targeted qualification. **Funded Instructor** remains the next integration: compose its escrow/upkeep with current workshop reduction, qualify the secondary teaching view and retained riding session, then develop its interrupted-practice payoff. Its older prototype is not included in this pass.
 
 ## Sequence cards
 
@@ -247,7 +247,7 @@ HOME-015–017 currently use older sibling chapter/state chains. Their structure
 
 ### HOME-015 · Missing remounts
 
-**P2 · Planned**. Baseline: draft branch prototype; 1792.
+**P2 · In development**. Baseline: draft branch prototype; 1792.
 
 - **Dramatic question:** Can the young heir establish what happened to the remounts without treating suspicion as permission?
 - **Playable objective:** Reach the private yard, inspect the sealed tally and both horses, then report the limited observations to the quartermaster.
@@ -259,9 +259,11 @@ HOME-015–017 currently use older sibling chapter/state chains. Their structure
 
 **Historical treatment:** Original authored gameplay; historical setting does not authenticate the episode.
 
+**Current increment:** See [rope and remounts](ROPE_AND_REMOUNT_STORY.md) for current-Home integration, developed staging and verification limits.
+
 ### HOME-016 · The borrowed rope
 
-**P2 · Planned**. Baseline: draft branch prototype; 1792.
+**P2 · In development**. Baseline: draft branch prototype; 1792.
 
 - **Dramatic question:** What is owed to a story when two people remember its lesson differently?
 - **Playable objective:** Hear the rope story’s variants, inspect the rope, compare the accounts, and retell a chosen version to a local listener.
@@ -272,6 +274,8 @@ HOME-015–017 currently use older sibling chapter/state chains. Their structure
 - **Acceptance criterion:** The two accounts remain distinguishable, repeat listening adds no independent corroboration, and the listener receives only the retelling actually selected.
 
 **Historical treatment:** Explicitly fictional sakhi-inspired transmission episode.
+
+**Current increment:** See [rope and remounts](ROPE_AND_REMOUNT_STORY.md) for current-Home integration, developed staging and verification limits.
 
 ### HOME-017 · A funded instructor
 

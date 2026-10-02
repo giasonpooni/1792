@@ -2220,13 +2220,13 @@
     }
   ],
   "active_development": {
-    "branch": "feat/friends-horsecraft-story-v1-20261002",
+    "branch": "feat/rope-remount-story-v1-20261002",
     "ids": [
-      "HOME-013",
-      "HOME-014"
+      "HOME-015",
+      "HOME-016"
     ],
-    "guide": "docs/FRIENDS_AND_HORSECRAFT_STORY.md",
+    "guide": "docs/ROPE_AND_REMOUNT_STORY.md",
     "plan": "docs/MISSION_DEVELOPMENT_PLAN.md",
-    "note": "Bazaar friendship and the remembered horsecraft lesson receive new dialogue, recovery guidance and staged responses. Earlier HOME-001–012 increments remain included. The 33-sequence figure is the retained inventory snapshot, not a fresh census of later remote drafts. HOME-015–017 integration preconditions are recorded without claiming those branches are composed here."
+    "note": "Borrowed Rope and Missing Remounts are composed into the current Home with original scene framing, local interactions, current-task guidance and whole-world persistence. Earlier HOME-001–014 increments remain included. The 33-sequence figure remains the historical inventory snapshot, not a fresh census of all recent branches. HOME-017 remains a separate prototype awaiting integration."
   }
 }

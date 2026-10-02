@@ -10,6 +10,7 @@ const Lessons:=preload("res://childhood/lesson_direction.gd")
 static func household_uncommitted(model) -> bool:
 	# Match the existing workshop's custody exclusions without reserving anything.
 	if model.brawl_busy() or model.service_reserved(): return false
+	if model.has_method("remount_busy") and model.remount_busy(): return false
 	if model.has_water_round():
 		var water: Dictionary=model.water_round().ledger
 		if water.carried>0 or water.phase=="drawing": return false
@@ -21,6 +22,7 @@ static func read(chapter: Node3D, moving: bool = false) -> Dictionary:
 	# An outing can be accepted before the household allowance. It owns the
 	# foreground regardless of whether an economy record has been opened.
 	if model.has_method("brawl_busy") and model.brawl_busy(): return {}
+	if model.has_method("remount_busy") and model.remount_busy(): return {}
 	var state: Dictionary=model.progress()
 	var stage: String=model.stage()
 	# Secondary guidance returns as soon as the player stops on foot. This is a

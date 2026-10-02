@@ -112,6 +112,11 @@ def main() -> int:
         "bazaar-regroup-cue", "BAZAAR_REGROUP_CUE_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_horsecraft_story.gd"],
         "horsecraft-story", "HORSECRAFT_STORY_TESTS:")
+    run([sys.executable, "tools/check_oral_memory.py"], "oral-memory-source")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_oral_memory_current.gd"],
+        "oral-memory-current", "ORAL_MEMORY_CURRENT_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_remounts.gd"],
+        "remounts", "REMOUNTS_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_locomotion.gd"],
         "locomotion", "LOCOMOTION_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_ground_contact.gd"],

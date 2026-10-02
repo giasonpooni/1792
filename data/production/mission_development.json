@@ -10,15 +10,15 @@
     "backlog_entries": 40,
     "meaning": "These cards define the next development increment for inventoried prototypes. They do not add playable sequences or certify their new features as implemented.",
     "active_increment": [
-      "HOME-013",
-      "HOME-014"
+      "HOME-015",
+      "HOME-016"
     ],
     "status_policy": "development_status refers to the proposed increment only. baseline describes the ledger snapshot. implementation_receipt stays null until the increment has a concrete reviewed revision and verification.",
     "count_policy": "Child beats, alternate approaches, presentations, mechanics and source retellings are not extra missions. The 28-entry youth slate includes one implemented adaptation alias and 27 planned entries.",
     "history_policy": "Keep legends, miracles, conflicting allegations and dramatic invention. Preserve the ledger’s historical basis beside every card. Player choice may alter local care, communication or immediate outcomes without silently proving an allegation or overwriting a declared fixed historical endpoint.",
     "cinematic_policy": "Build cinema from playable approach, staging, sound, performance and consequential action. A proposed cinematic moment is not a claim that cinematics, voice, animation or finished art already exist.",
     "verification_policy": "The original authoring pass checked card coverage and consistency. Runtime increments record targeted local checks in their current_pass guides; the other draft branches have not all been freshly played or integrated.",
-    "narrative_direction_policy": "All narrative_direction blocks retain original planned literary, staging and attention directions. Their acceptance statements are intended review conditions, not test receipts. Current runtime work develops HOME-013/014 and retains earlier HOME-001–012 increments. current_pass records the implemented subset and limits. Other prototype branches need explicit integration; this adds no sequences.",
+    "narrative_direction_policy": "All narrative_direction blocks retain their planned literary, staging and attention directions. Acceptance statements are intended review conditions, not test receipts. Current runtime work composes HOME-015/016 above the earlier HOME-001–014 increments. current_pass records the implemented subset and limits; HOME-017 and later retained prototypes need separate integration. This adds no sequences.",
     "attention_policy": "Prioritize the next meaningful action, protect imminent threat cues, reduce repeated prose, and leave recoverable quiet intervals. Never force attention with hidden failure timers, disable player control for a camera composition, or treat continued play time as evidence of narrative quality. Persistent objectives and reviewable information remain available."
   },
   "phases": [
@@ -814,7 +814,7 @@
       "id": "HOME-015",
       "title": "Missing remounts",
       "phase_priority": "P2",
-      "development_status": "planned",
+      "development_status": "in_development",
       "baseline": {
         "kind": "playable_sequence",
         "delivery": "draft",
@@ -848,7 +848,7 @@
         "acceptance": "Players can explain their route, what each horse inspection established and how tally contents were learned; the report preserves those differences without adding a recovery reward."
       },
       "integration_preparation": {
-        "status": "read_only_branch_review_not_integrated",
+        "status": "composed_in_current_story_pass",
         "reviewed_commit": "06fccd1ededdfe203c8135efc4f844aeb78899d9",
         "order_after": "HOME-016 current-Home integration",
         "requirements": [
@@ -858,13 +858,29 @@
           "Keep locating the same two horses distinct from confiscation, collection or a new reward."
         ],
         "staging_next": "Make the public introduction, service gap and raised observation route visually legible; the gate changes from an obstacle on approach to part of the witness account at report."
+      },
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/ROPE_AND_REMOUNT_STORY.md",
+        "branch": "feat/rope-remount-story-v1-20261002",
+        "behavior": "Three physical approaches to the private yard in current Gujranwala; scoped invitation, horses and sealed tally inspected separately, a local readout and optional aftermath. Existing witness reports retain physical messenger delay.",
+        "literary_technique": "The two empty places motivate an ordinary errand; finding the horses answers where while the sealed tally postpones why. The gate becomes part of Buddh’s own account at Home.",
+        "limits": "Original fictional scenes and procedural art. Finished actor performances, recorded voices and human pacing review remain work. No new historical authentication or mission-count increase.",
+        "verification": {
+          "guide": "docs/ROPE_AND_REMOUNT_STORY.md",
+          "tests": [
+            "game/tests/test_remounts.gd",
+            "game/tests/test_rope_remount_integration.gd"
+          ],
+          "limits": "Targeted routes and cross-domain fixtures are identified separately; the full repository suite has not been rerun."
+        }
       }
     },
     {
       "id": "HOME-016",
       "title": "The borrowed rope",
       "phase_priority": "P2",
-      "development_status": "planned",
+      "development_status": "in_development",
       "baseline": {
         "kind": "playable_sequence",
         "delivery": "draft",
@@ -898,7 +914,7 @@
         "acceptance": "A player can distinguish the two moral emphases and identify whose words were passed on; the saved transmission never upgrades either version into canonical fact."
       },
       "integration_preparation": {
-        "status": "read_only_branch_review_not_integrated",
+        "status": "composed_in_current_story_pass",
         "reviewed_commit": "575b95f398059a8d26ca03c57c75a198eb1a8293",
         "order_after": "HOME-013/014 story increment; preferred next additive integration",
         "requirements": [
@@ -908,6 +924,22 @@
           "Validate one full physical hear/inspect/compare/retell journey and interrupted dialogs alongside prior workshop, service and riding receipts."
         ],
         "staging_next": "Introduce the worn loop as an ordinary object, let two tellers emphasize different parts of its story, and let the selected attributed retelling be the payoff. No flashback should silently settle either account."
+      },
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/ROPE_AND_REMOUNT_STORY.md",
+        "branch": "feat/rope-remount-story-v1-20261002",
+        "behavior": "Optional situated tellings, repaired-rope inspection, remembered comparison, delayed recollection and source-bound retelling through the current Home journal. Received content and rules retain their original byte identity.",
+        "literary_technique": "A repeated object acquires incompatible meanings. Distinct scene framing emphasizes each teller, while Buddh chooses which attributed account travels onward.",
+        "limits": "Original fictional scenes and procedural art. Finished actor performances, recorded voices and human pacing review remain work. No new historical authentication or mission-count increase.",
+        "verification": {
+          "guide": "docs/ROPE_AND_REMOUNT_STORY.md",
+          "tests": [
+            "game/tests/test_oral_memory_current.gd",
+            "game/tests/test_rope_remount_integration.gd"
+          ],
+          "limits": "Targeted routes and cross-domain fixtures are identified separately; the full repository suite has not been rerun."
+        }
       }
     },
     {

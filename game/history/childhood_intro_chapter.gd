@@ -1,5 +1,5 @@
 # Copyright (c) 2026 Cartesian Graphics. All rights reserved.
-extends "res://mounts/riding_training_chapter.gd"
+extends "res://remounts/remount_chapter.gd"
 ## Production opening is a presentation visit before the original playable Home.
 const IntroSession:=preload("res://history/childhood_intro_session.gd")
 var autoplay_intro:=false

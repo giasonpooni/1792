@@ -18,9 +18,9 @@ Snapshot: **2026-10-02**. Main: `cd3a473b6725872d4c03f190cd1b07ae940d72c9`.
 
 ## Active development
 
-HOME-013, HOME-014 on `feat/friends-horsecraft-story-v1-20261002`. Bazaar friendship and the remembered horsecraft lesson receive new dialogue, recovery guidance and staged responses. Earlier HOME-001–012 increments remain included. The 33-sequence figure is the retained inventory snapshot, not a fresh census of later remote drafts. HOME-015–017 integration preconditions are recorded without claiming those branches are composed here.
+HOME-015, HOME-016 on `feat/rope-remount-story-v1-20261002`. Borrowed Rope and Missing Remounts are composed into the current Home with original scene framing, local interactions, current-task guidance and whole-world persistence. Earlier HOME-001–014 increments remain included. The 33-sequence figure remains the historical inventory snapshot, not a fresh census of all recent branches. HOME-017 remains a separate prototype awaiting integration.
 
-See [the active playable increment](FRIENDS_AND_HORSECRAFT_STORY.md) and [development cards for every sequence](MISSION_DEVELOPMENT_PLAN.md).
+See [the active playable increment](ROPE_AND_REMOUNT_STORY.md) and [development cards for every sequence](MISSION_DEVELOPMENT_PLAN.md).
 
 ## Counting and maintenance
 

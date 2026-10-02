@@ -10,6 +10,7 @@ static func read(chapter: Node3D, moving: bool = false) -> Dictionary:
 	var model = chapter.model
 	if model.aftermath_phase() != "complete" or not model.has_method("has_economy") or not model.has_economy(): return {}
 	if model.has_method("brawl_busy") and model.brawl_busy(): return {}
+	if model.has_method("remount_busy") and model.remount_busy(): return {}
 	var ledger: Dictionary = model.economy().ledger
 	var water: Dictionary = model.water_round().ledger if model.has_method("has_water_round") and model.has_water_round() else {}
 	var mode := "mounted" if model.mounted() else "moving" if moving else "rest"

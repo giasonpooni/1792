@@ -157,8 +157,8 @@ func _open_market() -> void:
 	_focus_household_continuation("market")
 
 func _focus_household_continuation(speaker: String) -> void:
-	# This is the final speaker override in the production inheritance chain.
-	# Water, service, youth and workshop offers have all been appended already.
+	# Later story layers call this again after appending their own offers.
+	# Only an already offered action can become the current continuation.
 	var button := HouseholdActions.promote(self, speaker)
 	if button == null: return
 	var lead := HouseholdActions.briefing(self, speaker, HouseholdActions.action_id(button))

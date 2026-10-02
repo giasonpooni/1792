@@ -44,7 +44,10 @@ func build(chapter: Node3D) -> void:
 func sample() -> void:
 	if not is_instance_valid(_chapter): return
 	var moving: bool=Vector2(_chapter.avatar.velocity.x,_chapter.avatar.velocity.z).length()>.3
-	var beginning: Dictionary=HouseholdGuidance.read(_chapter,moving)
+	# An accepted local story can own the same compact foreground. The leaf
+	# chapter supplies only a read-only view; this panel remains its sole renderer.
+	var beginning: Dictionary=_chapter.foreground_guidance(moving) if _chapter.has_method("foreground_guidance") else {}
+	if beginning.is_empty(): beginning=HouseholdGuidance.read(_chapter,moving)
 	if beginning.is_empty(): beginning=Beginning.read(_chapter,moving)
 	var childhood: bool=not beginning.is_empty()
 	var eligible: bool=compact and (childhood or (_chapter.model.has_economy() and _chapter.model.workshop_phase() in ["fuel","working","ready","tools"] and Beginning.household_uncommitted(_chapter.model)))

@@ -57,6 +57,8 @@ and cinematic direction for all 33 sequence cards.
 The [household story pass](docs/HOUSEHOLD_STORY_DEVELOPMENT.md) develops five more existing sequences with distinct dialogue, visible cargo and work states, recoverable escort cues, and guidance that keeps the immediate responsibility in view.
 The [friends and horsecraft pass](docs/FRIENDS_AND_HORSECRAFT_STORY.md) gives the bazaar return a choice of conversation, makes recovering a separated friend clearer, and focuses each remembered riding exercise on its current demand.
 
+The [rope and remounts pass](docs/ROPE_AND_REMOUNT_STORY.md) brings two retained stories into this Home: an optional chain of tellings and a three-route yard investigation, with local consequences and a shared save.
+
 ## Title and story
 
 **The Lotus Throne** draws on Maharaja Ranjit Singh's golden throne at Lahore.

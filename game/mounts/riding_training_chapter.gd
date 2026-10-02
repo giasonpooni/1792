@@ -140,7 +140,7 @@ func _refresh() -> void:
 		_hud.text+="\nRIDING SKILLS · after the first riding gate, return to the stable trainer [E]"
 
 func _restore_workshop_file(path: String,retry: bool) -> void:
-	var staged:=SkillState.new();var error: String=staged.load_from(path)
+	var staged=model.get_script().new();var error: String=staged.load_from(path)
 	if error.is_empty() and retry and staged.brawl_phase()!="challenged": error="No pre-confrontation bazaar snapshot."
 	if error.is_empty(): error=_candidate_error(staged)
 	if error.is_empty(): error=model.restore(staged.snapshot())
@@ -154,13 +154,13 @@ func _capture_checkpoint(reason: String) -> void:
 	# The absent extension is the same locked state. Retain legacy checkpoint
 	# reader compatibility until a lesson receipt actually needs preservation.
 	if snapshot.riding_skills.lesson_receipts.is_empty(): snapshot.erase("riding_skills")
-	if error.is_empty(): error=Checkpoint.write(checkpoint_path(),snapshot,avatar.pivot.rotation,reason,SkillState)
+	if error.is_empty(): error=Checkpoint.write(checkpoint_path(),snapshot,avatar.pivot.rotation,reason,model.get_script())
 	_checkpoint_note="Checkpoint saved with riding skills." if error.is_empty() else "Checkpoint not saved: "+error
 	_message+="\n"+_checkpoint_note
 
 func _restore_checkpoint() -> void:
-	var result:=Checkpoint.read(checkpoint_path(),SkillState)
-	var error: String=result.error;var staged:=SkillState.new()
+	var result:=Checkpoint.read(checkpoint_path(),model.get_script())
+	var error: String=result.error;var staged=model.get_script().new()
 	if error.is_empty(): error=staged.restore(result.envelope.snapshot)
 	if error.is_empty(): error=_candidate_error(staged)
 	if error.is_empty(): error=model.restore(staged.snapshot())

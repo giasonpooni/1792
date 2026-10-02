@@ -11,6 +11,11 @@ static func preferred(chapter: Node3D, speaker: String) -> String:
 	var model = chapter.model
 	if model.has_method("brawl_busy") and model.brawl_busy():
 		return "youth:report" if speaker == "home" and model.brawl_phase() == "returning" else "resume"
+	if model.has_method("remount_busy") and model.remount_busy():
+		var remount: Dictionary=model.remounts().ledger
+		if speaker=="home" and remount.note and remount.horses: return "remount:resolve"
+		if speaker=="market" and not remount.introduced: return "remount:introduction"
+		return "resume"
 	if not model.has_economy():
 		if speaker == "home": return "econ:begin"
 		return "youth:invite" if not model.has_brawl() else "resume"
@@ -34,6 +39,8 @@ static func preferred(chapter: Node3D, speaker: String) -> String:
 static func briefing(chapter: Node3D, speaker: String, action: String) -> String:
 	var model = chapter.model
 	match action:
+		"remount:resolve": return "Quartermaster · Two horses seen, and the tally brought back. Tell me where you found them."
+		"remount:introduction": return "Handler · You can ask at the southern yard. Take my introduction to its gatekeeper."
 		"youth:invite": return BazaarStory.INVITATION
 		"water:deposit":
 			return "Quartermaster · The second load. Set it beside the first; that will finish the round." if model.water_round().ledger.stored > 0 else "Quartermaster · Set the full vessel here. One load to count in, and one still to bring."
@@ -42,6 +49,8 @@ static func briefing(chapter: Node3D, speaker: String, action: String) -> String
 		"youth:report": return "Quartermaster · An account from all three of you. Bring both friends close enough to be heard."
 		"econ:begin", "econ:accept_delivery", "econ:deliver", "econ:checkin", "econ:accept_escort": return Delivery.briefing(model, speaker == "market")
 		"resume":
+			if model.has_method("remount_busy") and model.remount_busy():
+				return "Quartermaster · Find the horses and bring back their tally. We can settle the other orders afterward." if speaker=="home" else "Handler · You have my introduction. Take it to the gatekeeper; the other business can wait."
 			if model.has_method("brawl_busy") and model.brawl_busy(): return "Finish the outing with your friends before taking on household orders."
 			var task: Dictionary = Guidance.read(chapter)
 			if not task.is_empty(): return "The account can wait.\n\n" + str(task.progress)
