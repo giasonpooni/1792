@@ -1,7 +1,7 @@
 {
   "schema": "ciw.godot-project-profile.v1",
   "project_id": "1792",
-  "source_revision": "1a3a807c0ba52e3fd43f33ee235773cdcf94b355",
+  "source_revision": "dc4139ff11f6cb4804d47a22199c680aab142031",
   "source_scope": "game-owned domain slice plus explicit fixtures; not full scene or played childhood",
   "engine_version_prefix": "4.5.1",
   "entrypoint": "tools/net/water_round_capture.gd",
