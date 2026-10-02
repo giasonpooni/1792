@@ -47,6 +47,10 @@ def main() -> int:
         "character-names", "CHARACTER_NAMES_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_childhood.gd"],
         "childhood", "CHILDHOOD_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_message_followup_state.gd"],
+        "message-followup-state", "MESSAGE_FOLLOWUP_STATE_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_message_followup_scene.gd"],
+        "message-followup-scene", "MESSAGE_FOLLOWUP_SCENE_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_hawk_scout.gd"],
         "hawk-scout", "HAWK_SCOUT_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_ground_focus.gd"],

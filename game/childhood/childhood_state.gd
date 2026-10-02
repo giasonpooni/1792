@@ -3,6 +3,7 @@ extends RefCounted
 ## Extends world-state.v1 without changing the original seed, schemas or Lahore authorities.
 const Names := preload("res://characters/character_names.gd")
 const Riding := preload("res://mounts/riding_rules.gd")
+const MessageFollowup := preload("res://childhood/message_followup_rules.gd")
 const LIMIT := 131072
 const SAVE_PATH := "user://1792-childhood-v1.json"
 const SITES := {
@@ -167,6 +168,30 @@ func hear(reader: String) -> String:
 	_remember(reader, a.source_id, a.channel, a.claim)
 	return ""
 
+func message_followup() -> Dictionary:
+	return _state.get("opening_message", {}).duplicate(true)
+
+func message_phase() -> String:
+	return MessageFollowup.phase(message_followup())
+
+func message_action(kind: String) -> String:
+	if kind not in ["direct", "clarify", "confirm", "report"]: return "Unknown message action."
+	if mounted() or stage() in ["active", "caught", "escaped"]: return "Find a quiet moment on foot to speak."
+	if _state.childhood.heard.size() != 2: return "Hear the courier and steward before carrying their accounts onward."
+	var site := "steward" if kind in ["direct", "clarify"] else "courier" if kind == "confirm" else "spar"
+	if position().distance_to(SITES[site]) > MessageFollowup.RANGE: return "Approach this speaker on foot."
+	var phase := message_phase()
+	if kind in ["direct", "clarify"] and phase != "dormant": return "The errand already has an agreed route."
+	if kind == "confirm" and phase != "clarify": return "There is no outstanding clarification to hear."
+	if kind == "report" and phase != "report": return "There is no new message ready to report."
+	var followup := MessageFollowup.begin(kind, int(_state.childhood.tick)) if kind in ["direct", "clarify"] else message_followup()
+	if kind in ["confirm", "report"]:
+		followup.receipts.append({"kind": kind, "received_tick": int(_state.childhood.tick)})
+	var error := MessageFollowup.validate(followup, _state.childhood)
+	if not error.is_empty(): return error
+	_state.opening_message = followup
+	return ""
+
 func spar_result(kind: String) -> String:
 	if stage() != "sparring" or mounted() or not near("spar", 3.3): return "Enter the practice circle on foot."
 	# Physics/presentation evaluates the visible telegraph and actual guard/counter window.
@@ -239,7 +264,14 @@ func _remember(id: String, source: String, channel: String, text: String) -> voi
 		"received_tick": _state.childhood.tick, "text": text})
 
 func journal() -> Array:
-	return _state.childhood.memories.duplicate(true)
+	var entries: Array = _state.childhood.memories.duplicate(true)
+	if not _state.has("opening_message"): return entries
+	entries.append_array(MessageFollowup.journal(_state.opening_message))
+	# Stable tie order preserves inherited memories exactly, before optional receipts.
+	var ordered: Array = []
+	for index in range(entries.size()): ordered.append({"record": entries[index], "index": index})
+	ordered.sort_custom(func(a, b): return a.record.received_tick < b.record.received_tick if a.record.received_tick != b.record.received_tick else a.index < b.index)
+	return ordered.map(func(item): return item.record)
 
 static func valid_point(p: Variant) -> bool:
 	if not p is Array or p.size() != 3: return false
@@ -259,7 +291,10 @@ func _shape(value: Variant, reference: Variant) -> bool:
 
 func validate(value: Variant) -> String:
 	var seed := _initial()
-	if not _shape(value, seed): return "Malformed childhood snapshot."
+	if not value is Dictionary: return "Malformed childhood snapshot."
+	var base: Dictionary = value.duplicate(true)
+	base.erase("opening_message")
+	if not _shape(base, seed): return "Malformed childhood snapshot."
 	for key in ["schema_version", "profile", "scenario_id", "historical_class", "places", "relationships"]:
 		if value[key] != seed[key]: return "Unsupported childhood identity or static data."
 	if value.player.character_id != Names.HERO_ID or value.player.known_places != ["sukerchakia_home"]:
@@ -322,6 +357,9 @@ func validate(value: Variant) -> String:
 			if memory.source_id != account.source_id or memory.channel != account.channel or memory.text != account.claim: return "Attributed testimony was rewritten."
 		elif not PERSONAL_MEMORIES.has(memory.id) or memory.source_id != "self" or memory.channel != ("inner_voice" if memory.id == "reflection" else "observed") or memory.text != PERSONAL_MEMORIES[memory.id]:
 			return "Invalid firsthand memory."
+	if value.has("opening_message"):
+		var message_error := MessageFollowup.validate(value.opening_message, s)
+		if not message_error.is_empty(): return message_error
 	return ""
 
 func restore(value: Variant) -> String:
@@ -331,6 +369,7 @@ func restore(value: Variant) -> String:
 	for key in ["tick", "ride_gate", "parries", "counters", "tracks"]: _state.childhood[key] = int(_state.childhood[key])
 	for key in ["start_tick", "end_tick", "hits", "stun_until"]: _state.childhood.ambush[key] = int(_state.childhood.ambush[key])
 	for memory in _state.childhood.memories: memory.received_tick = int(memory.received_tick)
+	if _state.has("opening_message"): MessageFollowup.normalize(_state.opening_message)
 	Riding.normalize(_state.riding)
 	# The integer tick is authoritative; JSON may round the derived hour by one
 	# float step. Reuse the existing clock mapping after validation, not a new clock.

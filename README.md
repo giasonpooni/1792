@@ -40,6 +40,12 @@ The planned narrative spans his childhood, rise and reign. Current production
 priority is childhood through the prelude to the Lahore campaign, followed by the
 rest of his life before historical-character DLC production.
 
+The [mission development plan](docs/MISSION_DEVELOPMENT_PLAN.md) gives every
+playable sequence its next dramatic and gameplay target. Start with
+[The Words Between Us](docs/MESSAGE_FOLLOWUP.md), the opening message's optional
+question-and-report sequence. The [mission ledger](docs/PLAYABLE_MISSION_LEDGER.md)
+retains stable IDs and separates implemented prototypes from future work.
+
 ## Title and story
 
 The subtitle draws on the childhood smallpox that left Ranjit Singh with facial

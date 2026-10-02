@@ -14,7 +14,7 @@ fixtures position the character at interaction endpoints; this is **domain
 execution, not walking, navigation, collision, rendering or human playtesting**.
 It does not claim that the fixture's earlier childhood was played.
 
-The snapshot is an explicit 11-script dependency closure. The operator selects
+The snapshot is an explicit 12-script dependency closure (including the optional opening-message rules). The operator selects
 `tools/net/water-round.profile.json` by its exact file digest and separately pins
 the extracted Godot 4.5.1 executable. `source_revision` records the existing title
 revision context; the `files` map binds the actual workload bytes, including the

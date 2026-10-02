@@ -24,6 +24,7 @@ static func read(chapter: Node3D) -> Dictionary:
 		"orientation":
 			result.task="Explore the courtyard"
 			result.progress="Walk through the yard%s\nTurn your view left and right%s"%["  ·  done" if state.walked>=5.0 else "", "  ·  done" if state.looked>=0.6 else ""]
+			result.progress+="\nA courier is waiting with a sealed message. Find your bearings before you approach him."
 			result.controls="WASD  Walk     Mouse  Look     J / Esc  Journal and menu"
 		"letter":
 			result.controls="E  Speak / examine     WASD  Walk     Mouse  Look     J / Esc  Journal and menu"
@@ -157,4 +158,19 @@ static func read(chapter: Node3D) -> Dictionary:
 			result.show_target=true
 		_:
 			return {}
+	# Follow-up is optional and uses the same chapter state. It never opens a
+	# riding gate or invents knowledge merely because the HUD displays an objective.
+	if model.has_method("message_phase") and stage in ["riding", "sparring", "tracking", "ready"] and not model.mounted():
+		var followup: String = model.message_phase()
+		if followup == "dormant" and stage == "riding" and state.ride_gate == 0:
+			result.progress += "\nOptional: speak to the steward again about carrying these accounts to the trainer."
+		elif followup in ["clarify", "report"]:
+			result.title = "GUJRANWALA  /  THE WORDS BETWEEN US"
+			result.task = "Question the courier" if followup == "clarify" else "Carry your account to the trainer"
+			result.progress = "Ask what he actually saw, then take his answer to the trainer." if followup == "clarify" else "Tell the practice trainer what each speaker knows, and what remains uncertain."
+			result.progress += "\nYour riding and practice lessons remain available."
+			result.controls = "E  Speak     WASD  Walk     Mouse  Look     J / Esc  Remembered accounts"
+			result.target = Childhood.SITES.courier if followup == "clarify" else Childhood.SITES.spar
+			result.marker = "Courier · E" if followup == "clarify" else "Practice trainer · E"
+			result.show_target = true
 	return result

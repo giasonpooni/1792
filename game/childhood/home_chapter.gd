@@ -44,6 +44,9 @@ var _after_action := ""
 var _checkpoint_note := "No checkpoint yet. F5 keeps a separate manual save."
 var _message := "Buddh · I know the yard, the horse, and the voices. I do not yet know what lies beyond them."
 var gate_passage: Node3D
+var _message_speakers: Dictionary = {}
+var _message_choices: Array[String] = []
+var _message_action := ""
 
 func _ready() -> void:
 	avatar = get_parent().get_node("Player")
@@ -91,9 +94,11 @@ func _build_world() -> void:
 	for x in [6,12]:
 		for z in [-7,-1]: _box(Vector3(0.2, 3.4, 0.2), Vector3(x, 1.8, z), Color("735b43"), true)
 	for id in ["steward", "courier"]:
-		_box(Vector3(0.55, 1.6, 0.5), Model.SITES[id] + Vector3.UP * 0.8, Color("7e707f"), true)
+		var speaker := _box(Vector3(0.55, 1.6, 0.5), Model.SITES[id] + Vector3.UP * 0.8, Color("7e707f"), true)
+		_message_speakers[id] = speaker.get_parent()
 	_box(Vector3(0.8, 0.05, 0.5), Model.SITES.letter + Vector3(1, 0.7, 0), Color("e6d9b6"))
 	trainer = _box(Vector3(0.55, 1.7, 0.5), Model.SITES.spar + Vector3.UP * 0.85, Color("ab7149"), true)
+	_message_speakers["spar"] = trainer.get_parent()
 	for i in range(Model.GATES.size()):
 		var p: Vector3 = Model.GATES[i]
 		for side in [-1,1]: _box(Vector3(0.12, 1.5, 0.12), p + Vector3(side * 2.8, 0.7, 0), Color("ceba86"))
@@ -275,6 +280,11 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 func _menu_action(action: String) -> void:
+	if action.begins_with("message:"):
+		var kind := action.trim_prefix("message:")
+		if _paused and kind in _message_choices and _message_action.is_empty():
+			_message_action = kind
+		return
 	match action:
 		"resume": _resume()
 		"save": _save_requested = true
@@ -307,6 +317,8 @@ func _open_journal() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func _resume() -> void:
+	_message_choices.clear()
+	_message_action = ""
 	_paused = false
 	avatar.input_enabled = model.stage() != "caught"
 	avatar.set_physics_process(not model.mounted() and model.stage() != "caught")
@@ -317,6 +329,11 @@ func _resume() -> void:
 	_refresh()
 
 func _physics_process(delta: float) -> void:
+	if not _message_action.is_empty():
+		var action := _message_action
+		_message_action = ""
+		_run_message_action(action)
+		return
 	if _retry_requested:
 		_retry_requested = false
 		_restore_checkpoint()
@@ -389,6 +406,7 @@ func _interact() -> void:
 		_message = "Stop and dismount to speak or examine something."
 		return
 	if model.stage() == "escaped" and _interact_aftermath(): return
+	if _message_followup_interact(): return
 	var error := ""
 	if model.near("reflection"):
 		error = model.reflect()
@@ -412,6 +430,65 @@ func _interact() -> void:
 		else: error = "Look toward the nearby trace, then examine it [E]."
 	else: _message = "Read the current lesson above. Move, look, and practise in the world."
 	if not error.is_empty(): _message = error
+
+func _message_contact(site: String) -> bool:
+	if not _message_speakers.has(site) or model.mounted() or not avatar.is_on_floor(): return false
+	if avatar.global_position.distance_to(model.position()) > 0.25: return false
+	var at: Vector3 = Model.SITES[site]
+	if model.position().distance_to(at) > 3.0: return false
+	var eye := avatar.global_position + Vector3.UP * 1.35
+	var target := at + Vector3.UP * 1.35
+	var offset := target - eye
+	var forward: Vector3 = -avatar.pivot.global_basis.z
+	if Vector3(forward.x, 0, forward.z).normalized().dot(Vector3(offset.x, 0, offset.z).normalized()) < 0.15: return false
+	var query := PhysicsRayQueryParameters3D.create(eye, target, 1, [avatar.get_rid(), horse.get_rid()])
+	var hit := get_world_3d().direct_space_state.intersect_ray(query)
+	return hit.is_empty() or hit.collider == _message_speakers[site]
+
+func _message_followup_interact() -> bool:
+	if model.progress().heard.size() != 2 or model.stage() in ["active", "caught", "escaped"]: return false
+	var phase: String = model.message_phase()
+	var site := "steward" if phase == "dormant" else "courier" if phase == "clarify" else "spar"
+	if phase == "complete" or model.position().distance_to(Model.SITES[site]) > 3.0: return false
+	if not _message_contact(site):
+		_message = "Face the nearby speaker from clear, standing ground."
+		return true
+	var actions: Array = []
+	var choices: Array[String] = []
+	var body := ""
+	match phase:
+		"dormant":
+			body = "The steward lays a finger beside the seal.\n\nSteward · Clear at dawn. That is all the writer has promised. The trainer should hear what you know before you go out. What will you tell him?\n\nBuddh · That a road can change after a man has written about it."
+			actions = [["Carry the uncertainty to the trainer", "message:direct"], ["Question the courier first", "message:clarify"], ["Leave this for now", "resume"]]
+			choices.assign(["direct", "clarify"])
+		"clarify":
+			body = "The courier turns back toward you.\n\nBuddh · You said you heard riders. Did you see who they were?\n\nAsk him to separate what he heard from what he saw, then carry his answer to the trainer."
+			actions = [["Ask what he actually saw", "message:confirm"], ["Leave this for now", "resume"]]
+			choices.assign(["confirm"])
+		"report":
+			body = "The trainer lowers his practice weapon and waits.\n\nBuddh · The note says the trail was clear at dawn. The courier heard riders later. Neither account tells us who is there now."
+			if model.message_followup().choice == "clarify":
+				body += "\n\nI went back to ask him. He saw no faces."
+			actions = [["Give the trainer your account", "message:report"], ["Leave this for now", "resume"]]
+			choices.assign(["report"])
+	_show_dialog("THE WORDS BETWEEN US", body, actions)
+	_message_choices.assign(choices)
+	return true
+
+func _run_message_action(action: String) -> void:
+	if not _paused or action not in _message_choices: return
+	var site := "steward" if action in ["direct", "clarify"] else "courier" if action == "confirm" else "spar"
+	var error := "Face the same nearby speaker from clear, standing ground."
+	if _message_contact(site): error = model.message_action(action)
+	if error.is_empty():
+		match action:
+			"direct": _message = "Buddh · I will carry both accounts, and the uncertainty between them. Speak to the practice trainer."
+			"clarify": _message = "Buddh · Before I carry that warning, I want to hear what the courier actually saw."
+			"confirm": _message = "Courier · I heard hooves beyond the grove. I saw no faces. Do not turn a sound into a name."
+			"report":
+				_message = "Trainer · Then keep the two accounts separate. Train your hands here; keep your eyes open when you leave."
+	else: _message = error
+	_resume()
 
 func _seen(at: Vector3, reach: float) -> bool:
 	# Character-eye position, not the third-person camera: no inspecting through walls.
@@ -617,6 +694,8 @@ func _set_actions(specs: Array) -> void:
 	_journal_scroll.scroll_vertical = 0
 
 func _clear_pending_actions() -> void:
+	_message_choices.clear()
+	_message_action = ""
 	_interact_requested = false
 	_mount_requested = false
 	_strike_requested = false
