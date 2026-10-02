@@ -8,9 +8,11 @@ const WorkshopView := preload("res://workshops/workshop_world.gd")
 const BazaarPerformance := preload("res://youth/performance/bazaar_director.gd")
 const HawkScout := preload("res://scouting/hawk_scout.gd")
 const HomeScoutContacts := preload("res://scouting/home_scout_contacts.gd")
+const GroundFocus := preload("res://perception/ground_focus.gd")
 var bazaar_performance: Node
 var hawk_scout: Node3D
 var scout_contacts: Node3D
+var ground_focus: Node
 var workplace: Node3D
 var _workshop_action := ""
 var _workshop_choices: Array[String]=[]
@@ -25,9 +27,29 @@ func _ready() -> void:
 	hawk_scout=HawkScout.new();hawk_scout.name="HawkScout";add_child(hawk_scout);hawk_scout.bind(self,avatar,horse)
 	attacker.set_meta("hawk_scout_id","unknown_assailant");attacker.set_meta("hawk_scout_label","Unknown assailant")
 	hawk_scout.register_target("unknown_assailant",attacker,"Unknown assailant")
+	ground_focus=GroundFocus.new();ground_focus.name="GroundFocus";add_child(ground_focus);ground_focus.bind(self)
+	ground_focus.register_target("trainer",trainer,"Trainer","interaction")
+	ground_focus.register_target("mother",_mother,"Raj Kaur","ally")
+	ground_focus.register_target("bend_trace",_clue,"Ground trace","clue")
+	ground_focus.register_target("household_horse",horse,"Household horse","interaction",Vector3.UP*1.1)
+	ground_focus.register_target("unknown_assailant",attacker,"Unknown contact","contact",Vector3.UP*1.15)
+	ground_focus.register_target("household_guard",escort,"Household guard","ally",Vector3.UP*1.15)
+	for i in range(scout_contacts.contacts.size()):
+		ground_focus.register_target("distant_contact_%d"%i,scout_contacts.contacts[i],"Unknown contact","contact",Vector3.UP*1.15)
+	var smith: Node3D=workplace.find_child("FictionalSmith",true,false)
+	if is_instance_valid(smith): ground_focus.register_target("smith",smith,"Smith","interaction",Vector3.UP*1.25)
+	ground_focus.register_sound("workshop_hammer",workplace.hammer_audio,"Metal striking")
 	_refresh()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_Z:
+		if is_instance_valid(ground_focus):
+			if ground_focus.active: ground_focus.stop()
+			else:
+				var reason:=_focus_access()
+				if reason.is_empty(): ground_focus.start()
+				else: _message=reason;_refresh()
+		get_viewport().set_input_as_handled();return
 	if is_instance_valid(hawk_scout):
 		if hawk_scout.active:
 			var was_active: bool=bool(hawk_scout.active)
@@ -41,6 +63,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_F6 and is_instance_valid(bazaar_performance):
 		bazaar_performance.toggle_sound();get_viewport().set_input_as_handled();return
 	super._unhandled_input(event)
+
+func _focus_access() -> String:
+	if _paused or (is_instance_valid(hawk_scout) and hawk_scout.active): return "Return to the ground view before focusing."
+	if model.mounted() or model.stage() in ["active","caught"] or model.brawl_busy(): return "Focus requires a quiet moment on foot."
+	if Input.is_action_pressed("sprint"): return "Slow down before focusing."
+	return ""
 
 func _hawk_access() -> String:
 	if _paused: return "Close the current conversation or notebook before releasing the hawk."
@@ -58,6 +86,7 @@ func _hawk_access() -> String:
 func _launch_hawk() -> void:
 	var error:=_hawk_access()
 	if error.is_empty(): error=hawk_scout.launch()
+	if error.is_empty() and is_instance_valid(ground_focus): ground_focus.stop()
 	_message=error if not error.is_empty() else "Buddh releases the hawk. Its view can mark only hostiles it actually sees."
 	_refresh()
 	if error.is_empty():
@@ -65,6 +94,7 @@ func _launch_hawk() -> void:
 		if is_instance_valid(_caption): _caption.hide()
 
 func _show_dialog(title: String,body: String,actions: Array) -> void:
+	if is_instance_valid(ground_focus): ground_focus.stop()
 	super._show_dialog(title,body,actions)
 	if is_instance_valid(bazaar_performance): bazaar_performance.sample(false)
 
@@ -102,6 +132,7 @@ func _open_quartermaster() -> void:
 		"tools": _workshop_button("Return both tool bundles to household stock","deliver")
 
 func _open_journal() -> void:
+	if is_instance_valid(ground_focus): ground_focus.stop()
 	super._open_journal()
 	if FileAccess.file_exists(YouthState.BRAWL_SAVE):
 		_workshop_button("Import prior youth/visual save · replaces this whole run","import")
@@ -157,6 +188,9 @@ func _physics_process(delta: float) -> void:
 			if is_instance_valid(_caption): _caption.hide()
 		hawk_scout.sample(int(model.progress().tick))
 	_sync_workshop()
+	if is_instance_valid(ground_focus):
+		if ground_focus.active and not _focus_access().is_empty(): ground_focus.stop()
+		ground_focus.sample(int(model.progress().tick))
 
 func _sync_workshop() -> void:
 	if not is_instance_valid(workplace): return
@@ -171,6 +205,7 @@ func _sync_water() -> void:
 
 func _apply() -> void:
 	super._apply();_sync_workshop()
+	if is_instance_valid(ground_focus): ground_focus.clear()
 	if is_instance_valid(hawk_scout):
 		if hawk_scout.active: hawk_scout.return_to_player()
 		hawk_scout.clear_tags()
@@ -185,7 +220,7 @@ func workshop_hint() -> String:
 func _refresh() -> void:
 	super._refresh();_sync_workshop()
 	if is_instance_valid(_hud) and is_instance_valid(hawk_scout) and not hawk_scout.active:
-		_hud.text+="\nX: release hawk scout · aerial tags retain only the last seen position"
+		_hud.text+="\nX: release hawk scout · Z: Focus · tags retain the last seen position"
 	if not is_instance_valid(_hud) or not model.has_economy():
 		if is_instance_valid(bazaar_performance): bazaar_performance.sample()
 		return
@@ -194,6 +229,8 @@ func _refresh() -> void:
 		_hud.text="1792 · BUDDH SINGH · HOME COURTYARD\n\nSMITH'S COMMISSION · "+workshop_hint()+"\nHousehold coffers %d · timber %d · stored tools %d · personal purse %d" % [ledger.treasury,ledger.stock.timber,ledger.stock.tools,ledger.purse]
 		_hud.text+="\nE speak · B supplies · J journal · F5/F9 save/load · F7 visual comparison"
 	else: _hud.text+="\nWORKSHOP · "+workshop_hint()
+	if is_instance_valid(ground_focus) and not hawk_scout.active and model.workshop_phase() in ["fuel","working","ready","tools"] and not model.brawl_busy():
+		_hud.text+="\nZ: Focus · X: release hawk scout"
 	if is_instance_valid(art) and is_instance_valid(art.detail) and is_instance_valid(art.detail.hud): art.detail.hud.sample()
 	if is_instance_valid(bazaar_performance): bazaar_performance.sample()
 

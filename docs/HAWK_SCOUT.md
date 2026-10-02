@@ -36,15 +36,22 @@ Flight is clamped to that envelope and checks collision along each movement segm
 
 A tag is admitted only when:
 
-1. the target is registered as scoutable and currently visible;
-2. the target falls inside the hawk camera's bounded view cone and range;
-3. the hawk has direct physics line of sight to the target.
+1. the target belongs to the bound Home chapter, is registered as scoutable, and is currently visible;
+2. the target is within **42 m of the bird's sensor position**;
+3. the target falls inside the chase camera's reticle view cone;
+4. both the bird sensor and the chase camera have direct physics line of sight to the target.
+
+`sensor_position()` explicitly returns the bird body's world position. The camera controls aiming and presentation, while the bird supplies acquisition range and sensor visibility. A chase camera peeking around a wall cannot acquire a contact hidden from the bird. A contact visible to the bird but hidden from the camera also cannot be tagged through the displayed obstruction. The camera offset neither extends nor shortens the bird's 42 m range.
 
 The initial Home integration provides two **fictional distant scout contacts** behind the household sightline and also registers the existing **Unknown Assailant**. The distant contacts are deterministic projections of the existing chapter tick; they add no second clock or persistent enemy ledger. Future hostile actors may join the **hawk_scout_hostile** group and provide **hawk_scout_id**, **hawk_scout_label**, and optional **hawk_scout_height** metadata without modifying the flight controller.
+
+Group discovery and explicit registration accept only descendants of the bound chapter. A global SceneTree group cannot expose actors from another loaded chapter to this observer. Registration is also pruned if a target is moved outside that chapter.
 
 A successful tag stores the target identity, last observed world position, observation tick, and expiry tick.
 
 The marker stays at the **last observed position**. It does not follow an enemy through walls after contact is lost. Re-observation can refresh the marker.
+
+A removed target is pruned from the live registration before accessing its node. Its already acquired last-seen observation remains until the original expiry tick; target removal does not erase or refresh observation memory.
 
 This is intentionally different from omniscient wall tracking: the hawk extends the protagonist's observation surface, while the game still distinguishes observation from continuing truth.
 
@@ -70,7 +77,7 @@ The next art step can replace only the bird presentation while preserving the sa
 
 ## Verification
 
-The native **game/tests/test_hawk_scout.gd** suite checks radius and altitude bounds, front-vs-rear view admission, bounded last-seen lifetime, attachment to the current composed Home chapter, player-input/camera handoff, campaign-state isolation, clear-line-of-sight tagging, no live tracking after target movement, occlusion refusal, clock-based expiry, and restoration of the original player camera and input.
+The native **game/tests/test_hawk_scout.gd** suite checks radius and altitude bounds, front-vs-rear view admission, bounded last-seen lifetime, attachment to the current composed Home chapter, player-input/camera handoff, campaign-state isolation, clear-line-of-sight tagging, no live tracking after target movement, occlusion refusal, clock-based expiry, and restoration of the original player camera and input. Native physics regressions separately cover a camera-clear/bird-blocked contact, a bird-clear/camera-blocked contact, both directions of camera/sensor range disagreement, safe removal of a freed target while preserving its last-seen observation until expiry, and refusal of visible in-range contacts outside the observer's bound chapter.
 
 Run it through the retained full suite with:
 

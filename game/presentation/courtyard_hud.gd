@@ -26,7 +26,7 @@ func build(chapter: Node3D) -> void:
 	task=_label(17,Color("ece8dc"));v.add_child(task);narrator=_label(13,Color("cbc6b4"));v.add_child(narrator)
 	bottom=_panel();v=VBoxContainer.new();v.add_theme_constant_override("separation",6);bottom.add_child(v)
 	words=_label(15,Color("eee9da"));v.add_child(words)
-	var controls:=_label(11,Color("bcbcae"));controls.text="E  Speak    B  Accounts    J  Journal    F5 / F9  Save / Load    F7  Visual controls";v.add_child(controls)
+	var controls:=_label(11,Color("bcbcae"));controls.text="E  Speak    Z  Focus    X  Hawk    B  Accounts    J  Journal    F5 / F9  Save / Load    F7  Visual controls";v.add_child(controls)
 	sample()
 func sample() -> void:
 	if not is_instance_valid(_chapter): return

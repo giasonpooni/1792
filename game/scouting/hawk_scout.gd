@@ -40,6 +40,8 @@ func bind(chapter_node: Node3D, avatar_node: CharacterBody3D, horse_node: Charac
 func register_target(target_id: String, node: Node3D, label: String) -> void:
 	if target_id.is_empty() or not is_instance_valid(node):
 		return
+	if not is_instance_valid(chapter) or not chapter.is_ancestor_of(node):
+		return
 	_targets[target_id] = {"node": node, "label": label}
 
 func launch() -> String:
@@ -164,21 +166,36 @@ func tag_best_target() -> Dictionary:
 	if not active:
 		return {"error": "Launch the hawk before scouting.", "target_id": ""}
 	_discover_group_targets()
-	var eye := camera.global_position
+	var sensor := sensor_position()
+	var view_origin := camera.global_position
 	var forward := -camera.global_basis.z
 	var best_id := ""
 	var best_score := -1.0
 	var best_point := Vector3.ZERO
-	for id in _targets:
+	for id in _targets.keys():
 		var target_record: Dictionary = _targets[id]
+		if not is_instance_valid(target_record.node):
+			_targets.erase(id)
+			continue
 		var node: Node3D = target_record.node
-		if not is_instance_valid(node) or not node.visible or not node.is_visible_in_tree():
+		if not chapter.is_ancestor_of(node):
+			_targets.erase(id)
+			continue
+		if not node.visible or not node.is_visible_in_tree():
 			continue
 		var point := node.global_position + Vector3.UP * float(node.get_meta("hawk_scout_height", 1.15))
-		var score := Rules.view_score(eye, forward, point)
+		var sensor_distance := sensor.distance_to(point)
+		if not sensor.is_finite() or not point.is_finite() or sensor_distance < 0.05 or sensor_distance > Rules.TAG_RANGE:
+			continue
+		# The chase camera provides the reticle, not the bird's observation origin.
+		# Its offset must neither extend nor shorten the sensor's acquisition range.
+		var score := _camera_view_score(view_origin, forward, point, sensor_distance)
 		if score < 0.0 or score <= best_score:
 			continue
-		if not _line_of_sight(node, eye, point):
+		if not _line_of_sight(node, sensor, point):
+			continue
+		# A bird-visible contact still needs to be visible in the player's chase view.
+		if not _line_of_sight(node, view_origin, point):
 			continue
 		best_id = String(id)
 		best_score = score
@@ -193,6 +210,20 @@ func tag_best_target() -> Dictionary:
 	_status = "Tagged %s at its last observed position." % String(target_record.label)
 	_update_hud()
 	return {"error": "", "target_id": best_id, "observation": observation.duplicate(true)}
+
+func sensor_position() -> Vector3:
+	return _bird.global_position
+
+func _camera_view_score(view_origin: Vector3, forward: Vector3, point: Vector3, sensor_distance: float) -> float:
+	if not view_origin.is_finite() or not forward.is_finite() or forward.length_squared() < 0.000001:
+		return -1.0
+	var view_offset := point - view_origin
+	if view_offset.length_squared() < 0.0025:
+		return -1.0
+	var facing := forward.normalized().dot(view_offset.normalized())
+	if facing < Rules.TAG_FOV_DOT:
+		return -1.0
+	return facing * 2.0 - sensor_distance / Rules.TAG_RANGE
 
 func observations() -> Array:
 	var result: Array = []
@@ -218,6 +249,8 @@ func _discover_group_targets() -> void:
 		if not raw is Node3D:
 			continue
 		var node := raw as Node3D
+		if not chapter.is_ancestor_of(node):
+			continue
 		var target_id := String(node.get_meta("hawk_scout_id", node.name))
 		var label := String(node.get_meta("hawk_scout_label", node.name))
 		register_target(target_id, node, label)
@@ -274,7 +307,7 @@ func _update_hud() -> void:
 		return
 	var radius := Vector2(global_position.x - launch_origin.x, global_position.z - launch_origin.z).length()
 	var altitude := global_position.y - launch_origin.y
-	_hud.text = "HAWK SCOUT · authored gameplay sensor\nRange %.1f / %.0f m · altitude %.1f m\nWASD fly · Shift fast · Space/Ctrl altitude · mouse look\nE / left click tag · X / Esc return\n%s" % [radius, Rules.MAX_RADIUS, altitude, _status]
+	_hud.text = "HAWK SCOUT\nRange %.1f / %.0f m · altitude %.1f m\nWASD fly · Shift fast · Space/Ctrl altitude · mouse look\nE / left click tag · X / Esc return\n%s" % [radius, Rules.MAX_RADIUS, altitude, _status]
 
 func _build_visuals() -> void:
 	_bird = Node3D.new()

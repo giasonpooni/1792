@@ -39,6 +39,14 @@ jobs:
           sudo apt-get install --yes --no-install-recommends xvfb xauth libgl1-mesa-dri
           python3 tools/capture_home_art.py --xvfb --godot "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --output test-results/home-art-captures
           cp "$HOME/.local/share/godot/app_userdata/1792/home-art-tests.json" test-results/
+          SOURCE_COMMIT="$(git rev-parse HEAD)" \
+            SOURCE_CONTENT_SHA256="$(git archive --format=tar HEAD | sha256sum | cut -d ' ' -f1)" \
+            GROUND_FOCUS_OUTPUT="$PWD/test-results/ground-focus-captures" timeout 120 xvfb-run -a \
+            "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --path game \
+            --rendering-method gl_compatibility --audio-driver Dummy --fixed-fps 60 \
+            --script res://tests/render_ground_focus.gd 2>&1 | tee test-results/ground-focus-render.log
+          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/ground-focus-render.log
+          grep -q 'GROUND_FOCUS_RENDER: .* captures, 0 failures' test-results/ground-focus-render.log
       - name: Retain source and execution identity
         if: always()
         run: |

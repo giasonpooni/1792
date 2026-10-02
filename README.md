@@ -112,6 +112,7 @@ scenarios, not completed transitions in the childhood-to-Lahore biography.
 | Q / left click / C | Childhood guard / counter / quiet approach |
 | G / J / F1 | Follow or hold where available / journal / pause |
 | X | Release / recall the bounded hawk scout in the Home chapter |
+| Z | Toggle ground Focus: sustained sight, last-seen memory and short motion estimates |
 | F2 | Paused reconstruction notebook in the home chapter |
 | F5 / F9 / R | Save / load / restore childhood checkpoint |
 
@@ -126,6 +127,10 @@ The composed Home chapter now includes a third-person hawk scouting prototype. P
 Two fictional distant scout contacts sit beyond the household's ordinary ground sightline. A tag records only the **last observed position** for 30 seconds of the existing chapter clock; it does not follow a target through walls. The hawk has a 52 m horizontal release radius and a 5–24 m altitude envelope. Buddh's authoritative body remains in place, campaign state continues on the existing clock, and transient tags are cleared by save/checkpoint rehydration rather than carried backward through a rewind.
 
 [Controls, observation semantics, limits and qualification](docs/HAWK_SCOUT.md)
+
+Ground **Focus** uses the same character-eye visibility checks as Home interactions. A continuous 45-tick look marks a visible contact, speaker, horse or ground trace. Color and symbols describe the observed affordance; unknown people remain unknown. **E** still performs the existing inspection or conversation. Focus does not grant journal knowledge or complete a task.
+
+Last-seen markers age on the existing chapter clock. Dashed two-second motion estimates use two observed positions, never a hidden patrol route. Actual nearby hammer playback can produce a coarse directional sound cue, without a concealed person's identity or exact location. Dialogues, sprinting, mounting and hawk scouting end Focus; whole-world restoration clears its transient records. [Controls, limits and qualification](docs/GROUND_FOCUS.md).
 
 ## Architecture
 
