@@ -20,7 +20,6 @@ var _right_wing: MeshInstance3D
 var _camera_pivot: Node3D
 var _hud_layer: CanvasLayer
 var _hud: Label
-var _marker_root: Node3D
 var _targets: Dictionary = {}
 var _tags: Dictionary = {}
 
@@ -247,7 +246,7 @@ func _write_tag(observation: Dictionary) -> void:
 	else:
 		marker = Node3D.new()
 		marker.name = "Tag_" + id
-		_marker_root.add_child(marker)
+		chapter.add_child(marker)
 		var pin := MeshInstance3D.new()
 		var sphere := SphereMesh.new()
 		sphere.radius = 0.12
@@ -301,10 +300,6 @@ func _build_visuals() -> void:
 	camera.fov = 65.0
 	camera.current = false
 	_camera_pivot.add_child(camera)
-
-	_marker_root = Node3D.new()
-	_marker_root.name = "LastSeenTags"
-	add_child(_marker_root)
 
 	_hud_layer = CanvasLayer.new()
 	_hud_layer.layer = 12
