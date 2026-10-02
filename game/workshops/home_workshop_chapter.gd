@@ -146,17 +146,16 @@ func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
 	if is_instance_valid(scout_contacts): scout_contacts.sample(int(model.progress().tick))
 	if is_instance_valid(hawk_scout):
+		var returned_from_hawk: bool=false
 		if hawk_scout.active and (_paused or model.mounted() or model.stage() in ["active","caught"] or model.brawl_busy()):
 			hawk_scout.return_to_player()
+			returned_from_hawk=true
+		if returned_from_hawk: _refresh()
 		if hawk_scout.active:
 			hawk_scout.step(delta)
-		hawk_scout.sample(int(model.progress().tick))
-		if hawk_scout.active:
 			if is_instance_valid(_hud): _hud.hide()
 			if is_instance_valid(_caption): _caption.hide()
-		elif not _paused:
-			if is_instance_valid(_hud): _hud.show()
-			if is_instance_valid(_caption): _caption.show()
+		hawk_scout.sample(int(model.progress().tick))
 	_sync_workshop()
 
 func _sync_workshop() -> void:
