@@ -79,7 +79,7 @@ func release_from_owner() -> String:
 		return "Hawk scout is not bound to a protagonist."
 	_origin = _owner.global_position
 	global_position = _origin + Vector3.UP * 2.2
-	_yaw = _owner.pivot.global_rotation.y
+	_yaw = (_owner.get_node("CameraPivot") as Node3D).global_rotation.y
 	_pitch = -0.22
 	rotation = Vector3(_pitch,_yaw,0)
 	active = true
