@@ -56,7 +56,7 @@ Canvas/audio flags and Home save bytes through cancellation, forced overlay
 removal and host teardown. This qualifies the visit boundary; individual tale
 routes and cinematic presentation require their separate playable checks.
 
-The journey suite walks all thirteen fresh routes with keyboard inputs into the
+The journey suite walks all fourteen fresh routes with keyboard inputs into the
 existing player motor, and steers/stops Desi through the existing horse motor.
 It invokes dialogue only after actual proximity and sight admission. It observes
 a lagging companion, waits for physical arrival, walks around a well upright
@@ -111,3 +111,31 @@ conversation cameras are simple procedural presentation. Finished art, voiced
 performances, bespoke action animation and a sound pass remain future work.
 Default-launcher and CI registration are separate integration decisions; the
 new composition and checks are runnable directly without editing those files.
+
+## Screened household visit
+
+Select **The Account Beyond the Curtain** at the same bench. Its seven actions
+use the existing player and escort motors. The public hearing mark admits direct
+speech across its authored opaque screen; other obstructions still refuse it.
+Account inspection remains separate from residential entry. Four local bundles
+are counted: choose two for the runner or retain all four and send a remount
+inspection request. Issued bundles visibly travel with the runner after receipt.
+An escort request and delivery beyond the courtyard remain unconfirmed.
+
+The original thirteen tales and choice histories are retained. Progress v1 and
+visit checkpoints v2/v1 keep their existing formats; all new visual and supply
+state is derived from the accepted choice prefix. See
+[the implementation and evidence boundaries](REGENCY_ACCESS_DESIGN.md).
+
+```sh
+godot --headless --fixed-fps 60 --path game --script res://tests/test_regency_access.gd
+godot --fixed-fps 60 --path game --rendering-method gl_compatibility --script res://tests/render_regency_access.gd
+```
+
+Qualification for this addition on 2 October 2026: the full inherited
+`tools/run_checks.py` run passed with Godot 4.5.1. State **607/0**, lifecycle
+**50/0**, native journeys **490/0**, existing checkpoints **124/0**, and focused
+regency access **462/0** passed/failed. Three real software-rendered captures
+passed and were visually inspected. CI retains the render manifest and screenshots
+alongside its source archive. These results supersede the narrower expansion
+counts above; they do not claim human playtesting or completed art.

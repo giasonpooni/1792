@@ -7,6 +7,7 @@ const State = preload("res://history/punjab_chiefs_state.gd")
 const Player = preload("res://player/player.tscn")
 const Horse = preload("res://mounts/horse.tscn")
 const Costume = preload("res://presentation/costume_proxy.gd")
+const RegencyAccess = preload("res://history/regency_access.gd")
 const CHECKPOINT_SCHEMA := "1792.punjab-chiefs.visit.v2"
 const LEGACY_CHECKPOINT_SCHEMA := "1792.punjab-chiefs.visit.v1"
 var model = State.new()
@@ -47,6 +48,8 @@ var _awaiting_opening := true
 var _well_water: MeshInstance3D
 var _covered_litter: Node3D
 var _litter_station_id := ""
+var _regency_access: RefCounted
+var screen_barrier: StaticBody3D
 
 func configure(id: String) -> void:
 	sequence_id = id
@@ -222,8 +225,12 @@ func _build_stage() -> void:
 	_stage.add_child(_marker)
 
 func _build_sequence_dressing(night: bool) -> void:
-	# These authored silhouettes and light sources decorate the existing routes.
-	# They own no collider, narrative progress, carrier motor or checkpoint fields.
+	if sequence_id == "audience":
+		_regency_access = RegencyAccess.new(self)
+		_regency_access.build()
+		screen_barrier = _regency_access.screen_barrier
+	# The remaining silhouettes and lights decorate existing routes. They own no
+	# collider, narrative progress, carrier motor or checkpoint fields.
 	if night:
 		for definition in model.sequence.stations:
 			_build_lamp(_point(definition.position) + Vector3(1.6, 0, 1.1))
@@ -304,6 +311,7 @@ func _build_dispatch_table(anchor: Node3D) -> void:
 	reed.rotation.y = 0.45
 
 func _sync_story_visuals() -> void:
+	if _regency_access != null: _regency_access.sync_visuals()
 	if not is_instance_valid(_covered_litter): return
 	var following: bool = is_instance_valid(companion) and companion_id == _litter_station_id and model.flags.get("escort_following", false)
 	var destination: Node3D = companion if following else _stage
@@ -581,6 +589,9 @@ func interaction_error() -> String:
 	var position_value: Vector3 = horse.global_position if mounted else avatar.global_position
 	if Vector2(position_value.x-target.x,position_value.z-target.z).length()>2.7:
 		return "Come closer to "+_station_label(beat.target)+"."
+	if _regency_access != null:
+		var admission: String = _regency_access.interaction_error(position_value)
+		if not admission.is_empty(): return admission
 	var exclusions: Array[RID] = [avatar.get_rid()]
 	if is_instance_valid(horse): exclusions.append(horse.get_rid())
 	if actors.has(beat.target): exclusions.append(actors[beat.target].get_rid())
@@ -617,6 +628,7 @@ func interact() -> String:
 	var target := target_position()
 	_cut_camera.position = avatar.global_position+Vector3(3.1,2.3,3.3)
 	_cut_camera.look_at((avatar.global_position+target)*0.5+Vector3.UP)
+	if _regency_access != null and beat.target == "raj_screen": _regency_access.compose_camera(_cut_camera)
 	_cut_camera.make_current()
 	return ""
 
@@ -711,6 +723,12 @@ func _refresh() -> void:
 
 func can_complete() -> bool:
 	return model.complete()
+
+func audience_status() -> Dictionary:
+	return _regency_access.audience_status() if _regency_access != null else {}
+
+func logistics_outcome() -> Dictionary:
+	return _regency_access.logistics_outcome() if _regency_access != null else {}
 
 func reject_return(error: String) -> void:
 	_returned = false
@@ -871,6 +889,7 @@ func _flat_distance(a: Vector3,b: Vector3) -> float:
 
 func _clear_avatar_at(at: Vector3, extra_rid := RID()) -> bool:
 	if absf(at.x)>22 or absf(at.z)>22 or at.y< -0.02 or at.y>0.25: return false
+	if _regency_access != null and not _regency_access.pose_allowed(at): return false
 	var query := PhysicsShapeQueryParameters3D.new()
 	var shape := CapsuleShape3D.new()
 	shape.radius = 0.35

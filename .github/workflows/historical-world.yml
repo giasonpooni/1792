@@ -47,6 +47,19 @@ jobs:
           mkdir -p test-results/screenshots
           cp "$HOME/.local/share/godot/app_userdata/1792/"historical-world-*.png test-results/screenshots/
           cp "$HOME/.local/share/godot/app_userdata/1792/"historical-world-tests.json test-results/
+      - name: Render the admitted regency hearing and actual dispatch journey
+        shell: bash
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          set -euo pipefail
+          timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy --script res://tests/render_regency_access.gd 2>&1 | tee test-results/regency-access-render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/regency-access-render.log; then
+            exit 1
+          fi
+          grep -q 'REGENCY_ACCESS_RENDER: 3 captures; 0 failures' test-results/regency-access-render.log
+          cp "$HOME/.local/share/godot/app_userdata/1792/"regency-access-*.png test-results/screenshots/
+          cp "$HOME/.local/share/godot/app_userdata/1792/"regency-access-manifest.json test-results/
       - name: Retain exact source and runtime identity
         if: always()
         shell: bash

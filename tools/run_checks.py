@@ -150,6 +150,8 @@ def main() -> int:
         "punjab-chiefs-journeys", "PUNJAB_CHIEFS_JOURNEY_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_punjab_chiefs_checkpoint.gd"],
         "punjab-chiefs-checkpoint", "PUNJAB_CHIEFS_CHECKPOINT_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_regency_access.gd"],
+        "regency-access", "REGENCY_ACCESS_TESTS:")
     return 0
 
 

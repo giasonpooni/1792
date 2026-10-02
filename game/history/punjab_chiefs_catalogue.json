@@ -2941,6 +2941,338 @@
         "sky": "#c0b196"
       },
       "display_role": "Attendant at the settlement hearing"
+    },
+    {
+      "id": "audience",
+      "title": "The Account Beyond the Curtain",
+      "period": "1792; an authored early-regency household visit",
+      "role": "Fictional adult household clerk",
+      "display_role": "Household clerk",
+      "location": "A compressed public working court at Gujranwala",
+      "source_ids": [
+        "centenary_1939",
+        "buxi_1992"
+      ],
+      "source_pages": [
+        "Centenary Memorial: printed 99–100 / PDF 127–128",
+        "Buxi: printed 6–7 / PDF 20–21"
+      ],
+      "source_kind": "early_regency_context_with_original_household_audience",
+      "adaptation": "Raj Kaur is Ranjit Singh's mother, distinct from the Nakai wife and paternal aunt of the same name. The source IDs support only the existing regency context. The Memorial's 1790 succession and the project's 1792 frame remain distinct. This hearing, its screen, all dialogue, fictional adult staff, courtyard, four grain bundles, orders and local outcomes are original dramatic reconstruction (D/C), not an authenticated event, account ledger or quotation. Privacy does not imply unauditable revenue, universal male exclusion or a female guard corps. A receipt and local arrival do not prove distant delivery. This optional telling changes no Home resources.",
+      "opening": "A runner waits for an answer before the road detail sets out. Four grain bundles stand beside the account desk. Raj Kaur will hear a report from behind the household screen; the records are in the working court. You are an adult clerk, carrying requests rather than ruling in her place.\n\nThis visit, dialogue and small supply account are original reconstruction. They are not a recorded Raj Kaur hearing. The visit's decisions remain within this telling.",
+      "palette": {
+        "ground": "#9c835f",
+        "sky": "#c2c6b8"
+      },
+      "stations": [
+        {
+          "id": "attendant",
+          "label": "Audience attendant",
+          "kind": "npc",
+          "position": [
+            -9,
+            0,
+            8
+          ]
+        },
+        {
+          "id": "raj_screen",
+          "label": "Raj Kaur • public hearing mark",
+          "kind": "screen",
+          "position": [
+            0,
+            0,
+            -6
+          ]
+        },
+        {
+          "id": "dispatch_table",
+          "label": "Inspectable account desk",
+          "kind": "bundle",
+          "position": [
+            -9,
+            0,
+            -1
+          ]
+        },
+        {
+          "id": "warband_runner",
+          "label": "Road detail runner",
+          "kind": "npc",
+          "position": [
+            9,
+            0,
+            2
+          ]
+        },
+        {
+          "id": "departure_gate",
+          "label": "Courtyard departure gate",
+          "kind": "gate",
+          "position": [
+            10,
+            0,
+            -14
+          ]
+        }
+      ],
+      "beats": [
+        {
+          "id": "audience_permission",
+          "target": "attendant",
+          "mode": "interact",
+          "objective": "Ask the attendant how to deliver your report.",
+          "line": "Attendant: She will hear you. Stand at the outer mark and speak for yourself. You need no permission to inspect the totals at the working desk. This admission does not open the private room.",
+          "choices": [
+            {
+              "id": "audience_direct",
+              "label": "Request a direct hearing at the screen",
+              "line": "You are admitted to address Raj Kaur directly from the public hearing mark.",
+              "effects": {
+                "audience_granted": true,
+                "public_report": false
+              }
+            },
+            {
+              "id": "audience_threshold",
+              "label": "Deliver a brief report from the public threshold",
+              "line": "The attendant admits your brief report. You will speak directly from the outer mark; no one needs to repeat your words.",
+              "effects": {
+                "audience_granted": false,
+                "public_report": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "audience_hearing",
+          "target": "raj_screen",
+          "mode": "interact",
+          "objective": "Address Raj Kaur from the public hearing mark.",
+          "line": "Raj Kaur, behind the screen: The room may be private. The account must answer to someone. Which part of your request needs a witness?",
+          "choices": [
+            {
+              "id": "audience_totals",
+              "label": "Ask for witnessed totals",
+              "line": "Raj Kaur: Let the clerk count in the working court. Write what is counted, and who saw it.",
+              "effects": {
+                "totals_open": true,
+                "witnessed_totals": true,
+                "names_private": false
+              }
+            },
+            {
+              "id": "audience_privacy",
+              "label": "Protect dependants’ names while opening the totals",
+              "line": "Raj Kaur: Keep their names off the public copy. The quantity and the receiver must still be inspectable.",
+              "effects": {
+                "totals_open": true,
+                "witnessed_totals": false,
+                "names_private": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "audience_count",
+          "target": "dispatch_table",
+          "mode": "interact",
+          "objective": "Inspect the four bundles and the remount request.",
+          "line": "The account lists four grain bundles. The runner has also asked for a fresh horse. There is a request on paper, but no inspected animal here. The desk can be inspected without entering the private room.",
+          "choices": [
+            {
+              "id": "audience_grain_count",
+              "label": "Count the four grain bundles",
+              "line": "You witness four bundles. The count is local and finite; no estate income or hidden treasury has been inferred.",
+              "effects": {
+                "stock_counted": true,
+                "grain_count_witnessed": true,
+                "remount_note_checked": false
+              }
+            },
+            {
+              "id": "audience_remount_note",
+              "label": "Check the remount note against the counted stock",
+              "line": "The note requests an inspection, not a promised horse. You also verify the same four bundles before carrying the request.",
+              "effects": {
+                "stock_counted": true,
+                "grain_count_witnessed": false,
+                "remount_note_checked": true
+              }
+            }
+          ],
+          "requires_flags": [
+            "totals_open"
+          ]
+        },
+        {
+          "id": "audience_dispatch",
+          "target": "raj_screen",
+          "mode": "interact",
+          "objective": "Request one bounded order for the waiting runner.",
+          "line": "Raj Kaur, behind the screen: We can issue two bundles and keep two here, or keep the grain and send a request to inspect a remount. One immediate need must wait. Which request will you carry?",
+          "choices": [
+            {
+              "id": "audience_issue",
+              "label": "Request two bundles for the road detail",
+              "line": "Raj Kaur authorizes two of the four bundles. They will be handed to the runner when he acknowledges the order. Two remain at the desk.",
+              "effects": {
+                "grain_issued": true,
+                "remount_requested": false
+              }
+            },
+            {
+              "id": "audience_inspect",
+              "label": "Keep the grain; request a remount inspection",
+              "line": "Raj Kaur retains all four bundles and authorizes an inspection request. No horse has been promised, bought or supplied.",
+              "effects": {
+                "grain_issued": false,
+                "remount_requested": true
+              }
+            }
+          ],
+          "requires_flags": [
+            "stock_counted"
+          ]
+        },
+        {
+          "id": "audience_recipient",
+          "target": "warband_runner",
+          "mode": "interact",
+          "objective": "Obtain the runner’s acknowledgement and accompany him.",
+          "line": "Runner: Read what I am receiving. I will not tell the riders a horse is coming if the paper promises only a look at one. I will walk with you to the gate.",
+          "choices": [
+            {
+              "id": "audience_read_back",
+              "label": "Read the order together",
+              "line": "The runner reads the limits back. He takes the written order and any issued bundles, then follows you toward the gate.",
+              "effects": {
+                "dispatch_received": true,
+                "order_read_back": true,
+                "sealed_receipt": false,
+                "escort_following": true
+              }
+            },
+            {
+              "id": "audience_sealed",
+              "label": "Keep a sealed copy with a named receipt",
+              "line": "The runner acknowledges the limits and the sealed copy. He takes the order and any issued bundles, then follows you toward the gate.",
+              "effects": {
+                "dispatch_received": true,
+                "order_read_back": false,
+                "sealed_receipt": true,
+                "escort_following": true
+              }
+            }
+          ],
+          "requires_flags": [
+            "stock_counted"
+          ]
+        },
+        {
+          "id": "audience_departure",
+          "target": "departure_gate",
+          "mode": "escort",
+          "objective": "Reach the departure gate with the actual runner.",
+          "line": "The runner has reached the courtyard gate beside you. You can request a household guard for his onward journey, or keep the post at home filled. A request is not a deployed guard.",
+          "choices": [
+            {
+              "id": "audience_escort",
+              "label": "Request one household escort",
+              "line": "You record an escort request beside the order. A guard’s acceptance and onward departure remain unconfirmed.",
+              "effects": {
+                "departure_witnessed": true,
+                "escort_requested": true,
+                "home_guard_retained": false
+              }
+            },
+            {
+              "id": "audience_home_post",
+              "label": "Keep the guard’s household post filled",
+              "line": "You make no escort request. The runner is here at the gate; his journey beyond it remains unconfirmed.",
+              "effects": {
+                "departure_witnessed": true,
+                "escort_requested": false,
+                "home_guard_retained": true
+              }
+            }
+          ],
+          "requires_flags": [
+            "dispatch_received",
+            "escort_following"
+          ]
+        },
+        {
+          "id": "audience_record",
+          "target": "dispatch_table",
+          "mode": "interact",
+          "objective": "Return to the desk and record only the witnessed result.",
+          "line": "The account has a finite stock, one authorized order and a named recipient. You saw the runner reach this gate. You did not see a distant delivery, a remount arrive or a guard take the road.",
+          "choices": [
+            {
+              "id": "audience_register",
+              "label": "Record the order and local arrival",
+              "line": "You enter the authorization, the recipient and the local arrival together. The register leaves later delivery open.",
+              "effects": {
+                "receipt_recorded": true,
+                "register_copy": true,
+                "recipient_copy": false
+              }
+            },
+            {
+              "id": "audience_receipt_copy",
+              "label": "File the recipient’s receipt beside the count",
+              "line": "You file the named receipt beside the witnessed count and local arrival. The register leaves later delivery open.",
+              "effects": {
+                "receipt_recorded": true,
+                "register_copy": false,
+                "recipient_copy": true
+              }
+            }
+          ],
+          "requires_flags": [
+            "departure_witnessed"
+          ]
+        }
+      ],
+      "endings": [
+        {
+          "requires_flags": [
+            "grain_issued",
+            "escort_requested",
+            "receipt_recorded"
+          ],
+          "text": "Two bundles have been issued and carried to the courtyard gate; two remain here. An escort is requested. No guard departure or distant delivery has yet been witnessed."
+        },
+        {
+          "requires_flags": [
+            "grain_issued",
+            "home_guard_retained",
+            "receipt_recorded"
+          ],
+          "text": "Two bundles have been issued and carried to the courtyard gate; two remain here. The household guard stays at the post. Delivery beyond this court remains unconfirmed."
+        },
+        {
+          "requires_flags": [
+            "remount_requested",
+            "escort_requested",
+            "receipt_recorded"
+          ],
+          "text": "All four grain bundles remain in the household. The runner has reached the gate with an inspection request and a request for an escort. Neither a fresh horse nor a guard departure is confirmed."
+        },
+        {
+          "requires_flags": [
+            "remount_requested",
+            "home_guard_retained",
+            "receipt_recorded"
+          ],
+          "text": "The grain and guard remain with the household. The runner carries a remount inspection request at the gate. An inquiry has been recorded; no horse has been acquired."
+        },
+        {
+          "requires_flags": [],
+          "text": "A private hearing has produced an inspectable account, a limited order and a named recipient. The record leaves later delivery open."
+        }
+      ]
     }
   ],
   "additional_sources": {

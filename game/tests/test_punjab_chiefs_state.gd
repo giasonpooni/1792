@@ -1,7 +1,7 @@
 # Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 extends SceneTree
 const State := preload("res://history/punjab_chiefs_state.gd")
-const ROUTES := ["alliance", "delegation", "desi", "exile", "heirs", "litter", "overture", "regency", "revenge", "rumours", "settlement", "sodhra", "well"]
+const ROUTES := ["alliance", "audience", "delegation", "desi", "exile", "heirs", "litter", "overture", "regency", "revenge", "rumours", "settlement", "sodhra", "well"]
 var passed := 0
 var failed := 0
 
@@ -46,7 +46,7 @@ func _routes() -> void:
 	var model := State.new()
 	var available: Array = model.catalogue().map(func(item): return item.id)
 	available.sort()
-	check(available == ROUTES, "the thirteen distinct family and court tales are available")
+	check(available == ROUTES, "the fourteen distinct family and court tales are available")
 	if available != ROUTES: return
 	for id in ROUTES:
 		var first := _finish(id, 0)
