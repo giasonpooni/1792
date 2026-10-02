@@ -114,8 +114,8 @@ func _build_veranda_accents() -> void:
 
 func _build_garden_pockets() -> void:
 	var positions: Array[Vector3]=[
-		Vector3(-15.6,.14,7.4),Vector3(-10.8,.14,6.8),Vector3(10.9,.14,7.0),
-		Vector3(15.7,.14,7.6),Vector3(-17.1,.14,-5.8),Vector3(16.8,.14,-6.2)]
+		Vector3(-18.0,.14,9.2),Vector3(-18.0,.14,0.0),Vector3(18.0,.14,10.5),
+		Vector3(18.0,.14,1.5),Vector3(-18.0,.14,-10.0),Vector3(18.0,.14,-9.0)]
 	for i in range(positions.size()):
 		var root:=Node3D.new()
 		root.name="GardenPocket%d"%i
