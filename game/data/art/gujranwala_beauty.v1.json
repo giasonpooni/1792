@@ -1,0 +1,40 @@
+{
+  "schema": "1792.gujranwala-beauty.v1",
+  "id": "gujranwala-beauty-study-v1",
+  "classification": "original-authoring-study",
+  "georeferenced": false,
+  "historically_verified": false,
+  "evidence_ref": "res://data/art/world_reference_corpus_20260930.json",
+  "intent": [
+    "increase visual depth and beauty without changing gameplay geometry",
+    "use reference corpus for spatial/material grammar, not literal reconstruction",
+    "preserve hand-worked irregularity and restrained household scale"
+  ],
+  "counts": {
+    "painted_spandrels": 8,
+    "jali_panels": 6,
+    "planted_tubs": 4,
+    "textile_drops": 5,
+    "threshold_lamps": 4,
+    "well_stone_accents": 8,
+    "roofline_finials": 6
+  },
+  "palette": {
+    "lime_plaster": "c2b69e",
+    "faded_saffron": "a9784e",
+    "indigo_green": "66766e",
+    "carved_timber": "71583f",
+    "stone": "9d8d73",
+    "leaf_dark": "52654e",
+    "leaf_light": "718065",
+    "lamp_warm": "ffd29a"
+  },
+  "limits": [
+    "no CollisionShape3D or StaticBody3D",
+    "no new enterable rooms or traversable surfaces",
+    "no new water authority",
+    "no historical claim for motifs or plant species",
+    "lighting is presentation-only and bounded",
+    "all additions reversible with the existing art switch"
+  ]
+}
