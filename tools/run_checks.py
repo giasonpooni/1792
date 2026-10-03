@@ -69,6 +69,8 @@ def main() -> int:
         "mahan-fence", "MAHAN_FENCE_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_mahan_handoff.gd"],
         "mahan-handoff", "MAHAN_HANDOFF_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_npc_variation.gd"],
+        "npc-variation", "NPC_VARIATION_TESTS:")
     return 0
 
 
