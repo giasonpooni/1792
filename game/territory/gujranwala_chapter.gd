@@ -3,12 +3,14 @@ extends "res://childhood/home_chapter.gd"
 const Territory := preload("res://territory/gujranwala_state.gd")
 const Rules := preload("res://territory/misl_rules.gd")
 const Cell := preload("res://territory/home_cell.gd")
+const HawkScout := preload("res://recon/hawk_scout.gd")
 var cell: Node3D
 var merchant: CharacterBody3D
 var _economy_action := ""
 var _guard_posts: Array[Node3D]=[]
 var _works: Dictionary={}
 var _budget_notice := false
+var hawk: Node3D
 
 func _init() -> void:
 	model=Territory.new()
@@ -29,6 +31,12 @@ func _build_world() -> void:
 	merchant.apply(Rules.blank_merchant())
 	merchant.add_collision_exception_with(avatar)
 	merchant.add_collision_exception_with(horse)
+	attacker.add_to_group(HawkScout.TARGET_GROUP)
+	attacker.set_meta("hawk_tag_label","UNKNOWN HOSTILE")
+	hawk=HawkScout.new()
+	hawk.name="HawkRecon"
+	add_child(hawk)
+	hawk.bind(avatar,[horse,attacker,escort,merchant])
 	# Cosmetic pack cargo; the physical agent remains a single bounded capsule.
 	var pack:=MeshInstance3D.new()
 	var pack_mesh:=BoxMesh.new()
@@ -54,6 +62,23 @@ func _ready() -> void:
 	_navigation.built=false
 
 func _unhandled_input(event: InputEvent) -> void:
+	if is_instance_valid(hawk) and hawk.handle_input(event):
+		get_viewport().set_input_as_handled()
+		return
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_H:
+		if hawk.active:
+			hawk.recall()
+			_message="Hawk recalled. Scouted markers fade unless observed again."
+		elif _paused:
+			_message="Close the current conversation before releasing the hawk."
+		elif model.aftermath_phase()!="complete":
+			_message="Hawk scouting unlocks after the household inquiry in this prototype."
+		else:
+			var error:=hawk.release_from_owner()
+			_message=error if not error.is_empty() else "Hawk released. WASD steer · mouse look · Space climb · C descend · H recall. Only visible hostiles can be tagged."
+		_refresh()
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_B:
 		_open_accounts()
 		get_viewport().set_input_as_handled()
@@ -144,7 +169,8 @@ func _refresh() -> void:
 			var seconds: int=maxi(0,(int(m.origin_tick)+(s.watch+1)*Rules.WATCH_TICKS-int(model.progress().tick))/60)
 			message="Purse %d | Coffers %d | Food %d | Fodder %d | Watch %d (%ds to upkeep)\n%s\n%s" % [s.purse,s.treasury,s.stock.food,s.stock.feed,s.watch,seconds,
 				"Stay with the caravan; return to the quartermaster." if s.caravan=="active" else "Deliver the supplies to the market." if s.delivery=="outbound" else "E: trade / orders at a speaker · B: oral accounts",s.last_notice]
-		_hud.text="1792 · BUDDH SINGH · "+title+"\n\n"+message+"\n\nWASD / Mouse · F horse · E speak · B accounts · F5/F9 save/load · J journal"
+		var recon: String="HAWK SCOUT ACTIVE · %d tag(s) · H recall" % hawk.tagged_count() if is_instance_valid(hawk) and hawk.active else "H release hawk scout"
+		_hud.text="1792 · BUDDH SINGH · "+title+"\n\n"+message+"\n"+recon+"\n\nWASD / Mouse · F horse · E speak · B accounts · H hawk · F5/F9 save/load · J journal"
 		_marker.visible=false
 
 func _account_text() -> String:
@@ -202,6 +228,7 @@ func _candidate_error(staged: Story) -> String:
 	return ""
 
 func _load(path: String="") -> void:
+	if is_instance_valid(hawk) and hawk.active: hawk.recall()
 	var staged:=Territory.new()
 	var error:=staged.load_from(save_path if path.is_empty() else path)
 	if error.is_empty(): error=_candidate_error(staged)

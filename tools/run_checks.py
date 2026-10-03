@@ -68,6 +68,8 @@ def main() -> int:
         "fixed-interlude", "FIXED_INTERLUDE_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_gujranwala.gd"],
         "gujranwala", "GUJRANWALA_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_hawk_recon.gd"],
+        "hawk-recon", "HAWK_RECON_TESTS:")
     run([sys.executable, "tools/check_reconstruction.py"], "reconstruction-contracts")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_reconstruction.gd"],
         "reconstruction", "RECONSTRUCTION_TESTS:")
