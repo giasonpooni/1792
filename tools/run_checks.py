@@ -42,6 +42,10 @@ def main() -> int:
         "houses", "HOUSE_CONFLICT_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_riding.gd"],
         "riding", "RIDING_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_horse_motion_resume.gd"],
+        "horse-motion-resume", "HORSE_MOTION_RESUME_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_horse_motion_resume_load.gd"],
+        "horse-motion-resume-load", "HORSE_MOTION_RESUME_LOAD_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_companions.gd"],
         "companions", "COMPANION_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_character_names.gd"],

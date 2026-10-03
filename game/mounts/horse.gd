@@ -17,6 +17,7 @@ var _legs: Array[Node3D] = []
 var _stride := 0.0
 var _hull: CapsuleShape3D
 var _visual: Node3D
+var _restored_grounded: Variant = null # One-step projection of the existing saved flag.
 
 func _ready() -> void:
 	floor_snap_length = 0.4
@@ -50,6 +51,11 @@ func apply_record(record: Dictionary) -> void:
 	rotation.y = record.yaw
 	speed = record.speed
 	velocity = -global_basis.z * speed + Vector3.UP * record.vertical_speed
+	# Native contact flags describe the last move_and_slide, even after a pose
+	# restore. Use the validated saved flag for the next gravity update only.
+	# The isolated horsecraft study also supplies a legacy pose-only record.
+	# It has no saved grounding claim and retains the native-contact behavior.
+	_restored_grounded = bool(record.grounded) if record.has("grounded") else null
 	_rider.visible = record.rider_id != ""
 	if is_instance_valid(_visual):
 		_visual.sample(speed, _stride)
@@ -64,7 +70,11 @@ func step(delta: float, throttle: float, steering: float, canter: bool, walk: bo
 	var forward := -global_basis.z
 	velocity.x = forward.x * speed
 	velocity.z = forward.z * speed
-	velocity.y = 0.0 if is_on_floor() else maxf(-Rules.MAX_FALL, velocity.y - GRAVITY * delta)
+	var grounded_before_step := is_on_floor()
+	if _restored_grounded != null:
+		grounded_before_step = bool(_restored_grounded)
+		_restored_grounded = null
+	velocity.y = 0.0 if grounded_before_step else maxf(-Rules.MAX_FALL, velocity.y - GRAVITY * delta)
 	move_and_slide()
 	# Do not store requested speed when a wall prevented movement.
 	speed = clampf(Vector2(velocity.x, velocity.z).length(), 0.0, Rules.MAX_SPEED)

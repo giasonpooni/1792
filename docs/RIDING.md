@@ -108,3 +108,43 @@ rigs, oblique compound terrain, mounted companions and actual encounter combat. 
 flat-world dismounted companion patrol and its physical return are covered by `COMPANIONS.md`.
 No historical biographies, clan relations or source claims are
 changed by this riding slice. Tahal Singh Chhachhi has not replaced the fictional captain.
+
+## Saved motion continuity
+
+Restoring a pose does not reset Godot's last-move contact flags. A falling file
+loaded into a body whose previous move was grounded therefore used to lose its
+saved downward velocity on the first resumed tick. The adapter now projects the
+existing saved `grounded` flag into that one gravity update, consumes it, then
+returns to native contact detection. No save field, clock owner, acceleration,
+braking, gravity, hull or terrain policy changes. Pose-only horsecraft study
+records have no grounding claim and retain their existing native-contact path.
+
+`test_horse_motion_resume.gd` compares an uninterrupted native fall with the
+same saved pose applied to a previously grounded body and a fresh body. The
+90-tick fall and landing traces agree exactly in the tested stationary flat-floor
+fixture. Against both `2d5b82b` and the unmodified current-main motor at
+`a1c5222`, 8 checks pass and 4 fail: a saved -6.6000004 m/s
+fall becomes 0 m/s instead of -6.9666672 m/s on the next tick, producing a
+maximum vertical path error of 5.689446 m. The corrected fixture passes all
+12 checks with zero path error.
+
+`test_horse_motion_resume_load.gd` adds 144 checks through the actual Home and
+House file writers and load adapters. The original motor passes 130 and fails
+14; the correction passes all 144. Native floor contact and native falling
+motion establish the two different cache states. Checks cover the first resumed
+velocity and position, later clear-air steps, native landing, and grounded saves
+loaded over an airborne live cache. Full snapshots, saved clocks, original file
+bytes, actor/player/horse projections and sole movement ownership remain intact.
+These are authored physical fixtures; they do not assert universal contact-cache
+restoration or cross-platform deterministic physics.
+
+On the current-main parent `a1c5222`, the complete `tools/run_checks.py` run
+with Godot 4.5.1 passes 18,656 native assertions across 63 suites and 150
+structural checks across 10 suites. The NET profile integrity check and three
+render-schedule locomotion rate checks also pass. No script, shader or engine
+errors were reported. Three retained scene suites emitted ObjectDB cleanup
+warnings: youth brawl, home workshop and Sobraon prologue. The youth warning
+also reproduces with the unmodified parent motor; workshop repeats identify
+audio resources, and the Sobraon warning did not recur. The other warnings have
+not been proven inherited. This motion-restoration change does not resolve the
+separate 39-degree uphill crest stall diagnosed in the earlier local branch.
