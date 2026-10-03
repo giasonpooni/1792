@@ -10,6 +10,7 @@ const Pose:=preload("res://tests/aftermath_fixture.gd")
 const Launch:=preload("res://childhood/home_launch.gd")
 const Store:=preload("res://childhood/checkpoint_store.gd")
 const InstructorFixture:=preload("res://tests/instructor_story_fixture.gd")
+const Guidance:=preload("res://presentation/beginning_guidance.gd")
 const SAVE:="user://nihang-camp-test-only.json"
 var passed:=0
 var failed:=0
@@ -224,11 +225,88 @@ func check_guidance(scene,task: String,target: Vector3) -> void:
 	check(hud.narrator.text.contains("/ 2 riders nearby"),"visible guidance reports the actual selected group")
 	check(scene.model.snapshot()==before,"camp guidance sampling changes no authoritative state")
 
+func check_care_guidance(scene) -> void:
+	var before: Dictionary=scene.model.snapshot();var journal: Array=scene.model.journal()
+	var bodies: Array=[scene.avatar.global_transform,scene.horse.global_transform,scene.camp_horses[0].global_transform,scene.camp_horses[1].global_transform]
+	var hud: Node=scene.art.detail.hud
+	for _i in range(4): hud.sample()
+	check(hud.visible and hud.task.text=="Listen beside the horse lines" and hud.narrator.text.contains("Optional"),"received greeting directs optional local care in the real compact HUD")
+	check(scene._marker.visible and scene._marker.position.is_equal_approx(R.HORSE_LINES[0]+Vector3.UP*2.1) and scene._marker.text=="Veteran's horse · E","care guidance points to the actual veteran's horse")
+	check(scene.model.snapshot()==before and scene.model.journal()==journal,"care guidance invents no progress or testimony")
+	check(bodies==[scene.avatar.global_transform,scene.horse.global_transform,scene.camp_horses[0].global_transform,scene.camp_horses[1].global_transform],"guidance sampling moves no physical body")
+
+func care_priority() -> void:
+	# Explicit domain fixtures isolate threat priority; they are not a played route.
+	var known:=State.new();ok(known.restore(fixture()),"priority fixture starts at declared camp")
+	ok(known.camp_action("meet",true,true),"priority fixture supplies a received elder greeting")
+	var threat:=Base.new();ok(threat.restore(Pose.precursor()),"declared priority threat precursor")
+	ok(threat.observe_quarry(true),"declared precursor observes the quarry")
+	ok(Pose.pose(threat,Base.SITES.bend),"declared priority arrival at the bend")
+	ok(threat.start_ambush(),"declared priority encounter begins")
+	ok(Pose.pose(threat,R.CAMP),"declared threat-side position tests the nearby camp HUD")
+	var home:=Launch.make_world();var scene=home.get_node("ChildhoodChapter")
+	root.add_child(home);await frames(4);home.process_mode=Node.PROCESS_MODE_DISABLED
+	for stage in ["active","caught"]:
+		if stage=="caught":
+			for _i in range(3): threat.take_hit()
+		var value: Dictionary=threat.snapshot();value.nihang_camp=known.nihang_camp()
+		ok(scene.model.restore(value),"declared acquainted "+stage+" fixture")
+		scene._apply();scene._refresh();scene.art.detail.hud.sample()
+		var before: Dictionary=scene.model.snapshot();var journal: Array=scene.model.journal()
+		var visible: Dictionary=Guidance.read(scene)
+		check(scene.camp_guidance().is_empty() and not visible.title.contains("NIHANG"),"optional care yields to "+stage+" guidance")
+		check(scene.art.detail.hud.task.text==visible.task and scene.art.detail.hud.visible,"actual compact HUD retains "+stage+" priority")
+		check(scene.model.snapshot()==before and scene.model.journal()==journal,"priority sampling grants no camp progress in "+stage)
+	home.queue_free();await frames()
+
 func capture_snapshot(scene,filename: String) -> void:
 	var output:=OS.get_environment("NIHANG_CAPTURE_OUTPUT")
 	if output.is_empty(): return
 	var file:=FileAccess.open(output.path_join(filename),FileAccess.WRITE)
 	if file!=null: file.store_string(JSON.stringify(scene.model.snapshot(),"",true,true));file.close()
+
+func wait_for_camp_riders(scene) -> void:
+	# Observe the actual horses; a fixed dialogue delay cannot imply arrival.
+	var settled:=false
+	for _i in range(600):
+		await frames(1)
+		var camp: Dictionary=scene.model.nihang_camp()
+		settled=R.together(camp.selected,camp.mounts,R.CAMP,7.0)
+		for id in camp.selected:
+			if camp.mounts[R.RIDERS.find(id)].speed>.08: settled=false
+		if settled: break
+	check(settled,"both actual riders settle at camp within ten seconds")
+
+func care_pages(scene) -> void:
+	var before: Dictionary=scene.model.snapshot()
+	var journal: Array=scene.model.journal()
+	check(scene._paused and scene._care_page==0 and scene._panel_text.text.contains("BRIDLE"),"horse-care begins with the player's first attention beat")
+	capture_snapshot(scene,"before-care.json")
+	scene._menu_action("camp:care");await frames(3)
+	check(scene.model.snapshot()==before and scene._care_page==0,"unavailable final care choice cannot skip the conversation")
+	await press(scene,"Inspect the tack")
+	check(scene._paused and scene._care_page==1 and scene._panel_text.text.contains("FOOTING"),"actual button advances from tack to footing")
+	await frames(10)
+	check(scene.model.snapshot()==before and scene.model.journal()==journal,"partial pages pause Home and grant no completion receipt")
+	await tap(scene,KEY_F5)
+	check(scene._care_page== -1 and not scene._paused,"manual save retains Home's established resume behavior and clears transient pages")
+	check(scene.model.nihang_camp().phase=="acquainted" and scene.model.journal()==journal,"saving a partial conversation grants no horse-care receipt")
+	look(scene,R.HORSE_LINES[0]);await tap(scene,KEY_E)
+	check(scene._care_page==0,"conversation restarts after leaving through manual save")
+	before=scene.model.snapshot()
+	await press(scene,"Inspect the tack")
+	await press(scene,"Look at the footing")
+	check(scene._paused and scene._care_page==2 and scene._panel_text.text.contains("THE RETURN"),"return obligation follows the physical lesson")
+	scene._menu_action("camp:care_footing");await frames(3)
+	check(scene._care_page==2 and scene.model.snapshot()==before,"stale earlier-page action cannot replay a beat")
+	await tap(scene,KEY_F9)
+	check(scene._care_page== -1 and not scene._paused and scene.model.nihang_camp().phase=="acquainted","F9 discards future dialogue pages and restores the unfinished lesson")
+	check(scene.model.journal()==journal,"restored partial lesson invents no care testimony")
+	look(scene,R.HORSE_LINES[0]);await tap(scene,KEY_E)
+	check(scene._care_page==0,"reopened horse-care starts at its first beat")
+	await press(scene,"Inspect the tack");await press(scene,"Look at the footing")
+	await press(scene,"I will bring the horse home")
+	check(scene._care_page== -1 and not scene._paused,"accepted care closes and clears its transient pages")
 
 func journey() -> void:
 	var home:=Launch.make_world();var scene=home.get_node("ChildhoodChapter");scene.save_path=SAVE
@@ -236,15 +314,27 @@ func journey() -> void:
 	root.add_child(home);await frames(8)
 	watched=scene;closest_horses=INF
 	ok(scene._candidate_error(scene.model),"initial Home including camp has standing room")
+	check(scene.camp_guidance().is_empty(),"unmet camp supplies no premature care direction")
 	look(scene,R.CAMP);await tap(scene,KEY_E)
 	check(scene._paused and scene._camp_choices.has("meet"),"local E opens camp")
 	var paused: Dictionary=scene.model.snapshot();await frames(10)
 	check(scene.model.snapshot()==paused,"conversation pauses original Home clock")
 	await press(scene,"Greet the elder")
 	check(scene.model.nihang_camp().phase=="acquainted","native greeting establishes familiar relationship")
+	check_care_guidance(scene)
+	await tap(scene,KEY_F5)
+	await walk(scene,Vector3(17,0,-15));await tap(scene,KEY_F)
+	check(scene.model.mounted() and scene.camp_guidance().is_empty(),"native mount keeps the ordinary riding objective ahead of optional care")
+	check(scene.art.detail.hud.task.text.begins_with("Ride through gate"),"mounted rider sees the next original household gate")
+	await tap(scene,KEY_F9);check_care_guidance(scene)
+	await walk(scene,R.CAMP+Vector3(-11,0,0))
+	check(scene.camp_guidance().is_empty() and scene.art.detail.hud.task.text=="Mount the household horse","leaving camp on foot returns to the ordinary lesson")
+	await tap(scene,KEY_F9);check_care_guidance(scene)
 	await walk(scene,R.HORSE_LINES[0]+Vector3(-1.4,0,0));look(scene,R.HORSE_LINES[0]);await tap(scene,KEY_E)
-	await press(scene,"Inspect the tack")
+	await care_pages(scene)
 	check(scene.model.nihang_camp().phase=="prepared","native horse-care lesson")
+	check(scene.camp_guidance().is_empty() and scene.art.detail.hud.task.text=="Mount the household horse","accepted care immediately hands attention back to household riding")
+	capture_snapshot(scene,"after-care.json")
 	await walk(scene,R.CAMP+Vector3(1.8,0,0));look(scene,R.CAMP);await tap(scene,KEY_E)
 	await press(scene,"Invite both")
 	check(scene.model.nihang_camp().selected==R.RIDERS,"two mounted companions selected")
@@ -285,10 +375,10 @@ func journey() -> void:
 	check(not scene.model.mounted(),"physical dismount at camp")
 	# Walk around the household horse, whose actual body remains parked after dismount.
 	for at in [Vector3(14,0,-15),Vector3(20.8,0,-15)]: await walk(scene,at)
-	await walk(scene,R.CAMP+Vector3(1.8,0,0));await frames(400)
+	await walk(scene,R.CAMP+Vector3(1.8,0,0));await wait_for_camp_riders(scene)
 	look(scene,R.CAMP);await tap(scene,KEY_E)
 	await press(scene,"Return together")
-	check(scene.model.nihang_camp().phase=="complete","whole escort checked in without remote completion")
+	check(scene.model.nihang_camp().phase=="complete","whole escort checked in without remote completion: "+scene._message+" / "+str(scene.model.nihang_camp().mounts))
 	scene.art.detail.hud.sample()
 	check(not scene.art.detail.hud.title.text.contains("NIHANGS") and scene.camp_guidance().is_empty(),"settled undertaking yields to the original lesson guidance")
 	check(closest_horses>=1.575,"native outing keeps all horses physically separate: "+str(closest_horses))
@@ -320,8 +410,24 @@ func stale_menu() -> void:
 func _journal_for(snapshot: Dictionary) -> Array:
 	var m:=State.new();m.restore(snapshot);return m.journal()
 
+func stale_care() -> void:
+	var home:=Launch.make_world();var scene=home.get_node("ChildhoodChapter");scene.save_path=SAVE
+	ok(scene.model.restore(fixture()),"declared horse-care access fixture")
+	ok(scene.model.camp_action("meet",true,true),"fixture has the received introduction")
+	root.add_child(home);await frames(8)
+	await walk(scene,R.HORSE_LINES[0]+Vector3(-1.4,0,0));look(scene,R.HORSE_LINES[0]);await tap(scene,KEY_E)
+	await press(scene,"Inspect the tack");await press(scene,"Look at the footing")
+	var before: Dictionary=scene.model.nihang_camp();var journal: Array=scene.model.journal()
+	var wall:=StaticBody3D.new();var collision:=CollisionShape3D.new();var box:=BoxShape3D.new();box.size=Vector3(.2,3,3)
+	collision.shape=box;wall.add_child(collision);wall.position=R.HORSE_LINES[0]+Vector3(-.7,1,0)
+	home.add_child(wall);await frames(3)
+	await press(scene,"I will bring the horse home")
+	check(scene.model.nihang_camp()==before and scene.model.journal()==journal,"new obstruction at the final beat refuses care without testimony")
+	check(scene._care_page== -1 and not scene._paused,"failed final beat clears the transient conversation")
+	home.queue_free();await frames()
+
 func run() -> void:
-	domain();mixed_authority();await journey();await stale_menu()
+	domain();mixed_authority();await journey();await stale_menu();await stale_care();await care_priority()
 	for suffix in ["",".tmp",".checkpoint"]:
 		if FileAccess.file_exists(SAVE+suffix): DirAccess.remove_absolute(ProjectSettings.globalize_path(SAVE+suffix))
 	print("NIHANG_CAMP_TESTS: %d passed, %d failed"%[passed,failed]);quit(1 if failed else 0)

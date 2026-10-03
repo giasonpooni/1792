@@ -30,6 +30,28 @@ jobs:
           chmod +x "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
       - name: Input journey and perspective boundaries
         run: python3 tools/run_childhood_preservation.py --godot "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64"
+      - name: Nihang journey and rendered care conversation
+        shell: bash
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          set -euo pipefail
+          mkdir -p test-results/nihang-care
+          export NIHANG_CAPTURE_OUTPUT="$PWD/test-results/nihang-care"
+          timeout 120 "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --headless --fixed-fps 60 --path game --script res://tests/test_nihang_camp.gd \
+            2>&1 | tee test-results/nihang-care/journey.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/nihang-care/journey.log; then exit 1; fi
+          grep -Eq '^NIHANG_CAMP_TESTS: [1-9][0-9]* passed, 0 failed$' test-results/nihang-care/journey.log
+          sudo apt-get update -qq
+          sudo apt-get install --yes --no-install-recommends xvfb xauth libgl1-mesa-dri
+          timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_nihang_care.gd \
+            2>&1 | tee test-results/nihang-care/render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/nihang-care/render.log; then exit 1; fi
+          grep -q '^NIHANG_CARE_RENDER: 3 captures; 0 failures$' test-results/nihang-care/render.log
+          grep -q '^NIHANG_GUIDANCE_RENDER: 2 captures; 0 failures$' test-results/nihang-care/render.log
       - name: Retain source and execution identity
         if: always()
         run: |

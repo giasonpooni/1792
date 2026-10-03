@@ -17,8 +17,11 @@ not a historical map location.
 
 1. Dismount, face the elder and press **E**. Greet the elder and familiar riders.
 2. Approach the veteran's horse to the east, on foot. **E** opens the tack and
-   horse-care conversation. This teaches through dialogue; it awards no combat
-   stat or advanced riding skill.
+   horse-care conversation. Advance three short beats in your own time: inspect
+   the bridle, consider the footing and promise to bring the horse home with care.
+   Each page offers an exit. Only the final choice records the existing care
+   event. This teaches through dialogue; it awards no combat stat or advanced
+   riding skill.
 3. Return to the elder and invite the veteran alone or both riders. The first
    household riding gate is required. Concurrent cargo or another outing blocks
    acceptance. Each rider remains attached to the camp, outside household payroll.
@@ -35,6 +38,14 @@ the nearby-rider count reminds you to wait when someone falls behind. A mounted
 group switches to single file where paired slots lack clear passage and spreads
 out again in open ground. These prompts read the existing state and grant no
 progress. Immediate danger and failed-attempt guidance retain priority.
+
+After the elder's greeting, the compact HUD also directs the optional horse-care
+lesson to the veteran's horse lines. This local prompt appears only on foot,
+within ten metres of the camp, during the original household riding stage and
+without another commitment or carried workshop load. It yields when you mount
+or leave the camp, and disappears as soon as care is accepted. The original
+household horse and next riding gate then regain the objective. No new quest,
+clock, event, knowledge record or saved presentation field is introduced.
 
 This first outing is finite and available once per run. The camp remains after
 completion. There is no gold, troop, skill or loyalty-point farming. Earlier
@@ -62,6 +73,18 @@ received event records, a derived agreement phase, selected actor IDs, and two
 current mount poses. The same `childhood.tick` drives it. Old saves supply no
 invented acquaintance, escort or testimony. F5/F9 and the existing checkpoint
 store preserve the extension; restoring an earlier run discards later agreements.
+The three care pages are transient presentation, outside the save and journal.
+Partial reading pauses Home and grants no testimony. F5 follows the established
+save-and-resume behavior; reopening starts at the bridle. F9 and checkpoint restore
+clear pending page actions. Physical access is checked again at each advance and
+at the final choice, so a speaker newly blocked by a wall cannot complete care.
+
+The sequence uses a return motif: intimate recognition, attention to the horse,
+an undertaking, the shared ride and a homecoming acknowledgment. The warning to
+leave stopping room is exercised by the actual riding system. Prose describes
+small gestures beside the existing horse lines and mat; these are authored stage
+directions in text, not new gesture animations or a forced camera sequence.
+The original received care words and journal records remain unchanged.
 
 Both mounted companions use the existing `horse.gd` motor, collision and observed
 motion. Their formation turns with the household horse. They slow while steering,
@@ -81,6 +104,14 @@ one another, the household horse and the walking player. The camera arm also
 responds to these horses. Other friendly pedestrian projections retain their
 existing behavior. The broad capsule hull is a conservative gameplay shape, not
 a model of horse anatomy, mass, injury or herd dynamics.
+
+In single file, the following distance includes a 3.4-metre base, a quarter-second
+of the preceding horse's current pace and any positive difference between the
+horses' stopping distances under the common motor's braking rate. When a stopping
+leader pushes that desired slot behind its follower, the follower waits rather
+than turning back to chase the slot. Near arrival, speed falls with remaining
+distance; inside the arrival radius, braking uses zero steering. This stabilizes
+stop/start columns without assigning equine reaction times or calibrated behavior.
 
 Dialogue is rechecked against the actual body position, ground and line of sight
 at execution. Turnaround requires the selected riders; check-in requires every
@@ -122,6 +153,13 @@ compatibility. Its native journey starts from one explicitly declared first-gate
 fixture, then uses walking/riding inputs, E/F, actual buttons and F5/F9. It also
 adds a wall after opening a conversation to test stale-menu refusal, monitors
 horse separation throughout the outing, and checks overlapping-save refusal.
+It verifies the three actual care buttons, rejection of unavailable and stale
+page actions, paused state and journal equality on partial pages, F5 resume,
+F9 rollback and obstruction introduced before the final care choice.
+The native journey also checks the greeted camp's destination marker, pure HUD
+sampling, mounting and walking away, restoration of local guidance after F9, and
+the immediate handoff after care. Declared domain fixtures separately verify
+active-encounter and failed-attempt priority in the actual compact HUD.
 
 `test_mounted_formation.gd` uses declared native physics fixtures for head-on and
 crossing passes, stopping behind a parked horse at 30 and 60 Hz, newly introduced
@@ -129,6 +167,9 @@ and removed walls, and a gap narrower than the horse hull. It also covers native
 30-degree ascent/descent, a 20 cm downward tread, refusal of a two-metre drop and
 50-degree climb, a bridge narrower than the footprint, and a three-horse journey
 through a 2.4-metre passage that closes to single file and reopens to paired slots.
+Its declared three-horse stop/start column fixture runs at 30 and 60 Hz: both
+followers move, stop, resume and settle without reversing, while maintaining
+spacing and bounded movement. The final gaps must agree across those tick rates.
 The camp journey checks the real compact objective HUD before mounting, outbound,
 returning and after F9, plus restoration of ordinary lessons after check-in.
 These fixtures are
@@ -149,4 +190,11 @@ a graphics-capable Godot session to retain an executed homecoming screenshot and
 whole-world snapshot. Test slots are separate from the player's save. Native
 renderer verification does not establish finished art or human playtest quality.
 Headless runs also retain active and completed whole-world snapshots when this
-output directory is set, for subsequent native rendering of executed state.
+output directory is set, plus `before-care.json` at the first care page, for
+subsequent native rendering of executed state. `render_nihang_care.gd` loads that
+executed snapshot and uses native E and actual buttons to review the three pages;
+it does not claim another newly traversed journey. It retains two further HUD
+captures: optional care before the conversation and ordinary household riding
+after a real mouse click accepts the final care choice. Partial pages retain
+the same paused snapshot; the final click records exactly one existing care event.
+The manifest distinguishes these advancing Home HUD captures from paused dialogue.
