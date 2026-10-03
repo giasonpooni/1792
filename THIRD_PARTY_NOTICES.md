@@ -1,6 +1,6 @@
 # Third-party notices and inventory
 
-1792's original project material is attributed to Cartesian Graphics under the [root notice](LICENSE). Third-party material retains its respective rights holders and licences. Nothing in this document expands the proprietary notice to cover upstream material.
+1792's original project material has historical Cartesian Graphics credits. The [root notice](LICENSE) now records Notation Systems Inc. as the owner declared by the project owner; [the scope record](docs/licensing/OWNERSHIP_AND_SCOPE.md) preserves the distinction between that declaration and independently verified title. Third-party material retains its respective rights holders and licences. Nothing in this document expands the proprietary notice to cover upstream material.
 
 ## Inspection scope
 
