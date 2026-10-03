@@ -29,6 +29,8 @@ from main at `43521dbeb939ce0b3f833e965f90c2112478688b`, on
   exclusion array, rejects real staged overlaps separately and restores the saved
   formation without treating discarded live positions as obstacles.
 
+Draft PR #101 publishes this continuation for review.
+
 Local focused qualification is complete at 301 assertions with zero failures,
 and the full configured suite exits zero on Godot 4.5.1. Hosted results must be
 bound to the exact published continuation commit before they are reported as
