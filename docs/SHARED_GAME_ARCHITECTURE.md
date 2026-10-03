@@ -19,7 +19,7 @@ Every title will use the **C++ - Rust - Python - Julia** architecture. This exte
 | Godot | Playable application, input, camera, scenes, UI and the gameplay state it owns. | Retain working GDScript and existing gameplay; do not rewrite everything merely to use four languages. |
 | Blender | Asset, geometry and animation authoring. | Exported content does not become a second live simulation authority. |
 
-[NET](https://github.com/giasonpooni/Notations-Engineering-Terminal) remains the programmable workbench. [SCR](https://github.com/giasonpooni/Scientific-Computation-Runtime) remains the shared execution foundation for its registered operations. Specialist repositories retain their mathematics, implementations and licences. These component names do not mean an adapter is already implemented in a particular title.
+[NET](https://github.com/atomtrapping/Notations-Systems-Terminal) remains the programmable workbench. [SCR](https://github.com/atomtrapping/Notations-Compute-Runtime) remains the shared execution foundation for its registered operations. Specialist repositories retain their mathematics, implementations and licences. These component names do not mean an adapter is already implemented in a particular title.
 
 ## One state owner, not four simulations
 

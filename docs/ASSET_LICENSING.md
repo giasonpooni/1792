@@ -39,7 +39,7 @@ For commissioned work, retain the relevant agreement rather than assuming paymen
 
 ## Permission-only notice and registered versions
 
-Contact [Notation Systems Inc.](https://github.com/giasonpooni/1792-The-Lotus-Throne/issues/new?template=licensing-request.yml&title=Licensing%20request) before an act requiring its
+Contact [Notation Systems Inc.](https://github.com/atomtrapping/1792-The-Lotus-Throne/issues/new?template=licensing-request.yml&title=Licensing%20request) before an act requiring its
 authorization and obtain an express signed written grant. Extraction, copying,
 adaptation, publication, distribution and product incorporation require the
 necessary scope. AI reproduction/extraction requires explicit authorization

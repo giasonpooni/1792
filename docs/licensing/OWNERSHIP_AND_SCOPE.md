@@ -76,7 +76,7 @@ future source rights before controlled delivery; preserve notices and prior gran
 
 ## Grants
 
-[Request permission](https://github.com/giasonpooni/1792-The-Lotus-Throne/issues/new?template=licensing-request.yml&title=Licensing%20request) without uploading assets, confidential
+[Request permission](https://github.com/atomtrapping/1792-The-Lotus-Throne/issues/new?template=licensing-request.yml&title=Licensing%20request) without uploading assets, confidential
 proposals or personal information to a public issue. Request private discussion
 first if needed. An express signed grant must identify the legal licensor and
 its authorized signatory and their capacity, recipient, versions, acts, purpose,

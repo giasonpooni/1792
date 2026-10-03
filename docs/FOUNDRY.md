@@ -12,7 +12,7 @@ Game runtime qualification is pinned to
 not alter that adapter, any game reducer, clock, save format, scene or licence.
 
 The terminal repository is now
-[Notations-Systems-Terminal](https://github.com/giasonpooni/Notations-Systems-Terminal),
+[Notations-Systems-Terminal](https://github.com/atomtrapping/Notations-Systems-Terminal),
 GitHub repository ID 1377790873, formerly Notations-Engineering-Terminal.
 The preserved runtime uses the original `net foundry` commands and its original
 package/operation identities. A repository rename is not a runtime replacement.

@@ -348,7 +348,7 @@ deliverable: reusable production workflows that help a small human-led team turn
 research and creative direction into coherent, tested, playable content.
 
 That work belongs in
-[Notations Engineering Terminal](https://github.com/giasonpooni/Notations-Engineering-Terminal),
+[Notations Engineering Terminal](https://github.com/atomtrapping/Notations-Systems-Terminal),
 with **Notations Game Foundry (working name: NGF)** as a game-production workload
 on the existing workbench, not a new engine inside this repository. The question
 is whether typed work orders, bounded tools/agents, retained evidence and
@@ -421,7 +421,7 @@ made over historical facts or public-domain material. The reference corpus stays
 CC0 dirt/plaster samples and the Godot-derived MIT helper retain source terms.
 [Owner declaration and asset scope](docs/licensing/OWNERSHIP_AND_SCOPE.md).
 
-Before any reuse requiring authorization, [request permission](https://github.com/giasonpooni/1792-The-Lotus-Throne/issues/new?template=licensing-request.yml&title=Licensing%20request)
+Before any reuse requiring authorization, [request permission](https://github.com/atomtrapping/1792-The-Lotus-Throne/issues/new?template=licensing-request.yml&title=Licensing%20request)
 and obtain an express signed written grant identifying the legal licensor and its
 authorized signatory and their capacity. Play/development instructions describe
 authorized operation and do not themselves grant permission. Valid prior grants,

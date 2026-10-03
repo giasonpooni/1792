@@ -72,7 +72,7 @@ and stated assets are original with a reference-only corpus. The
 from independent title verification. This change creates no assignment or
 worldwide legal certification and retains creator/third-party credits.
 
-Before any act requiring authorization, [request permission](https://github.com/giasonpooni/1792-The-Lotus-Throne/issues/new?template=licensing-request.yml&title=Licensing%20request)
+Before any act requiring authorization, [request permission](https://github.com/atomtrapping/1792-The-Lotus-Throne/issues/new?template=licensing-request.yml&title=Licensing%20request)
 and obtain an express signed written grant. A request is not authorization.
 The root AI/mining reservation preserves mandatory exceptions and prior/platform
 permissions. Corpus sources, CC0 surfaces and MIT-covered code retain their rights.
