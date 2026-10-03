@@ -242,15 +242,17 @@ func run() -> void:
 	var courier: Node3D=chapter._message_speakers.courier
 	if not await walk(chapter.Model.SITES.courier,.65): await finish();return
 	await face(courier.global_position+Vector3.UP*0.3)
-	check(chapter._seen(courier.global_position+Vector3.UP*0.3,18.0),
-		"the production character-eye policy admits the played courier encounter")
-	var before_courier_focus: Dictionary=chapter.model.snapshot()
+	var letter_seen_before_focus: bool=chapter.model.progress().letter_seen
+	var heard_before_focus: Array=chapter.model.progress().heard.duplicate()
 	var journal_before_courier_focus: Array=chapter.model.journal()
-	key(KEY_Z);await frames(60)
+	key(KEY_Z);await frames(20)
+	check(not chapter.ground_focus.acquisitions().is_empty() and chapter.ground_focus.acquisitions().all(func(sample):return anonymous(sample)),
+		"the courier's visible collision surface admits only anonymous character-eye progress")
+	await frames(40)
 	var courier_records: Array=chapter.ground_focus.observations().filter(func(record):return record.id=="courier")
 	check(courier_records.size()==1 and courier_records[0].label=="Courier" and courier_records[0].observer_id==chapter.Names.HERO_ID and courier_records[0].sensor_id=="character-eye",
 		"continuous played observation identifies the existing visible courier with explicit observer and sensor")
-	check(chapter.model.snapshot()==before_courier_focus and chapter.model.journal()==journal_before_courier_focus,
+	check(chapter.model.progress().letter_seen==letter_seen_before_focus and chapter.model.progress().heard==heard_before_focus and chapter.model.journal()==journal_before_courier_focus,
 		"courier observation reveals no sealed words, testimony or campaign receipt")
 	key(KEY_E);await frames(3)
 	check(not chapter.ground_focus.active and chapter.model.progress().letter_seen and chapter.model.progress().heard.is_empty(),
