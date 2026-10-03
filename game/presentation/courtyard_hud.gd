@@ -71,6 +71,8 @@ func sample() -> void:
 				controls.text="W  Forward     A / D  Steer     S / Space  Brake     F  Dismount when stopped"
 				_chapter._marker.text="Smith · dismount first"
 			_chapter._marker.visible=true
+		if _chapter.has_method("_focus_access") and _chapter._focus_access().is_empty():
+			controls.text+="    Z  Focus    X  Hawk"
 		narrator.visible=not narrator.text.is_empty()
 		words.text=_chapter._message
 		bottom.position=Vector2((size.x-bottom.size.x)*.5,size.y-bottom.get_combined_minimum_size().y-18)

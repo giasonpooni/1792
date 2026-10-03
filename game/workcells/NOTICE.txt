@@ -43,7 +43,7 @@ are not separate permission grants. Valid earlier permissions survive under
 their own terms.
 
 Request route:
-https://github.com/giasonpooni/1792-The-Lotus-Throne/issues/new?template=licensing-request.yml&title=Licensing%20request
+https://github.com/atomtrapping/1792-The-Lotus-Throne/issues/new?template=licensing-request.yml&title=Licensing%20request
 
 A request, response, acknowledgement, access, credit, negotiation, payment,
 possession or silence is not permission. Do not post confidential proposals,

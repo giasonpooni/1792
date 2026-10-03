@@ -4,6 +4,9 @@ extends SceneTree
 const Launch := preload("res://childhood/home_launch.gd")
 const Rules := preload("res://perception/focus_rules.gd")
 const CampaignState := preload("res://mounts/riding_skill_state.gd")
+const InquiryFixture := preload("res://tests/gujranwala_fixture.gd")
+const PoseFixture := preload("res://tests/aftermath_fixture.gd")
+const Craft := preload("res://workshops/workshop_rules.gd")
 
 var passed := 0
 var failed := 0
@@ -75,6 +78,106 @@ func prepare(scene, at: Vector3) -> void:
 
 func acquire(focus, first: int = 0) -> void:
 	for tick in range(first, first + Rules.DWELL_TICKS): focus.sample(tick)
+
+func acquisition_checks(scene) -> void:
+	prepare(scene,Vector3(1000,0.14,0))
+	var focus=scene.ground_focus
+	var contact:=Node3D.new()
+	contact.position=Vector3(1000,1.49,-8)
+	contact.set_meta("hidden_faction","hostile_fixture_secret")
+	scene.add_child(contact)
+	focus.register_target("secret_registration",contact,"Secret target name","threat")
+	var camera: Camera3D=scene.avatar.get_node("CameraPivot/SpringArm3D/Camera3D")
+	var original_camera:=camera.global_transform
+	camera.global_position=Vector3(1000,3,2);camera.look_at(contact.global_position)
+	var before: Dictionary=scene.model.snapshot()
+	var journal: Array=scene.model.journal()
+	var save:=output.path_join("acquisition-unmodified-campaign.json")
+	check(scene.model.save_to(save).is_empty(),"native retained save before anonymous acquisition")
+	var bytes:=FileAccess.get_file_as_string(save)
+	focus.start()
+	check(focus.acquisitions().is_empty(),"activation offers no acquisition before an admitted native sample")
+	focus.sample(0)
+	var pending: Array=focus.acquisitions()
+	check(pending.size()==1 and focus.observations().is_empty(),"first fresh admitted tick exposes progress before identification")
+	if not pending.is_empty():
+		var expected_keys: Array=["position","observed_ticks","required_ticks","sample_tick","observer_id","sensor_id"]
+		var actual_keys: Array=pending[0].keys();actual_keys.sort();expected_keys.sort()
+		check(actual_keys==expected_keys,"pending sensory sample exposes only anonymous acquisition fields")
+		check(pending[0].observed_ticks==1 and pending[0].required_ticks==45 and pending[0].sample_tick==0,"first sample reports one of the required 45 native ticks")
+		check(pending[0].observer_id==scene.Names.HERO_ID and pending[0].sensor_id=="character-eye","pending sample is bound to the active character and eye sensor")
+		check(Rules.position(pending[0]).is_equal_approx(contact.global_position),"pending position comes from the current admitted sensory sample")
+		pending[0].position[0]=-9999;pending[0].observed_ticks=9999;pending.append({"label":"injected"})
+		check(focus.acquisitions().size()==1 and Rules.position(focus.acquisitions()[0]).x==1000 and focus.acquisitions()[0].observed_ticks==1,"acquisition array and nested position are deep copied for callers")
+	var rings: Array=focus.overlay.marks.filter(func(mark):return mark.has("progress"))
+	check(rings.size()==1 and rings[0].text=="Observing" and is_equal_approx(float(rings[0].progress),1.0/45.0),"native overlay offers a neutral Observing ring for incomplete acquisition")
+	if not rings.is_empty():
+		var ring_keys: Array=rings[0].keys();ring_keys.sort()
+		var expected_ring: Array=["at","color","alpha","text","progress"];expected_ring.sort()
+		check(ring_keys==expected_ring and rings[0].color==Color("d4d7cf"),"Observing ring discloses no secret identity, label, role or threat color")
+	var frozen: Array=focus.acquisitions()
+	contact.position.x+=0.4
+	for _i in range(80):focus.sample(0)
+	check(focus.acquisitions()==frozen,"duplicate tick freezes both the pending point and dwell fraction")
+	focus.sample(1)
+	check(focus.acquisitions().size()==1 and focus.acquisitions()[0].observed_ticks==2 and Rules.position(focus.acquisitions()[0]).is_equal_approx(contact.global_position),"a new contiguous tick refreshes the admitted point and advances progress once")
+	contact.hide();focus.sample(2)
+	check(focus.acquisitions().is_empty() and focus.overlay.marks.is_empty(),"loss of sight clears incomplete acquisition and its screen hint")
+	contact.show();focus.sample(3)
+	check(focus.acquisitions().size()==1 and focus.acquisitions()[0].observed_ticks==1,"fresh sight after interruption starts a new dwell")
+	for tick in range(4,15):focus.sample(tick)
+	focus.sample(100)
+	check(focus.acquisitions().size()==1 and focus.acquisitions()[0].observed_ticks==1 and focus.acquisitions()[0].sample_tick==100,"a discontinuous simulation tick resets progress to one of 45")
+	for tick in range(101,144):focus.sample(tick)
+	check(focus.acquisitions().size()==1 and focus.acquisitions()[0].observed_ticks==44 and focus.observations().is_empty(),"44 uninterrupted sensory ticks remain anonymous")
+	focus.sample(144)
+	check(focus.acquisitions().is_empty() and focus.observations().size()==1 and focus.observations()[0].seen_tick==144,"the 45th admitted tick atomically replaces progress with an identified observation")
+	var last_seen: Array=focus.observations()
+	contact.hide();focus.sample(145)
+	contact.show();contact.position.x+=0.4;focus.sample(146)
+	check(focus.acquisitions().size()==1 and focus.acquisitions()[0].observed_ticks==1 and focus.observations()==last_seen,"reacquisition preserves the older last-seen memory while reporting fresh anonymous progress")
+	focus.stop()
+	check(focus.acquisitions().is_empty() and focus._pending.is_empty() and focus.observations()==last_seen,"stop drops acquisition progress while retaining bounded observation memory")
+	focus.start()
+	check(focus.acquisitions().is_empty(),"restart carries no partial acquisition from the preceding activation")
+	focus.sample(147)
+	check(focus.acquisitions().size()==1 and focus.acquisitions()[0].observed_ticks==1,"the first new tick after restart begins a new dwell")
+	focus.clear()
+	check(focus.acquisitions().is_empty() and focus.observations().is_empty() and focus._tick==-1,"clear discards both acquisition and retained sensory memory")
+	focus.start();focus.sample(201);focus.sample(200)
+	check(not focus.active and focus.acquisitions().is_empty() and focus._pending.is_empty(),"native time rewind clears pending sensory progress and interrupts Focus")
+	focus.start();contact.position=Vector3(1000,1.49,8);focus.sample(202)
+	check(focus.acquisitions().is_empty(),"a subject behind the character offers no anonymous progress hint")
+	contact.position=Vector3(1000,1.49,-Rules.RANGE-0.5);focus.sample(203)
+	check(focus.acquisitions().is_empty(),"an out-of-range subject offers no anonymous progress hint")
+	contact.position=Vector3(1000,1.49,-8);camera.look_at(Vector3(1000,3,12));focus.sample(204)
+	check(focus.acquisitions().size()==1 and focus.overlay.marks.is_empty(),"character-admitted progress behind the displayed camera has no screen ring")
+	var wall:=box(Vector3(1000,1.49,-4),Vector3(5,5,1),"AcquisitionWallFixture")
+	scene.add_child(wall);await frames()
+	focus.sample(205)
+	check(focus.acquisitions().is_empty(),"an intervening native wall removes pending acquisition evidence")
+	check(scene.model.snapshot()==before and scene.model.journal()==journal and FileAccess.get_file_as_string(save)==bytes,"anonymous progress, interruptions and rejected samples preserve campaign, journal and save bytes")
+	camera.global_transform=original_camera
+	contact.queue_free();wall.queue_free();await frames()
+
+func prediction_identity_checks() -> void:
+	var first:=Rules.observation("subject","Observed subject","contact","observer-a",Vector3.ZERO,10)
+	var second:=Rules.observation("subject","Observed subject","contact","observer-a",Vector3(0.3,0,0),40)
+	var prediction: Dictionary=Rules.estimate(first,second)
+	check(not prediction.is_empty() and prediction.observer_id=="observer-a" and prediction.sensor_id=="character-eye","a bounded estimate retains the matching observer and sensor identities of its snapshots")
+	var other: Dictionary=second.duplicate(true);other.id="other-subject"
+	check(Rules.estimate(first,other).is_empty(),"motion estimate cannot join observations of different subjects")
+	other=second.duplicate(true);other.observer_id="observer-b"
+	check(Rules.estimate(first,other).is_empty(),"motion estimate cannot join observations from different characters")
+	other=second.duplicate(true);other.sensor_id="hawk-eye"
+	check(Rules.estimate(first,other).is_empty(),"motion estimate cannot join snapshots from different sensors")
+	other=second.duplicate(true);other.erase("sensor_id")
+	check(Rules.estimate(first,other).is_empty(),"motion estimate declines a snapshot missing sensor identity")
+	var unbound: Dictionary=first.duplicate(true);unbound.erase("sensor_id")
+	check(Rules.estimate(unbound,other).is_empty(),"two missing sensor identities cannot manufacture a bound motion estimate")
+	if not prediction.is_empty():
+		second.position[0]=99
+		check(is_equal_approx(float(prediction.origin_position[0]),0.3),"estimate retains its source endpoint independently of caller snapshot mutation")
 
 func visual_checks(scene) -> void:
 	# Reuse the real Home visibility policy in an empty part of its physics space.
@@ -382,6 +485,69 @@ func integration_checks() -> void:
 	check(not focus.active and focus._pending.is_empty() and focus._tick==-1, "native whole-state apply interrupts Focus and resets sensor time")
 	home.queue_free(); await frames()
 
+func compact_layout_checks() -> void:
+	# Reducer-built readiness is an explicit fixture, never evidence of a played errand.
+	var model:=CampaignState.new()
+	check(model.restore(InquiryFixture.complete()).is_empty(),"declared completed-inquiry layout fixture validates")
+	check(model.begin_allowance().is_empty() and model.workshop_action("reserve").is_empty(),"declared layout fixture reserves the existing commission")
+	check(PoseFixture.pose(model,Craft.SITE+Vector3(0,0,-2)).is_empty() and model.workshop_action("start").is_empty(),"declared layout fixture transfers native smith custody")
+	for _i in range(Craft.WORK_TICKS):model.advance()
+	check(model.workshop_phase()=="ready" and PoseFixture.pose(model,Vector3(-16,0.14,2)).is_empty(),"native workshop deadline and validated inspection pose prepare the compact fixture")
+	var home: Node3D=Launch.make_world()
+	var scene=home.get_node("ChildhoodChapter")
+	root.add_child(home);await frames(6)
+	check(scene.model.restore(model.snapshot()).is_empty(),"the real Home admits the declared compact layout fixture")
+	scene._apply();scene.set_physics_process(false);scene.set_process_unhandled_input(false)
+	scene.avatar.set_physics_process(false);scene.avatar.input_enabled=false
+	scene.avatar.pivot.rotation=Vector3(-0.1,PI,0)
+	var focus=scene.ground_focus
+	focus._targets.clear();focus._sounds.clear()
+	var contact:=Node3D.new();contact.position=Vector3(-19,1.49,7);scene.add_child(contact)
+	focus.register_target("compact_fixture_secret",contact,"Secret compact target","threat")
+	var hud=scene.art.detail.hud
+	var retained: Dictionary=scene.model.snapshot()
+	var journal: Array=scene.model.journal()
+	var original_size:=root.size
+	var original_scale_size:=root.content_scale_size
+	root.content_scale_size=Vector2i.ZERO
+	for size in [Vector2i(800,450),Vector2i(640,360)]:
+		root.size=size;scene._refresh();hud.sample();await frames(4)
+		focus.clear();focus.start()
+		for tick in range(20):focus.sample(tick)
+		await frames(3);hud.sample();focus.sample(19)
+		var suffix:=" at %dx%d" % [size.x,size.y]
+		check(hud.visible and hud.top.is_visible_in_tree() and hud.bottom.is_visible_in_tree(),"actual compact task and remembered-word cards remain visible during Focus"+suffix)
+		check(hud.task.text==scene.workshop_hint().replace(" [E]","") and hud.words.text==scene._message,"compact task and words retain native knowledge"+suffix)
+		check(hud.controls.text.contains("E  Speak") and hud.controls.text.contains("B  Accounts") and hud.controls.text.contains("J  Journal") and hud.controls.text.contains("Z  Focus") and hud.controls.text.contains("X  Hawk"),"real compact controls preserve interaction, accounts, journal, Focus and hawk hints"+suffix)
+		check(scene._marker.visible and scene._marker.text=="Smith · E" and scene._marker.position.is_equal_approx(Craft.SITE+Vector3.UP*2.1),"the native task destination pointer remains the smith without revealing remote readiness"+suffix)
+		check(not scene._hud.is_visible_in_tree() and not scene._caption.is_visible_in_tree() and not scene._narrator_label.is_visible_in_tree(),"compact Focus presentation suppresses duplicate legacy text"+suffix)
+		var viewport:=Rect2(Vector2.ZERO,Vector2(size))
+		var top: Rect2=hud.top.get_global_rect()
+		var bottom: Rect2=hud.bottom.get_global_rect()
+		var heading: Rect2=focus.heading.get_global_rect()
+		print("GROUND_FOCUS_LAYOUT: %dx%d viewport=%s top=%s bottom=%s heading=%s sensory_point=%s" % [size.x,size.y,scene.get_viewport().get_visible_rect(),top,bottom,heading,scene.get_viewport().get_camera_3d().unproject_position(contact.global_position)])
+		check(viewport.encloses(top) and viewport.encloses(bottom) and not top.intersects(bottom),"native compact cards fit and remain separate"+suffix)
+		check(viewport.encloses(heading) and not heading.intersects(top) and not heading.intersects(bottom),"Focus heading fits beside the retained task and speech cards"+suffix)
+		var heading_protected:=false
+		for rect in focus.overlay.exclusion_rects:
+			if rect.encloses(heading):heading_protected=true
+		check(heading_protected,"the complete laid-out Focus heading is reserved from projected markers and labels"+suffix)
+		check(focus.acquisitions().size()==1 and not focus.overlay.marks.is_empty(),"anonymous progress remains available between the real compact cards"+suffix)
+		var safe:=true
+		for mark in focus.overlay.marks:
+			for rect in focus.overlay.exclusion_rects:
+				if rect.has_point(mark.at):safe=false
+		check(safe,"screen marker centers respect the actual task, speech and Focus heading exclusions"+suffix)
+		var label_rect: Rect2=focus.overlay._label_rect(Vector2(size)*0.5,Vector2(90,29),focus.overlay.exclusion_rects)
+		var label_clear:=label_rect.has_area() and viewport.encloses(label_rect)
+		for rect in focus.overlay.exclusion_rects:
+			if label_rect.intersects(rect):label_clear=false
+		check(label_clear,"the native label placement finds a bounded rectangle outside compact cards"+suffix)
+		focus.stop();hud.sample()
+		check(hud.visible and hud.top.is_visible_in_tree() and hud.controls.text.contains("Z  Focus"),"returning from Focus preserves the original compact task and controls"+suffix)
+	check(scene.model.snapshot()==retained and scene.model.journal()==journal,"compact resize, Focus progress and layout preserve the frozen native authority")
+	root.size=original_size;root.content_scale_size=original_scale_size;home.queue_free();await frames()
+
 func run() -> void:
 	var provided := OS.get_environment("GROUND_FOCUS_OUTPUT")
 	if not provided.is_empty(): output=provided
@@ -391,14 +557,17 @@ func run() -> void:
 	scene.set_physics_process(false)
 	scene.set_process_unhandled_input(false)
 	root.add_child(home); await frames(8)
+	await acquisition_checks(scene)
+	prediction_identity_checks()
 	await visual_checks(scene)
 	await motion_checks(scene)
 	await audio_checks(scene)
 	await scope_checks(scene)
 	home.queue_free(); await frames()
 	await integration_checks()
+	await compact_layout_checks()
 	var file:=FileAccess.open(output.path_join("ground-focus-checks.json"),FileAccess.WRITE)
 	if file!=null:
-		file.store_string(JSON.stringify({"schema":"1792.ground-focus-native-checks.v1","passed":passed,"failed":failed,"checks":checks,"engine":Engine.get_version_info().string,"native_physics":true,"fixtures":"synthetic observations on real Home visibility and interaction policies"},"\t",true,true)); file.close()
+		file.store_string(JSON.stringify({"schema":"1792.ground-focus-native-checks.v2","passed":passed,"failed":failed,"checks":checks,"engine":Engine.get_version_info().string,"native_physics":true,"fixtures":"synthetic observations on real Home visibility and interaction policies"},"\t",true,true)); file.close()
 	print("GROUND_FOCUS_TESTS: %d passed, %d failed" % [passed,failed])
 	quit(1 if failed else 0)

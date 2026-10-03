@@ -60,6 +60,8 @@ def main() -> int:
         "hawk-scout", "HAWK_SCOUT_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_ground_focus.gd"],
         "ground-focus", "GROUND_FOCUS_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_focus_audibility.gd"],
+        "focus-audibility", "FOCUS_AUDIBILITY_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_gate_passage_direction.gd"],
         "gate-passage-direction", "GATE_PASSAGE_DIRECTION_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_service_equipment.gd"],

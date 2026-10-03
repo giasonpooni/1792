@@ -1,4 +1,4 @@
-# Ground Focus v1
+# Ground Focus v2
 
 **Z** toggles a local Focus mode in the composed Home chapter. It emphasizes available sensory evidence while preserving the original player motor, camera, world clock, state, interactions and save format. **Q** remains guard; **E** remains inspect/speak; **X** remains hawk release/recall.
 
@@ -7,6 +7,8 @@
 Focus uses the existing chapter `_seen` character-eye policy and physics collision geometry, within an authored 18 m envelope. A speaker's own front collision surface can be admitted; a wall before it cannot. The follow camera never supplies visual evidence. Optional chapters can supply their existing eye origin and visibility policy through the same interface; this feature does not install the optional PoliticalChapter vision model in Home.
 
 A visible subject requires **45 continuous existing 60 Hz ticks (0.75 s)** before identification. Home's existing broad horizontal facing cone also includes peripheral subjects; acquisition is not a pixel-reticle test. Subjects outside the displayed camera produce no screen marker. Duplicate samples of one tick do not add dwell; an interruption or skipped tick starts acquisition again. Hidden/disabled nodes are not acquired. Registrations cover existing trainer, mother, escort, horse, smith, available ground trace, assailant proxy and the two fictional distant scout contacts. The trace's existing visibility gate remains authoritative.
+
+Before identification, a neutral **Observing** ring fills from the currently admitted eye samples. It carries no subject name, role, registration identity or affiliation. At most three pending rings appear, ranked by screen distance from the centre to limit clutter; this display limit does not alter dwell. Duplicate samples keep the same sampled point and fraction. Occlusion removes the ring, and reacquisition begins again while any earlier last-seen record remains at its earlier observed point. Progress is transient and grants no knowledge or task receipt.
 
 Records carry observer identity, sensor identity, last observed position, observation tick and expiry tick. They live for at most **600 active ticks (10 s)** after the last observation. When sight is lost they stay at that observed position. The overlay explicitly says **last seen** and fades with age. It does not keep reading a hidden person's live transform into that marker.
 
@@ -23,11 +25,13 @@ An unknown contact is not promoted to an enemy, faction member or conspirator by
 
 Two acquired visual position samples at least **30 ticks (0.5 s)** apart may produce a constant-horizontal-velocity estimate. The estimator refuses motion below 0.15 m/s, above the authored 7.5 m/s bound, mismatched observation identities or samples more than one second apart. It reads no actor velocity, destination, route, intention or future chapter tick.
 
-The dashed line is labelled **estimated**, carries its two source observation ticks, and expires at most **120 ticks (2 s)** after its latest source. Occlusion stops updates; reacquisition starts a new continuous history. A direction change can invalidate the estimate immediately in reality: this prototype provides a visual hypothesis, not a calibrated probability or guaranteed patrol path.
+The dashed line is labelled **estimated**, carries its two source observation ticks, and expires at most **120 ticks (2 s)** after its latest source. Both samples must come from the same observer and sensor; the estimate retains those identities. Occlusion stops updates; reacquisition starts a new continuous history. A direction change can invalidate the estimate immediately in reality: this prototype provides a visual hypothesis, not a calibrated probability or guaranteed patrol path.
 
 ## Hearing
 
-Focus observes actual playing, unpaused **AudioStreamPlayer3D** hammer playback already emitted by the workshop. Silent, muted or out-of-range sources do not produce a new cue. Eight coarse direction sectors are retained for at most 120 ticks. Cues contain a sound description and sector, never an exact position or concealed person's identity.
+Focus observes actual playing, unpaused **AudioStreamPlayer3D** hammer playback already emitted by the workshop. Paused playback, a source at or below the existing -60 dB floor, an out-of-range source, or a mute anywhere in its send path through Master produces no new cue. The configured source-plus-bus gain must also exceed the authored -60 dB cue threshold. Missing source buses follow Godot's Master fallback; malformed send routes decline safely. Already heard cues keep their reception tick and expire normally. Eight coarse direction sectors are retained for at most 120 ticks. Cues contain a sound description and sector, never an exact position or concealed person's identity.
+
+This admission check reads playback and configured gain/mute state. It does not measure stream samples, RMS, effects, solo isolation, speaker output or human audibility.
 
 The acoustic envelope is an authored approximation: up to the emitter's existing maximum distance, capped at 16 m; a blocking collision halves that range and adds **muffled**. Direction is relative to the character's orientation when heard, and the UI displays the cue's age. This is not a measured sound-pressure, diffraction, room-acoustics or hearing model. No new sound is emitted and no historical sound recording is claimed.
 
@@ -35,11 +39,11 @@ The acoustic envelope is an authored approximation: up to the emitter's existing
 
 Focus does not pause or advance a second clock, move/freeze the body, switch cameras, change movement speed, write the journal, grant tasks, or write campaign saves. It stops during dialogue/notebook/art/atlas, sprinting, riding, active confrontation, or hawk scouting. It can resume only through the player control. Existing whole-world `_apply` clears all transient observations and estimates; tick rewind also clears them defensively.
 
-The desaturation layer sits below the existing subjective framing and HUD. Focus temporarily hides the verbose original help block so it cannot cover observation markers; its prior visibility returns when Focus ends. Live dialogue captions and the compact task card remain available. Icons, text and dashed estimates supplement color. Overlay labels fit the viewport at small window sizes. All current figures and terrain remain prototypes; this does not qualify historical falconry reconnaissance, physiology, final art or human playtesting.
+The desaturation layer sits below the existing subjective framing and HUD. Focus temporarily hides the verbose original help block so it cannot cover observation markers; its prior visibility returns when Focus ends. Live dialogue captions and the compact task card remain available. Dynamic on-foot controls include Z/X when Focus is available. Instructions stack below the task card when the top-right space would overlap it. Rings and labels avoid visible task/word cards and Focus instructions; a crowded label can be omitted while its evidence remains intact. Icons, text and dashed estimates supplement color. All current figures and terrain remain prototypes; this does not qualify historical falconry reconnaissance, physiology, final art or human playtesting.
 
 ## Qualification
 
-`game/tests/test_ground_focus.gd` exercises native character-eye and collision acquisition, continuous dwell, stale evidence, bounded estimates, sound cues, input/modal lifecycle and campaign isolation. `game/tests/render_ground_focus.gd` renders declared presentation fixtures in the actual Home scene. The render fixtures are not earned campaign progress or a player-input journey.
+`game/tests/test_ground_focus.gd` exercises native character-eye and collision acquisition, anonymous progress, continuous dwell, stale evidence, sensor-bound estimates, sound cues, input/modal lifecycle and campaign isolation. `game/tests/test_focus_audibility.gd` checks routed bus mutes and configured gain, restoring the prior mixer layout afterward. `game/tests/render_ground_focus.gd` renders declared presentation fixtures in the actual Home scene, including the real compact task panel at small window sizes. The render fixtures are not earned campaign progress or a player-input journey.
 
 Run the inherited native suite:
 

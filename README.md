@@ -306,7 +306,7 @@ Two fictional distant scout contacts sit beyond the household's ordinary ground 
 
 [Controls, observation semantics, limits and qualification](docs/HAWK_SCOUT.md)
 
-Ground **Focus** uses the same character-eye visibility checks as Home interactions. A continuous 45-tick look marks a visible contact, speaker, horse or ground trace. Color and symbols describe the observed affordance; unknown people remain unknown. **E** still performs the existing inspection or conversation. Focus does not grant journal knowledge or complete a task.
+Ground **Focus** uses the same character-eye visibility checks as Home interactions. A neutral **Observing** ring shows progress toward a continuous 45-tick look, then marks a visible contact, speaker, horse or ground trace. The ring reveals no identity before acquisition. Color and symbols describe the observed affordance; unknown people remain unknown. **E** still performs the existing inspection or conversation. Focus does not grant journal knowledge or complete a task.
 
 Last-seen markers age on the existing chapter clock. Dashed two-second motion estimates use two observed positions, never a hidden patrol route. Actual nearby hammer playback can produce a coarse directional sound cue, without a concealed person's identity or exact location. Dialogues, sprinting, mounting and hawk scouting end Focus; whole-world restoration clears its transient records. [Controls, limits and qualification](docs/GROUND_FOCUS.md).
 
