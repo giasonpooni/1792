@@ -1,0 +1,24 @@
+{
+  "schema_version": "npc-variation.v1",
+  "canon_class": "game_canon_fiction",
+  "not_historical_persons": true,
+  "notes": "Authored-fiction extras for the Mahan/Gujranwala greybox. Not historical persons. Person, dynasty, household, faction, and current alignment are separate fields.",
+  "canonical_actor_ids": ["mahan_singh", "ranjit_singh"],
+  "canonical_household_ids": ["sukerchakia"],
+  "forbidden_roster_ids": ["raj_kaur", "sandhawalia"],
+  "roles": ["retainer", "traveler", "scout", "forager", "gate_watcher"],
+  "clothing": ["plain_cotton", "dust_cloak", "quilted_vest", "travel_wrap", "camp_tunic"],
+  "kit": ["staff", "waterskin", "satchel", "spear_stub", "empty_hands"],
+  "mount_presence": ["none", "led_horse", "mounted"],
+  "disposition_band": ["wary", "neutral", "cordial", "deferential"],
+  "speech_style": ["terse", "formal", "rambling", "quiet"],
+  "greybox_sites": [
+    "camp_table",
+    "ford",
+    "ridge",
+    "gujranwala_settlement",
+    "gujranwala_garhi",
+    "gujranwala_fort_road",
+    "gujranwala_camp"
+  ]
+}
