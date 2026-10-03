@@ -1,9 +1,21 @@
 # 1792: The Lotus Throne
 
-**The first game from Cartesian Graphics**, Notation Systems' games, graphics,
-physics and simulation label. **1792: The Lotus Throne** is the public title;
+**The first game from Notations Gaming**, the games division of **Notation
+Systems Inc.**. **1792: The Lotus Throne** is the public title;
 **1792** remains the repository, shorthand and Godot storage identifier so existing
 save locations and tooling references remain stable.
+
+## Organization
+
+**Notation Systems Inc.** is the parent organization. Its divisions are:
+
+- **Notations Gaming** — games and interactive worlds.
+- **Notations Manufacturing** — industrial design, materials and manufacturing systems.
+- **Notations Laboratories** — research, scientific computing, simulation and experimental validation.
+
+This game is developed by **Notations Gaming**, replacing Cartesian Graphics as
+its current development name. Existing copyright credits, licensing records and
+source attribution retain their recorded identities.
 
 <!-- foundry-delivery-v1 -->
 **Foundry integration on this branch:** [game-owned adapter, terminal connection, and complete retained delivery](docs/FOUNDRY.md). The adapter is a development workload, not a required game service.
@@ -374,7 +386,7 @@ archive/    Earlier disconnected layout study, not an active world
 ## Rights
 
 **Copyright (c) 2026 Notation Systems Inc. All rights reserved in covered original material.**
-Cartesian Graphics remains the project label; existing creator/upstream credits survive.
+Notations Gaming is the current development division; existing creator/upstream credits survive.
 Original protected game code and content are proprietary unless explicitly
 licensed otherwise. Engine and third-party rights remain separate. No claim is
 made over historical facts or public-domain material. The reference corpus stays separate from ownership of authored work. Included
