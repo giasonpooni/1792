@@ -2,8 +2,13 @@
 Version 1.1 | 2 October 2026
 
 Copyright (c) 2026 Notation Systems Inc. All rights reserved.
-Declared owner of original project material: Notation Systems Inc.
-Issuing/project names: Cartesian Graphics Ltd.; Giason Pooni Studios.
+Declared parent company and owner of original project material: Notation Systems Inc.
+Group name declaration: 3 October 2026.
+Declared child companies: Notations Gaming; Notation Manufacturing;
+Notations Laboratories. Current game development company: Notations Gaming.
+Historical issuing/project names: Cartesian Graphics Ltd.; Giason Pooni Studios.
+Listing a child company or project name alone does not transfer ownership or
+establish authority to license material or sign for another entity.
 Existing Cartesian Graphics and creator credits remain preserved.
 Owner declaration and asset records: docs/licensing/OWNERSHIP_AND_SCOPE.md
 and docs/licensing/release-register.json.
@@ -29,8 +34,9 @@ download, install, execute, modify, adapt, translate, distribute, publish,
 display, perform, extract, host, incorporate, sublicense, sell or otherwise
 exploit covered protected material, in whole or in part.
 
-Each grant must identify recipient, material/version, permitted acts and purpose,
-users, systems, territory, term and conditions. One act, asset or version does
+Each grant must identify the legal licensor, its authorized signatory and their
+capacity, recipient, material/version, permitted acts and purpose, users,
+systems, territory, term and conditions. One act, asset or version does
 not authorize another. Include installation, execution, temporary copying and
 backups where needed. Play/build instructions explain authorized operation and
 are not separate permission grants. Valid earlier permissions survive under

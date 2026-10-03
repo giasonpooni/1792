@@ -11,6 +11,11 @@ body:
         agreements, personal addresses, payment details, or third-party material.
         Request a private discussion first if needed; the maintainer will arrange a channel.
         Existing licences, statutory rights and platform permissions remain applicable.
+        The owner-declared parent and rights holder is Notation Systems Inc.; its
+        declared child companies are Notations Gaming, Notation Manufacturing and
+        Notations Laboratories (3 October 2026). Names alone establish no ownership
+        or signing authority. Any grant must identify its legal licensor and an
+        authorized signatory and their capacity.
   - type: input
     id: recipient
     attributes:

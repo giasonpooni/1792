@@ -6,6 +6,18 @@ Existing Cartesian Graphics/creator credits and third-party notices remain prese
 
 **1792 is proprietary by default.** The [root notice](../LICENSE) applies to original material owned or validly controlled by Notation Systems Inc. unless an explicit separate licence applies. This policy documents the licensing boundary; it does not itself grant additional rights.
 
+## Owner-declared company group
+
+On 3 October 2026, the owner identified **Notation Systems Inc.** as the parent
+company, with **Notations Gaming**, **Notation Manufacturing** and
+**Notations Laboratories** as child companies. Notations Gaming is the current
+game development company. Notation Systems Inc. remains the declared owner of
+covered original material. These names do not themselves transfer ownership
+or establish authority to license material or sign for another entity.
+Each signed grant must identify its legal licensor and authorized signatory
+and their capacity. The [ownership record](licensing/OWNERSHIP_AND_SCOPE.md)
+records this declaration without independently certifying entity status.
+
 ## Scope and precedence
 
 | Material | Treatment |
@@ -35,7 +47,7 @@ Official references: [Mozilla's MPL FAQ](https://www.mozilla.org/en-US/MPL/2.0/F
 
 Repository visibility is separate from licensing. This change does not make the repository private, restrict access controls, or remove existing forks. The root notice preserves permissions arising under applicable law, existing licences, and GitHub's terms. See [GitHub's licensing guidance](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository).
 
-No general modding, fan-asset redistribution, commercial reuse, or source-available experimentation licence is granted here. Specific permissions can be agreed separately with Notation Systems Inc. through the Notations Gaming project. A future player EULA or modding policy must identify what it permits and preserve applicable third-party and statutory rights.
+No general modding, fan-asset redistribution, commercial reuse, or source-available experimentation licence is granted here. Specific permissions can be agreed separately with Notation Systems Inc. through the Notations Gaming child company; the signed grant must identify the legal licensor and authorized signatory and their capacity. A future player EULA or modding policy must identify what it permits and preserve applicable third-party and statutory rights.
 
 ## Contributions and provenance
 

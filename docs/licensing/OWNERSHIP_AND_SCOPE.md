@@ -8,10 +8,26 @@ that instruction solely for original material the company owns or validly
 controls. This is an owner-supplied declaration, not independent verification
 of corporate status, authorship, title or assignments. It creates no transfer.
 
-Cartesian Graphics Ltd. and Giason Pooni Studios are supplied issuing names;
-Cartesian Graphics remains the project label. Historical Cartesian Graphics
-and author credits remain preserved; a parent/label relationship is not itself
-an assignment.
+Cartesian Graphics Ltd. and Giason Pooni Studios remain historical issuing/project
+names. Historical Cartesian Graphics and author credits remain preserved;
+a parent/name relationship is not itself an assignment.
+
+## Owner-declared company group — 3 October 2026
+
+The owner identifies **Notation Systems Inc.** as the parent company and:
+
+- **Notations Gaming** — child company and current game development company.
+- **Notation Manufacturing** — child company.
+- **Notations Laboratories** — child company.
+
+Notation Systems Inc. remains the declared owner of covered original material.
+The supplied names and hierarchy are recorded without independent verification
+of incorporation, corporate status, title or authority. Naming a child company,
+project or brand does not by itself transfer ownership or authorize it or an
+individual to license material or sign for another entity. Each signed grant
+must identify the actual legal licensor, its authorized signatory and their
+capacity. This naming clarification leaves notice version 1.1 and its scope
+and preserved rights unchanged.
 
 ## Inspected baseline
 
@@ -62,8 +78,9 @@ future source rights before controlled delivery; preserve notices and prior gran
 
 [Request permission](https://github.com/giasonpooni/1792-The-Lotus-Throne/issues/new?template=licensing-request.yml&title=Licensing%20request) without uploading assets, confidential
 proposals or personal information to a public issue. Request private discussion
-first if needed. An authorized signatory must issue an express signed grant
-identifying recipient, versions, acts, purpose, users, systems, territory and term.
+first if needed. An express signed grant must identify the legal licensor and
+its authorized signatory and their capacity, recipient, versions, acts, purpose,
+users, systems, territory and term.
 Request, acknowledgement, negotiation, payment or access is not permission.
 
 The [NET business agreement framework](https://github.com/giasonpooni/Notations-Systems-Terminal/pull/115)

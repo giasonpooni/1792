@@ -1,25 +1,25 @@
 # 1792: The Lotus Throne
 
-**The first game from Notations Gaming**, the games division of **Notation
+**The first game from Notations Gaming**, a child company of **Notation
 Systems Inc.**. **1792: The Lotus Throne** is the public title;
 **1792** remains the repository, shorthand and Godot storage identifier so existing
 save locations and tooling references remain stable.
 
 ## Organization
 
-**Notation Systems Inc.** is the parent organization: a scientific computing and
+**Notation Systems Inc.** is the parent company: a scientific computing and
 systems engineering company developing computational instruments, software and
 interactive environments for understanding and building physical and virtual
 systems. Its development direction connects measurement, state estimation and
 sensor fusion, scientific modelling, simulation and execution, from materials
 and machines to interactive worlds.
 
-The parent organization's activities span:
+The owner identifies the parent company's child companies and their activities as:
 
-| Activity | Focus |
+| Child company | Focus |
 | --- | --- |
 | **Notations Gaming** | Games, graphics, world building, interactive environments and gameplay simulation. |
-| **Notations Manufacturing** | Design, machinery integration, process development, fabrication and production systems. |
+| **Notation Manufacturing** | Design, machinery integration, process development, fabrication and production systems. |
 | **Notations Laboratories** | Research and experimental validation in scientific computing, measurement, physics and chemistry modelling, materials and simulation. |
 
 **1792 is the primary Notations Gaming project and a reference workload for game
@@ -38,6 +38,13 @@ validation and operating envelopes appropriate to that application.
 Notations Gaming replaces Cartesian Graphics as the current game development
 name. Existing copyright credits, licensing records and source attribution
 retain their recorded identities.
+
+Group names declared 3 October 2026. Notation Systems Inc. remains the declared
+rights holder for covered original material. These names alone establish no
+ownership transfer or signing authority; each signed grant must identify its
+legal licensor and authorized signatory and their capacity. The
+[ownership record](docs/licensing/OWNERSHIP_AND_SCOPE.md) records this
+owner-supplied hierarchy without independently certifying entity status.
 
 <!-- foundry-delivery-v1 -->
 **Foundry integration on this branch:** [game-owned adapter, terminal connection, and complete retained delivery](docs/FOUNDRY.md). The adapter is a development workload, not a required game service.
@@ -408,7 +415,7 @@ archive/    Earlier disconnected layout study, not an active world
 ## Rights
 
 **Copyright (c) 2026 Notation Systems Inc. All rights reserved in covered original material.**
-Notations Gaming is the current development division; existing creator/upstream credits survive.
+Notations Gaming is the current game development child company; existing creator/upstream credits survive.
 Original protected game code and content are proprietary unless explicitly
 licensed otherwise. Engine and third-party rights remain separate. No claim is
 made over historical facts or public-domain material. The reference corpus stays separate from ownership of authored work. Included
@@ -416,7 +423,8 @@ CC0 dirt/plaster samples and the Godot-derived MIT helper retain source terms.
 [Owner declaration and asset scope](docs/licensing/OWNERSHIP_AND_SCOPE.md).
 
 Before any reuse requiring authorization, [request permission](https://github.com/giasonpooni/1792-The-Lotus-Throne/issues/new?template=licensing-request.yml&title=Licensing%20request)
-and obtain an express signed written grant. Play/development instructions describe
+and obtain an express signed written grant identifying the legal licensor and its
+authorized signatory and their capacity. Play/development instructions describe
 authorized operation and do not themselves grant permission. Valid prior grants,
 mandatory exceptions and platform permissions remain applicable.
 

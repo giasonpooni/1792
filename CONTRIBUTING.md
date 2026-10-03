@@ -4,6 +4,14 @@ Copyright (c) 2026 Notation Systems Inc. All rights reserved.
 
 Existing Cartesian Graphics and creator credits remain preserved.
 
+The [owner-declared group](docs/licensing/OWNERSHIP_AND_SCOPE.md) identifies
+Notation Systems Inc. as parent company and Notations Gaming, Notation
+Manufacturing and Notations Laboratories as child companies (3 October 2026).
+Notation Systems Inc. remains the declared rights holder; a child-company name
+alone does not transfer ownership or establish signing authority. Contribution
+agreements must identify their actual legal parties and authorized signatories
+and their capacity.
+
 1792 is a proprietary game project, not an open-source contribution programme. Read the [root notice](LICENSE), [licensing policy](docs/LICENSING.md), and [asset policy](docs/ASSET_LICENSING.md) before submitting code or creative material.
 
 ## Feedback
