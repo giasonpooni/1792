@@ -1,21 +1,28 @@
 # 1792: The Lotus Throne
 
-**The first game from Notations Gaming**, the games division of **Notation
+**The first game from Notations Gaming**, a child company of **Notation
 Systems Inc.**. **1792: The Lotus Throne** is the public title;
 **1792** remains the repository, shorthand and Godot storage identifier so existing
 save locations and tooling references remain stable.
 
 ## Organization
 
-**Notation Systems Inc.** is the parent organization. Its divisions are:
+**Notation Systems Inc.** is the parent company. The owner identifies its child companies as:
 
 - **Notations Gaming** — games and interactive worlds.
-- **Notations Manufacturing** — industrial design, materials and manufacturing systems.
+- **Notation Manufacturing** — industrial design, materials and manufacturing systems.
 - **Notations Laboratories** — research, scientific computing, simulation and experimental validation.
 
 This game is developed by **Notations Gaming**, replacing Cartesian Graphics as
 its current development name. Existing copyright credits, licensing records and
 source attribution retain their recorded identities.
+
+Group names declared 3 October 2026. Notation Systems Inc. remains the declared
+rights holder for covered original material. These names alone establish no
+ownership transfer or signing authority; each signed grant must identify its
+legal licensor and authorized signatory and their capacity. The
+[ownership record](docs/licensing/OWNERSHIP_AND_SCOPE.md) records this
+owner-supplied hierarchy without independently certifying entity status.
 
 <!-- foundry-delivery-v1 -->
 **Foundry integration on this branch:** [game-owned adapter, terminal connection, and complete retained delivery](docs/FOUNDRY.md). The adapter is a development workload, not a required game service.
@@ -386,7 +393,7 @@ archive/    Earlier disconnected layout study, not an active world
 ## Rights
 
 **Copyright (c) 2026 Notation Systems Inc. All rights reserved in covered original material.**
-Notations Gaming is the current development division; existing creator/upstream credits survive.
+Notations Gaming is the current game development child company; existing creator/upstream credits survive.
 Original protected game code and content are proprietary unless explicitly
 licensed otherwise. Engine and third-party rights remain separate. No claim is
 made over historical facts or public-domain material. The reference corpus stays separate from ownership of authored work. Included
@@ -394,7 +401,8 @@ CC0 dirt/plaster samples and the Godot-derived MIT helper retain source terms.
 [Owner declaration and asset scope](docs/licensing/OWNERSHIP_AND_SCOPE.md).
 
 Before any reuse requiring authorization, [request permission](https://github.com/giasonpooni/1792-The-Lotus-Throne/issues/new?template=licensing-request.yml&title=Licensing%20request)
-and obtain an express signed written grant. Play/development instructions describe
+and obtain an express signed written grant identifying the legal licensor and its
+authorized signatory and their capacity. Play/development instructions describe
 authorized operation and do not themselves grant permission. Valid prior grants,
 mandatory exceptions and platform permissions remain applicable.
 

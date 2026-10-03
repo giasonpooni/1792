@@ -4,6 +4,13 @@ Copyright (c) 2026 Notation Systems Inc. All rights reserved.
 
 Existing Cartesian Graphics/creator credits and third-party notices remain preserved.
 
+The [owner-declared group](licensing/OWNERSHIP_AND_SCOPE.md) identifies Notation
+Systems Inc. as parent company and Notations Gaming, Notation Manufacturing and
+Notations Laboratories as child companies (3 October 2026). The parent remains
+the declared rights holder. A child-company name alone conveys no ownership or
+signing authority; every signed asset grant must identify its legal licensor
+and authorized signatory and their capacity.
+
 Original creative material owned or validly controlled by Notation Systems Inc. is proprietary under the [root notice](../LICENSE). This includes models, meshes, textures, materials, animation, audio recordings, music, illustrations, UI artwork, logos, authored maps, dialogue, quests, and campaign narratives wherever they appear in the project. Listing a category does not assert that an asset in that category already exists.
 
 ## Permissions and exclusions

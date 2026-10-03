@@ -8,6 +8,21 @@
   "inspected_source_tree": "f1418a80f0687be974e67684d49978da50ff4bd0",
   "declared_rights_holder": "Notation Systems Inc.",
   "declaration_evidence": "Owner-supplied conversation declaration; assets original and reference-only corpus; Notation Systems Inc. selected as owner.",
+  "company_group_declaration": {
+    "recorded_date": "2026-10-03",
+    "declaration_evidence": "Owner-supplied company names and parent/child hierarchy; no independent entity-status verification.",
+    "parent_company": "Notation Systems Inc.",
+    "child_companies": [
+      "Notations Gaming",
+      "Notation Manufacturing",
+      "Notations Laboratories"
+    ],
+    "current_game_development_company": "Notations Gaming",
+    "declared_rights_holder_unchanged": true,
+    "independent_entity_status_verification": false,
+    "name_confers_ownership_or_signing_authority": false,
+    "signed_grant_party_requirement": "Identify the actual legal licensor and its authorized signatory and their capacity."
+  },
   "independent_title_verification": false,
   "assignment_created_by_notice": false,
   "licensing_contact": "https://github.com/giasonpooni/1792-The-Lotus-Throne/issues/new?template=licensing-request.yml&title=Licensing%20request",
