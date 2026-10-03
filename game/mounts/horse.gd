@@ -115,31 +115,47 @@ func clear_mount_path(avatar: CharacterBody3D) -> bool:
 	return fraction.size() == 2 and fraction[0] == 1.0 and fraction[1] == 1.0
 
 func dismount_position(avatar: CharacterBody3D) -> Variant:
-	# Try both sides, then rear/front. Ray ground, capsule clearance, swept path.
+	# Try both sides, then rear/front using the walking capsule that will resume.
+	var collider := avatar.get_node_or_null("CollisionShape3D") as CollisionShape3D
+	if collider == null or collider.disabled or not collider.shape is CapsuleShape3D:
+		return null
+	var shape := collider.shape as CapsuleShape3D
 	var space := get_world_3d().direct_space_state
 	var exclusions: Array[RID] = [get_rid(), avatar.get_rid()]
+	var query := PhysicsShapeQueryParameters3D.new()
+	query.shape = shape
+	query.exclude = exclusions
+	# Mounted avatars have mask 0; both owning scenes restore walking mask 1.
+	query.collision_mask = 1
+	var shape_offset := collider.global_position - avatar.global_position
+	var start := collider.global_transform
+	start.origin = global_position + shape_offset + Vector3.UP * 0.04
+	query.transform = start
+	# cast_motion ignores initial overlap; never transfer out through a blocker.
+	if not space.intersect_shape(query, 1).is_empty():
+		return null
+	var minimum_normal_y := cos(minf(floor_max_angle, avatar.floor_max_angle))
 	for offset in [global_basis.x * 1.8, -global_basis.x * 1.8, global_basis.z * 2.1, -global_basis.z * 2.1]:
 		var p: Vector3 = global_position + offset
 		var ray := PhysicsRayQueryParameters3D.create(p + Vector3.UP * 0.65, p - Vector3.UP * 0.8, 1, exclusions)
 		var hit := space.intersect_ray(ray)
-		if hit.is_empty() or hit.normal.y < cos(deg_to_rad(40.0)):
+		if hit.is_empty() or hit.normal.y < minimum_normal_y:
 			continue
-		var landing: Vector3 = hit.position + Vector3.UP * 0.04
-		var query := PhysicsShapeQueryParameters3D.new()
-		var shape := CapsuleShape3D.new()
-		shape.radius = 0.35
-		shape.height = 1.6
-		query.shape = shape
-		query.exclude = exclusions
-		query.collision_mask = 1
-		query.transform = Transform3D(Basis.IDENTITY, landing + Vector3.UP * 0.8)
+		# Capsule support against the sampled plane, including its actual child
+		# offset and orientation. A fixed feet lift embeds the hull on inclines.
+		var normal: Vector3 = hit.normal
+		var local_normal := start.basis.transposed() * normal
+		var support := shape.radius * local_normal.length() + (shape.height * 0.5 - shape.radius) * absf(local_normal.y)
+		var lift := maxf(0.0, (support - normal.dot(shape_offset)) / normal.y) + 0.04
+		var landing: Vector3 = hit.position + Vector3.UP * lift
+		query.transform = start
+		query.transform.origin = landing + shape_offset
 		if not space.intersect_shape(query, 1).is_empty():
 			continue
-		var start := global_position + Vector3.UP * 0.84
-		query.transform.origin = start
-		query.motion = landing + Vector3.UP * 0.8 - start
+		query.transform = start
+		query.motion = landing + shape_offset - start.origin
 		var fraction := space.cast_motion(query)
-		if fraction.size() == 2 and fraction[0] >= 0.999:
+		if fraction.size() == 2 and fraction[0] == 1.0 and fraction[1] == 1.0:
 			return landing
 	return null
 
