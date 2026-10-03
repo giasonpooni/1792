@@ -58,16 +58,22 @@ func start() -> void:
 	_task_hud_was_visible=chapter._hud.visible
 	chapter._hud.hide()
 	active=true;_pending.clear();_acquiring.clear();_motion.clear();_current.clear();_set_visible()
+	_sample_compact_hud()
 
 func stop() -> void:
 	if active and is_instance_valid(chapter._hud): chapter._hud.visible=_task_hud_was_visible
 	active=false;_pending.clear();_acquiring.clear();_motion.clear();_current.clear();_set_visible()
+	_sample_compact_hud()
 
 func clear() -> void:
 	stop();_tick=-1;_records.clear();_predictions.clear();_heard.clear();overlay.marks.clear();overlay.queue_redraw()
 
 func _set_visible() -> void:
 	filter_layer.visible=active;overlay_layer.visible=active
+
+func _sample_compact_hud() -> void:
+	if is_instance_valid(chapter) and is_instance_valid(chapter.art) and is_instance_valid(chapter.art.detail) and is_instance_valid(chapter.art.detail.hud):
+		chapter.art.detail.hud.sample()
 
 func sample(tick: int) -> void:
 	if tick<0 or not is_instance_valid(chapter): return
@@ -198,7 +204,11 @@ func _present() -> void:
 	var camera: Camera3D=chapter.get_viewport().get_camera_3d()
 	if not is_instance_valid(camera): return
 	var size: Vector2=chapter.get_viewport().get_visible_rect().size
-	heading.text="FOCUS  ·  Z return  ·  E interact\nHold your gaze to observe."
+	# The compact control strip owns keys. Context appears only until the first
+	# identification, then yields the space to sensory evidence.
+	heading.text="FOCUS"
+	if _records.is_empty():
+		heading.text+="\nKeep subject visible until the ring fills." if not _acquiring.is_empty() else "\nLook toward a subject."
 	for cue in sound_cues():
 		var age:=int(ceil(float(_tick-int(cue.heard_tick))/60.0))
 		heading.text+="\n~ %s · heard %s · %ds ago%s" % [cue.label,cue.sector,age," · muffled" if cue.muffled else ""]

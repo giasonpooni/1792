@@ -1,4 +1,5 @@
-# Copyright (c) 2026 Cartesian Graphics. All rights reserved.
+# Copyright (c) 2026 Notation Systems Inc. / Notations Gaming.
+# All rights reserved.
 extends SceneTree
 ## Synthetic sensory and commission fixtures, drawn by Godot in the real Home scene.
 ## Fixture preparation uses the retained model tick; captures never advance or save the world.
@@ -139,7 +140,7 @@ func capture(mode: String,size: Vector2i) -> void:
 		check(hud.bottom.is_visible_in_tree()==(not scene.story_caption().is_empty()),"directed speech card follows the actual spoken or silent interval")
 		check(hud.task.text==scene.workshop_hint().replace(" [E]","") and hud.words.text==scene.story_caption(),"real compact fixture retains the existing task and directed words")
 		check(scene.story_caption().is_empty() if mode=="compact-ready" else scene.story_caption()==scene._message,"declared silent and spoken caption fixtures use the current presentation owner")
-		check(hud.controls.text.contains("E  Speak") and hud.controls.text.contains("B  Accounts") and hud.controls.text.contains("J  Journal") and hud.controls.text.contains("Z  Focus") and hud.controls.text.contains("X  Hawk"),"real compact controls preserve interaction, accounts, journal, Focus and hawk hints")
+		check(hud.controls.text.contains("E  Speak") and hud.controls.text.contains("B  Accounts") and hud.controls.text.contains("J  Journal") and hud.controls.text.contains("Z  Return") and not hud.controls.text.contains("Z  Focus") and hud.controls.text.contains("X  Hawk"),"real compact controls state the current return action once while preserving interaction, accounts, journal and hawk hints")
 		check(not scene._hud.is_visible_in_tree() and not scene._caption.is_visible_in_tree() and not scene._narrator_label.is_visible_in_tree() and (not scene._subjective or scene._veil.is_visible_in_tree()),"gameplay compact captions and subjective framing replace duplicate legacy text during Focus")
 		check(scene._marker.visible and scene._marker.text=="Smith · E" and scene._marker.position.is_equal_approx(Craft.SITE+Vector3.UP*2.1),"real compact destination pointer remains the smith without leaking remote readiness")
 		var viewport:=Rect2(Vector2.ZERO,Vector2(size))
@@ -163,6 +164,7 @@ func capture(mode: String,size: Vector2i) -> void:
 	if sensor_mode=="acquiring":
 		var rings: Array=scene.ground_focus.overlay.marks.filter(func(mark):return mark.has("progress"))
 		check(rings.size()==1 and rings[0].text=="Observing" and is_equal_approx(float(rings[0].progress),20.0/45.0),"native acquiring screenshot contains the neutral pending ring")
+		check(scene.ground_focus.heading.text=="FOCUS\nKeep subject visible until the ring fills.","acquiring screenshot keeps one contextual ring instruction and no duplicate key list")
 	check(scene.model.snapshot()==retained and scene.model.journal()==journal,"rendering preserves native world and journal: "+mode)
 	var image:=root.get_texture().get_image()
 	var filename:="ground-focus-%s-%dx%d.png" % [mode,size.x,size.y]

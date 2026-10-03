@@ -101,6 +101,7 @@ func acquisition_checks(scene) -> void:
 	focus.sample(0)
 	var pending: Array=focus.acquisitions()
 	check(pending.size()==1 and focus.observations().is_empty(),"first fresh admitted tick exposes progress before identification")
+	check(focus.heading.text=="FOCUS\nKeep subject visible until the ring fills.","anonymous acquisition shows one contextual instruction without repeating interaction keys")
 	if not pending.is_empty():
 		var expected_keys: Array=["position","observed_ticks","required_ticks","sample_tick","observer_id","sensor_id"]
 		var actual_keys: Array=pending[0].keys();actual_keys.sort();expected_keys.sort()
@@ -133,6 +134,7 @@ func acquisition_checks(scene) -> void:
 	check(focus.acquisitions().size()==1 and focus.acquisitions()[0].observed_ticks==44 and focus.observations().is_empty(),"44 uninterrupted sensory ticks remain anonymous")
 	focus.sample(144)
 	check(focus.acquisitions().is_empty() and focus.observations().size()==1 and focus.observations()[0].seen_tick==144,"the 45th admitted tick atomically replaces progress with an identified observation")
+	check(focus.heading.text=="FOCUS","the contextual acquisition instruction yields its space after identification")
 	var last_seen: Array=focus.observations()
 	contact.hide();focus.sample(145)
 	contact.show();contact.position.x+=0.4;focus.sample(146)
@@ -541,7 +543,8 @@ func compact_layout_checks() -> void:
 		var suffix:=" at %dx%d" % [size.x,size.y]
 		check(hud.visible and hud.top.is_visible_in_tree() and hud.bottom.is_visible_in_tree() and hud.control_strip.is_visible_in_tree(),"actual compact task, directed words and controls remain visible during Focus"+suffix)
 		check(hud.task.text==scene.workshop_hint().replace(" [E]","") and hud.words.text==scene.story_caption() and hud.words.text==scene._message,"compact task and directed words retain native knowledge"+suffix)
-		check(hud.controls.text.contains("E  Speak") and hud.controls.text.contains("B  Accounts") and hud.controls.text.contains("J  Journal") and hud.controls.text.contains("Z  Focus") and hud.controls.text.contains("X  Hawk"),"real compact controls preserve interaction, accounts, journal, Focus and hawk hints"+suffix)
+		check(hud.controls.text.contains("E  Speak") and hud.controls.text.contains("B  Accounts") and hud.controls.text.contains("J  Journal") and hud.controls.text.contains("Z  Return") and not hud.controls.text.contains("Z  Focus") and hud.controls.text.contains("X  Hawk"),"real compact controls state the reversible Focus action once while preserving interaction, accounts, journal and hawk hints"+suffix)
+		check(focus.heading.text=="FOCUS\nKeep subject visible until the ring fills.","anonymous dwell shows one contextual ring instruction without repeating E/Z controls"+suffix)
 		check(scene._marker.visible and scene._marker.text=="Smith · E" and scene._marker.position.is_equal_approx(Craft.SITE+Vector3.UP*2.1),"the native task destination pointer remains the smith without revealing remote readiness"+suffix)
 		check(not scene._hud.is_visible_in_tree() and not scene._caption.is_visible_in_tree() and not scene._narrator_label.is_visible_in_tree(),"compact Focus presentation suppresses duplicate legacy text"+suffix)
 		var viewport:=Rect2(Vector2.ZERO,Vector2(size))
@@ -577,14 +580,14 @@ func compact_layout_checks() -> void:
 		scene.story_attention.reset(int(scene.model.progress().tick))
 		scene._refresh();hud.sample();focus.sample(19);await frames(3)
 		check(scene.story_caption().is_empty() and hud.words.text.is_empty() and not hud.bottom.is_visible_in_tree(),"quiet directed interval removes the empty speech card"+suffix)
-		check(hud.top.is_visible_in_tree() and hud.control_strip.is_visible_in_tree() and hud.controls.text.contains("Z  Focus"),"quiet interval preserves actual task and available controls"+suffix)
+		check(hud.top.is_visible_in_tree() and hud.control_strip.is_visible_in_tree() and hud.controls.text.contains("Z  Return"),"quiet interval preserves actual task and current Focus return control"+suffix)
 		controls_protected=false
 		for rect in focus.overlay.exclusion_rects:
 			if rect.encloses(hud.control_strip.get_global_rect()):controls_protected=true
 		check(controls_protected,"quiet interval still reserves the visible control strip"+suffix)
 		check(focus.acquisitions().size()==1 and not focus.overlay.marks.is_empty(),"quiet interval preserves admitted acquisition and its projected marker"+suffix)
 		focus.stop();hud.sample()
-		check(hud.visible and hud.top.is_visible_in_tree() and hud.control_strip.is_visible_in_tree() and hud.controls.text.contains("Z  Focus"),"returning from Focus preserves the original compact task and controls"+suffix)
+		check(hud.visible and hud.top.is_visible_in_tree() and hud.control_strip.is_visible_in_tree() and hud.controls.text.contains("Z  Focus") and not hud.controls.text.contains("Z  Return"),"returning from Focus restores the original compact task and activation control"+suffix)
 	check(scene.model.snapshot()==retained and scene.model.journal()==journal,"compact resize, Focus progress and layout preserve the frozen native authority")
 	root.size=original_size;root.content_scale_size=original_scale_size;home.queue_free();await frames()
 
