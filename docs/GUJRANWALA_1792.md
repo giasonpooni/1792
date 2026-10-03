@@ -22,6 +22,11 @@ mosaic through the existing reversible Home art layer. Its four exterior pockets
 and seasonal previews have their own evidence catalogue; they do not change this
 architectural manifest, the world atlas or the qualified playable bounds.
 
+The [2 October reference batch](GUJRANWALA_REFERENCE_BATCH_20261002.md) records
+six video links, six unique uploaded courtyard images and two later historical
+studies. Inspected photo motifs, metadata-only video leads, paper chronology
+conflicts and proposed uses remain separate from active geometry admissions.
+
 **Courtyard vocabulary, not a copied 1792 floor plan.** Ahmad and Khilat's 2023
 field study documents verandahs, courtyards, masonry and timber features and an
 open forecourt (kucha). These support architectural comparison, not our exact

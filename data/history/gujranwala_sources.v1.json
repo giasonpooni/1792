@@ -3,6 +3,9 @@
   "accessed": "2026-09-28",
   "active_manifest": "game/data/gujranwala_reconstruction.v1.json",
   "active_sources": ["ahmad_khilat_2023", "wcla_haveli", "grewal_urbanization", "doam_mahan_samadhi", "doam_sheranwala"],
+  "reference_intakes": [
+    {"path": "data/art_intake/gujranwala_reference_batch_20261002.json", "recorded_date": "2026-10-02", "status": "modern visual comparisons and later historical research; no new geometry admitted"}
+  ],
   "prior_finding_aids": [
     {"id": "doam_ranjit_birthplace", "url": "https://doam.gov.pk/public/sites/10111", "status": "not retrieved in this pass; architectural claims now bind the published field study"},
     {"id": "ali_2026", "url": "https://rjsaonline.org/index.php/JGST/article/view/685", "status": "unverified in this pass; not used to admit geometry"}

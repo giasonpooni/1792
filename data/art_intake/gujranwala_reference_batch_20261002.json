@@ -1,0 +1,556 @@
+{
+  "schema": "1792.gujranwala-reference-intake.v1",
+  "recorded_date": "2026-10-02",
+  "base_repository_commit": "e57898a12c58792b363504141fcb574277b4d51d",
+  "status": "reference_review_only",
+  "scope": "Six video URLs (metadata only), eight uploaded image files (six unique byte identities, all unique images inspected), and two uploaded papers.",
+  "counts": {
+    "video_urls": 6,
+    "image_attachments": 8,
+    "unique_image_contents": 6,
+    "papers": 2
+  },
+  "runtime_changes": false,
+  "new_historical_geometry_admitted": false,
+  "raw_media_committed": false,
+  "videos": [
+    {
+      "id": "OKt4dCXZfeI",
+      "url": "https://www.youtube.com/watch?v=OKt4dCXZfeI",
+      "title_as_published": "Tallest Historical Sikh Samadhi of Maharaja Ranjit Singh's Father | Mahan  Singh Tomb, Gujranwala",
+      "creator_as_published": "My Travelogues",
+      "publication_timestamp_as_reported": "2026-03-16T01:00:20-07:00",
+      "duration_seconds": 1837,
+      "recording_dates_reported_by_creator": [
+        "2025-04-27",
+        "2026-03-15"
+      ],
+      "recording_dates_independently_verified": false,
+      "location": "Gujranwala; building named by uploader, not frame-confirmed.",
+      "role": "mahan_singh_samadhi",
+      "review_status": "public_metadata_only",
+      "metadata_source": "YouTube public watch-page player response; title, creator, description, duration and publication metadata inspected.",
+      "footage_viewed": false,
+      "transcript_reviewed": false,
+      "timestamped_observations": [],
+      "preview_retrieval": "failed: storyboard requests returned Site Unavailable HTML, not images",
+      "reconstruction_decision": "Modern monument condition and exterior architectural comparison; completed monument remains excluded from 1792.",
+      "historical_geometry_admitted": false
+    },
+    {
+      "id": "ra63xvTk4nM",
+      "url": "https://www.youtube.com/watch?v=ra63xvTk4nM",
+      "title_as_published": "Reopen Shair_e_Punjab Maharaja  Ranjeet Singh Father,s place !! Maha Singh !!Gujranwala pakistan",
+      "creator_as_published": "Punjabi Lehar",
+      "publication_timestamp_as_reported": "2020-01-11T21:52:25-08:00",
+      "duration_seconds": 376,
+      "recording_dates_reported_by_creator": [],
+      "recording_dates_independently_verified": false,
+      "location": "Gujranwala; title says father's place, exact site identity unconfirmed.",
+      "role": "maha_singh_site_identity_pending",
+      "review_status": "public_metadata_only",
+      "metadata_source": "YouTube public watch-page player response; title, creator, description, duration and publication metadata inspected.",
+      "footage_viewed": false,
+      "transcript_reviewed": false,
+      "timestamped_observations": [],
+      "preview_retrieval": "failed: storyboard requests returned Site Unavailable HTML, not images",
+      "reconstruction_decision": "Identify the building from footage before comparing it with the samadhi or birthplace haveli.",
+      "historical_geometry_admitted": false
+    },
+    {
+      "id": "L4PH2KM6xLk",
+      "url": "https://www.youtube.com/watch?v=L4PH2KM6xLk",
+      "title_as_published": "Pakistan Aerial View - Gujranwala (Punjab)",
+      "creator_as_published": "Rest Hours",
+      "publication_timestamp_as_reported": "2018-06-20T10:38:36-07:00",
+      "duration_seconds": 221,
+      "recording_dates_reported_by_creator": [],
+      "recording_dates_independently_verified": false,
+      "location": "Gujranwala, as titled; no camera positions verified.",
+      "role": "modern_urban_aerial",
+      "review_status": "public_metadata_only",
+      "metadata_source": "YouTube public watch-page player response; title, creator, description, duration and publication metadata inspected.",
+      "footage_viewed": false,
+      "transcript_reviewed": false,
+      "timestamped_observations": [],
+      "preview_retrieval": "failed: storyboard requests returned Site Unavailable HTML, not images",
+      "reconstruction_decision": "Review roofscape and settlement massing; no historical street network or measured geometry admitted.",
+      "historical_geometry_admitted": false
+    },
+    {
+      "id": "7K58JhjwYKI",
+      "url": "https://www.youtube.com/watch?v=7K58JhjwYKI",
+      "title_as_published": "An Aerial View of Gujranwala Main Places | Punjab Pakistan |",
+      "creator_as_published": "The Everywhere!",
+      "publication_timestamp_as_reported": "2020-06-30T11:35:50-07:00",
+      "duration_seconds": 149,
+      "recording_dates_reported_by_creator": [],
+      "recording_dates_independently_verified": false,
+      "location": "Gujranwala, as titled; individual landmarks not identified from frames.",
+      "role": "modern_urban_aerial",
+      "review_status": "public_metadata_only",
+      "metadata_source": "YouTube public watch-page player response; title, creator, description, duration and publication metadata inspected.",
+      "footage_viewed": false,
+      "transcript_reviewed": false,
+      "timestamped_observations": [],
+      "preview_retrieval": "failed: storyboard requests returned Site Unavailable HTML, not images",
+      "reconstruction_decision": "Review modern landmarks and urban context; date each candidate structure separately.",
+      "historical_geometry_admitted": false
+    },
+    {
+      "id": "16tBGXeL5t8",
+      "url": "https://www.youtube.com/watch?v=16tBGXeL5t8",
+      "title_as_published": "Aerial View of Thakkarke Kot Ram Das Daska Gujranwala Pakistan Drone Footage 4k Travel Escapes",
+      "creator_as_published": "Travel Escapes",
+      "publication_timestamp_as_reported": "2025-04-28T15:28:53-07:00",
+      "duration_seconds": 327,
+      "recording_dates_reported_by_creator": [],
+      "recording_dates_independently_verified": false,
+      "location": "Thakkarke Kot, Ram Das Road, Daska, Gujranwala, Pakistan: uploader locator; exact positions and administrative labels unverified.",
+      "role": "modern_rural_aerial",
+      "review_status": "public_metadata_only",
+      "metadata_source": "YouTube public watch-page player response; title, creator, description, duration and publication metadata inspected.",
+      "footage_viewed": false,
+      "transcript_reviewed": false,
+      "timestamped_observations": [],
+      "preview_retrieval": "failed: storyboard requests returned Site Unavailable HTML, not images",
+      "reconstruction_decision": "Review settlement-to-field transitions as possible visual comparisons for cultivated margins.",
+      "historical_geometry_admitted": false
+    },
+    {
+      "id": "Wo01KEyMTy0",
+      "url": "https://www.youtube.com/watch?v=Wo01KEyMTy0",
+      "title_as_published": "Aerial view of Thakkarke Ghalibke Ladheke near Daska City Gujranwala Punjab Pakistan 4k Drone",
+      "creator_as_published": "Travel Escapes",
+      "publication_timestamp_as_reported": "2025-05-04T23:01:01-07:00",
+      "duration_seconds": 328,
+      "recording_dates_reported_by_creator": [],
+      "recording_dates_independently_verified": false,
+      "location": "Thakkarke, Ghalibke, Ladheke near Daska: uploader locator; exact positions and administrative labels unverified.",
+      "role": "modern_rural_aerial",
+      "review_status": "public_metadata_only",
+      "metadata_source": "YouTube public watch-page player response; title, creator, description, duration and publication metadata inspected.",
+      "footage_viewed": false,
+      "transcript_reviewed": false,
+      "timestamped_observations": [],
+      "preview_retrieval": "not_attempted",
+      "reconstruction_decision": "Review village clusters and field-edge transitions; do not infer historical crops, canals or parcel boundaries.",
+      "historical_geometry_admitted": false
+    }
+  ],
+  "images": [
+    {
+      "id": "HAV01",
+      "filename": "restoration-work-at-maharaja-ranjit-singh-haveli-gujranwala-v0-8vx5v9p1t9ie1.webp",
+      "sha256": "6cec3fafc7c231c99d34671c7b18950332bd9e791802ee9613c04b8902c38fe4",
+      "bytes": 176242,
+      "pixels": [
+        1080,
+        720
+      ],
+      "aliases": [],
+      "review_status": "pixels_inspected",
+      "observation_date": null,
+      "capture_date_embedded": false,
+      "location": "Haveli of Ranjit Singh, Gujranwala, attributed by the supplied restoration filenames and batch context; original photographer/source and exact site match unverified.",
+      "habitat": null,
+      "identification_confidence": {
+        "visible_architectural_features": "high",
+        "named_site": "provisional",
+        "fabric_present_in_1792": "unestablished"
+      },
+      "observation": "Elevated view of an open rectangular courtyard, arcades along both long sides, cusped openings, grouped shafts, shallow panel relief and perforated brick parapets. Rubble and partly disturbed paving are visible.",
+      "reconstruction_decision": "Courtyard rhythm, arch silhouette and depth relationships are usable visual comparison targets. Exact dimensions, original parapet design and the age of exposed brick are unresolved.",
+      "historical_geometry_admitted": false,
+      "raw_file_committed": false,
+      "redistribution_rights": "not_established"
+    },
+    {
+      "id": "HAV02",
+      "filename": "restoration-work-at-maharaja-ranjit-singh-haveli-gujranwala-v0-4659lyo1t9ie1.webp",
+      "sha256": "b0708de13dbae2ce0e922adf3b10d8de81b54ef09c46f269170f997ade3fe88c",
+      "bytes": 192560,
+      "pixels": [
+        1080,
+        810
+      ],
+      "aliases": [],
+      "review_status": "pixels_inspected",
+      "observation_date": null,
+      "capture_date_embedded": false,
+      "location": "Haveli of Ranjit Singh, Gujranwala, attributed by the supplied restoration filenames and batch context; original photographer/source and exact site match unverified.",
+      "habitat": null,
+      "identification_confidence": {
+        "visible_architectural_features": "high",
+        "named_site": "provisional",
+        "fabric_present_in_1792": "unestablished"
+      },
+      "observation": "Roof-level view into a courtyard with arcaded sides and a raised brick lattice parapet. Scaffolding, stacks of building material, modern surrounding brick buildings and a blue barrel are visible.",
+      "reconstruction_decision": "Compare roof-to-court height relationships and parapet construction. Separate restoration equipment and surrounding present-day development from historical design.",
+      "historical_geometry_admitted": false,
+      "raw_file_committed": false,
+      "redistribution_rights": "not_established"
+    },
+    {
+      "id": "HAV03",
+      "filename": "restoration-work-at-maharaja-ranjit-singh-haveli-gujranwala-v0-9rrno0p1t9ie1.webp",
+      "sha256": "ef3a65dd6a7d7b68333c5ff169f6feb040a6a700436368c328efae0ab45780f7",
+      "bytes": 160546,
+      "pixels": [
+        1080,
+        810
+      ],
+      "aliases": [],
+      "review_status": "pixels_inspected",
+      "observation_date": null,
+      "capture_date_embedded": false,
+      "location": "Haveli of Ranjit Singh, Gujranwala, attributed by the supplied restoration filenames and batch context; original photographer/source and exact site match unverified.",
+      "habitat": null,
+      "identification_confidence": {
+        "visible_architectural_features": "high",
+        "named_site": "provisional",
+        "fabric_present_in_1792": "unestablished"
+      },
+      "observation": "Shaded verandah with cusped masonry arches, grouped shafts, thick piers, shallow wall niches and timber beams supporting closely spaced ceiling members. Patterned brick paving, repair materials and modern loose objects are visible.",
+      "reconstruction_decision": "Compare column grouping, arch depth, ceiling-member direction and the light transition into the verandah. Paving pattern, timber age and original surface finish need phase evidence.",
+      "historical_geometry_admitted": false,
+      "raw_file_committed": false,
+      "redistribution_rights": "not_established"
+    },
+    {
+      "id": "HAV04",
+      "filename": "images (42).jpg",
+      "sha256": "49b2168d6bb840d792d1750627e99f8d9433fca4c54bd01c724320a9f75a9ca7",
+      "bytes": 56763,
+      "pixels": [
+        715,
+        429
+      ],
+      "aliases": [
+        "images (42)(1).jpg"
+      ],
+      "review_status": "pixels_inspected",
+      "observation_date": null,
+      "capture_date_embedded": false,
+      "location": "Haveli of Ranjit Singh, Gujranwala, attributed by the supplied restoration filenames and batch context; original photographer/source and exact site match unverified.",
+      "habitat": null,
+      "identification_confidence": {
+        "visible_architectural_features": "high",
+        "named_site": "provisional",
+        "fabric_present_in_1792": "unestablished"
+      },
+      "observation": "Ground-level courtyard with arcades, large rectangular paving slabs, vegetation at wall edges and along the roofline, dark streaking and exposed masonry.",
+      "reconstruction_decision": "Use as a separately observed condition state. Do not copy accumulated decay or vegetation as the appearance of an inhabited 1792 household; chronological order relative to the repair views is unverified.",
+      "historical_geometry_admitted": false,
+      "raw_file_committed": false,
+      "redistribution_rights": "not_established"
+    },
+    {
+      "id": "HAV05",
+      "filename": "images (40).jpg",
+      "sha256": "a3c08941a6d7b0755de3bfb89eb158f3b688596f0882f2ffab38294d34d6ee7e",
+      "bytes": 28390,
+      "pixels": [
+        387,
+        516
+      ],
+      "aliases": [
+        "images (38).jpg"
+      ],
+      "review_status": "pixels_inspected",
+      "observation_date": null,
+      "capture_date_embedded": false,
+      "location": "Haveli of Ranjit Singh, Gujranwala, attributed by the supplied restoration filenames and batch context; original photographer/source and exact site match unverified.",
+      "habitat": null,
+      "identification_confidence": {
+        "visible_architectural_features": "high",
+        "named_site": "provisional",
+        "fabric_present_in_1792": "unestablished"
+      },
+      "observation": "Long courtyard with cusped arcades on both sides, grouped columns, a perforated parapet, dark openings and a mostly bare, uneven ground surface.",
+      "reconstruction_decision": "Compare arcade repetition, courtyard proportions and parapet silhouette qualitatively. The small image is not a measured plan or a dated completion record.",
+      "historical_geometry_admitted": false,
+      "raw_file_committed": false,
+      "redistribution_rights": "not_established"
+    },
+    {
+      "id": "HAV06",
+      "filename": "images (39).jpg",
+      "sha256": "49e914c06100981876991fe6a82ddf4274a8cdacc7389a5b3983a7e5f3ccc213",
+      "bytes": 39771,
+      "pixels": [
+        387,
+        516
+      ],
+      "aliases": [],
+      "review_status": "pixels_inspected",
+      "observation_date": null,
+      "capture_date_embedded": false,
+      "location": "Haveli of Ranjit Singh, Gujranwala, attributed by the supplied restoration filenames and batch context; original photographer/source and exact site match unverified.",
+      "habitat": null,
+      "identification_confidence": {
+        "visible_architectural_features": "high",
+        "named_site": "provisional",
+        "fabric_present_in_1792": "unestablished"
+      },
+      "observation": "Oblique close view of an arcade with cusped arch profiles, grouped column shafts, recessed rectangular panels, horizontal cornice bands and a perforated parapet.",
+      "reconstruction_decision": "Strongest supplied close view for silhouette and panel relationships. Do not infer exact brick module, mortar, plaster history or 1792 colour from the compressed image.",
+      "historical_geometry_admitted": false,
+      "raw_file_committed": false,
+      "redistribution_rights": "not_established"
+    }
+  ],
+  "image_attachments": [
+    {
+      "filename": "restoration-work-at-maharaja-ranjit-singh-haveli-gujranwala-v0-8vx5v9p1t9ie1.webp",
+      "content_id": "HAV01",
+      "sha256": "6cec3fafc7c231c99d34671c7b18950332bd9e791802ee9613c04b8902c38fe4"
+    },
+    {
+      "filename": "restoration-work-at-maharaja-ranjit-singh-haveli-gujranwala-v0-4659lyo1t9ie1.webp",
+      "content_id": "HAV02",
+      "sha256": "b0708de13dbae2ce0e922adf3b10d8de81b54ef09c46f269170f997ade3fe88c"
+    },
+    {
+      "filename": "restoration-work-at-maharaja-ranjit-singh-haveli-gujranwala-v0-9rrno0p1t9ie1.webp",
+      "content_id": "HAV03",
+      "sha256": "ef3a65dd6a7d7b68333c5ff169f6feb040a6a700436368c328efae0ab45780f7"
+    },
+    {
+      "filename": "images (42).jpg",
+      "content_id": "HAV04",
+      "sha256": "49b2168d6bb840d792d1750627e99f8d9433fca4c54bd01c724320a9f75a9ca7"
+    },
+    {
+      "filename": "images (42)(1).jpg",
+      "content_id": "HAV04",
+      "sha256": "49b2168d6bb840d792d1750627e99f8d9433fca4c54bd01c724320a9f75a9ca7"
+    },
+    {
+      "filename": "images (40).jpg",
+      "content_id": "HAV05",
+      "sha256": "a3c08941a6d7b0755de3bfb89eb158f3b688596f0882f2ffab38294d34d6ee7e"
+    },
+    {
+      "filename": "images (38).jpg",
+      "content_id": "HAV05",
+      "sha256": "a3c08941a6d7b0755de3bfb89eb158f3b688596f0882f2ffab38294d34d6ee7e"
+    },
+    {
+      "filename": "images (39).jpg",
+      "content_id": "HAV06",
+      "sha256": "49e914c06100981876991fe6a82ddf4274a8cdacc7389a5b3983a7e5f3ccc213"
+    }
+  ],
+  "papers": [
+    {
+      "id": "rana_ali_mushtaq_2025",
+      "filename": "Exploring_the_Non-Muslim_and_Secular_Heritage_of_G.pdf",
+      "sha256": "d5dcf557c8029feb00c965f235b1e7f44f2e1bb17a9377032f30e08fba1dedb4",
+      "bytes": 1566740,
+      "title_as_printed": "Exploring the Non-Muslim and Secular Heritage of Gujranwala's Walled City: Prospects for Cultural Tourism",
+      "authors_as_printed": [
+        "Eyaz Rana",
+        "Muhammad Kashif Ali",
+        "Muhammad Mushtaq"
+      ],
+      "journal_as_printed": "Research Journal of Psychology (RJP)",
+      "volume": 3,
+      "issue": 4,
+      "publication_year_as_printed": 2025,
+      "available_online_as_printed": "2025-11-02",
+      "printed_pages": [
+        531,
+        544
+      ],
+      "pdf_pages": 14,
+      "scope": "Modern heritage/tourism synthesis combining accounts of several historical periods; not a surveyed 1792 town or a construction-phase study.",
+      "review_status": "text_reviewed; printed pages 534 and 541 also rendered and visually inspected",
+      "observations": [
+        {
+          "id": "HER01",
+          "locator": "printed p. 534 / PDF p. 4",
+          "observation_date": null,
+          "location": "Gujranwala walled city",
+          "observation": "An author-drawn gate diagram includes directional labels and Jinnah Gate but has no displayed scale or coordinates.",
+          "identification_confidence": "high: diagram inspected",
+          "reconstruction_decision": "Retain as a schematic locator and research lead; do not trace a 1792 wall alignment or road grid from it."
+        },
+        {
+          "id": "HER02",
+          "locator": "printed pp. 535, 543 / PDF pp. 5, 13",
+          "observation_date": null,
+          "location": "O'Dwyer / Jinnah Gate, Gujranwala",
+          "observation": "The gate section assigns construction to 1894 and explicitly distinguishes it from Sikh-era fortifications; the conclusion attributes a Mori/Jinnah/O'Dwyer gate to Mahan Singh.",
+          "identification_confidence": "high: conflicting statements present; historical resolution pending",
+          "reconstruction_decision": "Record the internal contradiction. No gate geometry, start-year name or foundation date is admitted from this paper."
+        },
+        {
+          "id": "HER03",
+          "locator": "printed p. 539 / PDF p. 9; reference 2 on p. 544",
+          "observation_date": null,
+          "location": "Mahan / Ranjit Singh haveli, Gujranwala",
+          "observation": "Describes shallow niches, paired fluted columns, cusped arches and panel rhythms while citing the 2023 haveli study already used by this project.",
+          "identification_confidence": "high: textual description; fabric phase unresolved",
+          "reconstruction_decision": "Link to existing architectural vocabulary; do not count this secondary retelling as independent dating or surveying evidence."
+        },
+        {
+          "id": "HER04",
+          "locator": "printed pp. 540–541 / PDF pp. 10–11",
+          "observation_date": "2018 (condition passage expressly refers to early 2018; not the date of every illustration)",
+          "location": "Mahan Singh samadhi, Gujranwala",
+          "observation": "Gives a rule period ending in 1792 and a death in April 1790; describes deterioration and includes an early-2018 condition reference. Bibliography lists Asian Historical Architecture, also cited by DOAM.",
+          "identification_confidence": "high: text; biography and photograph date unresolved",
+          "reconstruction_decision": "Do not treat publication year as observation year, resolve the death date from this paper alone, or count overlapping source chains as independent corroboration. Retain the existing later-monument exclusion."
+        },
+        {
+          "id": "HER05",
+          "locator": "printed p. 541 / PDF p. 11",
+          "observation_date": null,
+          "location": "Sheranwala Bagh and baradari",
+          "observation": "Reports rival construction attributions including 1788 under Mahan Singh and 1790–1799; also discusses later damage and reconstruction.",
+          "identification_confidence": "high: rival attributions reported; exact phases unresolved",
+          "reconstruction_decision": "Keep defer_disputed; neither the supplied photograph nor this synthesis establishes the pavilion's 1792 form."
+        }
+      ],
+      "cataloguing_notes": [
+        "PDF creation metadata is dated 2026; retain the printed 2025 publication information separately.",
+        "Printed reference 3 abbreviates the authors/title of the 2021 paper. Catalogue the supplied 2021 PDF from its own first page."
+      ],
+      "raw_file_committed": false,
+      "historical_geometry_admitted": false
+    },
+    {
+      "id": "ali_rehman_shabbir_2021",
+      "filename": "ASocio-CulturalStudyofGujranwalaundertheBritishRajPUBLISHEDAPA.pdf",
+      "sha256": "eba27402dd01e87de7368c687763feaa404b0388e5457c6e441c59b681bb9c56",
+      "bytes": 315974,
+      "title_as_printed": "A Socio-Cultural Historical Survey of Gujranwala during the British Raj (1849–1947)",
+      "authors_as_printed": [
+        "Muhammad Kashif Ali",
+        "Javed-ur-Rehman",
+        "Ghulam Shabbir"
+      ],
+      "journal_as_printed": "Ancient Punjab",
+      "volume": 9,
+      "publication_year_as_printed": 2021,
+      "printed_pages": [
+        63,
+        74
+      ],
+      "pdf_pages": 12,
+      "historical_scope_years": [
+        1849,
+        1947
+      ],
+      "review_status": "selected text reviewed: printed pp. 63–64 and 69–74; remaining text searched for relevant terms",
+      "scope": "Colonial-period regional synthesis using gazetteers, later publications and retrospective interviews; distinguish town and changing district extents.",
+      "observations": [
+        {
+          "id": "RAJ01",
+          "locator": "printed pp. 63–64 / PDF pp. 1–2",
+          "observation_date": null,
+          "location": "Gujranwala town and district / Rachna Doab",
+          "observation": "Includes a cattle-and-grazing origin tradition and an account of changing district boundaries in the 1850s.",
+          "identification_confidence": "high: reported tradition and administrative history; primary verification pending",
+          "reconstruction_decision": "Keep as leads, not a measured grazing inventory or an invariant district boundary for 1792."
+        },
+        {
+          "id": "RAJ02",
+          "locator": "printed pp. 69–70 / PDF pp. 7–8",
+          "observation_date": null,
+          "location": "Gujranwala agricultural region in colonial-period discussion",
+          "observation": "Discusses Rabi/Kharif cultivation, chahi well-irrigated land, oxen, Persian wheels and carts. The discussion also references twentieth-century land and debt politics.",
+          "identification_confidence": "high: text; precise date/geographic coverage of generalizations unresolved",
+          "reconstruction_decision": "Create later-period research leads for water and livelihoods. Do not calibrate 1792 crops, yields, irrigation coverage or machinery from this passage alone; no blanket claim of an unirrigated precolonial landscape."
+        },
+        {
+          "id": "RAJ03",
+          "locator": "printed p. 64 and pp. 70–71 / PDF pp. 2, 8–9",
+          "observation_date": null,
+          "location": "Gujranwala town, district and named regional production centres",
+          "observation": "Combines an 1881 district population with a separate 1880s urban population and later industrial accounts, including 1908 workshops, railway expansion and timber brought via the Chenab.",
+          "identification_confidence": "high: separate dates/units in text; numerical and primary-source verification pending",
+          "reconstruction_decision": "Retain date and geographic unit with each lead; no 1792 population, religious composition, workshop counts or fixed transport network derived from these figures."
+        },
+        {
+          "id": "RAJ04",
+          "locator": "printed pp. 73–74 / PDF pp. 11–12",
+          "observation_date": null,
+          "location": "Gujranwala district",
+          "observation": "References the revised Gujranwala district gazetteer (1895), the 1935 gazetteer published in 1936, Latifi (1911), Douie (1916) and retrospective interviews.",
+          "identification_confidence": "high: bibliography inspected; listed works not newly checked",
+          "reconstruction_decision": "Preserve source-chain leads and verify original editions before admitting precise chronology, quantities, geography or livelihood claims."
+        }
+      ],
+      "cataloguing_notes": [
+        "The embedded PDF Title refers to Gandhara Buddhist architecture and the metadata Author differs from the printed authors. Use the article's first page for title/authorship; retain the mismatch as a cataloguing issue.",
+        "The metadata creation date is 2022, separate from the printed 2021 volume year."
+      ],
+      "raw_file_committed": false,
+      "historical_geometry_admitted": false
+    }
+  ],
+  "relationships": [
+    {
+      "members": [
+        "16tBGXeL5t8",
+        "Wo01KEyMTy0"
+      ],
+      "relationship": "Same creator and nearby uploader-named area; independent recording events and coverage not verified."
+    },
+    {
+      "members": [
+        "HAV01",
+        "HAV02",
+        "HAV03",
+        "HAV04",
+        "HAV05",
+        "HAV06"
+      ],
+      "relationship": "Related courtyard views by batch attribution and visual similarity; photographer, capture dates, restoration sequence and source independence unverified."
+    },
+    {
+      "members": [
+        "rana_ali_mushtaq_2025",
+        "ahmad_khilat_2023"
+      ],
+      "relationship": "The 2025 haveli description cites the 2023 study already present in the active reconstruction manifest."
+    },
+    {
+      "members": [
+        "rana_ali_mushtaq_2025",
+        "ali_rehman_shabbir_2021"
+      ],
+      "relationship": "The 2025 bibliography includes an abbreviated citation to the supplied 2021 study."
+    },
+    {
+      "members": [
+        "rana_ali_mushtaq_2025",
+        "doam_mahan_samadhi"
+      ],
+      "relationship": "Both reference Asian Historical Architecture for the samadhi; not assumed to be independent evidence."
+    }
+  ],
+  "existing_source_recheck": {
+    "id": "doam_mahan_samadhi",
+    "url": "https://doam.gov.pk/public/sites/10110",
+    "checked": "2026-10-02",
+    "finding": "The inventory attributes establishment to 1835, citing Kapur in a description sourced to Asian Historical Architecture. It remains later-monument evidence, not a newly authenticated construction document."
+  },
+  "reconstruction_decisions": [
+    "Retain the implemented settlement/cultivation, grazing/scrub, riverine-thicket and wetland mosaic; no video metadata establishes a historical placement.",
+    "Use inspected photo motifs as qualitative targets for existing courtyard vocabulary, with dated fabric phases unresolved.",
+    "Keep modern repair work, accumulated ruin, contemporary surrounding buildings and infrastructure out of automatic 1792 transfer.",
+    "Keep completed Mahan Singh samadhi excluded and Sheranwala baradari deferred pending resolution of source conflict.",
+    "Keep colonial livelihoods, demography, legal arrangements and institutions in their later historical layer.",
+    "Religious sites remain exterior/view-only; no new playable interior or religious figure follows from this intake.",
+    "Exact plan, coordinates, scale, brick module, tree species and plant abundance remain unestablished by this batch."
+  ],
+  "next_review_targets": [
+    "Accessible video frames or user-supplied timestamps/stills before recording any visual or audio observations.",
+    "Original photographer, source page and capture dates for the six unique photo contents.",
+    "Dated fabric-phase or measured surveys before adopting exact arch profiles, parapets, floor patterns or courtyard dimensions.",
+    "Earlier primary evidence before transferring colonial cultivation or irrigation details into 1792."
+  ]
+}
