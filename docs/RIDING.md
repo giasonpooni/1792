@@ -44,8 +44,20 @@ teleport a parked horse to Lahore. Without muster, the older immediate viewpoint
 
 ## Spatial checks
 
-Mounting needs proximity and a clear line to the horse. F requests are handled in physics
-time. Dismounting requires a grounded, nearly stopped horse. The scene tries both sides,
+Mounting needs proximity, a clear line to the horse, and a clear sweep of the avatar's
+actual walking collision shape. The probe preserves the shape's global transform and
+active collision mask, excludes the avatar and horse, and checks both endpoints before
+sweeping the complete approach. This prevents a narrow gap or a low barrier from admitting
+a transfer just because the elevated sightline is clear. Queries do not move either body
+or change authoritative state. A rejected transfer keeps the walking controller active.
+
+The shape receives the existing 0.04 m dismount-style floor allowance without shrinking
+its radius or height. Only a completely clear `[1.0, 1.0]` cast result is accepted. This
+qualifies the straight approach for the existing discrete mount action; it does not add a
+mounting animation, stepping over obstacles, or an uneven-ground solver. Current Home
+and House callers use one standing capsule and collision mask 1 while on foot.
+
+F requests are handled in physics time. Dismounting requires a grounded, nearly stopped horse. The scene tries both sides,
 then rear/front, requiring a ground ray, standable normal, standing-capsule clearance and
 swept path. A thin wall cannot be bypassed simply because the final landing is clear.
 The campaign additionally rejects nonfinite or distant landing proposals.
@@ -81,6 +93,31 @@ house-reporting and riding checks. The riding suite exercises actual physics/inp
 round trip, acceleration/braking, safe and blocked dismounts, mounting through walls,
 collision stopping, airborne landing, mounted save/load, legacy imports and commission rules.
 Original tests are retained unchanged; new tests do not weaken their assertions.
+
+`test_mount_clearance.gd` adds native body-clearance fixtures and the actual Home mount
+action/input path. It distinguishes the atomic action (no clock advancement) from a queued
+F request consumed in one ordinary owning physics tick. These are explicit spatial test
+fixtures, not a claim that an autonomous player reached the horse.
+
+The 2 October 2026 clearance increment passed **49** new checks: clear approaches,
+ray-clear narrow gaps and low barriers, initial/final overlap, displaced/rotated child
+shapes, unavailable hulls, read-only queries, and the Home action/input boundary. The
+same final test against the preceding horse implementation in an isolated game copy
+produced **35 passes and 14 expected assertion failures**, with no unexpected engine
+errors. An earlier Home fixture disabled `process_mode` and inadvertently removed
+colliders; that run is explicitly superseded, and the corrected fixture freezes only
+callbacks while keeping native collisions active.
+
+Retained riding **177**, childhood **110**, companions **229**, and water-round **277**
+checks also passed: **842 native checks** in this targeted qualification. The structural
+suite passed **8** checks. The entire game suite was not rerun for this bounded change.
+
+`render_mount_clearance.gd` captures three labelled fixtures in the composed Home:
+narrow posts, a low barrier and an open approach. Each queries the actual adapter and
+calls the existing mount action; blocked cases must retain the snapshot and physical
+poses. PNG and decoded-pixel hashes bind the captures to their execution. Fixture
+obstacles and diagnostic cameras are authored test geometry, not historical evidence
+or a human playtest.
 
 `render_riding.gd` creates five controlled render fixtures. They are actual Godot images,
 but capture success is not a human playtest and fixture placement is not autonomous travel.

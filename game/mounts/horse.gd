@@ -83,9 +83,36 @@ func bridle_points_world() -> Array[Vector3]:
 	return _visual.bridle_points_world()
 
 func clear_mount_path(avatar: CharacterBody3D) -> bool:
+	# Mounting is a discrete transfer, but the whole walking hull must fit along
+	# the approach. A clear elevated ray alone admits narrow gaps and low walls.
+	var collider := avatar.get_node_or_null("CollisionShape3D") as CollisionShape3D
+	if collider == null or collider.disabled or collider.shape == null:
+		return false
+	var space := get_world_3d().direct_space_state
+	var exclusions: Array[RID] = [get_rid(), avatar.get_rid()]
 	var ray := PhysicsRayQueryParameters3D.create(avatar.global_position + Vector3.UP,
-		global_position + Vector3.UP * 1.4, 1, [get_rid(), avatar.get_rid()])
-	return get_world_3d().direct_space_state.intersect_ray(ray).is_empty()
+		global_position + Vector3.UP * 1.4, avatar.collision_mask, exclusions)
+	if not space.intersect_ray(ray).is_empty():
+		return false
+	var query := PhysicsShapeQueryParameters3D.new()
+	query.shape = collider.shape
+	query.collision_mask = avatar.collision_mask
+	query.exclude = exclusions
+	var start := collider.global_transform
+	# Match the existing dismount floor clearance without shrinking the hull.
+	start.origin += Vector3.UP * 0.04
+	var motion := global_position - avatar.global_position
+	query.transform = start
+	# cast_motion ignores existing overlaps; qualify both ends independently.
+	if not space.intersect_shape(query, 1).is_empty():
+		return false
+	query.transform.origin += motion
+	if not space.intersect_shape(query, 1).is_empty():
+		return false
+	query.transform = start
+	query.motion = motion
+	var fraction := space.cast_motion(query)
+	return fraction.size() == 2 and fraction[0] == 1.0 and fraction[1] == 1.0
 
 func dismount_position(avatar: CharacterBody3D) -> Variant:
 	# Try both sides, then rear/front. Ray ground, capsule clearance, swept path.

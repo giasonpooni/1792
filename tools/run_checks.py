@@ -41,6 +41,8 @@ def main() -> int:
         "houses", "HOUSE_CONFLICT_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_riding.gd"],
         "riding", "RIDING_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_mount_clearance.gd"],
+        "mount-clearance", "MOUNT_CLEARANCE_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_companions.gd"],
         "companions", "COMPANION_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_character_names.gd"],
