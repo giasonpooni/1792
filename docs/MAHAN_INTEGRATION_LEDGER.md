@@ -261,3 +261,18 @@ Residual / suggested next playable beat (pick one; still no combat AI rewrite, n
 1. **Column contact stub** — deepen the existing ridge→settlement / pursuit delayed-custody contact without combat AI (hold_observe / advance_under_custody presentation + custody clocks only).
 2. **Baggage train logistics deepen** — extend forage / wait / stockout / march-cost on Gujranwala nodes (still no economy UI).
 3. Keep `mahan-garhi` + settlement + fence + handoff green on every tip push; prefer `push_files`; never PLACEHOLDER-stub.
+
+
+## NPC variations (fiction extras — not merged)
+
+Bounded randomizer on `feat/mahan-interlude-v1` only. Does not rewrite childhood/Lahore architecture, identity, save format, or `world_state.schema.json`.
+
+| Path | Change |
+| --- | --- |
+| `game/npc/data/variation_tables.json` | Role, clothing, kit, mount, disposition, speech tables. Canonical ids fixed. `raj_kaur` / Sandhawalia forbidden. |
+| `game/npc/npc_variation.gd` | Seeded generator, site tag for Gujranwala greybox, memory attach, journal spill always refuses |
+| `game/tests/test_npc_variation.gd` | Determinism, uniqueness, canonical-id refusal, epistemic fence |
+| `docs/NPC_VARIATIONS.md` | Marks output as game-canon fiction, not historical persons |
+| `tools/run_checks.py` | Registers `npc-variation` after `mahan-handoff` |
+
+Godot **4.5.1.stable**: `NPC_VARIATION_TESTS: 284 passed, 0 failed`. Structural `check_project`: 9 OK. No merge to `main`.
