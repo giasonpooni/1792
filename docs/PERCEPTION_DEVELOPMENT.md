@@ -13,6 +13,7 @@ The first Ground Focus pass, PR #75, is merged. This continuation starts from ma
 - The successor composition is now merged into the current Home. A separate native player-input journey starts from fresh Home state, walks through the retained collision world, turns the character eye with mouse input, demonstrates anonymous dwell and modal interruption, earns the observation, and uses actual F5/F9 input to prove whole-state rollback clears all transient perception.
 - The complete unseeded opening journey now reaches the existing household escort through the displayed protection choice. Native Z/G input and the production escort motor earn a sensor-bound motion estimate from 30 ticks of visible displacement; an actual hold order contradicts it before expiry. The retained manifest and independent verifier refuse actor velocity, route, affiliation, injected poses, human-playtest claims, measured-physiology claims and authenticated-history claims.
 - A visible moving contact now retracts an existing estimate as soon as a consecutive admitted eye sample reverses its observed direction or leaves the 0.35 m constant-velocity envelope. Occluded actors are not re-read; the prior hypothesis remains frozen only to its existing short expiry. The line names its observed sample interval rather than implying a known route.
+- Hearing admission now follows Godot's native solo isolation: a playing source is declined when another mixer branch is soloed, admitted when its own bus belongs to the soloed send chain, and evaluated without mute flags while that native solo mode is active. The read-only check still changes no mixer state and makes no stream-sample, effect, output or human-audibility claim.
 
 The production clock, camera, controllers, campaign state, journal, saves, target availability and ordinary E interactions retain authority. None of these display changes exposes a hidden affiliation or completes a task.
 
@@ -26,7 +27,7 @@ Use the pinned Godot 4.5.1 Standard executable, SHA-256 `db07cae7de644278a1884d4
 
 1. Review marker density and first-time comprehension in normal task play. Keep observed, remembered and estimated evidence visually distinct while reducing repeated instructions.
 2. Extend the earned production-actor journey beyond the household escort only when another existing actor supplies a distinct player-facing observation case; do not duplicate the qualified G-commanded motion path.
-3. Extend hearing admission only against native mixer behaviour and meaningful tests. Effects, solo isolation, stream content and physical hearing remain outside the current configured-gain gate.
+3. Extend hearing admission only against native mixer behaviour and meaningful tests. Effects, stream content and physical hearing remain outside the current configured-mixer gate.
 4. Consider the protagonist's changing visual condition through the existing perception policy, with explicit gameplay qualification. The camera and overlay must not create visual evidence beyond the character sensor.
 
 ## Continuing executions
