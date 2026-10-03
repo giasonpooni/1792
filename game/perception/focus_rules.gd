@@ -4,6 +4,7 @@ extends RefCounted
 ## Transient observations and bounded estimates; never reads a future patrol route.
 const RANGE := 18.0
 const DWELL_TICKS := 45
+const RETAINED_NOTICE_TICKS := 90
 const MEMORY_TICKS := 600
 const MOTION_INTERVAL := 30
 const PREDICTION_TICKS := 120

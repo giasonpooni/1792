@@ -18,6 +18,7 @@ var _current: Dictionary={}
 var _motion: Dictionary={}
 var _predictions: Dictionary={}
 var _heard: Dictionary={}
+var _retained_notice_until := -1
 var filter_layer: CanvasLayer
 var overlay_layer: CanvasLayer
 var overlay: Control
@@ -57,16 +58,16 @@ func start() -> void:
 	if active: return
 	_task_hud_was_visible=chapter._hud.visible
 	chapter._hud.hide()
-	active=true;_pending.clear();_acquiring.clear();_motion.clear();_current.clear();_set_visible()
+	active=true;_pending.clear();_acquiring.clear();_motion.clear();_current.clear();_retained_notice_until=-1;_set_visible()
 	_sample_compact_hud()
 
 func stop() -> void:
 	if active and is_instance_valid(chapter._hud): chapter._hud.visible=_task_hud_was_visible
-	active=false;_pending.clear();_acquiring.clear();_motion.clear();_current.clear();_set_visible()
+	active=false;_pending.clear();_acquiring.clear();_motion.clear();_current.clear();_retained_notice_until=-1;_set_visible()
 	_sample_compact_hud()
 
 func clear() -> void:
-	stop();_tick=-1;_records.clear();_predictions.clear();_heard.clear();overlay.marks.clear();overlay.queue_redraw()
+	stop();_tick=-1;_records.clear();_predictions.clear();_heard.clear();_retained_notice_until=-1;overlay.marks.clear();overlay.queue_redraw()
 
 func _set_visible() -> void:
 	filter_layer.visible=active;overlay_layer.visible=active
@@ -121,6 +122,9 @@ func _scan_visual(tick: int) -> void:
 			if not Rules.supports(_predictions[id],previous,record): _predictions.erase(id)
 		_records[id]=record
 		_current[id]=true
+		# Confirm that the anonymous dwell became bounded evidence without naming
+		# another subject in the heading or creating persistent tutorial state.
+		if previous.is_empty(): _retained_notice_until=maxi(_retained_notice_until,tick+Rules.RETAINED_NOTICE_TICKS)
 		if not _motion.has(id):
 			_motion[id]=record.duplicate(true)
 			_predictions.erase(id)
@@ -207,7 +211,9 @@ func _present() -> void:
 	# The compact control strip owns keys. Context appears only until the first
 	# identification, then yields the space to sensory evidence.
 	heading.text="FOCUS"
-	if _records.is_empty():
+	if _tick<_retained_notice_until:
+		heading.text+="\nObservation retained."
+	elif _records.is_empty():
 		heading.text+="\nKeep subject visible until the ring fills." if not _acquiring.is_empty() else "\nLook toward a subject."
 	for cue in sound_cues():
 		var age:=int(ceil(float(_tick-int(cue.heard_tick))/60.0))

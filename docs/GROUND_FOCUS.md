@@ -10,6 +10,8 @@ A visible subject requires **45 continuous existing 60 Hz ticks (0.75 s)** befor
 
 Before identification, a neutral **Observing** ring fills from the currently admitted eye samples. It carries no subject name, role, registration identity or affiliation. At most three pending rings appear, ranked by screen distance from the centre to limit clutter; this display limit does not alter dwell. Duplicate samples keep the same sampled point and fraction. Occlusion removes the ring, and reacquisition begins again while any earlier last-seen record remains at its earlier observed point. Progress is transient and grants no knowledge or task receipt.
 
+When a ring first completes, the heading says **Observation retained.** for an authored 90 active ticks (1.5 s), then yields. The confirmation repeats no subject label, role or affiliation and creates no saved tutorial state; the world label remains the only subject-specific presentation.
+
 Records carry observer identity, sensor identity, last observed position, observation tick and expiry tick. They live for at most **600 active ticks (10 s)** after the last observation. Current eye evidence says **observed now**. When sight is lost the marker stays at that observed position, says **last seen <1s ago** during the first retained second, then reports completed whole seconds while fading with age. It does not round a new loss up to one second or keep reading a hidden person's live transform into that marker.
 
 | Symbol and color | Meaning |

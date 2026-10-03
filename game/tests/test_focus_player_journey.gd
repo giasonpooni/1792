@@ -213,6 +213,8 @@ func run() -> void:
 	var current_marks: Array=chapter.ground_focus.overlay.marks.filter(func(mark):return String(mark.text).contains("Smith"))
 	check(current_marks.size()==1 and String(current_marks[0].text).ends_with("observed now"),
 		"earned character-eye observation presents the smith as current evidence")
+	check(chapter.ground_focus.heading.text.contains("Observation retained.") and chapter.ground_focus.heading.text.count("Observation retained.")==1 and not chapter.ground_focus.heading.text.contains("Smith"),
+		"earned ring completion confirms bounded retention once without duplicating the subject identity")
 	check(chapter.model.journal()==saved_journal and FileAccess.get_file_as_bytes(chapter.save_path)==save_bytes,
 		"earned Focus evidence writes neither the journal nor the retained save")
 
