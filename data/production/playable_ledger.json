@@ -2220,13 +2220,12 @@
     }
   ],
   "active_development": {
-    "branch": "feat/rope-remount-story-v1-20261002",
+    "branch": "feat/instructor-story-v1-20261003",
     "ids": [
-      "HOME-015",
-      "HOME-016"
+      "HOME-017"
     ],
-    "guide": "docs/ROPE_AND_REMOUNT_STORY.md",
+    "guide": "docs/INSTRUCTOR_STORY_DEVELOPMENT.md",
     "plan": "docs/MISSION_DEVELOPMENT_PLAN.md",
-    "note": "Borrowed Rope and Missing Remounts are composed into the current Home with original scene framing, local interactions, current-task guidance and whole-world persistence. Earlier HOME-001–014 increments remain included. The 33-sequence figure remains the historical inventory snapshot, not a fresh census of all recent branches. HOME-017 remains a separate prototype awaiting integration."
+    "note": "A Funded Instructor is composed into current Home with original candidate concern, consent, physical escort, local signing and interrupted-practice payoff. Earlier HOME-001–016 increments remain included. The active guide records current targeted qualification separately from the pinned source inventory. The 33-sequence figure remains the historical inventory snapshot, not a fresh census of all recent branches."
   }
 }

@@ -2,7 +2,7 @@
 
 This is the working development plan for **1792: The Lotus Throne**. It turns the [playable ledger](PLAYABLE_MISSION_LEDGER.md) into **33 individual development cards**, plus a secondary queue and the remaining story backlog. The structured source is [mission_development.json](../data/production/mission_development.json).
 
-**Current increment:** HOME-015/016 are in development: Missing Remounts and The Borrowed Rope. [This pass](ROPE_AND_REMOUNT_STORY.md) composes the two retained stories into current Home, develops their distinct revelations and keeps the current action readable. Earlier [friends and horsecraft](FRIENDS_AND_HORSECRAFT_STORY.md), [household](HOUSEHOLD_STORY_DEVELOPMENT.md), [childhood arc](CHILDHOOD_ARC_DEVELOPMENT.md) and opening work remain included. Current-pass guides state the implemented subset of the wider card direction.
+**Current increment:** HOME-017 is in development: A Funded Instructor. [This pass](INSTRUCTOR_STORY_DEVELOPMENT.md) composes the retained commission into current Home and develops consent, shared travel, signing and interrupted practice around the promise of a place kept ready. Earlier [rope and remounts](ROPE_AND_REMOUNT_STORY.md), [friends and horsecraft](FRIENDS_AND_HORSECRAFT_STORY.md), [household](HOUSEHOLD_STORY_DEVELOPMENT.md), [childhood arc](CHILDHOOD_ARC_DEVELOPMENT.md) and opening work remain included. Current-pass guides state the implemented subset of the wider card direction.
 
 The first prototype pass is now implemented and locally verified: orientation lead-in, both optional message routes, physical reporting, remembered receipts and save/load. See [The Words Between Us](MESSAGE_FOLLOWUP.md) for the actual playable scope. The P0 cards remain in development for performance and visual polish; their cinematic ideas are not claims of completed animation.
 
@@ -23,7 +23,7 @@ The ledger records prototypes on different revisions and branches. These cards d
 | --- | --- | ---: | --- |
 | P0 | Opening decisions | 2 | In development |
 | P1 | Complete the childhood dramatic arc | 5 | In development |
-| P2 | Make Gujranwala relationships playable | 10 | HOME-008–016 in development; HOME-017 awaits integration |
+| P2 | Make Gujranwala relationships playable | 10 | HOME-008–017 in development in the current Home chain |
 | P3 | Individualize the historical recollections | 13 | Planned |
 | P4 | Connect command and the retrospective frame | 3 | Planned |
 
@@ -31,7 +31,7 @@ These priorities group development work; they do not reorder historical events o
 
 ## Remaining childhood branch integration
 
-**Borrowed Rope** and **Missing Remounts** now extend the current Home chain; the active guide records their integration and targeted qualification. **Funded Instructor** remains the next integration: compose its escrow/upkeep with current workshop reduction, qualify the secondary teaching view and retained riding session, then develop its interrupted-practice payoff. Its older prototype is not included in this pass.
+**Borrowed Rope**, **Missing Remounts** and **Funded Instructor** now extend the current Home chain. Their guides record integration, targeted qualification and remaining production work. The instructor's escrow, upkeep and receipts compose with workshop reduction; the limited teaching view and interrupted practice use the existing world and clock. Later recollection and command prototypes remain separate integration work.
 
 ## Sequence cards
 
@@ -279,14 +279,15 @@ These priorities group development work; they do not reorder historical events o
 
 ### HOME-017 · A funded instructor
 
-**P2 · Planned**. Baseline: draft branch prototype; 1792.
+**P2 · In development**. Baseline: draft branch prototype; 1792.
+**Current increment:** See [the instructor development guide](INSTRUCTOR_STORY_DEVELOPMENT.md) for current-Home integration, original scene direction and qualification limits.
 
 - **Dramatic question:** Can the household sustain the teacher it wants, beyond the promise of a wage?
 - **Playable objective:** Reserve the commission, meet and escort the instructor, sign terms, provision the pupil, and complete funded practice.
 - **Encounter or choice:** Commit only when wages and supplies are available; during practice, recover attendance or supplies when an interruption stops progress.
 - **Local consequence:** The instructor’s presence, pay and eligible teaching time determine progress; unsupported promises cannot produce trained pupils.
 - **Cinematic moment:** A quiet signing at the quartermaster’s desk is followed by an ordinary drill whose pauses reveal what the contract actually costs.
-- **Next implementation task:** Give the candidate a clear teaching concern, stage introduction and signing, and make paused practice explain its exact missing condition.
+- **Next implementation task:** Review human pacing and develop candidate, signing and pupil performances beyond the current procedural staging.
 - **Acceptance criterion:** Commission, escort and signing occur in order; practice advances only with attendance and required supplies, and interrupted or resumed sessions do not double-charge.
 
 **Historical treatment:** Original authored gameplay; historical setting does not authenticate the episode.

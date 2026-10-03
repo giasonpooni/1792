@@ -18,9 +18,9 @@ Snapshot: **2026-10-02**. Main: `cd3a473b6725872d4c03f190cd1b07ae940d72c9`.
 
 ## Active development
 
-HOME-015, HOME-016 on `feat/rope-remount-story-v1-20261002`. Borrowed Rope and Missing Remounts are composed into the current Home with original scene framing, local interactions, current-task guidance and whole-world persistence. Earlier HOME-001–014 increments remain included. The 33-sequence figure remains the historical inventory snapshot, not a fresh census of all recent branches. HOME-017 remains a separate prototype awaiting integration.
+HOME-017 on `feat/instructor-story-v1-20261003`. A Funded Instructor is composed into current Home with original candidate concern, consent, physical escort, local signing and interrupted-practice payoff. Earlier HOME-001–016 increments remain included. The active guide records current targeted qualification separately from the pinned source inventory. The 33-sequence figure remains the historical inventory snapshot, not a fresh census of all recent branches.
 
-See [the active playable increment](ROPE_AND_REMOUNT_STORY.md) and [development cards for every sequence](MISSION_DEVELOPMENT_PLAN.md).
+See [the active playable increment](INSTRUCTOR_STORY_DEVELOPMENT.md) and [development cards for every sequence](MISSION_DEVELOPMENT_PLAN.md).
 
 ## Counting and maintenance
 

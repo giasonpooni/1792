@@ -1,7 +1,7 @@
 {
   "schema": "1792.mission-development.v1",
   "title": "1792: The Lotus Throne — mission development cards",
-  "as_of": "2026-10-02",
+  "as_of": "2026-10-03",
   "ledger_path": "data/production/playable_ledger.json",
   "ledger_snapshot_commit": "4e85c2a469aae1cb567162b87ccf23eeaaa8d7a3",
   "scope": {
@@ -10,15 +10,14 @@
     "backlog_entries": 40,
     "meaning": "These cards define the next development increment for inventoried prototypes. They do not add playable sequences or certify their new features as implemented.",
     "active_increment": [
-      "HOME-015",
-      "HOME-016"
+      "HOME-017"
     ],
     "status_policy": "development_status refers to the proposed increment only. baseline describes the ledger snapshot. implementation_receipt stays null until the increment has a concrete reviewed revision and verification.",
     "count_policy": "Child beats, alternate approaches, presentations, mechanics and source retellings are not extra missions. The 28-entry youth slate includes one implemented adaptation alias and 27 planned entries.",
     "history_policy": "Keep legends, miracles, conflicting allegations and dramatic invention. Preserve the ledger’s historical basis beside every card. Player choice may alter local care, communication or immediate outcomes without silently proving an allegation or overwriting a declared fixed historical endpoint.",
     "cinematic_policy": "Build cinema from playable approach, staging, sound, performance and consequential action. A proposed cinematic moment is not a claim that cinematics, voice, animation or finished art already exist.",
     "verification_policy": "The original authoring pass checked card coverage and consistency. Runtime increments record targeted local checks in their current_pass guides; the other draft branches have not all been freshly played or integrated.",
-    "narrative_direction_policy": "All narrative_direction blocks retain their planned literary, staging and attention directions. Acceptance statements are intended review conditions, not test receipts. Current runtime work composes HOME-015/016 above the earlier HOME-001–014 increments. current_pass records the implemented subset and limits; HOME-017 and later retained prototypes need separate integration. This adds no sequences.",
+    "narrative_direction_policy": "All narrative_direction blocks retain their planned literary, staging and attention directions. Acceptance statements are intended review conditions, not test receipts. Current runtime work composes HOME-017 above the earlier HOME-001–016 increments. current_pass records the implemented subset and limits; later retained prototypes need separate integration. This adds no sequences.",
     "attention_policy": "Prioritize the next meaningful action, protect imminent threat cues, reduce repeated prose, and leave recoverable quiet intervals. Never force attention with hidden failure timers, disable player control for a camera composition, or treat continued play time as evidence of narrative quality. Persistent objectives and reviewable information remain available."
   },
   "phases": [
@@ -946,7 +945,7 @@
       "id": "HOME-017",
       "title": "A funded instructor",
       "phase_priority": "P2",
-      "development_status": "planned",
+      "development_status": "in_development",
       "baseline": {
         "kind": "playable_sequence",
         "delivery": "draft",
@@ -963,7 +962,7 @@
       "encounter_or_choice": "Commit only when wages and supplies are available; during practice, recover attendance or supplies when an interruption stops progress.",
       "local_consequence": "The instructor’s presence, pay and eligible teaching time determine progress; unsupported promises cannot produce trained pupils.",
       "cinematic_moment": "A quiet signing at the quartermaster’s desk is followed by an ordinary drill whose pauses reveal what the contract actually costs.",
-      "next_implementation_task": "Give the candidate a clear teaching concern, stage introduction and signing, and make paused practice explain its exact missing condition.",
+      "next_implementation_task": "Review human pacing and develop the candidate, signing and pupil performances beyond the current procedural staging.",
       "acceptance_criterion": "Commission, escort and signing occur in order; practice advances only with attendance and required supplies, and interrupted or resumed sessions do not double-charge.",
       "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
       "implementation_receipt": null,
@@ -980,7 +979,7 @@
         "acceptance": "The player can explain why practice stopped from its immediate cue, restore that condition, and see eligible teaching time resume without duplicate fees or progress."
       },
       "integration_preparation": {
-        "status": "read_only_branch_review_not_integrated",
+        "status": "integrated_in_current_pass",
         "reviewed_commit": "ae3dffe2e2182a7692e0d430393c1fc5955f6b06",
         "order_after": "Borrowed Rope and current-district Missing Remounts integration",
         "requirements": [
@@ -989,7 +988,24 @@
           "Qualify secondary-view physics, attention, current actor movement and retained session ownership; retain the draft camera-transition fix.",
           "Test commission/escort/signing order and mixed smith/instructor receipts, plus interruption, supplies, wages and no duplicate charge."
         ],
-        "staging_next": "Give the instructor one practical concern at introduction, echo it at a visibly interrupted drill, and acknowledge the repaired condition once when teaching resumes."
+        "staging_next": "Develop the current practical concern, interrupted-practice echo and resumption acknowledgement into finished face, hand and pupil performances."
+      },
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/INSTRUCTOR_STORY_DEVELOPMENT.md",
+        "branch": "feat/instructor-story-v1-20261003",
+        "behavior": "Candidate consent, physical escort and local signing compose with the current Home treasury, workshop, remounts, oral accounts and riding session. Limited instructor control retains separate participation and a shared world. Practice admits only supplied attendance and preserves progress through interruption.",
+        "literary_technique": "The place kept ready begins as the candidate's practical concern, becomes a promise at signing and returns as an actionable absence during interrupted teaching. Repair receives one finite acknowledgement; completion opens the duty of tomorrow.",
+        "limits": "Original fictional dialogue and procedural bodies. One bounded 180-tick practice, not a full combat lesson, mastery award, finished performance or completed campaign. No new mission count or historical authentication.",
+        "verification": {
+          "guide": "docs/INSTRUCTOR_STORY_DEVELOPMENT.md",
+          "tests": [
+            "game/tests/test_instructor_economy.gd",
+            "game/tests/test_instructor_story.gd",
+            "game/tests/test_instructor_current_integration.gd"
+          ],
+          "limits": "Targeted physical routes and separate domain fixtures are identified in the guide. Full repository suite and human pacing review are separate."
+        }
       }
     },
     {

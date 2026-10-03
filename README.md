@@ -59,6 +59,8 @@ The [friends and horsecraft pass](docs/FRIENDS_AND_HORSECRAFT_STORY.md) gives th
 
 The [rope and remounts pass](docs/ROPE_AND_REMOUNT_STORY.md) brings two retained stories into this Home: an optional chain of tellings and a three-route yard investigation, with local consequences and a shared save.
 
+The [funded instructor pass](docs/INSTRUCTOR_STORY_DEVELOPMENT.md) continues that Home with candidate consent, an actual walk together, a local signing and supported practice. Its promise to keep a place ready returns when attendance breaks; the immediate cue names the next repair, then yields to the resumed lesson.
+
 ## Title and story
 
 **The Lotus Throne** draws on Maharaja Ranjit Singh's golden throne at Lahore.

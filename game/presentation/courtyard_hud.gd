@@ -43,7 +43,9 @@ func build(chapter: Node3D) -> void:
 	sample()
 func sample() -> void:
 	if not is_instance_valid(_chapter): return
-	var moving: bool=Vector2(_chapter.avatar.velocity.x,_chapter.avatar.velocity.z).length()>.3
+	var actor: CharacterBody3D=_chapter.foreground_actor() if _chapter.has_method("foreground_actor") else _chapter.avatar
+	if not is_instance_valid(actor): actor=_chapter.avatar
+	var moving: bool=Vector2(actor.velocity.x,actor.velocity.z).length()>.3
 	# An accepted local story can own the same compact foreground. The leaf
 	# chapter supplies only a read-only view; this panel remains its sole renderer.
 	var beginning: Dictionary=_chapter.foreground_guidance(moving) if _chapter.has_method("foreground_guidance") else {}
@@ -92,7 +94,7 @@ func sample() -> void:
 		bottom.position=Vector2((size.x-bottom.size.x)*.5,control_strip.position.y-bottom.get_combined_minimum_size().y-8)
 	for r in _labels:
 		if is_instance_valid(r.node):
-			r.node.visible=r.visible and (not active or r.node.global_position.distance_to(_chapter.avatar.global_position)<6.5)
+			r.node.visible=r.visible and (not active or r.node.global_position.distance_to(actor.global_position)<6.5)
 func _exit_tree() -> void:
 	for r in _original+_labels:
 		if is_instance_valid(r.node): r.node.visible=r.visible

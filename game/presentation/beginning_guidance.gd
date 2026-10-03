@@ -11,11 +11,15 @@ static func household_uncommitted(model) -> bool:
 	# Match the existing workshop's custody exclusions without reserving anything.
 	if model.brawl_busy() or model.service_reserved(): return false
 	if model.has_method("remount_busy") and model.remount_busy(): return false
+	if _commission_owns_attention(model): return false
 	if model.has_water_round():
 		var water: Dictionary=model.water_round().ledger
 		if water.carried>0 or water.phase=="drawing": return false
 	var ledger: Dictionary=model.economy().ledger
 	return ledger.caravan!="active" and ledger.delivery!="outbound"
+
+static func _commission_owns_attention(model) -> bool:
+	return model.has_method("commission_busy") and (model.commission_busy() or model.commission_drilling() or model.controlling_specialist())
 
 static func read(chapter: Node3D, moving: bool = false) -> Dictionary:
 	var model=chapter.model
@@ -23,6 +27,7 @@ static func read(chapter: Node3D, moving: bool = false) -> Dictionary:
 	# foreground regardless of whether an economy record has been opened.
 	if model.has_method("brawl_busy") and model.brawl_busy(): return {}
 	if model.has_method("remount_busy") and model.remount_busy(): return {}
+	if _commission_owns_attention(model): return {}
 	var state: Dictionary=model.progress()
 	var stage: String=model.stage()
 	# Secondary guidance returns as soon as the player stops on foot. This is a

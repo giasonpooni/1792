@@ -6,6 +6,7 @@ const Base := preload("res://childhood/childhood_state.gd")
 const Supply := preload("res://territory/misl_rules.gd")
 const Delivery := preload("res://territory/delivery_presentation.gd")
 const BazaarStory := preload("res://youth/performance/bazaar_story.gd")
+const Commission := preload("res://commissions/commission_rules.gd")
 
 static func preferred(chapter: Node3D, speaker: String) -> String:
 	var model = chapter.model
@@ -16,6 +17,14 @@ static func preferred(chapter: Node3D, speaker: String) -> String:
 		if speaker=="home" and remount.note and remount.horses: return "remount:resolve"
 		if speaker=="market" and not remount.introduced: return "remount:introduction"
 		return "resume"
+	if model.has_method("commission_busy") and model.commission_busy():
+		var contract: Dictionary=model.commission()
+		if speaker=="market" and contract.phase=="reserved": return "commission:broker"
+		if speaker=="home" and contract.phase=="escorting" and Commission.near(model.position(),Commission.HOME,4) and Commission.near(Base.point(model.specialist().position),Commission.HOME,4):
+			return "commission:appoint"
+		return "resume"
+	if model.has_method("commission_drilling") and model.commission_drilling():
+		return "commission:pay_arrears" if speaker=="home" and model.commission().arrears>0 else "resume"
 	if not model.has_economy():
 		if speaker == "home": return "econ:begin"
 		return "youth:invite" if not model.has_brawl() else "resume"
@@ -39,6 +48,9 @@ static func preferred(chapter: Node3D, speaker: String) -> String:
 static func briefing(chapter: Node3D, speaker: String, action: String) -> String:
 	var model = chapter.model
 	match action:
+		"commission:broker": return "Agent · I can introduce you. I cannot promise what he will agree to. Hear his terms yourself."
+		"commission:appoint": return "Quartermaster · Both of you are here. Enter his name, and keep a place ready for the days he stays."
+		"commission:pay_arrears": return "Quartermaster · His work has earned these wages. Settle them before asking for the next movement."
 		"remount:resolve": return "Quartermaster · Two horses seen, and the tally brought back. Tell me where you found them."
 		"remount:introduction": return "Handler · You can ask at the southern yard. Take my introduction to its gatekeeper."
 		"youth:invite": return BazaarStory.INVITATION
@@ -49,6 +61,9 @@ static func briefing(chapter: Node3D, speaker: String, action: String) -> String
 		"youth:report": return "Quartermaster · An account from all three of you. Bring both friends close enough to be heard."
 		"econ:begin", "econ:accept_delivery", "econ:deliver", "econ:checkin", "econ:accept_escort": return Delivery.briefing(model, speaker == "market")
 		"resume":
+			if model.has_method("commission_busy") and model.commission_busy():
+				return "Quartermaster · Bring the instructor back with you before we enter his name." if speaker=="home" else "Agent · Hear the candidate's terms and accompany him home."
+			if model.has_method("commission_drilling") and model.commission_drilling(): return "The practice is waiting. Return to the teaching place to continue."
 			if model.has_method("remount_busy") and model.remount_busy():
 				return "Quartermaster · Find the horses and bring back their tally. We can settle the other orders afterward." if speaker=="home" else "Handler · You have my introduction. Take it to the gatekeeper; the other business can wait."
 			if model.has_method("brawl_busy") and model.brawl_busy(): return "Finish the outing with your friends before taking on household orders."
