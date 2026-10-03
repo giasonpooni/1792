@@ -484,6 +484,11 @@ func _message_contact(site: String) -> bool:
 	var hit := get_world_3d().direct_space_state.intersect_ray(query)
 	return hit.is_empty() or hit.collider == _message_speakers[site]
 
+func message_report_echo() -> Dictionary:
+	# Optional chapter extensions may echo already received knowledge into this
+	# authored handoff. They cannot alter the opening-message receipt authority.
+	return {}
+
 func _message_followup_interact() -> bool:
 	if model.progress().heard.size() != 2 or model.stage() in ["active", "caught", "escaped"]: return false
 	var phase: String = model.message_phase()
@@ -508,6 +513,8 @@ func _message_followup_interact() -> bool:
 			body = "The trainer lowers his practice weapon and waits.\n\nBuddh · The note says the trail was clear at dawn. The courier heard riders later. Neither account tells us who is there now."
 			if model.message_followup().choice == "clarify":
 				body += "\n\nI went back to ask him. He saw no faces."
+			var echo: Dictionary=message_report_echo()
+			if not echo.is_empty(): body += "\n\n"+String(echo.account)
 			actions = [["Give the trainer your account", "message:report"], ["Leave this for now", "resume"]]
 			choices.assign(["report"])
 	_show_dialog("THE WORDS BETWEEN US", body, actions)
@@ -525,7 +532,8 @@ func _run_message_action(action: String) -> void:
 			"clarify": _message = "Buddh · Before I carry that warning, I want to hear what the courier actually saw."
 			"confirm": _message = "Courier · I heard hooves beyond the grove. I saw no faces. Do not turn a sound into a name."
 			"report":
-				_message = "Trainer · Then keep the two accounts separate. Train your hands here; keep your eyes open when you leave."
+				var echo: Dictionary=message_report_echo()
+				_message = String(echo.reply) if not echo.is_empty() else "Trainer · Then keep the two accounts separate. Train your hands here; keep your eyes open when you leave."
 	else: _message = error
 	_resume()
 

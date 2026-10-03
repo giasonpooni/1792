@@ -49,7 +49,7 @@ jobs:
           if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/service-render.log; then
             exit 1
           fi
-          grep -q 'SUKERCHAKIA_SERVICE_RENDER: 6 captures; 0 failures' test-results/service-render.log
+          grep -q 'SUKERCHAKIA_SERVICE_RENDER: 7 captures; 0 failures' test-results/service-render.log
           mkdir -p test-results/screenshots
           cp "$HOME/.local/share/godot/app_userdata/1792/"service-*.png test-results/screenshots/
           cp "$HOME/.local/share/godot/app_userdata/1792/sukerchakia-service-trace.json" test-results/

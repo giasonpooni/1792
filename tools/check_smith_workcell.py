@@ -13,7 +13,7 @@ def check():
     p=json.loads(PROFILE.read_text())
     assert p['schema']=='ciw.workcell-title-profile.v1' and p['recipe']=='1792.smith.v1'
     assert p['writable']==['workshops/workshop_world.gd','workshops/workshop_rules.gd']
-    assert len(p['sources'])==15
+    assert len(p['sources'])==16
     for name,item in p['sources'].items():
         assert '..' not in Path(name).parts and not Path(name).is_absolute()
         raw=(ROOT/'game'/name).read_bytes()
@@ -25,7 +25,7 @@ def check():
 
 
 class CapsuleTests(unittest.TestCase):
-    def test_scoped_sources_and_original_licence(self):self.assertEqual(len(check()['sources']),15)
+    def test_scoped_sources_and_original_licence(self):self.assertEqual(len(check()['sources']),16)
     def test_no_live_launch_or_save_changes(self):
         text=(ROOT/'game/project.godot').read_text()
         self.assertIn('run/main_scene="res://ui/main_menu.tscn"',text)

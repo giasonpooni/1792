@@ -4,6 +4,7 @@ const Territory := preload("res://territory/gujranwala_state.gd")
 const Rules := preload("res://territory/misl_rules.gd")
 const Cell := preload("res://territory/home_cell.gd")
 const DeliveryPresentation := preload("res://territory/delivery_presentation.gd")
+const GuardRecruitment := preload("res://territory/guard_recruitment.gd")
 var cell: Node3D
 var merchant: CharacterBody3D
 var _economy_action := ""
@@ -122,6 +123,13 @@ func _physics_process(delta: float) -> void:
 		var place: Vector3 = Rules.MARKET if kind in ["buy", "satchel", "deliver", "accept_escort"] else Rules.QUARTERMASTER
 		if not _paused or "econ:" + queued not in _economy_choices or not _economy_contact(place):
 			error = "Return to the speaker and face them before settling this account."
+		elif kind=="guard_terms":
+			var expected:=GuardRecruitment.next_candidate(model.economy().events)
+			if expected.is_empty() or expected.id!=arg:
+				_message="Those individual terms are no longer available."
+				_resume()
+			else: _open_guard_terms(arg)
+			return
 		elif kind=="begin": error=model.begin_allowance()
 		elif kind=="rest": error=model.rest_watch()
 		else: error=model.operate(kind,arg)
@@ -207,10 +215,20 @@ func _account_text() -> String:
 	if not model.has_economy(): return "The allowance begins only after the household inquiry. These accounts are spoken by the quartermaster; readable UI does not give Buddh literacy."
 	var s: Dictionary=model.economy().ledger
 	var need:=Rules.due(s)
-	return "QUARTERMASTER'S ORAL ACCOUNT · Authored game quantities\n\nPersonal purse: %d coins\nHousehold coffers: %d coins (separate; no private withdrawal)\n\nStores %d/%d: food %d · fodder %d · grain %d · timber %d · tools %d\n\nPeople: %d workers, %d garrison guards. One existing household horse.\nEach 120-second supply watch: %d food + %d fodder + %d wages.\nArrears: %d · Last food shortfall: %d · Last feed shortfall: %d\n\n%s\nHousehold standing: %d · Meeting: %s (available watch 2; due before 5)\nProject: %s · Work remaining: %d\nCompleted: %s\n\n%s\n\nSimulation watch is deliberately compressed, NOT a real historical day. Farm/mill recipes, prices and capacities are balancing fixtures. The caravan's route has no hostile encounter yet." % [
+	return "QUARTERMASTER'S ORAL ACCOUNT · Authored game quantities\n\nPersonal purse: %d coins\nHousehold coffers: %d coins (separate; no private withdrawal)\n\nStores %d/%d: food %d · fodder %d · grain %d · timber %d · tools %d\n\nPeople: %d workers, %d garrison guards. One existing household horse.\nEach 120-second supply watch: %d food + %d fodder + %d wages.\nArrears: %d · Last food shortfall: %d · Last feed shortfall: %d\n\n%s\n\n%s\nHousehold standing: %d · Meeting: %s (available watch 2; due before 5)\nProject: %s · Work remaining: %d\nCompleted: %s\n\n%s\n\nSimulation watch is deliberately compressed, NOT a real historical day. Farm/mill recipes, prices and capacities are balancing fixtures. The caravan's route has no hostile encounter yet." % [
 		s.purse,s.treasury,Rules.stored(s),Rules.capacity(s),s.stock.food,s.stock.feed,s.stock.grain,s.stock.timber,s.stock.tools,
 		s.workers,s.guards,need.food,need.feed,need.wages,s.arrears,s.food_shortfall,s.feed_shortfall,
-		Rules.readiness(s),s.favor,s.meeting,s.build if s.build!="" else "none",s.work_left,", ".join(s.built),s.last_notice]
+		Rules.readiness(s),GuardRecruitment.active_summary(model.economy().events),s.favor,s.meeting,s.build if s.build!="" else "none",s.work_left,", ".join(s.built),s.last_notice]
+
+func _open_guard_terms(id: String) -> void:
+	var spec:=GuardRecruitment.candidate(id)
+	if spec.is_empty():
+		_message="No individual guard terms are available."
+		_resume()
+		return
+	var actions: Array=[["Enter %s alone for household guard service · 22 now" % spec.name,"econ:hire|"+id],["Not yet","resume"]]
+	_show_dialog("ONE PERSON · ONE PLACE",GuardRecruitment.terms(id),actions)
+	_remember_economy_choices(actions)
 
 func _open_accounts() -> void:
 	_show_dialog("SUPPLIES AND OBLIGATIONS",_account_text(),[["Return","resume"]])
@@ -223,7 +241,10 @@ func _open_quartermaster() -> void:
 		var s: Dictionary=model.economy().ledger
 		if s.delivery=="available": actions.append(["Carry four food portions to the market · purse +12 / coffers +26","econ:accept_delivery"])
 		if s.caravan=="active": actions.append(["Check the physically arrived caravan in · receive food and fodder","econ:checkin"])
-		actions.append_array([["Hire a garrison guard · 22 now / 2 wages + 1 food each watch","econ:hire|guard"],
+		var prospect:=GuardRecruitment.next_candidate(model.economy().events)
+		if prospect.is_empty(): actions.append(["Hire a garrison guard · 22 now / 2 wages + 1 food each watch","econ:hire|guard"])
+		else: actions.append(["Hear %s's individual guard terms" % prospect.name,"econ:guard_terms|"+prospect.id])
+		actions.append_array([
 			["Hire a worker · 12 now / 1 wage + 1 food each watch","econ:hire|worker"],
 			["Release one guard (no refund)","econ:release_guard"],
 			["Build palisade · 36 coins / 6 timber / 1 tool / 6 work","econ:build|palisade"],

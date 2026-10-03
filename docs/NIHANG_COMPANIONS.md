@@ -22,22 +22,58 @@ not a historical map location.
    Each page offers an exit. Only the final choice records the existing care
    event. This teaches through dialogue; it awards no combat stat or advanced
    riding skill.
-3. Return to the elder and invite the veteran alone or both riders. The first
+3. Return to the elder and invite the veteran alone or both riders. The veteran
+   states the terms before acceptance: halt at the low ground, dismount and count
+   every invited rider; no one crosses if someone cannot answer. The first
    household riding gate is required. Concurrent cargo or another outing blocks
    acceptance. Each rider remains attached to the camp, outside household payroll.
-4. Mount the original household horse with **F**. Ride with the escort to the
-   north practice marker (3, 0.14, -25). Press **E** while mounted when everyone
-   is nearby; the veteran must be within unobstructed calling distance.
-5. Return to camp, stop, dismount and wait for the escort to park. Speak to the
+4. Mount the original household horse with **F**. Halt with the escort at the low
+   ground (11, 0.14, -22), dismount and face the veteran. Press **E**, then count
+   the riders. Riding past to the north marker cannot silently satisfy the term.
+5. Remount and ride to the north practice marker (3, 0.14, -25). Press **E** while
+   mounted when everyone is nearby; the veteran must be within unobstructed calling
+   distance.
+6. Return to camp, stop, dismount and wait for the escort to park. Speak to the
    elder to finish. Everyone must physically return. The undertaking can also be
    ended unfinished at camp with everyone present.
+7. Ask the veteran about a farther road. If the low-ground term and homecoming
+   were both witnessed, he answers **Little rider** and agrees to ride when asked.
+   If the first ride ended unfinished, he says to carry one undertaking from
+   promise to return before asking again. The deferred answer remains terminal
+   and exposes no route.
+8. After the accepted answer, ask the veteran to state the farther-road term. A
+   separate player-paced page holds his glance toward the distant stone and the
+   condition: wait until his horse is fully still before asking him to turn for
+   home. Hearing or leaving this page changes no state or testimony. Only **Accept
+   the term and ride** selects the veteran and begins the second outing.
+9. Mount and ride beyond the first marker to the farther stone (-7, 0.14, -24).
+   Stop, wait for the veteran's actual mount to settle and press **E**. Merely
+   arriving beside a still-moving companion cannot turn the undertaking.
+10. Return to camp, dismount and wait for the veteran to park. The witnessed
+    homecoming records his **Little rider** payoff. It awards no currency, skill,
+    troop, loyalty score or generalized Nihang access.
 
-The main objective display follows the accepted outing: mount, reach the marker
-together, then bring everyone back. Its marker points to the agreed destination;
+If the original steward-to-trainer message report is still outstanding after a
+witnessed return, its existing dialogue reflects what Ranjit learned by doing.
+The first return adds his comparison between counting every rider and keeping two
+conflicting accounts together. A witnessed farther return instead recalls waiting
+for the veteran's horse to settle before naming the turn. The same report choice
+and receipt complete the handoff; no new mission or capability is created.
+
+The main objective display follows the accepted outing: mount, keep the low-ground
+term, reach the marker together, then bring everyone back. Its marker points to
+the current agreed destination;
 the nearby-rider count reminds you to wait when someone falls behind. A mounted
 group switches to single file where paired slots lack clear passage and spreads
 out again in open ground. These prompts read the existing state and grant no
 progress. Immediate danger and failed-attempt guidance retain priority.
+
+Open the ordinary journal during an active outing to see **Active jatha
+undertaking · derived from received terms** before the memory list. The card uses
+the same phase instruction as the compact HUD and remembers the speaker's familiar
+address: **Buddh** for the first low-ground term and **Little rider** for the
+veteran's later undertaking. It disappears after completion. It is a read-only
+projection of received events, not another objective list, testimony or receipt.
 
 After the elder's greeting, the compact HUD also directs the optional horse-care
 lesson to the veteran's horse lines. This local prompt appears only on foot,
@@ -47,10 +83,11 @@ or leave the camp, and disappears as soon as care is accepted. The original
 household horse and next riding gate then regain the objective. No new quest,
 clock, event, knowledge record or saved presentation field is introduced.
 
-This first outing is finite and available once per run. The camp remains after
-completion. There is no gold, troop, skill or loyalty-point farming. Earlier
-saves can restore the whole prior run. Follow the HUD's ordinary lesson prompts
-to continue the existing childhood sequence after the outing.
+Both outings and the farther-road question are finite and available once per run.
+The camp remains after completion. There is no gold, troop, skill or
+loyalty-point farming. Earlier saves can restore the whole prior run. Follow the
+HUD's ordinary lesson prompts to continue the existing childhood sequence after
+the outing.
 
 ## Relationships and identity
 
@@ -78,13 +115,38 @@ Partial reading pauses Home and grants no testimony. F5 follows the established
 save-and-resume behavior; reopening starts at the bridle. F9 and checkpoint restore
 clear pending page actions. Physical access is checked again at each advance and
 at the final choice, so a speaker newly blocked by a wall cannot complete care.
+The farther-road term page follows the same authority boundary: willingness is
+already received testimony, but hearing the condition is transient and accepting
+it is the only action that begins the route.
+The active journal card is also transient derivation. Opening, closing or reading
+it cannot change the Home state, journal memories or undertaking. Legacy
+invitations keep their original direct-marker contract and therefore do not gain
+the later low-ground card.
+The trainer-report echo follows the same boundary. It derives only from witnessed
+halt and return events (or the later witnessed horse-settlement return), changes no
+camp state and adds no receipt beyond the report that already existed. Cancelled
+and legacy-unwitnessed rides cannot produce it.
 
 The sequence uses a return motif: intimate recognition, attention to the horse,
-an undertaking, the shared ride and a homecoming acknowledgment. The warning to
-leave stopping room is exercised by the actual riding system. Prose describes
+a stated condition, the low-ground halt, the shared ride and a homecoming witness.
+The elder's invitation establishes the condition, the player's attempted shortcut
+can be refused, and the veteran names the kept term after the group returns. The
+later question makes that conduct consequential: the veteran's willingness is
+derived from the received halt and return, while an unfinished ride receives an
+authored not-yet answer rather than a hidden loyalty penalty. An accepted answer
+opens one veteran-only ride to a distinct authored stone. Its term makes the player
+wait for the companion horse's observed native stop before turning, and its quiet
+homecoming makes that kept attention the payoff. The farther road and stone are
+gameplay authoring, not a verified place or historical claim. The warning to leave
+stopping room is exercised by the actual riding system. Prose describes
 small gestures beside the existing horse lines and mat; these are authored stage
 directions in text, not new gesture animations or a forced camera sequence.
-The original received care words and journal records remain unchanged.
+The later trainer echo transfers the motif rather than a stat: keeping riders within
+hearing becomes a way to hold conflicting accounts together; waiting for a horse
+to settle becomes a warning against naming uncertain riders too quickly. This is
+original authored dialogue, not a historical quotation, translation or claim that
+these conversations occurred. The original received care words and journal records
+remain unchanged.
 
 Both mounted companions use the existing `horse.gd` motor, collision and observed
 motion. Their formation turns with the household horse. They slow while steering,
@@ -114,7 +176,10 @@ distance; inside the arrival radius, braking uses zero steering. This stabilizes
 stop/start columns without assigning equine reaction times or calibrated behavior.
 
 Dialogue is rechecked against the actual body position, ground and line of sight
-at execution. Turnaround requires the selected riders; check-in requires every
+at execution. The low-ground count requires Ranjit on foot and every invited mount
+grounded within calling distance. A terms-bearing invitation cannot turn at the
+marker until that witnessed event exists. Legacy invitations in earlier saves keep
+their original direct-marker contract. Turnaround requires the selected riders; check-in requires every
 invited rider, on the ground and stopped at camp. Historical evidence, gameplay
 operation, native execution and test verification remain distinct. Event replay
 checks internal consistency; it is not save authentication or proof that arbitrary
@@ -123,6 +188,17 @@ compares the staged horse and player poses against one another, separate from
 static-world clearance. It refuses overlaps without changing the current world.
 A previous-version save containing interpenetrating horses must return to an
 earlier clear checkpoint; the loader does not move characters to invent clearance.
+Staged restore queries explicitly exclude every stale live horse projection, then
+compare the staged poses against one another. This makes F9 judge the saved group,
+not the group positions being discarded.
+The second-outing answer and undertaking are finite received events on this same state. A
+ready answer validates only after replay finds both the low-ground halt and the
+completed homecoming. Cancelled or legacy-unwitnessed first rides can record only
+the deferred answer, which cannot begin the route. The accepted answer can begin
+the veteran-only outward phase once. The farther turn requires both grounded mounts
+within calling distance and the veteran's recorded speed at or below the settled
+threshold; the final receipt requires his stopped return to camp. Reopening after
+the second homecoming shows the witnessed payoff without a repeatable choice.
 
 ## Evidence and scope
 
@@ -144,12 +220,23 @@ obligations and conduct must remain separate attributes. Thuggee-associated cont
 requires specific period/geographic evidence; it is not implemented as a generic
 religious assassin class. No whole clan is acquired by hiring one leader.
 
+The first adjacent paid-recruitment increment applies that boundary to one fictional
+individual rather than claiming a historical mercenary company. At the existing
+quartermaster, Jora's transient terms distinguish identity, occupation, affiliation,
+kinship boundary, authored price, supplied-watch term, permitted conduct and
+departure. Acceptance uses the existing household hire receipt and first guard
+slot; later physical local service reserves that same slot. Hearing the page grants
+nothing, and generic legacy hires still replay. This does not make Jora a Nihang,
+extend the camp's childhood intimacy, recruit a clan or implement dacoit or
+Thuggee-associated content.
+
 ## Verify
 
 `test_nihang_camp.gd` covers refused/duplicate invitations, first-gate eligibility,
 relationship address across accession, unrelated speakers, malformed and future
 events, selected-roster movement, save/load, whole-world rollback and checkpoint
-compatibility. Its native journey starts from one explicitly declared first-gate
+compatibility. It separately verifies that legacy invitations remain replayable
+without retroactively gaining a term. Its native journey starts from one explicitly declared first-gate
 fixture, then uses walking/riding inputs, E/F, actual buttons and F5/F9. It also
 adds a wall after opening a conversation to test stale-menu refusal, monitors
 horse separation throughout the outing, and checks overlapping-save refusal.
@@ -170,8 +257,29 @@ through a 2.4-metre passage that closes to single file and reopens to paired slo
 Its declared three-horse stop/start column fixture runs at 30 and 60 Hz: both
 followers move, stop, resume and settle without reversing, while maintaining
 spacing and bounded movement. The final gaps must agree across those tick rates.
-The camp journey checks the real compact objective HUD before mounting, outbound,
-returning and after F9, plus restoration of ordinary lessons after check-in.
+The camp journey first rides past the low ground and verifies that the marker
+refuses the shortcut. It then physically returns, dismounts, waits for both riders,
+uses the actual count choice, remounts and completes the route. The camp journey
+checks the real compact objective HUD before mounting, at the halt, outbound,
+returning and after F9, plus retention of the witnessed term and restoration of
+ordinary lessons after check-in.
+It then presses the real farther-road button after the executed homecoming, rides
+the distinct route with the veteran's native horse, waits for the required stop,
+turns and physically checks in for the witnessed payoff. It checks the relationship
+moniker, finite receipts and non-repeatable completion. A separate declared
+settled fixture presses the actual alternative button after an unfinished ride and
+verifies that the deferred answer grants no access. It also walks the executed
+first-return state to the steward and trainer, submits the original direct report
+route and verifies that the jatha echo changes neither camp events nor capabilities.
+It also opens the ordinary
+journal at each active phase, checks that the card precedes testimony, matches the
+HUD's derived instruction and does not mutate either state or memories. The focused
+suite contains 442 passing assertions. Retained-state native rendering captures
+the farther-road question, accepted answer, stated term and second homecoming at
+1280 by 720, in addition to the three care pages, two guidance handoffs, two
+active-obligation journal states and the existing trainer report with its first-return
+echo. Local software rendering passes with all twelve
+captures fitting without scrolling or clipping.
 These fixtures are
 physics experiments, separate from the input-driven childhood journey. Local
 avoidance is bounded to the small camp group; it is not an arbitrary-size crowd
@@ -189,8 +297,10 @@ Set `NIHANG_CAPTURE_OUTPUT` to an existing directory and run the same journey in
 a graphics-capable Godot session to retain an executed homecoming screenshot and
 whole-world snapshot. Test slots are separate from the player's save. Native
 renderer verification does not establish finished art or human playtest quality.
-Headless runs also retain active and completed whole-world snapshots when this
-output directory is set, plus `before-care.json` at the first care page, for
+Headless runs also retain active, first-completed and second-completed whole-world snapshots when this
+output directory is set, plus `before-care.json` at the first care page,
+`jatha-handoff.json` at the physically reached trainer report and
+`active-second-outing.json` during the farther road, for
 subsequent native rendering of executed state. `render_nihang_care.gd` loads that
 executed snapshot and uses native E and actual buttons to review the three pages;
 it does not claim another newly traversed journey. It retains two further HUD
@@ -198,3 +308,8 @@ captures: optional care before the conversation and ordinary household riding
 after a real mouse click accepts the final care choice. Partial pages retain
 the same paused snapshot; the final click records exactly one existing care event.
 The manifest distinguishes these advancing Home HUD captures from paused dialogue.
+It also distinguishes the two read-only journal captures and verifies their top
+visible field, exact derived instruction, relationship address, unchanged state
+and unchanged journal memory count.
+The handoff capture separately verifies its authored-reconstruction classification,
+original two report choices, received-event source and absence of a new save.

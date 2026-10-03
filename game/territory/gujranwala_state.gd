@@ -2,6 +2,7 @@ extends "res://childhood/aftermath_state.gd"
 ## Additive economy in the inherited active world; all clocks derive from childhood.tick.
 const Economy := preload("res://territory/misl_rules.gd")
 const Water := preload("res://territory/water_round_rules.gd")
+const GuardRecruitment := preload("res://territory/guard_recruitment.gd")
 const TERRITORY_SAVE := "user://1792-gujranwala-v1.json"
 
 func has_economy() -> bool:
@@ -32,6 +33,8 @@ func operate(kind: String, arg: String = "") -> String:
 	var place := Economy.MARKET if kind in ["buy","satchel","deliver","accept_escort"] else Economy.QUARTERMASTER
 	if distance(position(),place)>3.0: return "Visit the market on foot." if place==Economy.MARKET else "Return to the quartermaster on foot."
 	if kind == "watch": return "Upkeep is driven by the existing clock, not a spendable command."
+	if kind == "hire" and GuardRecruitment.known(arg) and GuardRecruitment.used(_state.misl.events,arg):
+		return "That individual appointment has already been settled in this run."
 	if kind == "checkin" and distance(point(_state.misl.merchant.position),Economy.QUARTERMASTER)>4.5: return "The caravan must physically arrive before check-in."
 	return _post(kind,arg)
 

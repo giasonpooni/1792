@@ -20,6 +20,7 @@ const PROJECTS := {
 	"mill":{"cost":28,"timber":4,"tools":1,"work":4}}
 const Base := preload("res://childhood/childhood_state.gd")
 const Commission := preload("res://commissions/commission_rules.gd")
+const GuardRecruitment := preload("res://territory/guard_recruitment.gd")
 
 static func initial() -> Dictionary:
 	return {"purse":18,"treasury":120,
@@ -65,7 +66,7 @@ static func apply(s: Dictionary, kind: String, arg: String) -> String:
 			s.treasury -= offer.cost
 			s.stock[offer.item] += offer.quantity
 		"hire":
-			if arg == "guard":
+			if arg == "guard" or GuardRecruitment.known(arg):
 				if s.guards >= 3: return "Three garrison slots in this cell."
 				if s.treasury < 22: return "A guard requires 22 coins, then 2 wages and 1 food each watch."
 				s.treasury -= 22
@@ -192,6 +193,7 @@ static func validate(value: Variant, tick: int, reducer: Callable = Callable()) 
 	var replay := initial()
 	var prior: int = int(value.origin_tick)
 	var seq := 0
+	var named_hires: Array[String] = []
 	for e in value.events:
 		if not e is Dictionary or e.size()!=4: return "Malformed economic receipt."
 		for key in ["seq","tick","kind","arg"]:
@@ -205,6 +207,9 @@ static func validate(value: Variant, tick: int, reducer: Callable = Callable()) 
 		if e.kind.begins_with("commission."):
 			var instruction:=Commission.payload(e.arg)
 			if instruction.is_empty() or instruction.tick!=e.tick: return "Commission instruction time differs from its receipt."
+		if e.kind == "hire" and GuardRecruitment.known(e.arg):
+			if e.arg in named_hires: return "An individual recruit cannot be appointed twice."
+			named_hires.append(e.arg)
 		var error: String = reducer.call(replay,e.kind,e.arg) if reducer.is_valid() else apply(replay,e.kind,e.arg)
 		if not error.is_empty(): return "Invalid retained economic action: "+error
 		prior = int(e.tick)
@@ -213,6 +218,7 @@ static func validate(value: Variant, tick: int, reducer: Callable = Callable()) 
 		return "A due watch has not settled."
 	# JSON normalizes integral storage, but booleans, strings, extra keys remain invalid.
 	if not _equal(replay,value.ledger): return "Ledger disagrees with retained receipts."
+	if GuardRecruitment.roster(value.events).size() != replay.guards: return "Guard roster differs from retained hiring receipts."
 	var m: Variant = value.merchant
 	if not m is Dictionary or m.size()!=4 or m.get("id") != CARAVAN_ID: return "Invalid caravan identity."
 	if not m.has("position") or not Base.valid_point(m.position) or not m.has("velocity") or not valid_velocity(m.velocity): return "Invalid caravan coordinates."
