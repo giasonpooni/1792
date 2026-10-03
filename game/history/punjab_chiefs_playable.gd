@@ -651,7 +651,7 @@ func _commit_choice(id: String) -> void:
 			return
 	var landing: Variant = null
 	if mounted and selected.effects.has("mounted") and not selected.effects.mounted:
-		landing = horse.dismount_position(avatar)
+		landing = horse.dismount_position(avatar, true)
 		if landing == null:
 			message = "Bring Desi to clear ground before dismounting."
 			_close()

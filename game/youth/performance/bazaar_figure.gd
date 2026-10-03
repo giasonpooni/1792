@@ -97,6 +97,11 @@ func sample(tick: int,speed: float,action: String,amount: float=0.0,speaking: bo
 		"urge":
 			torso.rotation=Vector3(.05,-.12*amount,0);head.rotation.y=-.18*amount
 			shoulders[0].rotation=Vector3(-.75*amount,0,-.12);elbows[0].rotation.x=-.85*amount
+		"gather":
+			# A low open-palm wait signal; the grounded actor and its feet stay put.
+			torso.rotation.z=-.025*amount
+			shoulders[0].rotation=Vector3(-.70*amount,0,-.32*amount)
+			elbows[0].rotation.x=-1.12*amount
 		"down":
 			# A seated/crouched defeated figure, not a squashed capsule or ragdoll.
 			torso.position.y=.55;torso.rotation.x=.42;head.rotation.x=.18

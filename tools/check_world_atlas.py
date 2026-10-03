@@ -115,8 +115,15 @@ class WorldAtlasTests(unittest.TestCase):
         self.assertIn('const Chapter := preload("res://warband/nihang_chapter.gd")',launch)
         self.assertIn('extends "res://history/childhood_intro_chapter.gd"',
                       (w.ROOT / "game/warband/nihang_chapter.gd").read_text())
-        self.assertIn('extends "res://mounts/riding_training_chapter.gd"',
+        self.assertIn('extends "res://commissions/commission_chapter.gd"',
                       (w.ROOT / "game/history/childhood_intro_chapter.gd").read_text())
+        for child, parent in [
+            ("commissions/commission_chapter.gd", "remounts/remount_chapter.gd"),
+            ("remounts/remount_chapter.gd", "narrative/oral_memory/memory_chapter.gd"),
+            ("narrative/oral_memory/memory_chapter.gd", "mounts/riding_training_chapter.gd"),
+        ]:
+            self.assertIn(f'extends "res://{parent}"',
+                          (w.ROOT / "game" / child).read_text())
         self.assertIn('extends "res://workshops/home_workshop_chapter.gd"',
                       (w.ROOT / "game/mounts/riding_training_chapter.gd").read_text())
         self.assertIn('extends "res://presentation/art_chapter.gd"',

@@ -84,9 +84,9 @@ func build() -> void:
 		_box(Vector3(0.6,h,0.6),p+Vector3.UP*h/2,Color("695942"))
 		_box(Vector3(3.7,h/2,3.4),p+Vector3.UP*h,Color("556746"))
 	for z in [-24,-18,18,24,42,54]:
-		_box(Vector3(390,0.05,0.18),Vector3(0,0.03,z),Color("99845c"))
+		_box(Vector3(390,0.05,0.18),Vector3(0,0.03,z),Color("99845c")).set_meta("legacy_ecology_placeholder", "continuous_furrow")
 	# Outside the playable wall: water strip suggests drainage, not a historical river.
-	_box(Vector3(3,0.05,260),Vector3(-38,0.03,0),Color("759ca0"))
+	_box(Vector3(3,0.05,260),Vector3(-38,0.03,0),Color("759ca0")).set_meta("legacy_ecology_placeholder", "unlocated_water_strip")
 	_road(Vector3(0,0,-9),Vector3(-24,0,-11))
 	_road(Vector3(-24,0,-11),Vector3(-24,0,-20))
 	_road(Vector3(-24,0,-11),Vector3(-24,0,4))

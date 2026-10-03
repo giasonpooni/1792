@@ -4,12 +4,14 @@ extends "res://misl/service_chapter.gd"
 const YouthState := preload("res://youth/brawl_state.gd")
 const Brawl := preload("res://youth/brawl_rules.gd")
 const Dialogue := preload("res://youth/performance/bazaar_script.gd")
+const BazaarStory := preload("res://youth/performance/bazaar_story.gd")
 const Catalogue := preload("res://youth/catalogue.gd")
 const MaterialMemory := preload("res://youth/performance/bazaar_material_memory.gd")
 var youths: Array[CharacterBody3D]=[]
 var youth_rigs: Array[Node3D]=[]
 var material_memory: Node3D
 var _youth_action := ""
+var _youth_choices: Array[String]=[]
 func _init() -> void:
 	model=YouthState.new();save_path=YouthState.BRAWL_SAVE
 func _build_world() -> void:
@@ -59,9 +61,15 @@ func _sync_youth(reset: bool=false) -> void:
 				if mesh is MeshInstance3D and mesh.position.x>0.3 and mesh.position.y<=1.14: mesh.rotation.x=-1.2 if raised else 0.0
 			actor.caption.text="Out of the fight" if down else "Strike raised · Q" if phase=="fighting" and Brawl.attack_phase(int(model.progress().tick),int(model.brawl().ledger.start_tick),i) in range(80,106) else "Bazaar challenger"
 func _clear_pending_actions() -> void:
-	super._clear_pending_actions();_youth_action=""
+	super._clear_pending_actions();_youth_action="";_youth_choices.clear()
+func _show_dialog(title: String,body: String,actions: Array) -> void:
+	super._show_dialog(title,body,actions)
+	for action in actions:
+		if str(action[1]).begins_with("youth:"): _youth_choices.append(str(action[1]).trim_prefix("youth:"))
 func _menu_action(action: String) -> void:
-	if action.begins_with("youth:"): _youth_action=action.trim_prefix("youth:")
+	if action.begins_with("youth:"):
+		var choice:=action.trim_prefix("youth:")
+		if _paused and choice in _youth_choices and _youth_action.is_empty(): _youth_action=choice
 	else: super._menu_action(action)
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_T:
@@ -71,23 +79,32 @@ func _unhandled_input(event: InputEvent) -> void:
 func _youth_button(label: String,action: String) -> void:
 	var button:=Button.new();button.text=label;button.custom_minimum_size.y=42
 	button.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
-	button.pressed.connect(_menu_action.bind("youth:"+action));_actions.add_child(button);_actions.move_child(button,0);_layout()
+	button.pressed.connect(_menu_action.bind("youth:"+action));_actions.add_child(button);_actions.move_child(button,0)
+	_youth_choices.append(action);_layout()
 func _open_market() -> void:
 	super._open_market()
-	if not model.has_brawl(): _youth_button("Walk with Mela and Jiva · the bazaar story","invite")
+	if not model.has_brawl():
+		_panel_text.text+="\n\n"+BazaarStory.INVITATION
+		_youth_button("Walk with Mela and Jiva · the bazaar story","invite")
 func _open_quartermaster() -> void:
 	super._open_quartermaster()
-	if model.brawl_phase()=="returning": _youth_button("Give the bazaar account with both friends present","report")
+	if model.brawl_phase()=="returning":
+		_youth_button("Hear Mela and Jiva before giving the account","reflect")
+		_youth_button("Give the bazaar account with both friends present","report")
 func _open_journal() -> void:
 	super._open_journal()
 	if FileAccess.file_exists(ServiceState.SERVICE_SAVE): _youth_button("Import prior household-service save (replaces this run)","import")
 func _interact() -> void:
 	var phase: String=model.brawl_phase()
+	if phase=="returning" and Model.distance(model.position(),Rules.QUARTERMASTER)>=3.0:
+		for friend in [3,4]:
+			if model.position().distance_to(youths[friend].global_position)<3.2 and _seen(youths[friend].global_position+Vector3.UP*1.4,4.5):
+				_open_return_exchange();return
 	if phase=="invited" and is_instance_valid(material_memory):
 		var detail: Dictionary=material_memory.nearest(model.position())
 		if not detail.is_empty():
-			if model.mounted(): _message="Dismount before stopping to inspect the market detail.";return
-			if not _seen(detail.focus,2.8): _message="Step closer and face the object in clear sight.";return
+			if model.mounted(): _youth_feedback("Dismount before stopping to inspect the market detail.");return
+			if not _seen(detail.focus,2.8): _youth_feedback("Step closer and face the object in clear sight.");return
 			var together: bool=_contact(youths[3]) and _contact(youths[4]) and Model.distance(model.position(),youths[3].global_position)<5 and Model.distance(model.position(),youths[4].global_position)<5
 			var body: String=String(detail.description)
 			if together: body+="\n\n"+String(detail.with_friends)
@@ -95,26 +112,50 @@ func _interact() -> void:
 			_show_dialog("HAND-WORKED LIVES · "+String(detail.title),body,[["Continue","resume"]])
 			return
 	if phase in ["invited","challenged"] and Model.distance(model.position(),youths[0].global_position)<3.2:
-		if not _seen(youths[0].global_position+Vector3.UP*1.4,4.5): _message="Face the challenger in clear sight.";return
+		if not _seen(youths[0].global_position+Vector3.UP*1.4,4.5): _youth_feedback("Face the challenger in clear sight.");return
 		if phase=="invited":
 			var error: String=model.brawl_action("challenge")
-			if not error.is_empty(): _message=error;return
+			if not error.is_empty(): _youth_feedback(error);return
 		_show_dialog("AT THE BAZAAR · A SHORT WALK",Dialogue.CHALLENGE,[["Stand with my friends","youth:stand"],["Walk away together","youth:leave"],["Hear Mela and Jiva","youth:listen"],["Consider the challenge","resume"]])
 		return
 	if phase in ["fighting","leaving"]:
 		_message="Get both friends to the open household approach. Fight with Q and left click, or make distance.";return
 	super._interact()
+func _youth_feedback(text: String) -> void:
+	_message=text
+	var director: Node=get("bazaar_performance")
+	if is_instance_valid(director) and director.has_method("show_action_feedback"): director.show_action_feedback(text)
+func _friends_in_contact() -> bool:
+	for friend in [3,4]:
+		if not youths[friend].is_visible_in_tree() or not _contact(youths[friend]) or model.position().distance_to(youths[friend].global_position)>5.0: return false
+	return true
+func _return_access() -> String:
+	if model.brawl_phase()!="returning": return "Reach the household approach together first."
+	if model.mounted() or not avatar.is_on_floor() or avatar.global_position.distance_to(model.position())>0.25: return "Stand beside your friends before speaking."
+	if not _friends_in_contact(): return "Bring Mela and Jiva close enough to hear each other."
+	if _economy_contact(Rules.QUARTERMASTER): return ""
+	for friend in [3,4]:
+		if model.position().distance_to(youths[friend].global_position)<=3.2 and _seen(youths[friend].global_position+Vector3.UP*1.4,4.5): return ""
+	return "Face a nearby friend before speaking."
+func _open_return_exchange() -> void:
+	var error:=_return_access()
+	if not error.is_empty(): _youth_feedback(error);_resume();return
+	_show_dialog("ON THE WAY HOME",BazaarStory.return_exchange(model.brawl().ledger.outcome),[["Continue home together","resume"]])
 func _youth_access(kind: String) -> String:
 	if model.mounted(): return "Dismount before this conversation."
+	if not avatar.is_on_floor() or avatar.global_position.distance_to(model.position())>0.25: return "Stand beside the speaker before this conversation."
 	var at: Vector3=Rules.MARKET if kind=="invite" else Rules.QUARTERMASTER if kind=="report" else youths[0].global_position
-	if Model.distance(model.position(),at)>3.2 or not _seen(at+Vector3.UP*1.4,4.5): return "Return to the nearby speaker and face them in clear sight."
+	if model.position().distance_to(at)>3.2 or not _seen(at+Vector3.UP*1.4,4.5): return "Return to the nearby speaker and face them in clear sight."
+	if not _friends_in_contact(): return "Bring Mela and Jiva close enough to hear each other."
 	return ""
 func _physics_process(delta: float) -> void:
 	if not _youth_action.is_empty():
 		var kind:=_youth_action;_youth_action=""
+		if not _paused or kind not in _youth_choices: return
+		if kind=="reflect": _open_return_exchange();return
 		if kind in ["listen","answer"]:
 			if model.brawl_phase()!="challenged" or not _youth_access(kind).is_empty() or not _contact(youths[3]) or not _contact(youths[4]) or Model.distance(model.position(),youths[3].global_position)>5 or Model.distance(model.position(),youths[4].global_position)>5:
-				_message="Bring both friends close enough to speak, in sight of the challenger.";_resume();return
+				_youth_feedback("Bring both friends close enough to speak, in sight of the challenger.");_resume();return
 			if kind=="answer": _interact()
 			else: _show_dialog("BETWEEN FRIENDS",Dialogue.FRIENDS,[["Stand with my friends","youth:stand"],["Walk away together","youth:leave"],["Back to the challenger","youth:answer"]])
 			return
@@ -125,7 +166,8 @@ func _physics_process(delta: float) -> void:
 			# A full-world sidecar, not progress/resource merging or a second live state.
 			error=model.save_to(save_path+".bazaar-retry.json")
 		if error.is_empty(): error=model.begin_brawl() if kind=="invite" else model.brawl_action(kind)
-		_message=error if not error.is_empty() else {"invite":Dialogue.INVITE,"stand":Dialogue.STAND,"leave":Dialogue.LEAVE,"report":Dialogue.REPORT.get(model.brawl().ledger.outcome,"")}.get(kind,"Account received.")
+		if not error.is_empty(): _youth_feedback(error)
+		else: _message={"invite":Dialogue.INVITE,"stand":Dialogue.STAND,"leave":Dialogue.LEAVE,"report":Dialogue.REPORT.get(model.brawl().ledger.outcome,"")}.get(kind,"Account received.")
 		_sync_youth(true);_resume();return
 	if model.brawl_phase()=="caught":
 		if _load_requested: _load_requested=false;_load();return
@@ -183,6 +225,7 @@ func _refresh() -> void:
 		_hud.text+="\nYOUTH · "+hint+"  T: story-development slate"
 	if phase=="fighting": _hud.text+="\nUnguarded blows: %d / 3 · Opponents checked: %d / 3"%[model.brawl().ledger.hits,model.brawl().ledger.down.count(true)]
 func _resume() -> void:
+	_youth_action="";_youth_choices.clear()
 	super._resume()
 	if model.brawl_phase()=="caught": avatar.input_enabled=false;avatar.set_physics_process(false)
 func _candidate_error(staged: Story) -> String:

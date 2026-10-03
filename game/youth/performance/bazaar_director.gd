@@ -1,6 +1,8 @@
 # Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 extends Node
 ## Authored staging on existing receipts/clock. No body movement, damage, rewards or save authority.
+const Guidance := preload("res://presentation/bazaar_guidance.gd")
+const CaptionTiming := preload("res://presentation/story_attention.gd")
 const Figure := preload("res://youth/performance/bazaar_figure.gd")
 const Dialogue :=  preload("res://youth/performance/bazaar_script.gd")
 const Sound := preload("res://youth/performance/bazaar_sound.gd")
@@ -17,6 +19,8 @@ const GazeTrack := preload("res://youth/performance/bazaar_gaze_track.gd")
 const StreetSection := preload("res://youth/performance/bazaar_street_section.gd")
 const MemoryAnchors := preload("res://youth/performance/bazaar_memory_anchors.gd")
 const ThresholdOccupation := preload("res://youth/performance/bazaar_threshold_occupation.gd")
+const RegroupCue := preload("res://youth/performance/bazaar_regroup_cue.gd")
+var regroup_cue: Dictionary={}
 var gaze_tracks: Array=[]
 var hero_gaze=GazeTrack.new()
 var chapter: Node3D
@@ -49,11 +53,13 @@ var bottom: PanelContainer
 var title: Label
 var objective: Label
 var prompt: Label
+var detail: Label
 var speaker: Label
 var subtitle: Label
 var _streams: Dictionary={}
 var active := false
 var report_until := -1
+var action_feedback: Dictionary={}
 func build(owner_chapter: Node3D) -> void:
 	chapter=owner_chapter
 	market_stage=MarketStage.new();chapter.add_child(market_stage);market_stage.build()
@@ -72,8 +78,9 @@ func build(owner_chapter: Node3D) -> void:
 	canvas=CanvasLayer.new();canvas.layer=17;add_child(canvas)
 	top=panel();var v:=VBoxContainer.new();v.add_theme_constant_override("separation",7);top.add_child(v)
 	title=label(12,Color("cabc94"));v.add_child(title)
-	objective=label(21,Color("f0e8d5"));v.add_child(objective)
-	prompt=label(14,Color("ddd0b0"));v.add_child(prompt)
+	objective=label(19,Color("f0e8d5"));v.add_child(objective)
+	detail=label(13,Color("c8bfa9"));v.add_child(detail)
+	prompt=label(12,Color("ddd0b0"));v.add_child(prompt)
 	bottom=panel();v=VBoxContainer.new();v.add_theme_constant_override("separation",5);bottom.add_child(v)
 	speaker=label(12,Color("d3b983"));v.add_child(speaker)
 	subtitle=label(18,Color("fff5dd"));v.add_child(subtitle)
@@ -86,7 +93,7 @@ func label(size: int,color: Color) -> Label:
 	var l:=Label.new();l.add_theme_font_size_override("font_size",size);l.add_theme_color_override("font_color",color);l.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;l.mouse_filter=Control.MOUSE_FILTER_IGNORE;return l
 func rehydrate() -> void:
 	if not is_instance_valid(chapter): return
-	queue.clear();speech.clear();walk_seen.clear();walk_pending.clear();decompression.clear();report_until=-1;last_tick=int(chapter.model.progress().tick)
+	queue.clear();speech.clear();walk_seen.clear();walk_pending.clear();decompression.clear();action_feedback.clear();report_until=-1;last_tick=int(chapter.model.progress().tick)
 	var b: Dictionary=chapter.model.brawl();origin=int(b.get("origin_tick",-1));event_cursor=b.get("events",[]).size()
 	_guard=false
 	hero_gaze.reset()
@@ -114,7 +121,7 @@ func play(kind: String,index: int,tick: int) -> void:
 func receive(event: Dictionary,ledger: Dictionary) -> void:
 	var kind: String=event.kind
 	if kind in ["challenge","stand","leave","regroup","report"]:
-		queue.clear();speech.clear();walk_pending.clear()
+		queue.clear();speech.clear();walk_pending.clear();action_feedback.clear()
 	for line in Dialogue.lines(kind,ledger.outcome): queue.append({"actor":line[0],"text":line[1],"expires":int(event.tick)+780})
 	if kind in ["parry","hit","counter"]: play("check" if kind=="parry" else "impact",int(event.index),int(event.tick))
 	if kind=="report": report_until=int(event.tick)+480
@@ -122,10 +129,11 @@ func sample(allow_edges: bool=true) -> void:
 	if not is_instance_valid(canvas) or not is_instance_valid(chapter.art): return
 	var tick:=int(chapter.model.progress().tick)
 	var b: Dictionary=chapter.model.brawl();var phase: String=chapter.model.brawl_phase()
+	if not action_feedback.is_empty() and (tick>=int(action_feedback.until) or action_feedback.phase!=phase): action_feedback.clear()
 	if tick<last_tick or (not b.is_empty() and ((origin>=0 and origin!=int(b.origin_tick)) or event_cursor>b.events.size())):
 		hero_gaze.reset()
 		for track in gaze_tracks: track.reset()
-		queue.clear();speech.clear();walk_pending.clear();walk_seen.clear();event_cursor=b.get("events",[]).size();origin=int(b.get("origin_tick",-1));report_until=-1
+		queue.clear();speech.clear();walk_pending.clear();walk_seen.clear();action_feedback.clear();event_cursor=b.get("events",[]).size();origin=int(b.get("origin_tick",-1));report_until=-1
 	var fresh: bool=tick!=last_tick
 	if fresh and not chapter._paused: _guard=Input.is_key_pressed(KEY_Q)
 	if not b.is_empty():
@@ -149,6 +157,12 @@ func sample(allow_edges: bool=true) -> void:
 		if sound_enabled and near_market and not chapter._paused:
 			if not ambience.playing: ambience.play()
 		elif ambience.playing: ambience.stop()
+	regroup_cue.clear()
+	if active and not b.is_empty():
+		regroup_cue=RegroupCue.read(phase,tick,chapter.avatar.global_position,
+			chapter.youths.map(func(actor): return actor.global_position),
+			chapter.youths.map(func(actor): return actor.velocity),b.ledger.down,
+			[_regroup_contact(3,4),_regroup_contact(4,3)])
 	for i in range(figures.size()):
 		var shown: bool=enabled and chapter.youths[i].visible
 		figures[i].visible=shown;chapter.youth_rigs[i].visible=not enabled
@@ -159,6 +173,8 @@ func sample(allow_edges: bool=true) -> void:
 		if i>=3 and not b.is_empty():
 			var friend: Dictionary=Choreo.friend_pose(b.get("events",[]),tick,i)
 			if not friend.is_empty(): action=friend.action;amount=friend.amount
+			elif not regroup_cue.is_empty() and int(regroup_cue.actor)==i:
+				action="gather";amount=float(regroup_cue.amount)
 			elif not decompression.is_empty():
 				var mood: String=String(decompression.mela if i==3 else decompression.jiva)
 				action={"energized":"urge","checking":"watch","restless":"watch","relieved":"brace","questioning":"watch","easy":"idle"}.get(mood,"idle")
@@ -199,7 +215,7 @@ func sample(allow_edges: bool=true) -> void:
 					queue.append({"actor":line[0],"text":line[1],"expires":tick+420,"duration":120,"ambient_zone":walk_pending.zone.id})
 				walk_seen[walk_pending.zone.id]=tick
 				walk_pending.clear()
-		while speech.is_empty() and not queue.is_empty():
+		while speech.is_empty() and not queue.is_empty() and action_feedback.is_empty() and urgent_cue(b,tick).is_empty():
 			var candidate: Dictionary=queue.pop_front()
 			if tick>candidate.expires or not audible(int(candidate.actor)): continue
 			candidate.until=tick+int(candidate.get("duration",210));speech=candidate
@@ -214,6 +230,14 @@ func sample(allow_edges: bool=true) -> void:
 		chapter.guard_visual.hide() # Unarmed encounter: hands, not the earlier training-shield proxy.
 		for actor in chapter.youths: actor.caption.hide()
 	last_tick=tick
+func _regroup_contact(observer: int,other: int) -> bool:
+	if not audible(observer,4.5) or not chapter.youths[other].is_visible_in_tree(): return false
+	var start: Vector3=chapter.youths[observer].global_position+Vector3.UP*1.35
+	var target: Vector3=chapter.youths[other].global_position+Vector3.UP*1.35
+	var excluded: Array[RID]=[chapter.avatar.get_rid(),chapter.horse.get_rid()]
+	for actor in chapter.youths: excluded.append(actor.get_rid())
+	var ray:=PhysicsRayQueryParameters3D.create(start,target,1,excluded)
+	return chapter.get_world_3d().direct_space_state.intersect_ray(ray).is_empty()
 func _gaze_visible(frame: Transform3D,target: Variant,observer_index: int) -> bool:
 	if not enabled or not target is Vector3 or not Attention.eligible(frame,target): return false
 	# Target is an existing cast member; hidden actors cannot attract visual attention.
@@ -288,25 +312,50 @@ func restore_attention(value: Dictionary) -> bool:
 		candidates.append(track)
 	hero_gaze=candidates[0];gaze_tracks=candidates.slice(1);return true
 
+func show_action_feedback(text: String) -> void:
+	if text.is_empty(): return
+	var tick: int=int(chapter.model.progress().tick)
+	action_feedback={"text":text,"until":tick+CaptionTiming.reading_ticks(text),"phase":chapter.model.brawl_phase()}
+
+func urgent_cue(b: Dictionary,tick: int) -> String:
+	if b.is_empty() or b.ledger.phase != "fighting": return ""
+	# Only an actual faced, visible nearby threat gets this immediate cue.
+	for i in range(3):
+		if not in_view(i) or not chapter._facing(chapter.youths[i].global_position) or b.ledger.down[i]: continue
+		if b.ledger.stun_until[i]>=tick: return "BLOW CHECKED  ·  Counter now [left click]"
+		if Rules.attack_phase(tick,int(b.ledger.start_tick),i) in range(80,106): return "STRIKE COMING  ·  Face him and hold Q"
+	return ""
+
 func layout(phase: String,b: Dictionary,tick: int) -> void:
 	var ending: bool=enabled and phase=="reported" and tick<report_until
 	canvas.visible=(active or ending) and not chapter._paused
 	if not canvas.visible: return
 	chapter._hud.hide();chapter._caption.hide();chapter._narrator_label.hide()
+	# The short final acknowledgment still owns the screen after brawl_busy
+	# becomes false. The normal Home sample restores its HUD after this beat.
+	if is_instance_valid(chapter.art.detail.hud): chapter.art.detail.hud.hide()
+	chapter._marker.hide()
 	var size:=chapter.get_viewport().get_visible_rect().size
-	top.position=Vector2(18,18);top.size=Vector2(minf(390,size.x-36),0)
+	top.position=Vector2(18,18);top.size=Vector2(minf(420,size.x-36),0)
+	var moving: bool=Vector2(chapter.avatar.velocity.x,chapter.avatar.velocity.z).length()>.3
+	var guidance: Dictionary=Guidance.read(chapter,moving)
+	var urgent:=urgent_cue(b,tick)
+	if not action_feedback.is_empty() and (tick>=int(action_feedback.until) or action_feedback.phase!=phase): action_feedback.clear()
 	title.text="GUJRANWALA  /  A SHORT WALK" if not ending else "ALL THREE HOME"
-	objective.text={"invited":"Walk with Mela and Jiva","challenged":"Your answer. Your way home.","fighting":"Hold your ground—or leave together","leaving":"Bring both friends home","returning":"Tell the quartermaster what happened","reported":"A story to tell. Not a reward to collect."}.get(phase,"")
-	prompt.text="E  Speak     J  Journal     F5 / F9  Save / Load\nF6  Sound: %s"%("on" if sound_enabled else "off")
+	title.visible=ending or (not moving and urgent.is_empty())
+	objective.text=guidance.get("task","All three of you are Home.")
+	detail.text=guidance.get("detail","")
+	detail.visible=not ending and guidance.get("show_detail",false) and urgent.is_empty()
+	prompt.text=guidance.get("controls","J  Journal    E  Speak")
+	if not moving and urgent.is_empty() and phase!="fighting": prompt.text+="    F6  Sound: %s"%("on" if sound_enabled else "off")
 	if phase=="fighting":
-		var tell:="Q  Guard a faced blow   ·   Left click  Counter"
-		for i in range(3):
-			if not in_view(i) or not chapter._facing(chapter.youths[i].global_position) or b.ledger.down[i]: continue
-			if b.ledger.stun_until[i]>=tick: tell="BLOW CHECKED  ·  Counter now [left click]";break
-			if Rules.attack_phase(tick,int(b.ledger.start_tick),i) in range(80,106): tell="STRIKE COMING  ·  Face him and hold Q";break
-		prompt.text=tell+"\nUnguarded blows: %d / 3  ·  F6 sound %s"%[b.ledger.hits,"on" if sound_enabled else "off"]
-	bottom.visible=ending or not speech.is_empty() or not decompression.is_empty()
+		if not urgent.is_empty(): prompt.text=urgent
+		prompt.text+="\nUnguarded blows: %d / 3"%b.ledger.hits
+	# Let immediate action own the screen. A queued line starts only after the
+	# threat cue clears; an existing line keeps its finite original expiry.
+	bottom.visible=urgent.is_empty() and (ending or not action_feedback.is_empty() or not speech.is_empty() or not decompression.is_empty())
 	if ending: speaker.text="QUARTERMASTER";subtitle.text=Dialogue.REPORT[b.ledger.outcome].trim_prefix("Quartermaster · ")
+	elif not action_feedback.is_empty(): speaker.text="CONTINUE";subtitle.text=action_feedback.text
 	elif not speech.is_empty(): speaker.text="MELA" if speech.actor==3 else "JIVA";subtitle.text=speech.text
 	elif not decompression.is_empty(): speaker.text="THE WALK HOME";subtitle.text=String(decompression.caption)
 	bottom.size=Vector2(minf(740,size.x-36),0)
@@ -316,4 +365,3 @@ func toggle_sound() -> void:
 	for sound in sounds: sound.stop()
 	if is_instance_valid(ambience): ambience.stop()
 	sample(false)
-

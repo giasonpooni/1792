@@ -1,0 +1,97 @@
+{
+  "schema": "1792.courtyard-fabric.v1",
+  "recorded_date": "2026-10-02",
+  "classification": "photo-informed-original-detail",
+  "historically_authenticated": false,
+  "georeferenced": false,
+  "gameplay_authority": false,
+  "reference_intake": "data/art_intake/gujranwala_reference_batch_20261002.json",
+  "reference_intake_sha256": "35e7aef8a47747cd9189813d071621056a442884c3e2303994cf0616ae79e310",
+  "photo_sources": [
+    {
+      "id": "HAV01",
+      "filename": "restoration-work-at-maharaja-ranjit-singh-haveli-gujranwala-v0-8vx5v9p1t9ie1.webp",
+      "sha256": "6cec3fafc7c231c99d34671c7b18950332bd9e791802ee9613c04b8902c38fe4",
+      "observation_date": null,
+      "identification_confidence": {
+        "visible_architectural_features": "high",
+        "named_site": "provisional",
+        "fabric_present_in_1792": "unestablished"
+      },
+      "observation": "Elevated view of an open rectangular courtyard, arcades along both long sides, cusped openings, grouped shafts, shallow panel relief and perforated brick parapets. Rubble and partly disturbed paving are visible."
+    },
+    {
+      "id": "HAV03",
+      "filename": "restoration-work-at-maharaja-ranjit-singh-haveli-gujranwala-v0-9rrno0p1t9ie1.webp",
+      "sha256": "ef3a65dd6a7d7b68333c5ff169f6feb040a6a700436368c328efae0ab45780f7",
+      "observation_date": null,
+      "identification_confidence": {
+        "visible_architectural_features": "high",
+        "named_site": "provisional",
+        "fabric_present_in_1792": "unestablished"
+      },
+      "observation": "Shaded verandah with cusped masonry arches, grouped shafts, thick piers, shallow wall niches and timber beams supporting closely spaced ceiling members. Patterned brick paving, repair materials and modern loose objects are visible."
+    },
+    {
+      "id": "HAV06",
+      "filename": "images (39).jpg",
+      "sha256": "49e914c06100981876991fe6a82ddf4274a8cdacc7389a5b3983a7e5f3ccc213",
+      "observation_date": null,
+      "identification_confidence": {
+        "visible_architectural_features": "high",
+        "named_site": "provisional",
+        "fabric_present_in_1792": "unestablished"
+      },
+      "observation": "Oblique close view of an arcade with cusped arch profiles, grouped column shafts, recessed rectangular panels, horizontal cornice bands and a perforated parapet."
+    }
+  ],
+  "features": [
+    {
+      "id": "cusped_reveals",
+      "photo_ids": [
+        "HAV01",
+        "HAV03",
+        "HAV06"
+      ],
+      "count": 8,
+      "decision": "Add an authored five-lobed intrados and 0.46 m deep reveal to existing elliptical bay mouldings. Not a traced measured profile.",
+      "geometry_class": "C"
+    },
+    {
+      "id": "grouped_shafts",
+      "photo_ids": [
+        "HAV03",
+        "HAV06"
+      ],
+      "count": 9,
+      "decision": "Four small engaged shafts per existing pier, contained within its existing collision envelope. Original structural pier remains.",
+      "geometry_class": "C"
+    },
+    {
+      "id": "recess_panels",
+      "photo_ids": [
+        "HAV03",
+        "HAV06"
+      ],
+      "count": 16,
+      "decision": "Authored shallow frames and recessed faces above existing domestic lattice panels. No new opening or interior.",
+      "geometry_class": "C"
+    },
+    {
+      "id": "timber_bearers",
+      "photo_ids": [
+        "HAV03"
+      ],
+      "count": 2,
+      "decision": "Longitudinal bearers beneath existing transverse rafters; authored spacing and dimensions.",
+      "geometry_class": "C"
+    }
+  ],
+  "protected_invariants": [
+    "Retain imported Blender assets and their original receipts.",
+    "Retain all collision shapes, navigation, routes, campaign state, save and clock ownership.",
+    "Existing refinement toggle hides the entire new detail; no independent frame callback.",
+    "No surviving finish or repair condition is automatically dated to 1792."
+  ],
+  "verification_scope": "Native composed Home invariance checks and before/after diagnostic views; not hardware performance qualification or historical authentication."
+}

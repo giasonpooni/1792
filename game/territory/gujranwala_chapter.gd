@@ -3,9 +3,15 @@ extends "res://childhood/home_chapter.gd"
 const Territory := preload("res://territory/gujranwala_state.gd")
 const Rules := preload("res://territory/misl_rules.gd")
 const Cell := preload("res://territory/home_cell.gd")
+const DeliveryPresentation := preload("res://territory/delivery_presentation.gd")
 var cell: Node3D
 var merchant: CharacterBody3D
 var _economy_action := ""
+var _economy_choices: Array[String] = []
+var _delivery_load: Node3D
+var _carrier_load: MeshInstance3D
+var _carrier_status := ""
+var _carrier_cue_tick := -720
 var _guard_posts: Array[Node3D]=[]
 var _works: Dictionary={}
 var _budget_notice := false
@@ -25,7 +31,7 @@ func _build_world() -> void:
 	merchant.move_speed=2.4
 	merchant.name="HomeCaravan"
 	add_child(merchant)
-	merchant.caption.text="Caravan · stay within 9 m"
+	merchant.caption.text="Return carrier"
 	merchant.apply(Rules.blank_merchant())
 	merchant.add_collision_exception_with(avatar)
 	merchant.add_collision_exception_with(horse)
@@ -35,7 +41,14 @@ func _build_world() -> void:
 	pack_mesh.size=Vector3(0.6,0.7,0.6)
 	pack.mesh=pack_mesh
 	pack.position=Vector3(0,1,0.4)
+	var pack_cloth := StandardMaterial3D.new()
+	pack_cloth.albedo_color = Color("a1865e")
+	pack_cloth.roughness = 1.0
+	pack.material_override = pack_cloth
+	_carrier_load = pack
 	merchant.add_child(pack)
+	_delivery_load = DeliveryPresentation.make_cargo()
+	avatar.add_child(_delivery_load)
 	for i in range(3):
 		var p:=_box(Vector3(0.5,1.7,0.5),Vector3(-2+i*2,0.95,10.5),Color("566777"))
 		_guard_posts.append(p.get_parent())
@@ -75,25 +88,44 @@ func _interact() -> void:
 
 func _menu_action(action: String) -> void:
 	if action.begins_with("econ:"):
-		_economy_action=action.trim_prefix("econ:")
+		if _paused and action in _economy_choices and _economy_action.is_empty():
+			_economy_action=action.trim_prefix("econ:")
 		return
 	super._menu_action(action)
 
 func _clear_pending_actions() -> void:
 	super._clear_pending_actions()
 	_economy_action=""
+	_economy_choices.clear()
+
+func _resume() -> void:
+	_economy_choices.clear()
+	_economy_action = ""
+	super._resume()
+
+func _economy_contact(site: Vector3) -> bool:
+	return not model.mounted() and avatar.is_on_floor() and avatar.global_position.distance_to(model.position()) <= 0.25 and model.position().distance_to(site) <= 3.0 and _seen(site + Vector3.UP, 4.0)
+
+func _remember_economy_choices(actions: Array) -> void:
+	_economy_choices.clear()
+	for spec in actions:
+		if str(spec[1]).begins_with("econ:"): _economy_choices.append(str(spec[1]))
 
 func _physics_process(delta: float) -> void:
 	if not _economy_action.is_empty():
-		var parts:=_economy_action.split("|",true,1)
+		var queued := _economy_action
+		var parts:=queued.split("|",true,1)
 		_economy_action=""
 		var kind: String=parts[0]
 		var arg: String=parts[1] if parts.size()>1 else ""
 		var error: String
-		if kind=="begin": error=model.begin_allowance()
+		var place: Vector3 = Rules.MARKET if kind in ["buy", "satchel", "deliver", "accept_escort"] else Rules.QUARTERMASTER
+		if not _paused or "econ:" + queued not in _economy_choices or not _economy_contact(place):
+			error = "Return to the speaker and face them before settling this account."
+		elif kind=="begin": error=model.begin_allowance()
 		elif kind=="rest": error=model.rest_watch()
 		else: error=model.operate(kind,arg)
-		_message=error if not error.is_empty() else "Quartermaster / trader · "+("The allowance is yours to administer, not your private property." if kind=="begin" else "Recorded: "+kind.replace("_"," ")+".")
+		_message=error if not error.is_empty() else DeliveryPresentation.acknowledgment(kind, arg, model)
 		_sync_economy(true)
 		_resume()
 		return
@@ -115,6 +147,7 @@ func _physics_process(delta: float) -> void:
 			merchant.apply(m.merchant)
 			_message=error
 	_sync_economy()
+	_sample_carrier_story()
 	_refresh()
 
 func _sync_economy(reset: bool=false) -> void:
@@ -123,10 +156,33 @@ func _sync_economy(reset: bool=false) -> void:
 	horse.gait_speed_limit=3.0 if enabled and model.economy().ledger.feed_shortfall>0 else Riding.MAX_SPEED
 	merchant.visible=enabled and model.economy().ledger.caravan in ["active","complete"]
 	merchant.collision_layer=2 if merchant.visible else 0
+	if is_instance_valid(_carrier_load):
+		_carrier_load.position = Vector3(0.8, 0.35, 0.4) if enabled and model.economy().ledger.caravan == "complete" else Vector3(0, 1, 0.4)
 	for i in range(_guard_posts.size()):
 		_guard_posts[i].visible=enabled and model.economy().ledger.guards>i
 	for name in _works: _works[name].visible=enabled and name in model.economy().ledger.built
-	if reset: merchant.apply(model.economy().merchant if enabled else Rules.blank_merchant())
+	if reset:
+		merchant.apply(model.economy().merchant if enabled else Rules.blank_merchant())
+		_carrier_status = DeliveryPresentation.carrier_phase(model)
+		_carrier_cue_tick = int(model.progress().tick)
+	if is_instance_valid(_delivery_load):
+		_delivery_load.visible = enabled and model.economy().ledger.cargo == 4
+		_delivery_load.rotation.y = horse.rotation.y if model.mounted() else avatar.pivot.rotation.y
+		_delivery_load.position.y = 1.0 if model.mounted() else 0.0
+
+func _sample_carrier_story() -> void:
+	var next := DeliveryPresentation.carrier_phase(model)
+	if next == _carrier_status: return
+	var line := DeliveryPresentation.carrier_transition(_carrier_status, next)
+	# A nearby carrier speaks only when visible. The separation cue is Buddh's
+	# own decision to turn back, never remote dialogue or a completion receipt.
+	if next in ["together", "arrived"] and not _seen(merchant.global_position + Vector3.UP, 10.0): return
+	var tick: int = int(model.progress().tick)
+	if not line.is_empty() and tick - _carrier_cue_tick < 180: return
+	_carrier_status = next
+	if not line.is_empty():
+		_message = line
+		_carrier_cue_tick = tick
 
 func _apply() -> void:
 	super._apply()
@@ -177,7 +233,8 @@ func _open_quartermaster() -> void:
 			["Pay accrued wages","econ:pay_arrears"],["Contribute 10 personal coins to coffers","econ:contribute"],
 			["Rest until next supply watch (unavailable during escort)","econ:rest"]])
 	actions.append(["Return","resume"])
-	_show_dialog("QUARTERMASTER · GUJRANWALA",_brief_text(),actions)
+	_show_dialog("QUARTERMASTER · GUJRANWALA",DeliveryPresentation.briefing(model) + "\n\n" + _brief_text(),actions)
+	_remember_economy_choices(actions)
 
 func _open_market() -> void:
 	if not model.has_economy():
@@ -192,7 +249,8 @@ func _open_market() -> void:
 		actions.append(["Buy %d %s for %d household coins" % [lot.quantity,key,lot.cost],"econ:buy|"+key])
 	actions.append(["Buy a supply satchel · 12 personal coins / delivery premium +4","econ:satchel"])
 	actions.append(["Return","resume"])
-	_show_dialog("MARKET · LOCAL SUPPLY",_brief_text(),actions)
+	_show_dialog("MARKET · LOCAL SUPPLY",DeliveryPresentation.briefing(model, true) + "\n\n" + _brief_text(),actions)
+	_remember_economy_choices(actions)
 
 func _candidate_error(staged: Story) -> String:
 	var error:=super._candidate_error(staged)
@@ -212,11 +270,7 @@ func _load(path: String="") -> void:
 	_resume()
 
 func _brief_text() -> String:
-	if not model.has_economy():
-		return "Quartermaster · You may administer 120 household coins; your own purse holds 18.\n\nThis is a limited allowance after the inquiry, not the royal treasury. Men need food and wages; the existing horse needs fodder. A supply watch lasts 120 seconds of play.\n\nB opens the full oral accounts. All prices are authored game units."
+	if not model.has_economy(): return "Food, fodder and wages are settled every 120 seconds of play."
 	var s: Dictionary=model.economy().ledger
-	var n:=Rules.due(s)
-	var forecast:=Rules.forecast(s)
-	return "Purse %d · Coffers %d · Stores %d/%d\nFood %d · Fodder %d · Grain %d · Timber %d · Tools %d\n\nNext watch: %d food / %d fodder / %d wages.\nForecast: %s\nProject: %s (%d work left) · Meeting: %s\n\nB: full oral accounts. Scroll for more orders." % [
-		s.purse,s.treasury,Rules.stored(s),Rules.capacity(s),s.stock.food,s.stock.feed,s.stock.grain,s.stock.timber,s.stock.tools,
-		n.food,n.feed,n.wages,forecast.warning,s.build if s.build!="" else "none",s.work_left,s.meeting]
+	return "Purse %d · Coffers %d · Stores %d/%d\nFood %d · Fodder %d · B: full oral accounts." % [
+		s.purse,s.treasury,Rules.stored(s),Rules.capacity(s),s.stock.food,s.stock.feed]

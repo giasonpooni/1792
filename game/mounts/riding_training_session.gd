@@ -88,7 +88,7 @@ func finish(completed: bool) -> String:
 	_finished=true
 	_restore_host()
 	chapter.training_session=null
-	chapter._message="Standing riding, paired standing riding and mounted matchlock firing learned." if completed else "Riding practice ended; your learned skills are retained." if not practice_mode.is_empty() else "Returned to the riding lesson. No new skills were learned."
+	chapter._message=lesson.Direction.return_line(completed,practice_mode)
 	chapter._clear_pending_actions();chapter.avatar.clear_motion_requests();chapter._resume()
 	if is_instance_valid(lesson.shot_sound): lesson.shot_sound.stop();lesson.shot_sound.stream=null
 	queue_free()

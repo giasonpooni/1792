@@ -1,5 +1,5 @@
 # Copyright (c) 2026 Cartesian Graphics. All rights reserved.
-extends "res://mounts/riding_skill_state.gd"
+extends "res://commissions/commission_state.gd"
 ## Optional state on the original Home authority, original tick and whole-world save.
 const Camp := preload("res://warband/nihang_rules.gd")
 
@@ -47,6 +47,15 @@ func record_nihang_motion(mounts: Array, delta: float) -> String:
 func _other_commitment() -> bool:
 	return nihang_active() or super._other_commitment()
 
+func begin_remounts() -> String:
+	return "Return your camp companions before searching for the remounts." if nihang_active() else super.begin_remounts()
+
+func remount_action(kind: String) -> String:
+	return "Return your camp companions before searching for the remounts." if nihang_active() else super.remount_action(kind)
+
+func commission_action(kind: String, option: String = "") -> String:
+	return "Return your camp companions before arranging an instructor." if nihang_active() else super.commission_action(kind, option)
+
 func begin_brawl() -> String:
 	return "Return your camp companions before another outing." if nihang_active() else super.begin_brawl()
 
@@ -79,6 +88,8 @@ func validate(value: Variant) -> String:
 	for e in value.nihang_camp.events:
 		if e.ride_gate>value.childhood.ride_gate: return "Camp receipt claims a future household riding lesson."
 	if Camp.active(value.nihang_camp.phase):
+		if value.has("remounts") and not value.remounts.ledger.resolved: return "Camp escort conflicts with the remount inquiry."
+		if value.has("misl") and value.misl.ledger.has("commission") and Commission.committed(value.misl.ledger): return "Camp escort conflicts with the instructor's commission."
 		if value.has("service") and Service.reserved(value.service.ledger): return "Camp escort conflicts with active service."
 		if value.has("youth_brawl") and value.youth_brawl.ledger.phase!="reported": return "Camp escort conflicts with the bazaar outing."
 		if value.has("misl") and (Craft.carrying(value.misl.ledger) or value.misl.ledger.delivery=="outbound" or value.misl.ledger.caravan=="active"): return "Camp escort conflicts with cargo."

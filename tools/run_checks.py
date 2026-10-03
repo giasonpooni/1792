@@ -36,6 +36,8 @@ def main() -> int:
         print("Godot is unavailable: runtime tests NOT RUN.", file=sys.stderr)
         return 2
     run([args.godot, "--headless", "--path", "game", "--editor", "--import"], "import")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_punjab_ecology.gd"],
+        "punjab-ecology", "PUNJAB_ECOLOGY_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_command_story.gd"],
         "command-story", "COMMAND_STORY_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_house_reporting.gd"],
@@ -46,6 +48,22 @@ def main() -> int:
         "horse-motion-resume", "HORSE_MOTION_RESUME_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_horse_motion_resume_load.gd"],
         "horse-motion-resume-load", "HORSE_MOTION_RESUME_LOAD_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_mount_clearance.gd"],
+        "mount-clearance", "MOUNT_CLEARANCE_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_dismount_clearance.gd"],
+        "dismount-clearance", "DISMOUNT_CLEARANCE_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_dismount_home.gd"],
+        "dismount-home", "DISMOUNT_HOME_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_horse_slopes.gd"],
+        "horse-slopes", "HORSE_SLOPE_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_horse_grounding.gd"],
+        "horse-grounding", "HORSE_GROUNDING_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_horse_slope_load.gd"],
+        "horse-slope-load", "HORSE_SLOPE_LOAD_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_horse_headroom.gd"],
+        "horse-headroom", "HORSE_HEADROOM_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_horse_headroom_load.gd"],
+        "horse-headroom-load", "HORSE_HEADROOM_LOAD_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_companions.gd"],
         "companions", "COMPANION_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_character_names.gd"],
@@ -56,6 +74,24 @@ def main() -> int:
         "nihang-camp", "NIHANG_CAMP_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_childhood.gd"],
         "childhood", "CHILDHOOD_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_message_followup_state.gd"],
+        "message-followup-state", "MESSAGE_FOLLOWUP_STATE_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_message_followup_scene.gd"],
+        "message-followup-scene", "MESSAGE_FOLLOWUP_SCENE_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_childhood_arc.gd"],
+        "childhood-arc", "CHILDHOOD_ARC_NATIVE_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_childhood_arc_staging.gd"],
+        "childhood-arc-staging", "CHILDHOOD_ARC_STAGING_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_inquiry_presentation.gd"],
+        "inquiry-presentation", "INQUIRY_PRESENTATION_TESTS:")
+    run([args.godot, "--headless", "--path", "game", "--script", "res://tests/test_story_attention.gd"],
+        "story-attention", "STORY_ATTENTION_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_story_attention_scene.gd"],
+        "story-attention-scene", "STORY_ATTENTION_SCENE_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_attention_guidance.gd"],
+        "attention-guidance", "ATTENTION_GUIDANCE_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_childhood_trail_focus.gd"],
+        "childhood-trail-focus", "CHILDHOOD_TRAIL_FOCUS_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_hawk_scout.gd"],
         "hawk-scout", "HAWK_SCOUT_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_ground_focus.gd"],
@@ -76,6 +112,14 @@ def main() -> int:
         "fixed-interlude", "FIXED_INTERLUDE_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_gujranwala.gd"],
         "gujranwala", "GUJRANWALA_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_delivery_story.gd"],
+        "delivery-story", "DELIVERY_STORY_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_water_round_story.gd"],
+        "water-round-story", "WATER_ROUND_STORY_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_service_story.gd"],
+        "service-story", "SERVICE_STORY_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_workshop_story_staging.gd"],
+        "workshop-story-staging", "WORKSHOP_STORY_STAGING_TESTS:")
     run([sys.executable, "tools/check_reconstruction.py"], "reconstruction-contracts")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_reconstruction.gd"],
         "reconstruction", "RECONSTRUCTION_TESTS:")
@@ -88,6 +132,17 @@ def main() -> int:
     run([sys.executable, "tools/check_youth.py"], "youth-catalogue")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_youth_brawl.gd"],
         "youth-brawl", "YOUTH_BRAWL_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_bazaar_story.gd"],
+        "bazaar-story", "BAZAAR_STORY_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_bazaar_regroup_cue.gd"],
+        "bazaar-regroup-cue", "BAZAAR_REGROUP_CUE_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_horsecraft_story.gd"],
+        "horsecraft-story", "HORSECRAFT_STORY_TESTS:")
+    run([sys.executable, "tools/check_oral_memory.py"], "oral-memory-source")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_oral_memory_current.gd"],
+        "oral-memory-current", "ORAL_MEMORY_CURRENT_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_remounts.gd"],
+        "remounts", "REMOUNTS_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_locomotion.gd"],
         "locomotion", "LOCOMOTION_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_ground_contact.gd"],
@@ -104,6 +159,7 @@ def main() -> int:
         "home-workshop", "HOME_WORKSHOP_TESTS:")
     run([sys.executable,"tools/check_courtyard.py"],"courtyard-contracts")
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_courtyard.gd"],"courtyard","COURTYARD_TESTS:")
+    run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_courtyard_fabric.gd"],"courtyard-fabric","COURTYARD_FABRIC_TESTS:")
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_gujranwala_beauty.gd"],"gujranwala-beauty","GUJRANWALA_BEAUTY_TESTS:")
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_gujranwala_depth.gd"],"gujranwala-depth","GUJRANWALA_DEPTH_TESTS:")
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_gujranwala_arms_craft.gd"],"gujranwala-arms-craft","GUJRANWALA_ARMS_CRAFT_TESTS:")

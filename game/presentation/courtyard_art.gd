@@ -5,12 +5,14 @@ const Detail := preload("res://presentation/courtyard_detail.gd")
 const Beauty := preload("res://presentation/gujranwala_beauty.gd")
 const DepthPatina := preload("res://presentation/gujranwala_depth_patina.gd")
 const ArmsCraft := preload("res://presentation/gujranwala_arms_craft.gd")
+const Microdetail := preload("res://presentation/gujranwala_microdetail.gd")
+const MaterialFidelity := preload("res://presentation/gujranwala_material_fidelity.gd")
+const Ecology := preload("res://presentation/punjab_ecology.gd")
+var ecology: Node3D
 var detail: Node3D
 var beauty: Node3D
 var depth_patina: Node3D
 var arms_craft: Node3D
-const Microdetail := preload("res://presentation/gujranwala_microdetail.gd")
-const MaterialFidelity := preload("res://presentation/gujranwala_material_fidelity.gd")
 const DailyDetail := preload("res://presentation/gujranwala_daily_detail.gd")
 var microdetail: Node3D
 var material_fidelity: Node3D
@@ -37,9 +39,14 @@ func build(chapter: Node3D) -> String:
 	error=daily_detail.build(chapter,self)
 	if not error.is_empty(): return error
 	daily_detail.set_enabled(enabled and refinement_enabled)
+	ecology=Ecology.new();ecology.name="PunjabEcologyMosaic";add_child(ecology)
+	error=ecology.build(chapter)
+	if not error.is_empty(): return error
+	ecology.set_enabled(enabled and refinement_enabled)
 	sample(int(chapter.model.progress().tick));return ""
 func set_refinement(value: bool) -> void:
 	refinement_enabled=value
+	if is_instance_valid(ecology): ecology.set_enabled(enabled and value)
 	if is_instance_valid(detail): detail.set_enabled(enabled and value)
 	if is_instance_valid(beauty): beauty.set_enabled(enabled and value)
 	if is_instance_valid(depth_patina): depth_patina.set_enabled(enabled and value)
@@ -49,6 +56,7 @@ func set_refinement(value: bool) -> void:
 	if is_instance_valid(daily_detail): daily_detail.set_enabled(enabled and value)
 func set_enabled(value: bool) -> void:
 	if is_instance_valid(daily_detail): daily_detail.set_enabled(false)
+	if is_instance_valid(ecology): ecology.set_enabled(false)
 	if is_instance_valid(material_fidelity): material_fidelity.set_enabled(false)
 	if is_instance_valid(detail): detail.set_enabled(false)
 	if is_instance_valid(beauty): beauty.set_enabled(false)
@@ -67,6 +75,7 @@ func set_enabled(value: bool) -> void:
 	if is_instance_valid(microdetail): microdetail.set_enabled(value and refinement_enabled)
 	if is_instance_valid(material_fidelity): material_fidelity.set_enabled(value and refinement_enabled)
 	if is_instance_valid(daily_detail): daily_detail.set_enabled(value and refinement_enabled)
+	if is_instance_valid(ecology): ecology.set_enabled(value and refinement_enabled)
 func set_preset(id: String) -> String:
 	var error: String=super.set_preset(id)
 	if not error.is_empty(): return error
@@ -83,6 +92,7 @@ func sample(tick: int) -> void:
 	if is_instance_valid(microdetail): microdetail.sample(tick)
 func _exit_tree() -> void:
 	if is_instance_valid(daily_detail): daily_detail.set_enabled(false)
+	if is_instance_valid(ecology): ecology.set_enabled(false)
 	if is_instance_valid(material_fidelity): material_fidelity.set_enabled(false)
 	if is_instance_valid(detail): detail.set_enabled(false)
 	if is_instance_valid(beauty): beauty.set_enabled(false)
