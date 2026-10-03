@@ -220,6 +220,16 @@ obligations and conduct must remain separate attributes. Thuggee-associated cont
 requires specific period/geographic evidence; it is not implemented as a generic
 religious assassin class. No whole clan is acquired by hiring one leader.
 
+The first adjacent paid-recruitment increment applies that boundary to one fictional
+individual rather than claiming a historical mercenary company. At the existing
+quartermaster, Jora's transient terms distinguish identity, occupation, affiliation,
+kinship boundary, authored price, supplied-watch term, permitted conduct and
+departure. Acceptance uses the existing household hire receipt and first guard
+slot; later physical local service reserves that same slot. Hearing the page grants
+nothing, and generic legacy hires still replay. This does not make Jora a Nihang,
+extend the camp's childhood intimacy, recruit a clan or implement dacoit or
+Thuggee-associated content.
+
 ## Verify
 
 `test_nihang_camp.gd` covers refused/duplicate invitations, first-gate eligibility,

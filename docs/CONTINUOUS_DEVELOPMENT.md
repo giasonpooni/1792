@@ -51,8 +51,28 @@ Local focused qualification is now 442 assertions with zero failures, and the fu
 configured suite exits zero on the checksum-pinned Godot 4.5.1 runtime. Rendered
 qualification passes with three care, two guidance, two active-obligation journal,
 one testimony handoff and four farther-road frames; all twelve fit at 1280 by 720
-without scrolling or clipping. Hosted qualification must still bind the exact successor source before
-it is reported as passing.
+without scrolling or clipping. Exact head `af20abf6b7312a3ea469435099f33d8529d2dc0c`
+and tree `998b388468c33ebd1811b7cdb3891a8d5af483ce` passed all fifteen hosted
+workflows. Childhood artifact `11277279045` binds the 442 assertions and twelve
+captures to that source and the checksum-pinned runtime.
+
+The current bounded recruitment continuation reuses the existing household
+economic receipts and physical service slot instead of introducing a warband
+ledger. Before the first paid guard can be appointed, the quartermaster presents
+Jora as one fictional individual with his own identity, authored price, supplied
+watch term, permitted conduct and departure rule. The page explicitly refuses to
+turn his appointment into ownership of a village, clan, jatha or family. Hearing
+or leaving the page changes no state. Acceptance writes one candidate-specific
+argument into the existing hire receipt; the existing roster projection then
+binds that identity to the same guard slot that can leave, attend a local detail,
+return and be released. Legacy generic guard receipts remain replayable and no
+save field, treasury, clock, receipt sequence or service authority is replaced.
+
+Local qualification passes the Gujranwala domain/input journey at 149 assertions,
+the physical Sukerchakia service journey at 124 assertions and all seven native
+service frames with zero failures. The complete configured suite exits zero. The
+new terms frame fits the full statement and both choices at 1280 by 720 without
+scrolling. Exact successor hosted qualification remains pending publication.
 
 See [the camp guide](NIHANG_COMPANIONS.md) for play, authority and historical scope.
 These additions develop one existing childhood sequence. General recruitment,
@@ -97,9 +117,10 @@ avoid duplicating adjacent opening, household, instructor and ecology work. Draf
 PR #100 qualifies the existing Focus system's earned-input journey; it changes
 Focus tests, documentation and CI rather than this camp route.
 
-Then inspect the existing service and roster contracts before widening recruitment.
-Choose one historically bounded individual or small contingent whose identity,
-price, term, conduct and departure remain distinct; do not treat a hired leader as
+The service/roster audit is complete and the first individual contract now uses its
+existing authorities. Next qualify its exact published source and hosted service
+artifact. Then decide whether the next bounded path is another independently named
+person or a separately evidenced small contingent; do not treat a hired leader as
 ownership of a clan. Preserve the first ride's group obligation and the second
 ride's veteran-specific stop rather than flattening them into repeated marker runs.
 Recruiting mercenaries,
@@ -128,6 +149,7 @@ approach: state a need, keep its authority explicit, execute it and retain evide
 | Willingness is not silent commitment | Existing received readiness plus transient dialogue | Stated-term page preserves state; explicit acceptance alone begins the route |
 | An undertaking remains legible between physical beats | Existing derived camp phase and relationship address | Journal/HUD share one read-only instruction; legacy and completed states add no card |
 | Kept conduct shapes later understanding | Received halt/homecoming plus the existing trainer report | Input-driven steward/trainer handoff; dialogue echo adds no camp or capability receipt |
+| A paid recruit is one person, not a social category | Existing household hire receipt, upkeep and guard slot | Player-paced terms; candidate-specific receipt; same named slot departs on physical local service |
 | An earlier save discards a future promise | Existing whole-Home save authority | F5/F9 rollback; no future page action or care testimony |
 | A loaded formation is judged as staged state | Existing world-clearance preflight | Stale live peers excluded; staged overlaps still refused |
 

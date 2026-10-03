@@ -6,6 +6,7 @@ const Fixture:=preload("res://tests/gujranwala_fixture.gd")
 const Pose:=preload("res://tests/aftermath_fixture.gd")
 const Rules:=preload("res://misl/service_rules.gd")
 const Supply:=preload("res://territory/misl_rules.gd")
+const GuardRecruitment:=preload("res://territory/guard_recruitment.gd")
 var captures:=0
 var failures:=0
 func _initialize() -> void: _run.call_deferred()
@@ -25,7 +26,10 @@ func _run() -> void:
 	ok(scene.model.restore(Fixture.complete()))
 	root.add_child(home);await frames()
 	ok(scene.model.begin_allowance());ok(scene.model.begin_service())
-	ok(scene.model.operate("hire","guard"));ok(scene.model.rest_watch())
+	scene._apply();scene._paused=true;scene.avatar.set_physics_process(false)
+	scene._open_guard_terms(GuardRecruitment.FIRST_ID);await shot("recruitment-terms")
+	scene._resume()
+	ok(scene.model.operate("hire",GuardRecruitment.FIRST_ID));ok(scene.model.rest_watch())
 	scene._apply();scene._paused=true;scene.avatar.set_physics_process(false)
 	var camera:=Camera3D.new();home.add_child(camera);camera.far=300;camera.current=true
 	camera.position=Vector3(5,6,1);camera.look_at(Vector3(-5,1,9))
@@ -58,4 +62,4 @@ func _run() -> void:
 	scene._journal_scroll.scroll_vertical=int(height)
 	await shot("research-800")
 	home.queue_free();await frames()
-	print("SUKERCHAKIA_SERVICE_RENDER: %d captures; %d failures"%[captures,failures]);quit(1 if failures or captures!=6 else 0)
+	print("SUKERCHAKIA_SERVICE_RENDER: %d captures; %d failures"%[captures,failures]);quit(1 if failures or captures!=7 else 0)

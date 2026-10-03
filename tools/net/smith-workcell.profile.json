@@ -35,8 +35,12 @@
       "bytes": 6969
     },
     "territory/misl_rules.gd": {
-      "sha256": "sha256:1c7f70e87a73510c6b6840190113bbef5aa7b89b8fa0ca0538fa394713e46dac",
-      "bytes": 12634
+      "sha256": "sha256:4146a32477c179753214b56a495f019eb7f1e038226e3456f69e5da1183b3625",
+      "bytes": 13076
+    },
+    "territory/guard_recruitment.gd": {
+      "sha256": "sha256:62260d3d2bc464dd225c87b2a618d7592d71a1894584a4efe6c1127e0bb189c3",
+      "bytes": 3492
     },
     "workcells/NOTICE.txt": {
       "sha256": "sha256:d2ca2fc2cc9c224da9b3a6febb64fb2db9677b53be7cc1c699c224df6e081d91",
