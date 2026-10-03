@@ -19,6 +19,11 @@ const CARE_BEATS := [
 	{"title":"THE HORSE LINES · FOOTING","body":"His attention moves from the tack to the ground.\n\nLittle rider, a good bridle cannot make bad ground safe. Leave room for the horse ahead. If he stops, you must have somewhere to stop too.","choice":"Look at the footing"},
 	{"title":"THE HORSE LINES · THE RETURN","body":"He lets the reins rest.\n\nLittle rider, reaching the marker is half the ride. Bring the horse back with the same care. If we ride with you, keep us close enough to speak.","choice":"I will bring the horse home with care"}
 ]
+const SECOND_TERM_BEAT := {
+	"title": "THE FARTHER ROAD · BEFORE THE SADDLE",
+	"body": "The veteran leaves the reins on the rail. His eyes go past the first marker to the pale stone beyond it.\n\nLittle rider, the farther stone is our road. Reaching it is not the turn. Wait until my horse is still. Then ask me for home.",
+	"choice": "Accept the term and ride"
+}
 const WORDS := {
 	"meet": "Buddh, your father knows these riders. Come to the horse lines; we will begin with the animal that carries you.",
 	"care": "Little rider, look at the bridle, the girth and the horse's footing before you ask for speed. Bring the horse home with the same care.",

@@ -123,7 +123,7 @@ func _open_camp(kind: String="") -> void:
 			if CampRules.has_event(camp,"halt"): body+="\n\nThe veteran answers before the elder asks: Little rider stopped at the low ground and counted us before he crossed."
 			if CampRules.has_event(camp,"second_ready"):
 				body+="\n\n"+CampRules.WORDS.second_ready
-				choices.append(["Ride to the farther stone on his terms","camp:second_begin"])
+				choices.append(["Ask him to state the farther-road term","camp:second_terms"])
 			elif not CampRules.second_outing_answered(camp): choices.append(["Ask the veteran about the farther road","camp:second_ready"])
 		"cancelled":
 			body=CampRules.WORDS.cancel
@@ -148,6 +148,13 @@ func _show_care_page(page: int) -> void:
 	# _show_dialog clears pending actions; arm only the displayed page afterwards.
 	_care_page=page;_camp_choices.append(action)
 
+func _show_second_terms() -> void:
+	var beat: Dictionary=CampRules.SECOND_TERM_BEAT
+	_show_dialog(beat.title,beat.body,[[beat.choice,"camp:second_begin"],["Not yet","resume"]])
+	# Willingness is already received testimony; only this explicit acceptance
+	# begins the physical undertaking. The page itself stays outside saved state.
+	_camp_choices.append("second_begin")
+
 func _menu_action(action: String) -> void:
 	if action.begins_with("camp:"):
 		var kind:=action.trim_prefix("camp:")
@@ -168,6 +175,14 @@ func training_entry_error() -> String:
 func _physics_process(delta: float) -> void:
 	if not _camp_action.is_empty():
 		var kind:=_camp_action;_camp_action=""
+		if kind=="second_terms":
+			var terms_error:=_camp_access("")
+			var camp: Dictionary=model.nihang_camp()
+			if terms_error.is_empty() and (camp.phase!="complete" or not CampRules.has_event(camp,"second_ready")):
+				terms_error="The veteran has not offered the farther road."
+			if terms_error.is_empty(): _show_second_terms()
+			else: _message=terms_error;_resume()
+			return
 		var beat: bool=kind in ["care_footing","care_return"]
 		var error:=_camp_access("care" if beat else kind)
 		if beat:

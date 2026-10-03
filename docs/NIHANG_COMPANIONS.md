@@ -41,9 +41,11 @@ not a historical map location.
    If the first ride ended unfinished, he says to carry one undertaking from
    promise to return before asking again. The deferred answer remains terminal
    and exposes no route.
-8. After the accepted answer, choose the farther road. The veteran alone joins
-   this second outing and states its term before departure: at the farther stone,
-   wait until his horse is fully still before asking him to turn for home.
+8. After the accepted answer, ask the veteran to state the farther-road term. A
+   separate player-paced page holds his glance toward the distant stone and the
+   condition: wait until his horse is fully still before asking him to turn for
+   home. Hearing or leaving this page changes no state or testimony. Only **Accept
+   the term and ride** selects the veteran and begins the second outing.
 9. Mount and ride beyond the first marker to the farther stone (-7, 0.14, -24).
    Stop, wait for the veteran's actual mount to settle and press **E**. Merely
    arriving beside a still-moving companion cannot turn the undertaking.
@@ -99,6 +101,9 @@ Partial reading pauses Home and grants no testimony. F5 follows the established
 save-and-resume behavior; reopening starts at the bridle. F9 and checkpoint restore
 clear pending page actions. Physical access is checked again at each advance and
 at the final choice, so a speaker newly blocked by a wall cannot complete care.
+The farther-road term page follows the same authority boundary: willingness is
+already received testimony, but hearing the condition is transient and accepting
+it is the only action that begins the route.
 
 The sequence uses a return motif: intimate recognition, attention to the horse,
 a stated condition, the low-ground halt, the shared ride and a homecoming witness.
@@ -226,11 +231,11 @@ the distinct route with the veteran's native horse, waits for the required stop,
 turns and physically checks in for the witnessed payoff. It checks the relationship
 moniker, finite receipts and non-repeatable completion. A separate declared
 settled fixture presses the actual alternative button after an unfinished ride and
-verifies that the deferred answer grants no access. The focused suite contains 384
+verifies that the deferred answer grants no access. The focused suite contains 387
 passing assertions. Retained-state native rendering captures the farther-road
-question, accepted answer and second homecoming at 1280 by 720, in addition to the
-three care pages and two guidance handoffs; all eight captures
-must fit without scrolling or clipping.
+question, accepted answer, stated term and second homecoming at 1280 by 720, in
+addition to the three care pages and two guidance handoffs. Local software rendering
+passes with all nine captures fitting without scrolling or clipping.
 These fixtures are
 physics experiments, separate from the input-driven childhood journey. Local
 avoidance is bounded to the small camp group; it is not an arbitrary-size crowd
