@@ -39,8 +39,17 @@ not a historical map location.
 7. Ask the veteran about a farther road. If the low-ground term and homecoming
    were both witnessed, he answers **Little rider** and agrees to ride when asked.
    If the first ride ended unfinished, he says to carry one undertaking from
-   promise to return before asking again. This records one answer; it does not
-   begin or simulate the second outing.
+   promise to return before asking again. The deferred answer remains terminal
+   and exposes no route.
+8. After the accepted answer, choose the farther road. The veteran alone joins
+   this second outing and states its term before departure: at the farther stone,
+   wait until his horse is fully still before asking him to turn for home.
+9. Mount and ride beyond the first marker to the farther stone (-7, 0.14, -24).
+   Stop, wait for the veteran's actual mount to settle and press **E**. Merely
+   arriving beside a still-moving companion cannot turn the undertaking.
+10. Return to camp, dismount and wait for the veteran to park. The witnessed
+    homecoming records his **Little rider** payoff. It awards no currency, skill,
+    troop, loyalty score or generalized Nihang access.
 
 The main objective display follows the accepted outing: mount, keep the low-ground
 term, reach the marker together, then bring everyone back. Its marker points to
@@ -58,8 +67,8 @@ or leave the camp, and disappears as soon as care is accepted. The original
 household horse and next riding gate then regain the objective. No new quest,
 clock, event, knowledge record or saved presentation field is introduced.
 
-This first outing and its farther-road question are finite and available once per
-run. The camp remains after completion. There is no gold, troop, skill or
+Both outings and the farther-road question are finite and available once per run.
+The camp remains after completion. There is no gold, troop, skill or
 loyalty-point farming. Earlier saves can restore the whole prior run. Follow the
 HUD's ordinary lesson prompts to continue the existing childhood sequence after
 the outing.
@@ -97,9 +106,12 @@ The elder's invitation establishes the condition, the player's attempted shortcu
 can be refused, and the veteran names the kept term after the group returns. The
 later question makes that conduct consequential: the veteran's willingness is
 derived from the received halt and return, while an unfinished ride receives an
-authored not-yet answer rather than a hidden loyalty penalty. The farther road is
-foreshadowing, not an implemented destination or historical claim. The
-warning to leave stopping room is exercised by the actual riding system. Prose describes
+authored not-yet answer rather than a hidden loyalty penalty. An accepted answer
+opens one veteran-only ride to a distinct authored stone. Its term makes the player
+wait for the companion horse's observed native stop before turning, and its quiet
+homecoming makes that kept attention the payoff. The farther road and stone are
+gameplay authoring, not a verified place or historical claim. The warning to leave
+stopping room is exercised by the actual riding system. Prose describes
 small gestures beside the existing horse lines and mat; these are authored stage
 directions in text, not new gesture animations or a forced camera sequence.
 The original received care words and journal records remain unchanged.
@@ -147,11 +159,14 @@ earlier clear checkpoint; the loader does not move characters to invent clearanc
 Staged restore queries explicitly exclude every stale live horse projection, then
 compare the staged poses against one another. This makes F9 judge the saved group,
 not the group positions being discarded.
-The second-outing answer is another finite received event on this same state. A
+The second-outing answer and undertaking are finite received events on this same state. A
 ready answer validates only after replay finds both the low-ground halt and the
 completed homecoming. Cancelled or legacy-unwitnessed first rides can record only
-the deferred answer. Reopening the camp shows the received answer without exposing
-a repeatable choice.
+the deferred answer, which cannot begin the route. The accepted answer can begin
+the veteran-only outward phase once. The farther turn requires both grounded mounts
+within calling distance and the veteran's recorded speed at or below the settled
+threshold; the final receipt requires his stopped return to camp. Reopening after
+the second homecoming shows the witnessed payoff without a repeatable choice.
 
 ## Evidence and scope
 
@@ -206,12 +221,15 @@ uses the actual count choice, remounts and completes the route. The camp journey
 checks the real compact objective HUD before mounting, at the halt, outbound,
 returning and after F9, plus retention of the witnessed term and restoration of
 ordinary lessons after check-in.
-It then presses the real farther-road button after the executed homecoming and
-checks the relationship moniker, one-time receipt and retained answer. A separate
-declared settled fixture presses the actual alternative button after an unfinished
-ride. The focused suite contains 334 passing assertions. Retained-state native
-rendering captures the farther-road question and accepted answer at 1280 by 720,
-in addition to the three care pages and two guidance handoffs; all seven captures
+It then presses the real farther-road button after the executed homecoming, rides
+the distinct route with the veteran's native horse, waits for the required stop,
+turns and physically checks in for the witnessed payoff. It checks the relationship
+moniker, finite receipts and non-repeatable completion. A separate declared
+settled fixture presses the actual alternative button after an unfinished ride and
+verifies that the deferred answer grants no access. The focused suite contains 384
+passing assertions. Retained-state native rendering captures the farther-road
+question, accepted answer and second homecoming at 1280 by 720, in addition to the
+three care pages and two guidance handoffs; all eight captures
 must fit without scrolling or clipping.
 These fixtures are
 physics experiments, separate from the input-driven childhood journey. Local
@@ -230,7 +248,7 @@ Set `NIHANG_CAPTURE_OUTPUT` to an existing directory and run the same journey in
 a graphics-capable Godot session to retain an executed homecoming screenshot and
 whole-world snapshot. Test slots are separate from the player's save. Native
 renderer verification does not establish finished art or human playtest quality.
-Headless runs also retain active and completed whole-world snapshots when this
+Headless runs also retain active, first-completed and second-completed whole-world snapshots when this
 output directory is set, plus `before-care.json` at the first care page, for
 subsequent native rendering of executed state. `render_nihang_care.gd` loads that
 executed snapshot and uses native E and actual buttons to review the three pages;

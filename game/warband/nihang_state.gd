@@ -16,7 +16,7 @@ func nihang_address(speaker: String, phase: String=Names.BEFORE_ACCESSION, forma
 func camp_action(kind: String, contact: bool, grounded: bool) -> String:
 	if kind not in Camp.WORDS: return "Unknown camp action."
 	if stage() in ["active","caught"] or brawl_busy(): return "Finish the immediate danger before speaking with the camp."
-	if kind.begins_with("invite") and (super._other_commitment() or carrying_workshop()): return "Settle your other undertaking before asking these riders to accompany you."
+	if (kind.begins_with("invite") or kind=="second_begin") and (super._other_commitment() or carrying_workshop()): return "Settle your other undertaking before asking these riders to accompany you."
 	var candidate:=nihang_camp()
 	if candidate.events.size()>=Camp.MAX_EVENTS: return "This camp account has reached its bounded capacity."
 	var event: Dictionary={"kind":kind,"tick":int(_state.childhood.tick),"position":coords(position()),
@@ -100,7 +100,7 @@ func journal() -> Array:
 	var entries:=super.journal()
 	for event in nihang_camp().events:
 		entries.append({"id":"nihang_"+event.kind,"received_tick":int(event.tick),
-			"source_id":Camp.RIDERS[0] if event.kind in ["care","halt","turn","second_ready","second_deferred"] else Camp.ELDER,
+			"source_id":Camp.RIDERS[0] if event.kind in ["care","halt","turn","second_ready","second_deferred","second_begin","second_turn","second_return"] else Camp.ELDER,
 			"channel":"heard","text":Camp.WORDS[event.kind]})
 	entries.sort_custom(func(a,b): return a.received_tick<b.received_tick)
 	return entries

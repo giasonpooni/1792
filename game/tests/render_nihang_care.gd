@@ -17,6 +17,7 @@ var final_care_choice_pressed:=false
 var failures:=0
 var source_sha256:=""
 var completed_source_sha256:=""
+var second_source_sha256:=""
 
 func _initialize() -> void: run.call_deferred()
 
@@ -166,12 +167,34 @@ func render_followup() -> void:
 	check(scene._message==Rules.WORDS.second_ready,"rendered answer uses the retained childhood moniker text")
 	scene.avatar.pivot.rotation.y=atan2(-offset.x,-offset.z)
 	scene._unhandled_input(event);await frames()
-	await capture_followup("answer",Rules.WORDS.second_ready,1)
+	await capture_followup("answer",Rules.WORDS.second_ready,2)
 	check(not FileAccess.file_exists(scene.save_path),"farther-road rendering creates no player save")
+	var second_source:=output.path_join("second-outing-complete.json")
+	check(FileAccess.file_exists(second_source),"retained completed second outing exists for payoff rendering")
+	if not FileAccess.file_exists(second_source): return
+	second_source_sha256=FileAccess.get_sha256(second_source)
+	value=JSON.parse_string(FileAccess.get_file_as_string(second_source))
+	check(value is Dictionary,"retained second outing parses as a whole Home snapshot")
+	if not value is Dictionary: return
+	home.queue_free();await process_frame
+	home=Launch.make_world();scene=home.get_node("ChildhoodChapter")
+	scene.save_path=output.path_join("unwritten-second-outing-render-slot.json")
+	error=scene.model.restore(value)
+	check(error.is_empty(),"retained second outing validates: "+error)
+	if not error.is_empty(): return
+	root.add_child(home);await frames(5)
+	check(scene._candidate_error(scene.model).is_empty(),"retained second outing fits original Home geometry")
+	offset=Rules.CAMP-scene.avatar.global_position
+	scene.avatar.pivot.rotation.y=atan2(-offset.x,-offset.z)
+	annotation.text="EXECUTED-STATE RENDERING · retained input-driven second outing\nOriginal Home dialogue · witnessed payoff, no currency or capability award"
+	scene._unhandled_input(event);await frames()
+	await capture_followup("farther-homecoming",Rules.WORDS.second_return,1)
+	check(not FileAccess.file_exists(scene.save_path),"second-outing payoff rendering creates no player save")
 
 func finish() -> void:
 	var manifest:={"schema":"1792.nihang-care-native-render.v1","classification":"executed-state rendering from retained input-driven Home journey",
 		"source_file":"before-care.json","source_sha256":source_sha256,"completed_source_file":"completed-outing.json","completed_source_sha256":completed_source_sha256,
+		"second_source_file":"second-outing-complete.json","second_source_sha256":second_source_sha256,
 		"captures":captures,"guidance_captures":guidance_captures,"followup_captures":followup_captures,"failures":failures,
 		"engine":Engine.get_version_info().string,"renderer":RenderingServer.get_current_rendering_method(),
 		"adapter":RenderingServer.get_video_adapter_name(),"human_playtest":false,"fresh_journey":false,
@@ -242,5 +265,5 @@ func run() -> void:
 	check(guidance_captures.size()==2,"both native guidance handoffs captured")
 	check(not FileAccess.file_exists(scene.save_path),"rendering creates no player save")
 	await render_followup()
-	check(followup_captures.size()==2,"both farther-road pages captured")
+	check(followup_captures.size()==3,"farther-road question, answer and completed payoff captured")
 	await finish()

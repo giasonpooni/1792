@@ -36,19 +36,20 @@ Its exact head `2925a36b23d2d3562afb67f127b8fba444198456` and tree
 workflows. The retained childhood artifact bound 301 camp assertions and five
 native captures to that source.
 
-The current continuation carries the witnessed first undertaking into one later
-choice. After a completed halt and homecoming, the veteran tells **Little rider**
-he will take the farther road. An outing ended unfinished receives a distinct
-one-time not-yet answer. Both are received veteran testimony derived from the
-finite event history; neither grants loyalty, troops, currency or a second outing.
-The original Home dialogue, clock, journal, save and checkpoint remain authoritative.
+The current continuation turns the accepted farther-road answer into one complete
+second outing. The veteran alone states a new term before departure: at a distinct
+farther stone, Ranjit must wait until the companion's native horse body is fully
+still before asking him to turn. A physical return and stopped check-in produce a
+quiet **Little rider** witness rather than a currency, skill, troop or loyalty award.
+The unfinished first outing retains its distinct not-yet answer and cannot expose
+the route. The original Home dialogue, clock, controllers, protagonist, journal,
+whole-state save and checkpoint remain authoritative.
 
-Local focused qualification is now 334 assertions with zero failures, and the
-full configured suite exits zero on the checksum-pinned Godot 4.5.1 runtime.
-Retained-state software rendering adds the question and answer to the existing
-three care and two guidance captures: seven native captures, zero failures. Hosted
-results for the successor commit must still bind its exact source before they are
-reported as passing.
+Local focused qualification is now 384 assertions with zero failures, and the full
+configured suite exits zero on the checksum-pinned Godot 4.5.1 runtime. Native
+software rendering retains three care, two guidance and three farther-road frames:
+eight captures with zero failures. Hosted qualification must still bind the exact
+successor source before it is reported as passing.
 
 See [the camp guide](NIHANG_COMPANIONS.md) for play, authority and historical scope.
 These additions develop one existing childhood sequence. General recruitment,
@@ -87,16 +88,16 @@ imports before diagnosing UI failures caused by unavailable native assets.
 
 ## Next priorities
 
-Finish exact-commit hosted qualification for the farther-road answer before
+Finish exact-commit hosted qualification for the complete farther-road outing before
 starting another feature. Keep danger guidance ahead of optional mentorship and
 avoid duplicating adjacent opening, household, instructor and ecology work. Draft
 PR #100 qualifies the existing Focus system's earned-input journey; it changes
 Focus tests, documentation and CI rather than this camp route.
 
-Then turn the accepted answer into one short second outing with its own route,
-stated term and witnessed payoff. A deferred answer must remain legible without
-inventing access. Prefer a complete route over roster expansion. Recruiting
-mercenaries, specific outlaw bands and local kinship contingents requires distinct
+Then review attention pacing across both completed camp outings before widening
+the roster: preserve the first ride's group obligation and the second ride's
+veteran-specific stop rather than flattening them into repeated marker runs.
+Recruiting mercenaries, specific outlaw bands and local kinship contingents requires distinct
 terms and identities. Hiring a leader does not transfer an entire clan. Historic
 Thuggee-associated content needs period and geographic evidence before authoring.
 
@@ -117,6 +118,7 @@ approach: state a need, keep its authority explicit, execute it and retain evide
 | A follower leaves stopping room | Shared horse motor and physical collision | Stop/start column at 30 and 60 Hz; spacing and final rest |
 | A rider's stated term constrains the route | Received invitation and halt events | Direct-marker refusal; physical dismount/count; witnessed homecoming |
 | A veteran decides whether to ride again | Received halt and homecoming, or unfinished check-in | Actual one-time question; readiness/deferred testimony; rendered answer |
+| A second ride makes accepted trust consequential | Received readiness, veteran-only selection and native mount observation | Distinct route; full-stop refusal; witnessed return; no reward farming |
 | An earlier save discards a future promise | Existing whole-Home save authority | F5/F9 rollback; no future page action or care testimony |
 | A loaded formation is judged as staged state | Existing world-clearance preflight | Stale live peers excluded; staged overlaps still refused |
 
@@ -145,5 +147,5 @@ For executed-state rendering, first run the camp journey with
 `game/tests/render_nihang_care.gd` in a graphics-capable native session with the
 same output directory. The source snapshot and capture provenance belong with
 the results. Human review still determines literary quality, attention and art;
-passing geometric bounds alone does not measure them. This host cannot start
-X11; the configured Linux CI performs that render check and retains its artifacts.
+passing geometric bounds alone does not measure them. Use a graphics-capable X11
+session locally or the configured Linux CI, which retains the render artifacts.

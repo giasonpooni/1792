@@ -10,6 +10,7 @@ const CAMP := Vector3(19, 0.14, -18)
 const HORSE_LINES := [Vector3(23, 0.14, -18), Vector3(18, 0.14, -22)]
 const HALT := Vector3(11, 0.14, -22)
 const TURN := Vector3(3, 0.14, -25)
+const FARTHER := Vector3(-7, 0.14, -24)
 const MAX_EVENTS := 12
 const SPEED := 6.0
 # Original authored speech and gestures, paced by the player's existing dialogue UI.
@@ -30,7 +31,10 @@ const WORDS := {
 	"return": "Buddh, everyone is home. You kept the undertaking. Sit with us when the horses have rested.",
 	"cancel": "Buddh, we are all back at the camp. We can leave the practice ride unfinished today.",
 	"second_ready": "Little rider, you stopped when no wall held you, counted us, and brought us home. When you ask for the farther road, I will ride.",
-	"second_deferred": "Little rider, today we brought the horses home before the undertaking was done. Keep one road from promise to return; then ask me for the farther one."
+	"second_deferred": "Little rider, today we brought the horses home before the undertaking was done. Keep one road from promise to return; then ask me for the farther one.",
+	"second_begin": "Little rider, today the farther stone is our road. At the stone, do not turn merely because you arrived. Wait until my horse is still; then ask me for home.",
+	"second_turn": "Little rider, now turn. You waited for the horse beside you, not only for the road beneath you.",
+	"second_return": "Little rider, the farther road did not make you hurry me. You waited at the stone and brought horse and rider home together."
 }
 
 static func initial() -> Dictionary:
@@ -43,7 +47,7 @@ static func initial() -> Dictionary:
 		"events": [], "mounts": mounts, "motion_tick": -1}
 
 static func active(phase: String) -> bool:
-	return phase in ["outbound", "returning"]
+	return phase in ["outbound", "returning", "second_outbound", "second_returning"]
 
 static func has_event(state: Dictionary, kind: String) -> bool:
 	return state.events.any(func(event): return event.kind==kind)
@@ -96,6 +100,8 @@ static func apply(state: Dictionary, event: Dictionary) -> String:
 		if p.distance_to(HALT)>3.0 or event.mounted: return "Stop on foot at the low ground before crossing."
 	elif kind=="turn":
 		if p.distance_to(TURN)>3.0 or not event.mounted: return "Reach the north practice marker on horseback."
+	elif kind=="second_turn":
+		if p.distance_to(FARTHER)>3.0 or not event.mounted: return "Reach the farther stone on horseback."
 	elif p.distance_to(CAMP)>3.0 or event.mounted:
 		return "Dismount beside the camp elder."
 	match kind:
@@ -131,6 +137,23 @@ static func apply(state: Dictionary, event: Dictionary) -> String:
 		"second_deferred":
 			if second_outing_answered(state): return "The veteran has already answered about another road."
 			if state.phase not in ["complete","cancelled"] or kept_first_terms(state): return "The completed first undertaking already supports a different answer."
+		"second_begin":
+			if state.phase!="complete" or not has_event(state,"second_ready"): return "The farther road has not been offered."
+			if has_event(state,"second_begin"): return "The farther-road undertaking has already begun."
+			state.selected=[RIDERS[0]]
+			state.phase="second_outbound"
+		"second_turn":
+			if state.phase!="second_outbound": return "There is no outward farther-road ride to turn."
+			if not together(state.selected,event.mounts,p,7.0): return "Wait at the farther stone for the veteran."
+			for id in state.selected:
+				if event.mounts[RIDERS.find(id)].speed>0.15: return "Wait until the veteran's horse is still before turning."
+			state.phase="second_returning"
+		"second_return":
+			if state.phase!="second_returning": return "The farther-road undertaking has not turned for home."
+			if not together(state.selected,event.mounts,CAMP,7.0): return "Bring the veteran back to the camp."
+			for id in state.selected:
+				if event.mounts[RIDERS.find(id)].speed>0.15: return "Wait for the veteran's horse to settle at home."
+			state.phase="second_complete"
 	return ""
 
 static func validate(value: Variant, home_tick: int) -> String:
@@ -156,8 +179,8 @@ static func validate(value: Variant, home_tick: int) -> String:
 	else:
 		if value.motion_tick>=0 and value.motion_tick<value.events[2].tick: return "Riders moved before their invitation."
 		for i in range(2):
-			if RIDERS[i] not in value.selected and value.mounts[i]!=initial().mounts[i]: return "An unselected rider left the camp."
-	if value.phase in ["complete","cancelled"]:
+			if RIDERS[i] not in value.selected and value.mounts[i]!=value.events[-1].mounts[i]: return "An unselected rider moved without an undertaking."
+	if value.phase in ["complete","cancelled","second_complete"]:
 		if not together(value.selected,value.mounts,CAMP,7.0): return "Settled companions are missing from camp."
 		if value.mounts!=value.events[-1].mounts: return "Settled rider poses differ from check-in."
 	return ""
