@@ -53,6 +53,7 @@ jobs:
           grep -q '^NIHANG_CARE_RENDER: 3 captures; 0 failures$' test-results/nihang-care/render.log
           grep -q '^NIHANG_GUIDANCE_RENDER: 2 captures; 0 failures$' test-results/nihang-care/render.log
           grep -q '^NIHANG_OBLIGATION_RENDER: 2 captures; 0 failures$' test-results/nihang-care/render.log
+          grep -q '^NIHANG_HANDOFF_RENDER: 1 captures; 0 failures$' test-results/nihang-care/render.log
           grep -q '^NIHANG_FOLLOWUP_RENDER: 4 captures; 0 failures$' test-results/nihang-care/render.log
       - name: Retain source and execution identity
         if: always()

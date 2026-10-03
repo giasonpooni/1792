@@ -53,6 +53,13 @@ not a historical map location.
     homecoming records his **Little rider** payoff. It awards no currency, skill,
     troop, loyalty score or generalized Nihang access.
 
+If the original steward-to-trainer message report is still outstanding after a
+witnessed return, its existing dialogue reflects what Ranjit learned by doing.
+The first return adds his comparison between counting every rider and keeping two
+conflicting accounts together. A witnessed farther return instead recalls waiting
+for the veteran's horse to settle before naming the turn. The same report choice
+and receipt complete the handoff; no new mission or capability is created.
+
 The main objective display follows the accepted outing: mount, keep the low-ground
 term, reach the marker together, then bring everyone back. Its marker points to
 the current agreed destination;
@@ -115,6 +122,10 @@ The active journal card is also transient derivation. Opening, closing or readin
 it cannot change the Home state, journal memories or undertaking. Legacy
 invitations keep their original direct-marker contract and therefore do not gain
 the later low-ground card.
+The trainer-report echo follows the same boundary. It derives only from witnessed
+halt and return events (or the later witnessed horse-settlement return), changes no
+camp state and adds no receipt beyond the report that already existed. Cancelled
+and legacy-unwitnessed rides cannot produce it.
 
 The sequence uses a return motif: intimate recognition, attention to the horse,
 a stated condition, the low-ground halt, the shared ride and a homecoming witness.
@@ -130,7 +141,12 @@ gameplay authoring, not a verified place or historical claim. The warning to lea
 stopping room is exercised by the actual riding system. Prose describes
 small gestures beside the existing horse lines and mat; these are authored stage
 directions in text, not new gesture animations or a forced camera sequence.
-The original received care words and journal records remain unchanged.
+The later trainer echo transfers the motif rather than a stat: keeping riders within
+hearing becomes a way to hold conflicting accounts together; waiting for a horse
+to settle becomes a warning against naming uncertain riders too quickly. This is
+original authored dialogue, not a historical quotation, translation or claim that
+these conversations occurred. The original received care words and journal records
+remain unchanged.
 
 Both mounted companions use the existing `horse.gd` motor, collision and observed
 motion. Their formation turns with the household horse. They slow while steering,
@@ -242,13 +258,17 @@ the distinct route with the veteran's native horse, waits for the required stop,
 turns and physically checks in for the witnessed payoff. It checks the relationship
 moniker, finite receipts and non-repeatable completion. A separate declared
 settled fixture presses the actual alternative button after an unfinished ride and
-verifies that the deferred answer grants no access. It also opens the ordinary
+verifies that the deferred answer grants no access. It also walks the executed
+first-return state to the steward and trainer, submits the original direct report
+route and verifies that the jatha echo changes neither camp events nor capabilities.
+It also opens the ordinary
 journal at each active phase, checks that the card precedes testimony, matches the
 HUD's derived instruction and does not mutate either state or memories. The focused
-suite contains 429 passing assertions. Retained-state native rendering captures
+suite contains 442 passing assertions. Retained-state native rendering captures
 the farther-road question, accepted answer, stated term and second homecoming at
-1280 by 720, in addition to the three care pages, two guidance handoffs and two
-active-obligation journal states. Local software rendering passes with all eleven
+1280 by 720, in addition to the three care pages, two guidance handoffs, two
+active-obligation journal states and the existing trainer report with its first-return
+echo. Local software rendering passes with all twelve
 captures fitting without scrolling or clipping.
 These fixtures are
 physics experiments, separate from the input-driven childhood journey. Local
@@ -268,7 +288,8 @@ a graphics-capable Godot session to retain an executed homecoming screenshot and
 whole-world snapshot. Test slots are separate from the player's save. Native
 renderer verification does not establish finished art or human playtest quality.
 Headless runs also retain active, first-completed and second-completed whole-world snapshots when this
-output directory is set, plus `before-care.json` at the first care page and
+output directory is set, plus `before-care.json` at the first care page,
+`jatha-handoff.json` at the physically reached trainer report and
 `active-second-outing.json` during the farther road, for
 subsequent native rendering of executed state. `render_nihang_care.gd` loads that
 executed snapshot and uses native E and actual buttons to review the three pages;
@@ -280,3 +301,5 @@ The manifest distinguishes these advancing Home HUD captures from paused dialogu
 It also distinguishes the two read-only journal captures and verifies their top
 visible field, exact derived instruction, relationship address, unchanged state
 and unchanged journal memory count.
+The handoff capture separately verifies its authored-reconstruction classification,
+original two report choices, received-event source and absence of a new save.

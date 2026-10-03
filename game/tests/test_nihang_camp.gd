@@ -80,6 +80,7 @@ func domain() -> void:
 	var model:=State.new()
 	var old:=model.snapshot()
 	check(not old.has("nihang_camp"),"unvisited Home invents no camp history")
+	check(R.handoff_echo(R.initial()).is_empty(),"unvisited camp supplies no childhood handoff echo")
 	refused(model,model.camp_action.bind("meet",true,true),"remote introduction")
 	ok(model.restore(fixture()),"old save no changes")
 	refused(model,model.camp_action.bind("meet",false,true),"blocked conversation")
@@ -155,6 +156,7 @@ func domain() -> void:
 		home_ready.nihang_camp.mounts[i].position=Base.coords(R.HORSE_LINES[i]);home_ready.nihang_camp.mounts[i].speed=0.0
 	ok(model.restore(home_ready),"declared returned group after the kept term")
 	ok(model.camp_action("return",true,true),"completed first undertaking records its homecoming")
+	check(R.handoff_echo(model.nihang_camp())==R.FIRST_HANDOFF_ECHO,"witnessed first return derives the group-discipline handoff")
 	check(R.kept_first_terms(model.nihang_camp()),"second-outing willingness derives from halt and homecoming history")
 	ok(model.camp_action("second_ready",true,true),"veteran agrees to a farther road after the kept undertaking")
 	check(model.journal().any(func(e): return e.id=="nihang_second_ready" and e.source_id==R.RIDERS[0] and e.text.begins_with("Little rider")),"readiness remains received veteran testimony")
@@ -181,6 +183,7 @@ func domain() -> void:
 	second_home.nihang_camp.mounts[0].position=Base.coords(R.HORSE_LINES[0]);second_home.nihang_camp.mounts[0].speed=0.0
 	ok(model.restore(second_home),"declared farther-road pair returns to camp")
 	ok(model.camp_action("second_return",true,true),"veteran witnesses the completed second outing")
+	check(R.handoff_echo(model.nihang_camp())==R.SECOND_HANDOFF_ECHO,"witnessed farther return derives the patient-stop handoff")
 	check(R.obligation(model.nihang_camp()).is_empty(),"settled second outing exposes no stale active obligation")
 	check(model.nihang_camp().phase=="second_complete" and model.journal().any(func(e): return e.id=="nihang_second_return" and e.source_id==R.RIDERS[0] and e.text.begins_with("Little rider")),"farther-road payoff is finite received veteran testimony")
 	refused(model,model.camp_action.bind("second_begin",true,true),"completed second outing cannot repeat")
@@ -216,6 +219,7 @@ func domain() -> void:
 	legacy_turn.nihang_camp.mounts[0].position=Base.coords(R.TURN+Vector3(1.5,0,0))
 	ok(legacy.restore(legacy_turn),"pre-terms active save remains valid")
 	ok(legacy.camp_action("turn",true,true),"pre-terms save keeps its original direct marker contract")
+	check(R.handoff_echo(legacy.nihang_camp()).is_empty(),"legacy direct-marker ride supplies no invented jatha testimony echo")
 	# Checkpoint extension must coexist with the original pre-encounter checkpoint contract.
 	var checkpoint:=Pose.precursor()
 	checkpoint.nihang_camp=model.nihang_camp()
@@ -495,6 +499,23 @@ func journey() -> void:
 	# Capture actual executed state for separate native rendering, not a replacement scene.
 	var output:=OS.get_environment("NIHANG_CAPTURE_OUTPUT")
 	capture_snapshot(scene,"completed-outing.json")
+	# Let witnessed jatha conduct shape one existing childhood report. The player
+	# still walks to both speakers and uses the original message receipt path.
+	await walk(scene,Base.SITES.steward+Vector3(0,0,1.8));look(scene,Base.SITES.steward);await tap(scene,KEY_E)
+	check(scene._paused and scene._panel_text.text.contains("What will you tell him?"),"returned rider opens the existing steward handoff")
+	await press(scene,"Carry the uncertainty")
+	check(scene.model.message_phase()=="report","existing direct route now awaits the trainer report")
+	await walk(scene,Base.SITES.spar+Vector3(0,0,1.8));look(scene,Base.SITES.spar)
+	capture_snapshot(scene,"jatha-handoff.json")
+	var before_camp_events: Array=scene.model.nihang_camp().events.duplicate(true);var before_message: Dictionary=scene.model.message_followup()
+	await tap(scene,KEY_E)
+	check(scene._paused and scene._panel_text.text.contains(R.FIRST_HANDOFF_ECHO.account),"trainer report echoes the witnessed low-ground discipline")
+	var paused_handoff: Dictionary=scene.model.snapshot();await frames(8)
+	check(scene.model.snapshot()==paused_handoff and scene.model.message_followup()==before_message and scene.model.nihang_camp().events==before_camp_events,"open derived handoff freezes Home and grants no report or camp receipt")
+	await press(scene,"Give the trainer")
+	check(scene.model.message_phase()=="complete" and scene._message==R.FIRST_HANDOFF_ECHO.reply,"actual report receives the bounded trainer response")
+	check(scene.model.nihang_camp().events==before_camp_events,"childhood handoff adds no camp testimony or receipt")
+	await walk(scene,R.CAMP+Vector3(1.8,0,0))
 	look(scene,R.CAMP);await tap(scene,KEY_E)
 	check(scene._panel_text.text.contains("Buddh, everyone is home") and scene._panel_text.text.contains("stopped at the low ground"),"familiar homecoming shows the witnessed consequence")
 	check(scene._camp_choices.has("second_ready"),"kept undertaking exposes one player-paced farther-road question")

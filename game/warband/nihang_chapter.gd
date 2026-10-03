@@ -168,6 +168,9 @@ func _clear_pending_actions() -> void:
 func _resume() -> void:
 	_camp_action="";_camp_choices.clear();_care_page=-1;super._resume()
 
+func message_report_echo() -> Dictionary:
+	return CampRules.handoff_echo(model.nihang_camp())
+
 func training_entry_error() -> String:
 	if model.nihang_active(): return "Return your camp companions before entering a separate riding lesson."
 	return super.training_entry_error()

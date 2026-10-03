@@ -4,6 +4,7 @@ extends SceneTree
 ## This is executed-state rendering; it does not claim a fresh journey or force poses.
 const Launch := preload("res://childhood/home_launch.gd")
 const Rules := preload("res://warband/nihang_rules.gd")
+const Base := preload("res://childhood/childhood_state.gd")
 var output := ""
 var home: Node3D
 var scene: Node3D
@@ -13,12 +14,14 @@ var frozen: Dictionary
 var captures: Array[Dictionary]=[]
 var guidance_captures: Array[Dictionary]=[]
 var obligation_captures: Array[Dictionary]=[]
+var handoff_captures: Array[Dictionary]=[]
 var followup_captures: Array[Dictionary]=[]
 var final_care_choice_pressed:=false
 var failures:=0
 var source_sha256:=""
 var completed_source_sha256:=""
 var second_source_sha256:=""
+var handoff_source_sha256:=""
 
 func _initialize() -> void: run.call_deferred()
 
@@ -185,6 +188,55 @@ func render_obligations() -> void:
 	await render_obligation("first-return","active-outing.json")
 	await render_obligation("farther-outbound","active-second-outing.json")
 
+func render_handoff() -> void:
+	var source:=output.path_join("jatha-handoff.json")
+	check(FileAccess.file_exists(source),"retained input-driven jatha handoff exists")
+	if not FileAccess.file_exists(source): return
+	handoff_source_sha256=FileAccess.get_sha256(source)
+	var value: Variant=JSON.parse_string(FileAccess.get_file_as_string(source))
+	check(value is Dictionary,"retained jatha handoff parses as a whole Home snapshot")
+	if not value is Dictionary: return
+	if is_instance_valid(home): home.queue_free()
+	await process_frame
+	home=Launch.make_world();scene=home.get_node("ChildhoodChapter")
+	scene.save_path=output.path_join("unwritten-handoff-render-slot.json")
+	var error: String=scene.model.restore(value)
+	check(error.is_empty(),"retained jatha handoff validates: "+error)
+	if not error.is_empty(): return
+	root.add_child(home);await frames(5)
+	check(scene._candidate_error(scene.model).is_empty(),"retained jatha handoff fits original Home geometry")
+	check(scene.model.message_phase()=="report" and Rules.handoff_echo(scene.model.nihang_camp())==Rules.FIRST_HANDOFF_ECHO,"retained first return awaits the existing trainer report")
+	var target: Vector3=Base.SITES.spar;var offset: Vector3=target-scene.avatar.global_position
+	scene.avatar.pivot.rotation.y=atan2(-offset.x,-offset.z)
+	annotation.position=Vector2(16,16)
+	annotation.text="EXECUTED-STATE RENDERING · retained input-driven first outing\nExisting childhood report · received jatha conduct changes dialogue, not progression"
+	var before_message: Dictionary=scene.model.message_followup();var before_events: Array=scene.model.nihang_camp().events.duplicate(true)
+	var event:=InputEventKey.new();event.keycode=KEY_E;event.pressed=true
+	scene._unhandled_input(event);await frames()
+	check(scene._paused and scene._panel_text.text.begins_with("THE WORDS BETWEEN US"),"native E opens the existing childhood report")
+	check(scene._panel_text.text.contains(Rules.FIRST_HANDOFF_ECHO.account),"report includes the exact witnessed jatha echo")
+	var opened: Dictionary=scene.model.snapshot();var journal: Array=scene.model.journal();await frames()
+	var viewport:=Rect2(Vector2.ZERO,Vector2(1280,720));var panel: Rect2=scene._panel.get_global_rect()
+	var label: Rect2=scene._panel_text.get_global_rect();var scroll: Rect2=scene._journal_scroll.get_global_rect();var buttons: Array=[]
+	check(viewport.encloses(panel) and scroll.encloses(label),"jatha handoff text fits without scrolling")
+	for button in scene._actions.get_children():
+		if not button is Button: continue
+		var bounds: Rect2=button.get_global_rect()
+		check(button.is_visible_in_tree() and scroll.encloses(bounds),"jatha handoff button fits: "+button.text)
+		buttons.append({"text":button.text,"rect":rect_value(bounds)})
+	check(buttons.size()==2 and String(buttons[0].text).begins_with("Give the trainer"),"jatha handoff retains the original bounded report choice")
+	check(scene.model.snapshot()==opened and scene.model.journal()==journal and scene.model.message_followup()==before_message and scene.model.nihang_camp().events==before_events,"open rendered jatha echo freezes Home and grants no report or camp receipt")
+	var image:=root.get_texture().get_image();var filename:="handoff-first-return.png";var path:=output.path_join(filename)
+	check(not image.is_empty() and image.get_size()==Vector2i(1280,720),"jatha handoff native frame dimensions")
+	check(image.save_png(path)==OK,"jatha handoff screenshot retained")
+	handoff_captures.append({"file":filename,"image_sha256":FileAccess.get_sha256(path),"source_file":"jatha-handoff.json",
+		"source_sha256":handoff_source_sha256,"account":Rules.FIRST_HANDOFF_ECHO.account,"reply":Rules.FIRST_HANDOFF_ECHO.reply,
+		"panel_rect":rect_value(panel),"label_rect":rect_value(label),"scroll_rect":rect_value(scroll),"buttons":buttons,
+		"snapshot_sha256":JSON.stringify(opened,"",true,true).sha256_text(),"sampling_preserves_state":scene.model.snapshot()==opened,
+		"classification":"authored reconstruction derived from received jatha testimony in the existing childhood report"})
+	check(not FileAccess.file_exists(scene.save_path),"jatha handoff rendering creates no player save")
+	print("NIHANG_HANDOFF_CAPTURE: "+filename)
+
 func render_followup() -> void:
 	var source:=output.path_join("completed-outing.json")
 	check(FileAccess.file_exists(source),"retained completed outing exists for farther-road rendering")
@@ -247,8 +299,9 @@ func finish() -> void:
 	var manifest:={"schema":"1792.nihang-care-native-render.v1","classification":"executed-state rendering from retained input-driven Home journey",
 		"source_file":"before-care.json","source_sha256":source_sha256,"completed_source_file":"completed-outing.json","completed_source_sha256":completed_source_sha256,
 		"second_source_file":"second-outing-complete.json","second_source_sha256":second_source_sha256,
+		"handoff_source_file":"jatha-handoff.json","handoff_source_sha256":handoff_source_sha256,
 		"captures":captures,"guidance_captures":guidance_captures,"obligation_captures":obligation_captures,
-		"followup_captures":followup_captures,"failures":failures,
+		"handoff_captures":handoff_captures,"followup_captures":followup_captures,"failures":failures,
 		"engine":Engine.get_version_info().string,"renderer":RenderingServer.get_current_rendering_method(),
 		"adapter":RenderingServer.get_video_adapter_name(),"human_playtest":false,"fresh_journey":false,
 		"final_care_choice_pressed":final_care_choice_pressed}
@@ -264,6 +317,7 @@ func finish() -> void:
 	print("NIHANG_CARE_RENDER: %d captures; %d failures"%[captures.size(),failures])
 	print("NIHANG_GUIDANCE_RENDER: %d captures; %d failures"%[guidance_captures.size(),failures])
 	print("NIHANG_OBLIGATION_RENDER: %d captures; %d failures"%[obligation_captures.size(),failures])
+	print("NIHANG_HANDOFF_RENDER: %d captures; %d failures"%[handoff_captures.size(),failures])
 	print("NIHANG_FOLLOWUP_RENDER: %d captures; %d failures"%[followup_captures.size(),failures])
 	quit(1 if failures else 0)
 
@@ -320,6 +374,8 @@ func run() -> void:
 	check(not FileAccess.file_exists(scene.save_path),"rendering creates no player save")
 	await render_obligations()
 	check(obligation_captures.size()==2,"first and farther active undertakings captured in the ordinary journal")
+	await render_handoff()
+	check(handoff_captures.size()==1,"received first-return testimony is captured in the existing childhood report")
 	await render_followup()
 	check(followup_captures.size()==4,"farther-road question, answer, stated term and completed payoff captured")
 	await finish()

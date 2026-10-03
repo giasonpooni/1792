@@ -24,6 +24,14 @@ const SECOND_TERM_BEAT := {
 	"body": "The veteran leaves the reins on the rail. His eyes go past the first marker to the pale stone beyond it.\n\nLittle rider, the farther stone is our road. Reaching it is not the turn. Wait until my horse is still. Then ask me for home.",
 	"choice": "Accept the term and ride"
 }
+const FIRST_HANDOFF_ECHO := {
+	"account": "Buddh · At the low ground, the riders made me stop and count every voice before I crossed. I should not let one account cross ahead of the other.",
+	"reply": "Trainer · Good. Keep both within hearing until the road tells you more. Then train your hands."
+}
+const SECOND_HANDOFF_ECHO := {
+	"account": "Buddh · The veteran made me wait until his horse was still before I named the turn. I can wait for these accounts to settle before I give the riders a name.",
+	"reply": "Trainer · Good. A settled horse is not a settled claim, but haste betrays both. Train your hands; keep your eyes open when you leave."
+}
 const WORDS := {
 	"meet": "Buddh, your father knows these riders. Come to the horse lines; we will begin with the animal that carries you.",
 	"care": "Little rider, look at the bridle, the girth and the horse's footing before you ask for speed. Bring the horse home with the same care.",
@@ -84,6 +92,14 @@ static func terms_required(state: Dictionary) -> bool:
 
 static func kept_first_terms(state: Dictionary) -> bool:
 	return state.phase=="complete" and has_event(state,"halt") and has_event(state,"return")
+
+static func handoff_echo(state: Dictionary) -> Dictionary:
+	# Read-only authored reconstruction: witnessed camp conduct can shape an
+	# existing report, but grants no knowledge, receipt, skill or chronology.
+	if not state.has("events") or not state.events is Array: return {}
+	if has_event(state,"second_return"): return SECOND_HANDOFF_ECHO.duplicate(true)
+	if has_event(state,"halt") and has_event(state,"return"): return FIRST_HANDOFF_ECHO.duplicate(true)
+	return {}
 
 static func second_outing_answered(state: Dictionary) -> bool:
 	return has_event(state,"second_ready") or has_event(state,"second_deferred")
