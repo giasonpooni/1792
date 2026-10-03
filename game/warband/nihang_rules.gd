@@ -11,6 +11,12 @@ const HORSE_LINES := [Vector3(23, 0.14, -18), Vector3(18, 0.14, -22)]
 const TURN := Vector3(3, 0.14, -25)
 const MAX_EVENTS := 12
 const SPEED := 6.0
+# Original authored speech and gestures, paced by the player's existing dialogue UI.
+const CARE_BEATS := [
+	{"title":"THE HORSE LINES · BRIDLE","body":"The veteran keeps a hand beside the bridle.\n\nLittle rider, your father can tell when you are thinking of speed. Begin here. Look at what carries your hand to the horse's mouth.","choice":"Inspect the tack and listen"},
+	{"title":"THE HORSE LINES · FOOTING","body":"His attention moves from the tack to the ground.\n\nLittle rider, a good bridle cannot make bad ground safe. Leave room for the horse ahead. If he stops, you must have somewhere to stop too.","choice":"Look at the footing"},
+	{"title":"THE HORSE LINES · THE RETURN","body":"He lets the reins rest.\n\nLittle rider, reaching the marker is half the ride. Bring the horse back with the same care. If we ride with you, keep us close enough to speak.","choice":"I will bring the horse home with care"}
+]
 const WORDS := {
 	"meet": "Buddh, your father knows these riders. Come to the horse lines; we will begin with the animal that carries you.",
 	"care": "Little rider, look at the bridle, the girth and the horse's footing before you ask for speed. Bring the horse home with the same care.",
