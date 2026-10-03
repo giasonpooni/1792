@@ -220,11 +220,15 @@ func run() -> void:
 		var observed_position: Array=subject_records[0].position.duplicate()
 		mouse(Vector2(PI/chapter.avatar.mouse_sensitivity,0));await frames(2)
 		subject_records=chapter.ground_focus.observations().filter(func(record):return record.id=="smith")
-		check(subject_records.size()==1 and subject_records[0].position==observed_position,
+		check(not chapter._seen(subject.global_position+Vector3.UP*1.0,18.0) and subject_records.size()==1 and subject_records[0].position==observed_position,
 			"turning the character eye away freezes the bounded last-seen point")
+		# A retained world point correctly has no marker while it is behind the
+		# displayed camera. Turn back through ordinary input: the old record is
+		# then visible as retained evidence while fresh dwell is still anonymous.
+		await face(subject.global_position+Vector3.UP*1.0);await frames()
 		var retained_marks: Array=chapter.ground_focus.overlay.marks.filter(func(mark):return String(mark.text).contains("Smith"))
-		check(retained_marks.size()==1 and String(retained_marks[0].text).ends_with("last seen <1s ago"),
-			"earned eye loss presents immediate retained evidence without rounding it to one second")
+		check(not chapter.ground_focus.acquisitions().is_empty() and chapter.ground_focus.acquisitions().all(func(sample):return anonymous(sample)) and retained_marks.size()==1 and String(retained_marks[0].text).ends_with("last seen <1s ago"),
+			"looking back presents the prior point as sub-second retained evidence while reacquisition stays anonymous")
 
 	# Load while Focus is active. The production loader must replace the campaign
 	# state and independently clear every transient perception layer.
