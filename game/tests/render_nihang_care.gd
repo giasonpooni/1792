@@ -12,6 +12,7 @@ var annotation: Label
 var frozen: Dictionary
 var captures: Array[Dictionary]=[]
 var guidance_captures: Array[Dictionary]=[]
+var obligation_captures: Array[Dictionary]=[]
 var followup_captures: Array[Dictionary]=[]
 var final_care_choice_pressed:=false
 var failures:=0
@@ -137,6 +138,53 @@ func capture_followup(id: String,expected_text: String,button_count: int) -> voi
 		"classification":"executed-state follow-up in the original Home dialogue"})
 	print("NIHANG_FOLLOWUP_CAPTURE: "+filename)
 
+func render_obligation(id: String,source_file: String) -> void:
+	var source:=output.path_join(source_file)
+	check(FileAccess.file_exists(source),"retained active undertaking exists: "+id)
+	if not FileAccess.file_exists(source): return
+	var value: Variant=JSON.parse_string(FileAccess.get_file_as_string(source))
+	check(value is Dictionary,"retained active undertaking parses: "+id)
+	if not value is Dictionary: return
+	if is_instance_valid(home): home.queue_free()
+	await process_frame
+	home=Launch.make_world();scene=home.get_node("ChildhoodChapter")
+	scene.save_path=output.path_join("unwritten-obligation-"+id+"-slot.json")
+	var error: String=scene.model.restore(value)
+	check(error.is_empty(),"retained active undertaking validates: "+id+" / "+error)
+	if not error.is_empty(): return
+	root.add_child(home);await frames(5)
+	check(scene._candidate_error(scene.model).is_empty(),"retained active undertaking fits Home: "+id)
+	var obligation: Dictionary=Rules.obligation(scene.model.nihang_camp())
+	check(not obligation.is_empty(),"retained state has an active derived undertaking: "+id)
+	if obligation.is_empty(): return
+	annotation.position=Vector2(16,16)
+	annotation.text="EXECUTED-STATE RENDERING · retained input-driven camp ride\nOriginal journal · active jatha term is derived from received testimony"
+	var before: Dictionary=scene.model.snapshot();var journal: Array=scene.model.journal()
+	scene._open_journal();await frames()
+	var viewport:=Rect2(Vector2.ZERO,Vector2(1280,720))
+	var panel: Rect2=scene._panel.get_global_rect();var scroll: Rect2=scene._journal_scroll.get_global_rect()
+	var text_rect: Rect2=scene._panel_text.get_global_rect()
+	check(scene._paused and scene._panel_text.text.contains("ACTIVE JATHA UNDERTAKING · DERIVED FROM RECEIVED TERMS"),"ordinary journal shows active undertaking: "+id)
+	check(scene._panel_text.text.contains(obligation.title) and scene._panel_text.text.contains(obligation.text),"journal shows the exact derived obligation: "+id)
+	check(scene._journal_scroll.scroll_vertical==0 and text_rect.position.y>=scroll.position.y-1 and text_rect.position.y<scroll.end.y,"active undertaking begins in the first visible journal field: "+id)
+	check(viewport.encloses(panel) and viewport.encloses(scroll) and viewport.encloses(annotation.get_global_rect()),"journal presentation fits the native viewport: "+id)
+	check(scene.model.snapshot()==before and scene.model.journal()==journal,"rendered obligation changes no state or testimony: "+id)
+	var image:=root.get_texture().get_image();var filename:="obligation-"+id+".png";var path:=output.path_join(filename)
+	check(not image.is_empty() and image.get_size()==Vector2i(1280,720),"native obligation frame dimensions: "+id)
+	check(image.save_png(path)==OK,"native obligation screenshot retained: "+id)
+	obligation_captures.append({"file":filename,"image_sha256":FileAccess.get_sha256(path),
+		"source_file":source_file,"source_sha256":FileAccess.get_sha256(source),"phase":scene.model.nihang_camp().phase,
+		"title":obligation.title,"text":obligation.text,"address":scene.model.nihang_address(obligation.source_id),
+		"panel_rect":rect_value(panel),"scroll_rect":rect_value(scroll),"scroll_position":scene._journal_scroll.scroll_vertical,
+		"snapshot_sha256":JSON.stringify(before,"",true,true).sha256_text(),"sampling_preserves_state":scene.model.snapshot()==before,
+		"classification":"read-only active undertaking derived from received camp terms"})
+	check(not FileAccess.file_exists(scene.save_path),"obligation rendering creates no player save: "+id)
+	print("NIHANG_OBLIGATION_CAPTURE: "+filename)
+
+func render_obligations() -> void:
+	await render_obligation("first-return","active-outing.json")
+	await render_obligation("farther-outbound","active-second-outing.json")
+
 func render_followup() -> void:
 	var source:=output.path_join("completed-outing.json")
 	check(FileAccess.file_exists(source),"retained completed outing exists for farther-road rendering")
@@ -199,7 +247,8 @@ func finish() -> void:
 	var manifest:={"schema":"1792.nihang-care-native-render.v1","classification":"executed-state rendering from retained input-driven Home journey",
 		"source_file":"before-care.json","source_sha256":source_sha256,"completed_source_file":"completed-outing.json","completed_source_sha256":completed_source_sha256,
 		"second_source_file":"second-outing-complete.json","second_source_sha256":second_source_sha256,
-		"captures":captures,"guidance_captures":guidance_captures,"followup_captures":followup_captures,"failures":failures,
+		"captures":captures,"guidance_captures":guidance_captures,"obligation_captures":obligation_captures,
+		"followup_captures":followup_captures,"failures":failures,
 		"engine":Engine.get_version_info().string,"renderer":RenderingServer.get_current_rendering_method(),
 		"adapter":RenderingServer.get_video_adapter_name(),"human_playtest":false,"fresh_journey":false,
 		"final_care_choice_pressed":final_care_choice_pressed}
@@ -214,6 +263,7 @@ func finish() -> void:
 	await process_frame
 	print("NIHANG_CARE_RENDER: %d captures; %d failures"%[captures.size(),failures])
 	print("NIHANG_GUIDANCE_RENDER: %d captures; %d failures"%[guidance_captures.size(),failures])
+	print("NIHANG_OBLIGATION_RENDER: %d captures; %d failures"%[obligation_captures.size(),failures])
 	print("NIHANG_FOLLOWUP_RENDER: %d captures; %d failures"%[followup_captures.size(),failures])
 	quit(1 if failures else 0)
 
@@ -268,6 +318,8 @@ func run() -> void:
 	await capture_guidance("household-riding","Mount the household horse",Rules.Ride.position(scene.model.horse_record()))
 	check(guidance_captures.size()==2,"both native guidance handoffs captured")
 	check(not FileAccess.file_exists(scene.save_path),"rendering creates no player save")
+	await render_obligations()
+	check(obligation_captures.size()==2,"first and farther active undertakings captured in the ordinary journal")
 	await render_followup()
 	check(followup_captures.size()==4,"farther-road question, answer, stated term and completed payoff captured")
 	await finish()

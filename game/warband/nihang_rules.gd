@@ -54,6 +54,28 @@ static func initial() -> Dictionary:
 static func active(phase: String) -> bool:
 	return phase in ["outbound", "returning", "second_outbound", "second_returning"]
 
+static func obligation(state: Dictionary) -> Dictionary:
+	# One read-only projection keeps the active term consistent between the
+	# compact objective and journal. It is derived state, never another receipt.
+	if not state.has("phase") or not active(String(state.phase)): return {}
+	match String(state.phase):
+		"outbound":
+			if terms_required(state) and not has_event(state,"halt"):
+				return {"title":"LOW GROUND · COUNT BEFORE CROSSING","source_id":ELDER,
+					"text":"At the low ground, stop, put a foot down and count every invited rider. If one cannot answer, no one crosses."}
+			return {"title":"NORTH MARKER · KEEP THE JATHA TOGETHER","source_id":RIDERS[0] if has_event(state,"halt") else ELDER,
+				"text":"Keep every invited rider within calling distance to the north marker, then bring the jatha home together."}
+		"returning":
+			return {"title":"CAMP RETURN · SETTLE EVERY HORSE","source_id":RIDERS[0],
+				"text":"Bring every invited rider back to camp. Stop, dismount and wait for every horse before asking the elder to settle the undertaking."}
+		"second_outbound":
+			return {"title":"FARTHER ROAD · WAIT FOR THE VETERAN'S HORSE","source_id":RIDERS[0],
+				"text":"Ride with the veteran to the farther stone. Reaching it is not the turn; wait until his horse is still, then ask him for home."}
+		"second_returning":
+			return {"title":"FARTHER RETURN · BRING HORSE AND RIDER HOME","source_id":RIDERS[0],
+				"text":"Bring the veteran home beside you. Stop, dismount and wait for his horse before asking him to witness the return."}
+	return {}
+
 static func has_event(state: Dictionary, kind: String) -> bool:
 	return state.events.any(func(event): return event.kind==kind)
 

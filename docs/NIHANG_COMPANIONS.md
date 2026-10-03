@@ -61,6 +61,13 @@ group switches to single file where paired slots lack clear passage and spreads
 out again in open ground. These prompts read the existing state and grant no
 progress. Immediate danger and failed-attempt guidance retain priority.
 
+Open the ordinary journal during an active outing to see **Active jatha
+undertaking · derived from received terms** before the memory list. The card uses
+the same phase instruction as the compact HUD and remembers the speaker's familiar
+address: **Buddh** for the first low-ground term and **Little rider** for the
+veteran's later undertaking. It disappears after completion. It is a read-only
+projection of received events, not another objective list, testimony or receipt.
+
 After the elder's greeting, the compact HUD also directs the optional horse-care
 lesson to the veteran's horse lines. This local prompt appears only on foot,
 within ten metres of the camp, during the original household riding stage and
@@ -104,6 +111,10 @@ at the final choice, so a speaker newly blocked by a wall cannot complete care.
 The farther-road term page follows the same authority boundary: willingness is
 already received testimony, but hearing the condition is transient and accepting
 it is the only action that begins the route.
+The active journal card is also transient derivation. Opening, closing or reading
+it cannot change the Home state, journal memories or undertaking. Legacy
+invitations keep their original direct-marker contract and therefore do not gain
+the later low-ground card.
 
 The sequence uses a return motif: intimate recognition, attention to the horse,
 a stated condition, the low-ground halt, the shared ride and a homecoming witness.
@@ -231,11 +242,14 @@ the distinct route with the veteran's native horse, waits for the required stop,
 turns and physically checks in for the witnessed payoff. It checks the relationship
 moniker, finite receipts and non-repeatable completion. A separate declared
 settled fixture presses the actual alternative button after an unfinished ride and
-verifies that the deferred answer grants no access. The focused suite contains 387
-passing assertions. Retained-state native rendering captures the farther-road
-question, accepted answer, stated term and second homecoming at 1280 by 720, in
-addition to the three care pages and two guidance handoffs. Local software rendering
-passes with all nine captures fitting without scrolling or clipping.
+verifies that the deferred answer grants no access. It also opens the ordinary
+journal at each active phase, checks that the card precedes testimony, matches the
+HUD's derived instruction and does not mutate either state or memories. The focused
+suite contains 429 passing assertions. Retained-state native rendering captures
+the farther-road question, accepted answer, stated term and second homecoming at
+1280 by 720, in addition to the three care pages, two guidance handoffs and two
+active-obligation journal states. Local software rendering passes with all eleven
+captures fitting without scrolling or clipping.
 These fixtures are
 physics experiments, separate from the input-driven childhood journey. Local
 avoidance is bounded to the small camp group; it is not an arbitrary-size crowd
@@ -254,7 +268,8 @@ a graphics-capable Godot session to retain an executed homecoming screenshot and
 whole-world snapshot. Test slots are separate from the player's save. Native
 renderer verification does not establish finished art or human playtest quality.
 Headless runs also retain active, first-completed and second-completed whole-world snapshots when this
-output directory is set, plus `before-care.json` at the first care page, for
+output directory is set, plus `before-care.json` at the first care page and
+`active-second-outing.json` during the farther road, for
 subsequent native rendering of executed state. `render_nihang_care.gd` loads that
 executed snapshot and uses native E and actual buttons to review the three pages;
 it does not claim another newly traversed journey. It retains two further HUD
@@ -262,3 +277,6 @@ captures: optional care before the conversation and ordinary household riding
 after a real mouse click accepts the final care choice. Partial pages retain
 the same paused snapshot; the final click records exactly one existing care event.
 The manifest distinguishes these advancing Home HUD captures from paused dialogue.
+It also distinguishes the two read-only journal captures and verifies their top
+visible field, exact derived instruction, relationship address, unchanged state
+and unchanged journal memory count.

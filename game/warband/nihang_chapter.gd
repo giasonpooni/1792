@@ -281,6 +281,18 @@ func _restore_checkpoint() -> void:
 	_apply();avatar.pivot.rotation=Vector3(result.envelope.camera[0],result.envelope.camera[1],0)
 	_clear_pending_actions();_message="Whole Home checkpoint restored, including camp relationships.";_resume()
 
+func _open_journal() -> void:
+	super._open_journal()
+	var obligation: Dictionary=CampRules.obligation(model.nihang_camp())
+	if obligation.is_empty() or not _paused or not is_instance_valid(_panel_text): return
+	var heading:="BUDDH SINGH · WHAT I HAVE HEARD AND SEEN\n\n"
+	var section:="ACTIVE JATHA UNDERTAKING · DERIVED FROM RECEIVED TERMS\n%s\n%s\nRemembered address · %s\n\n"%[
+		obligation.title,obligation.text,model.nihang_address(obligation.source_id)]
+	# Keep the current obligation in the first attention field without turning it
+	# into testimony or displacing the existing journal and impression authority.
+	_panel_text.text=_panel_text.text.replace(heading,heading+section)
+	_layout();_journal_scroll.scroll_vertical=0
+
 func camp_guidance() -> Dictionary:
 	# Project received invitations and accepted undertakings into the existing HUD.
 	var camp: Dictionary=model.nihang_camp()
@@ -293,6 +305,7 @@ func camp_guidance() -> Dictionary:
 			"controls":"WASD  Walk     Mouse  Look     E  Speak     F  Mount     J / Esc  Journal and menu",
 			"target":CampRules.HORSE_LINES[0],"marker":"Veteran's horse · E","show_target":true}
 	if not CampRules.active(camp.phase): return {}
+	var obligation: Dictionary=CampRules.obligation(camp)
 	var nearby:=0
 	for id in camp.selected:
 		if CampRules.point(camp.mounts[CampRules.RIDERS.find(id)].position).distance_to(model.position())<=7: nearby+=1
@@ -306,33 +319,33 @@ func camp_guidance() -> Dictionary:
 	if camp.phase=="second_outbound":
 		if model.mounted():
 			result.task="Ride to the farther stone with the veteran"
-			result.progress+="\nStop there and wait until the veteran's horse is still before pressing E."
+			result.progress+="\n"+obligation.text
 			result.target=CampRules.FARTHER;result.marker="Farther stone · stop together [E]"
 		else:
 			result.task="Mount the household horse"
-			result.progress+="\nThe veteran's term is to turn only after his horse has come fully to rest."
+			result.progress+="\n"+obligation.text
 			result.target=CampRules.Ride.position(model.horse_record());result.marker="Household horse · F"
 	elif camp.phase=="outbound":
 		var halt_pending: bool=CampRules.terms_required(camp) and not CampRules.has_event(camp,"halt")
 		if halt_pending and model.mounted():
 			result.task="Halt together at the low ground"
-			result.progress+="\nStop, dismount, and count every invited rider before crossing."
+			result.progress+="\n"+obligation.text
 			result.target=CampRules.HALT;result.marker="Low ground · stop and dismount"
 		elif halt_pending and model.position().distance_to(CampRules.HALT)<=4:
 			result.task="Count every rider before crossing"
-			result.progress+="\nFace the veteran and press E only when everyone can answer."
+			result.progress+="\n"+obligation.text
 			result.target=CampRules.HALT;result.marker="Veteran · E"
 		elif model.mounted():
 			result.task="Ride to the north marker together"
-			result.progress+="\nWait for everyone, then press E at the marker."
+			result.progress+="\n"+obligation.text
 			result.target=CampRules.TURN;result.marker="North practice marker · E"
 		else:
 			result.task="Mount the household horse"
-			result.progress+="\nYour companions have agreed to ride on their terms and return together."
+			result.progress+="\n"+obligation.text
 			result.target=CampRules.Ride.position(model.horse_record());result.marker="Household horse · F"
 	else:
 		result.task="Return together to the camp"
-		result.progress+="\nStop, dismount, and wait for the %s before speaking to the elder."%("veteran" if camp.phase=="second_returning" else "riders")
+		result.progress+="\n"+obligation.text
 		if model.mounted(): result.marker="Camp elder · dismount first"
 	return result
 

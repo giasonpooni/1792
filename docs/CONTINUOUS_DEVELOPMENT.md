@@ -31,25 +31,28 @@ from main at `43521dbeb939ce0b3f833e965f90c2112478688b`, on
 
 Draft PR #101 publishes this continuation for review.
 
-Its qualified predecessor head `fed30f2e013db3d2ad1cdc4b4cf61df65f4f2961`
-and tree `9a1460a3b77915e7302566f5b3d400d3c3a8940a` passed all fifteen hosted
-workflows. The retained childhood artifact bound 384 camp assertions and eight
+Its qualified predecessor head `260543a689bcb9f1d71cf654dcc2afe21b10a838`
+and tree `28352e5364987510c811d3fe35fd303ed4dff073` passed all fifteen hosted
+workflows. The retained childhood artifact bound 387 camp assertions and nine
 native captures to that source.
 
-The current continuation gives the second outing a distinct attention boundary.
-The veteran's willingness no longer makes the same button begin the ride. Ranjit
-first asks him to state the term; a short, player-paced page holds the distant stone
-and full-stop condition before a separate acceptance begins the route. Hearing or
-leaving that page changes no state or received testimony. The unfinished first
-outing retains its not-yet answer and cannot expose either the term or route. The
-original Home dialogue, clock, controllers, protagonist, journal, whole-state save
-and checkpoint remain authoritative.
+The current continuation projects the received undertaking into the ordinary
+journal before its memory list. The read-only card names the active phase and uses
+the same derived instruction as the compact HUD: count the riders at low ground,
+reach the marker together, settle every horse at camp, wait for the veteran's
+horse at the farther stone or bring horse and rider home. Its remembered address
+comes from the relationship resolver, so **Buddh** and **Little rider** remain
+speaker-bound. Legacy invitations do not acquire the later condition, and a
+completed undertaking leaves no active card. No new event, quest ledger, save
+field or reward is introduced. The original Home dialogue, clock, controllers,
+protagonist, journal memory records, whole-state save and checkpoint remain
+authoritative.
 
-Local focused qualification is now 387 assertions with zero failures, and the full
+Local focused qualification is now 429 assertions with zero failures, and the full
 configured suite exits zero on the checksum-pinned Godot 4.5.1 runtime. Rendered
-qualification passes with three care, two guidance and four farther-road frames;
-the new term and all eight surrounding frames fit at 1280 by 720 without scrolling
-or clipping. Hosted qualification must still bind the exact successor source before
+qualification passes with three care, two guidance, two active-obligation journal
+and four farther-road frames; all eleven fit at 1280 by 720 without scrolling or
+clipping. Hosted qualification must still bind the exact successor source before
 it is reported as passing.
 
 See [the camp guide](NIHANG_COMPANIONS.md) for play, authority and historical scope.
@@ -89,16 +92,17 @@ imports before diagnosing UI failures caused by unavailable native assets.
 
 ## Next priorities
 
-Finish exact-commit hosted qualification for the paced farther-road acceptance
-before starting another feature. Keep danger guidance ahead of optional mentorship and
+Finish exact-commit hosted qualification for the active jatha undertaking before
+starting another feature. Keep danger guidance ahead of optional mentorship and
 avoid duplicating adjacent opening, household, instructor and ecology work. Draft
 PR #100 qualifies the existing Focus system's earned-input journey; it changes
 Focus tests, documentation and CI rather than this camp route.
 
-Then project active jatha obligations through the existing journal and guidance
-authority before widening the roster; do not introduce a parallel quest ledger.
-Preserve the first ride's group obligation and the second ride's veteran-specific
-stop rather than flattening them into repeated marker runs. Recruiting mercenaries,
+Then inspect the existing childhood handoffs and choose one bounded boundary where
+received jatha testimony can alter authored dialogue without unlocking capability
+or rewriting chronology. Preserve the first ride's group obligation and the second
+ride's veteran-specific stop rather than flattening them into repeated marker runs.
+Recruiting mercenaries,
 specific outlaw bands and local kinship contingents requires distinct
 terms and identities. Hiring a leader does not transfer an entire clan. Historic
 Thuggee-associated content needs period and geographic evidence before authoring.
@@ -122,6 +126,7 @@ approach: state a need, keep its authority explicit, execute it and retain evide
 | A veteran decides whether to ride again | Received halt and homecoming, or unfinished check-in | Actual one-time question; readiness/deferred testimony; rendered answer |
 | A second ride makes accepted trust consequential | Received readiness, veteran-only selection and native mount observation | Distinct route; full-stop refusal; witnessed return; no reward farming |
 | Willingness is not silent commitment | Existing received readiness plus transient dialogue | Stated-term page preserves state; explicit acceptance alone begins the route |
+| An undertaking remains legible between physical beats | Existing derived camp phase and relationship address | Journal/HUD share one read-only instruction; legacy and completed states add no card |
 | An earlier save discards a future promise | Existing whole-Home save authority | F5/F9 rollback; no future page action or care testimony |
 | A loaded formation is judged as staged state | Existing world-clearance preflight | Stale live peers excluded; staged overlaps still refused |
 
