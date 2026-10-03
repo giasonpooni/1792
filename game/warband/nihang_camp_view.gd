@@ -6,6 +6,7 @@ const Figure := preload("res://youth/performance/bazaar_figure.gd")
 const Sword := preload("res://presentation/service_sword.gd")
 var elder: Node3D
 var marker: Label3D
+var halt_marker: Label3D
 
 func piece(size: Vector3, at: Vector3, color: String) -> MeshInstance3D:
 	var mesh:=MeshInstance3D.new();var box:=BoxMesh.new();box.size=size;mesh.mesh=box
@@ -39,7 +40,12 @@ func build() -> void:
 	marker=Label3D.new();marker.text="North practice marker [E]";marker.position=Rules.TURN+Vector3.UP*2
 	marker.font_size=22;marker.pixel_size=.002;marker.billboard=BaseMaterial3D.BILLBOARD_ENABLED;add_child(marker)
 	for x in [-1.8,1.8]: piece(Vector3(.1,1.5,.1),Rules.TURN+Vector3(x,.75,0),"aa9569")
+	halt_marker=Label3D.new();halt_marker.text="Low ground · halt and count [E]";halt_marker.position=Rules.HALT+Vector3.UP*1.4
+	halt_marker.font_size=22;halt_marker.pixel_size=.002;halt_marker.billboard=BaseMaterial3D.BILLBOARD_ENABLED;add_child(halt_marker)
+	# Two low stones make the agreed halt readable without adding collision or geography.
+	for z in [-1.2,1.2]: piece(Vector3(.7,.16,.42),Rules.HALT+Vector3(0,.08,z),"766a56")
 
-func sample(tick: int, phase: String) -> void:
+func sample(tick: int, phase: String, halt_pending: bool=false) -> void:
 	elder.sample(tick,0,"idle");elder.position=Rules.CAMP
-	marker.visible=phase=="outbound"
+	halt_marker.visible=phase=="outbound" and halt_pending
+	marker.visible=phase=="outbound" and not halt_pending

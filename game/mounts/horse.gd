@@ -180,8 +180,9 @@ func record_fits_world(record: Dictionary, avatar: CharacterBody3D, staged_peers
 		query.shape = clearance_hull
 		center_y += SAVED_GROUND_CLEARANCE * 0.5
 	query.collision_mask = 1
-	query.exclude = [get_rid(), avatar.get_rid()]
-	query.exclude.append_array(staged_peers)
+	var exclusions: Array[RID]=[get_rid(),avatar.get_rid()]
+	exclusions.append_array(staged_peers)
+	query.exclude=exclusions
 	query.transform = Transform3D(Basis(Vector3.UP, record.yaw), Rules.position(record) + Vector3.UP * center_y)
 	if not get_world_3d().direct_space_state.intersect_shape(query, 1).is_empty():
 		return false

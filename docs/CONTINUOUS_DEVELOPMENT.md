@@ -8,36 +8,32 @@ received knowledge and physical travel.
 
 ## Current increment
 
-PR #83 has merged. The next increment starts from main at
-`152d880a3c221272525645c44f8d3e2a535d8529`, on
-`feat/nihang-care-sequence-v1-20261003`:
+PR #99 has merged the current Nihang mentorship and Focus integration. Draft PR
+#95 was closed as superseded because its remaining diff would restore an obsolete
+renderer timeout and regress the stronger current renderer. This increment starts
+from main at `43521dbeb939ce0b3f833e965f90c2112478688b`, on
+`feat/nihang-terms-crossing-v1-20261003`:
 
-- A voluntary three-beat horse-care conversation: bridle, footing and return.
-  Only its final choice records the existing care event; all intermediate pages
-  remain presentation. Childhood monikers and the received journal schema persist.
-- A stop/start column that brakes without turning around to chase a retreating
-  following slot. It uses the preceding horse's pace and the shared motor's
-  stopping distances, then settles with zero steering inside the arrival radius.
-- Native input, stale-dialogue, save/load and 30/60 Hz physics checks, plus
-  three-page rendering from the input-driven journey's retained state.
-- The workcell notice copy and its exact-source hash follow the updated root
-  notice, repairing the stale-link mismatch encountered in the full suite.
+- The veteran states a concrete low-ground condition before accompaniment. Ranjit
+  must halt, dismount and count every invited rider within calling distance before
+  the group may cross to the north marker.
+- Riding directly to the marker produces a local refusal, not progress. Returning
+  to the halt and keeping the term records received testimony; the veteran later
+  names the conduct at homecoming. Childhood monikers remain relationship-bound.
+- The condition derives from existing received events, adds no parallel quest
+  engine or save schema, and does not retrofit old invitations with a new obligation.
+- The input-driven journey covers the attempted shortcut, physical return,
+  dismount/count/remount, group turnaround, F5/F9 and stopped check-in.
+- The journey exposed a native restore-preflight defect: appended staged peer RIDs
+  were not retained by the physics query. The query now assigns the completed
+  exclusion array, rejects real staged overlaps separately and restores the saved
+  formation without treating discarded live positions as obstacles.
 
-Draft PR #95 continues on that branch. Its baseline `d7a5739` passed all local
-runtime checks and thirteen of fourteen hosted workflows. Historical-world CI
-reached two regency captures before its external 120-second deadline, without
-engine errors. The continuation raises only that bounded renderer allowance to
-300 seconds; three captures, zero failures and error guards remain mandatory.
-
-The continuation also completes the local camp-navigation priority: the received
-greeting directs an optional horse-care lesson to the veteran's horse lines;
-mounting, leaving camp or accepting care yields to ordinary household riding.
-Read-only sampling preserves canonical state, journal and native body poses.
-Its native journey covers F9 restoration, and declared threat fixtures cover
-immediate-danger and failed-attempt priority. The renderer retains both HUD
-handoffs as well as the three paused dialogue pages, using a real final mouse
-choice for care. Hosted qualification must be read from the exact published
-continuation commit before claiming that its timeout repair or new captures passed.
+Local focused qualification is complete at 301 assertions with zero failures,
+and the full configured suite exits zero on Godot 4.5.1. Hosted results must be
+bound to the exact published continuation commit before they are reported as
+passing. This execution host cannot attach Godot to its virtual X display, so the
+hosted graphics workflow remains the visual-review authority.
 
 See [the camp guide](NIHANG_COMPANIONS.md) for play, authority and historical scope.
 These additions develop one existing childhood sequence. General recruitment,
@@ -76,17 +72,16 @@ imports before diagnosing UI failures caused by unavailable native assets.
 
 ## Next priorities
 
-Choose against current main and player-visible gaps, avoiding duplicate work in
-other story branches. Navigation from the greeting to the horse lines and the
-return to household riding are now implemented in the continuation. Finish its hosted
-qualification before starting another feature. Keep danger guidance ahead of
-optional mentorship. Adjacent integration PR #96 develops the opening, household,
-instructor and ecology stories; avoid duplicating those changes or editing that
-branch from this pass.
+Finish exact-commit full-suite and hosted qualification for the low-ground terms
+increment before starting another feature. Keep danger guidance ahead of optional
+mentorship and avoid duplicating adjacent opening, household, instructor and
+ecology work. Draft PR #100 qualifies the existing Focus system's earned-input
+journey; it changes Focus tests, documentation and CI rather than this camp route.
 
-Then develop the next consequential undertaking: a companion's terms, a journey
-that exercises those terms and a witnessed consequence. Prefer a complete short
-mission with a readable setup and payoff before expanding the roster. Recruiting
+Then carry this witnessed obligation into one later bounded choice rather than
+expanding the roster immediately: the veteran's willingness to accompany a second
+outing should derive from the received halt/homecoming history, with a readable
+alternative for an unfinished first ride. Recruiting
 mercenaries, specific outlaw bands and local kinship contingents requires distinct
 terms and identities. Hiring a leader does not transfer an entire clan. Historic
 Thuggee-associated content needs period and geographic evidence before authoring.
@@ -106,7 +101,9 @@ approach: state a need, keep its authority explicit, execute it and retain evide
 | A veteran teaches care before accompanying Ranjit | Existing camp care event | Actual page buttons; partial reading cannot grant an event |
 | A jatha returns together | Selected rider identities and native mount poses | Input-driven ride, turnaround and stopped check-in |
 | A follower leaves stopping room | Shared horse motor and physical collision | Stop/start column at 30 and 60 Hz; spacing and final rest |
+| A rider's stated term constrains the route | Received invitation and halt events | Direct-marker refusal; physical dismount/count; witnessed homecoming |
 | An earlier save discards a future promise | Existing whole-Home save authority | F5/F9 rollback; no future page action or care testimony |
+| A loaded formation is judged as staged state | Existing world-clearance preflight | Stale live peers excluded; staged overlaps still refused |
 
 Use observed repeated production needs to justify reusable tooling. Inspect current
 NET and superrepo interfaces before changing them; reuse existing exact-source and

@@ -100,7 +100,7 @@ func journal() -> Array:
 	var entries:=super.journal()
 	for event in nihang_camp().events:
 		entries.append({"id":"nihang_"+event.kind,"received_tick":int(event.tick),
-			"source_id":Camp.RIDERS[0] if event.kind in ["care","turn"] else Camp.ELDER,
+			"source_id":Camp.RIDERS[0] if event.kind in ["care","halt","turn"] else Camp.ELDER,
 			"channel":"heard","text":Camp.WORDS[event.kind]})
 	entries.sort_custom(func(a,b): return a.received_tick<b.received_tick)
 	return entries

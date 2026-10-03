@@ -22,18 +22,24 @@ not a historical map location.
    Each page offers an exit. Only the final choice records the existing care
    event. This teaches through dialogue; it awards no combat stat or advanced
    riding skill.
-3. Return to the elder and invite the veteran alone or both riders. The first
+3. Return to the elder and invite the veteran alone or both riders. The veteran
+   states the terms before acceptance: halt at the low ground, dismount and count
+   every invited rider; no one crosses if someone cannot answer. The first
    household riding gate is required. Concurrent cargo or another outing blocks
    acceptance. Each rider remains attached to the camp, outside household payroll.
-4. Mount the original household horse with **F**. Ride with the escort to the
-   north practice marker (3, 0.14, -25). Press **E** while mounted when everyone
-   is nearby; the veteran must be within unobstructed calling distance.
-5. Return to camp, stop, dismount and wait for the escort to park. Speak to the
+4. Mount the original household horse with **F**. Halt with the escort at the low
+   ground (11, 0.14, -22), dismount and face the veteran. Press **E**, then count
+   the riders. Riding past to the north marker cannot silently satisfy the term.
+5. Remount and ride to the north practice marker (3, 0.14, -25). Press **E** while
+   mounted when everyone is nearby; the veteran must be within unobstructed calling
+   distance.
+6. Return to camp, stop, dismount and wait for the escort to park. Speak to the
    elder to finish. Everyone must physically return. The undertaking can also be
    ended unfinished at camp with everyone present.
 
-The main objective display follows the accepted outing: mount, reach the marker
-together, then bring everyone back. Its marker points to the agreed destination;
+The main objective display follows the accepted outing: mount, keep the low-ground
+term, reach the marker together, then bring everyone back. Its marker points to
+the current agreed destination;
 the nearby-rider count reminds you to wait when someone falls behind. A mounted
 group switches to single file where paired slots lack clear passage and spreads
 out again in open ground. These prompts read the existing state and grant no
@@ -80,8 +86,10 @@ clear pending page actions. Physical access is checked again at each advance and
 at the final choice, so a speaker newly blocked by a wall cannot complete care.
 
 The sequence uses a return motif: intimate recognition, attention to the horse,
-an undertaking, the shared ride and a homecoming acknowledgment. The warning to
-leave stopping room is exercised by the actual riding system. Prose describes
+a stated condition, the low-ground halt, the shared ride and a homecoming witness.
+The elder's invitation establishes the condition, the player's attempted shortcut
+can be refused, and the veteran names the kept term after the group returns. The
+warning to leave stopping room is exercised by the actual riding system. Prose describes
 small gestures beside the existing horse lines and mat; these are authored stage
 directions in text, not new gesture animations or a forced camera sequence.
 The original received care words and journal records remain unchanged.
@@ -114,7 +122,10 @@ distance; inside the arrival radius, braking uses zero steering. This stabilizes
 stop/start columns without assigning equine reaction times or calibrated behavior.
 
 Dialogue is rechecked against the actual body position, ground and line of sight
-at execution. Turnaround requires the selected riders; check-in requires every
+at execution. The low-ground count requires Ranjit on foot and every invited mount
+grounded within calling distance. A terms-bearing invitation cannot turn at the
+marker until that witnessed event exists. Legacy invitations in earlier saves keep
+their original direct-marker contract. Turnaround requires the selected riders; check-in requires every
 invited rider, on the ground and stopped at camp. Historical evidence, gameplay
 operation, native execution and test verification remain distinct. Event replay
 checks internal consistency; it is not save authentication or proof that arbitrary
@@ -123,6 +134,9 @@ compares the staged horse and player poses against one another, separate from
 static-world clearance. It refuses overlaps without changing the current world.
 A previous-version save containing interpenetrating horses must return to an
 earlier clear checkpoint; the loader does not move characters to invent clearance.
+Staged restore queries explicitly exclude every stale live horse projection, then
+compare the staged poses against one another. This makes F9 judge the saved group,
+not the group positions being discarded.
 
 ## Evidence and scope
 
@@ -149,7 +163,8 @@ religious assassin class. No whole clan is acquired by hiring one leader.
 `test_nihang_camp.gd` covers refused/duplicate invitations, first-gate eligibility,
 relationship address across accession, unrelated speakers, malformed and future
 events, selected-roster movement, save/load, whole-world rollback and checkpoint
-compatibility. Its native journey starts from one explicitly declared first-gate
+compatibility. It separately verifies that legacy invitations remain replayable
+without retroactively gaining a term. Its native journey starts from one explicitly declared first-gate
 fixture, then uses walking/riding inputs, E/F, actual buttons and F5/F9. It also
 adds a wall after opening a conversation to test stale-menu refusal, monitors
 horse separation throughout the outing, and checks overlapping-save refusal.
@@ -170,8 +185,12 @@ through a 2.4-metre passage that closes to single file and reopens to paired slo
 Its declared three-horse stop/start column fixture runs at 30 and 60 Hz: both
 followers move, stop, resume and settle without reversing, while maintaining
 spacing and bounded movement. The final gaps must agree across those tick rates.
-The camp journey checks the real compact objective HUD before mounting, outbound,
-returning and after F9, plus restoration of ordinary lessons after check-in.
+The camp journey first rides past the low ground and verifies that the marker
+refuses the shortcut. It then physically returns, dismounts, waits for both riders,
+uses the actual count choice, remounts and completes the route. The camp journey
+checks the real compact objective HUD before mounting, at the halt, outbound,
+returning and after F9, plus retention of the witnessed term and restoration of
+ordinary lessons after check-in.
 These fixtures are
 physics experiments, separate from the input-driven childhood journey. Local
 avoidance is bounded to the small camp group; it is not an arbitrary-size crowd

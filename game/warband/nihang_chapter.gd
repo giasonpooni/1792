@@ -53,18 +53,24 @@ func _sync_camp(reset: bool=false) -> void:
 		camp_horses[i]._rider.visible=joined
 		camp_figures[i].visible=not joined
 		camp_figures[i].position=CampRules.point(state.mounts[i].position)+Vector3(1.1,0,0)
-	camp_view.sample(int(model.progress().tick),state.phase)
+	camp_view.sample(int(model.progress().tick),state.phase,
+		CampRules.terms_required(state) and not CampRules.has_event(state,"halt"))
 
 func _camp_access(kind: String) -> String:
 	if avatar.global_position.distance_to(model.position())>.25: return "Your physical and recorded positions disagree."
-	var at: Vector3=CampRules.HORSE_LINES[0] if kind=="care" else CampRules.TURN if kind=="turn" else CampRules.CAMP
-	if kind=="turn":
-		if not model.mounted() or not horse.is_on_floor(): return "Reach the practice marker mounted on solid ground."
-		if model.position().distance_to(at)>3.0: return "Reach the practice marker with your companions."
+	var at: Vector3=CampRules.HORSE_LINES[0] if kind=="care" else CampRules.HALT if kind=="halt" else CampRules.TURN if kind=="turn" else CampRules.CAMP
+	if kind in ["halt","turn"]:
+		if kind=="halt":
+			if model.mounted() or not avatar.is_on_floor(): return "Stop and put a foot down at the low ground."
+			if model.position().distance_to(at)>3.0: return "Return to the low ground before crossing."
+		else:
+			if not model.mounted() or not horse.is_on_floor(): return "Reach the practice marker mounted on solid ground."
+			if model.position().distance_to(at)>3.0: return "Reach the practice marker with your companions."
 		# The veteran must actually be audible through an unobstructed line.
+		var speaker_from: Vector3=avatar.global_position if kind=="halt" else horse.global_position
 		var veteran: Vector3=camp_horses[0].global_position
-		var ray:=PhysicsRayQueryParameters3D.create(horse.global_position+Vector3.UP*2.4,veteran+Vector3.UP*2.4,1,[horse.get_rid(),avatar.get_rid()])
-		if veteran.distance_to(horse.global_position)>7 or not get_world_3d().direct_space_state.intersect_ray(ray).is_empty(): return "Wait within clear calling distance of the veteran."
+		var ray:=PhysicsRayQueryParameters3D.create(speaker_from+Vector3.UP*2.4,veteran+Vector3.UP*2.4,1,[horse.get_rid(),avatar.get_rid()])
+		if veteran.distance_to(speaker_from)>7 or not get_world_3d().direct_space_state.intersect_ray(ray).is_empty(): return "Wait within clear calling distance of the veteran."
 	else:
 		if model.mounted() or not avatar.is_on_floor(): return "Stand on foot beside the camp speaker."
 		if model.position().distance_to(at)>3 or not _seen(at+Vector3.UP*1.35,4.5): return "Face the nearby camp speaker from clear ground."
@@ -72,6 +78,8 @@ func _camp_access(kind: String) -> String:
 
 func _interact() -> void:
 	var camp: Dictionary=model.nihang_camp()
+	if not model.mounted() and camp.phase=="outbound" and CampRules.terms_required(camp) and not CampRules.has_event(camp,"halt") and model.position().distance_to(CampRules.HALT)<3:
+		_open_camp("halt");return
 	if model.mounted() and camp.phase=="outbound" and model.position().distance_to(CampRules.TURN)<3:
 		var error:=_camp_access("turn")
 		if error.is_empty(): error=model.camp_action("turn",true,true)
@@ -87,6 +95,11 @@ func _open_camp(kind: String="") -> void:
 	var error:=_camp_access(kind)
 	if not error.is_empty(): _message=error;return
 	if kind=="care": _show_care_page(0);return
+	if kind=="halt":
+		var count: int=model.nihang_camp().selected.size()
+		_show_dialog("LOW GROUND · COUNT THE RIDERS","The veteran waits with the reins loose. %s\n\nLittle rider. Before anyone crosses, look back and count aloud."%("The other horse settles behind him." if count>1 else "His horse settles on the low earth."),
+			[["Count every rider, then cross together","camp:halt"],["Leave the halt","resume"]])
+		_camp_choices.append("halt");return
 	var camp: Dictionary=model.nihang_camp()
 	var body: String="A familiar voice reaches you before anyone stands.\n\nBuddh. Come closer. Your father's companions are tending their horses; the elder makes room for you beside them."
 	var choices: Array=[]
@@ -95,12 +108,14 @@ func _open_camp(kind: String="") -> void:
 		"acquainted": body=CampRules.WORDS.meet
 		"prepared":
 			body="%s, your own horse; our company. Ask the veteran to ride with you, or bring both riders. The undertaking is the north marker and home again. Wait for one another."%model.nihang_address(CampRules.ELDER)
-			choices=[["Invite the veteran to ride with me","camp:invite_one"],["Invite both familiar riders","camp:invite_two"]]
+			choices=[["Invite the veteran on his terms","camp:invite_one_terms"],["Invite both riders on their terms","camp:invite_two_terms"]]
 		"outbound", "returning":
 			body="%s, our undertaking is the north practice marker and back. Bring everyone home before we settle it."%model.nihang_address(CampRules.ELDER)
 			if camp.phase=="returning": choices.append(["Return together and thank the riders","camp:return"])
 			choices.append(["End this outing here with everyone present","camp:cancel"])
-		"complete": body=CampRules.WORDS["return"]+"\n\nThe elder makes room beside the mat. The horse-care lesson has become an undertaking you kept."
+		"complete":
+			body=CampRules.WORDS["return"]+"\n\nThe elder makes room beside the mat. The horse-care lesson has become an undertaking you kept."
+			if CampRules.has_event(camp,"halt"): body+="\n\nThe veteran answers before the elder asks: Little rider stopped at the low ground and counted us before he crossed."
 		"cancelled": body=CampRules.WORDS.cancel
 	choices.append(["Leave the conversation","resume"])
 	_show_dialog("THE CAMP · FAMILIAR VOICES",body,choices)
@@ -186,7 +201,9 @@ func _candidate_error(staged: Story) -> String:
 	var error:=super._candidate_error(staged)
 	if not error.is_empty() or not staged is CampState: return error
 	var state: Dictionary=staged.nihang_camp()
-	var staged_peers: Array[RID]=[horse.get_rid()]
+	# Exclude every stale live horse projection here; the staged household and
+	# companion poses are checked against one another immediately below.
+	var staged_peers: Array[RID]=[horse.get_rid(),camp_horses[0].get_rid(),camp_horses[1].get_rid()]
 	for i in range(camp_horses.size()):
 		if not camp_horses[i].record_fits_world(state.mounts[i],avatar,staged_peers): return "A camp horse has no clear standing room. Home unchanged."
 	# Test staged poses against one another, never against their stale live projections.
@@ -253,13 +270,22 @@ func camp_guidance() -> Dictionary:
 		result.controls="WASD  Walk     Mouse  Look     F  Mount     E  Speak     J / Esc  Journal and menu"
 	if nearby<camp.selected.size(): result.progress+="\nSlow down or return for the riders."
 	if camp.phase=="outbound":
-		if model.mounted():
+		var halt_pending: bool=CampRules.terms_required(camp) and not CampRules.has_event(camp,"halt")
+		if halt_pending and model.mounted():
+			result.task="Halt together at the low ground"
+			result.progress+="\nStop, dismount, and count every invited rider before crossing."
+			result.target=CampRules.HALT;result.marker="Low ground · stop and dismount"
+		elif halt_pending and model.position().distance_to(CampRules.HALT)<=4:
+			result.task="Count every rider before crossing"
+			result.progress+="\nFace the veteran and press E only when everyone can answer."
+			result.target=CampRules.HALT;result.marker="Veteran · E"
+		elif model.mounted():
 			result.task="Ride to the north marker together"
 			result.progress+="\nWait for everyone, then press E at the marker."
 			result.target=CampRules.TURN;result.marker="North practice marker · E"
 		else:
 			result.task="Mount the household horse"
-			result.progress+="\nYour companions have agreed to ride to the north marker and back."
+			result.progress+="\nYour companions have agreed to ride on their terms and return together."
 			result.target=CampRules.Ride.position(model.horse_record());result.marker="Household horse · F"
 	else:
 		result.task="Return together to the camp"

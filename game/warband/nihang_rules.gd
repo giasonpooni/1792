@@ -8,6 +8,7 @@ const ELDER := "fictional_nihang_elder"
 const RIDERS := ["fictional_nihang_veteran", "fictional_nihang_companion"]
 const CAMP := Vector3(19, 0.14, -18)
 const HORSE_LINES := [Vector3(23, 0.14, -18), Vector3(18, 0.14, -22)]
+const HALT := Vector3(11, 0.14, -22)
 const TURN := Vector3(3, 0.14, -25)
 const MAX_EVENTS := 12
 const SPEED := 6.0
@@ -22,6 +23,9 @@ const WORDS := {
 	"care": "Little rider, look at the bridle, the girth and the horse's footing before you ask for speed. Bring the horse home with the same care.",
 	"invite_one": "Buddh, one of us will ride with you to the north practice marker and back. This is our undertaking together; keep within calling distance.",
 	"invite_two": "Buddh, both riders will accompany you to the north practice marker and back. Wait for one another. We return together.",
+	"invite_one_terms": "Buddh, the veteran will ride with you. At the low ground, stop, put a foot down and look back. If he cannot answer, neither of you crosses.",
+	"invite_two_terms": "Buddh, both riders will come. At the low ground, stop, put a foot down and count them. If one cannot answer, no one crosses.",
+	"halt": "Little rider, you looked back before crossing. We are all here. Now take us to the marker, and bring us home the same way.",
 	"turn": "Little rider, we have reached the marker together. Turn for the camp and bring everyone back.",
 	"return": "Buddh, everyone is home. You kept the undertaking. Sit with us when the horses have rested.",
 	"cancel": "Buddh, we are all back at the camp. We can leave the practice ride unfinished today."
@@ -38,6 +42,12 @@ static func initial() -> Dictionary:
 
 static func active(phase: String) -> bool:
 	return phase in ["outbound", "returning"]
+
+static func has_event(state: Dictionary, kind: String) -> bool:
+	return state.events.any(func(event): return event.kind==kind)
+
+static func terms_required(state: Dictionary) -> bool:
+	return state.events.any(func(event): return event.kind in ["invite_one_terms","invite_two_terms"])
 
 static func point(value: Array) -> Vector3:
 	return Vector3(value[0],value[1],value[2])
@@ -74,6 +84,8 @@ static func apply(state: Dictionary, event: Dictionary) -> String:
 	if not event.contact or not event.grounded: return "Speak from nearby, clear standing ground."
 	if kind=="care":
 		if p.distance_to(HORSE_LINES[0])>3.0 or event.mounted: return "Inspect the veteran's horse on foot at the horse lines."
+	elif kind=="halt":
+		if p.distance_to(HALT)>3.0 or event.mounted: return "Stop on foot at the low ground before crossing."
 	elif kind=="turn":
 		if p.distance_to(TURN)>3.0 or not event.mounted: return "Reach the north practice marker on horseback."
 	elif p.distance_to(CAMP)>3.0 or event.mounted:
@@ -85,13 +97,18 @@ static func apply(state: Dictionary, event: Dictionary) -> String:
 		"care":
 			if state.phase!="acquainted": return "Meet the camp elder before the horse lesson."
 			state.phase="prepared"
-		"invite_one", "invite_two":
+		"invite_one", "invite_two", "invite_one_terms", "invite_two_terms":
 			if state.phase!="prepared": return "Finish the horse-care conversation before arranging this ride."
 			if event.ride_gate<1: return "Complete the first household riding gate before inviting an escort."
-			state.selected=[RIDERS[0]] if kind=="invite_one" else RIDERS.duplicate()
+			state.selected=[RIDERS[0]] if kind in ["invite_one","invite_one_terms"] else RIDERS.duplicate()
 			state.phase="outbound"
+		"halt":
+			if state.phase!="outbound" or not terms_required(state): return "This undertaking has no unkept low-ground term."
+			if has_event(state,"halt"): return "The riders have already answered at the low ground."
+			if not together(state.selected,event.mounts,HALT,7.0): return "Stop and count every invited rider before crossing."
 		"turn":
 			if state.phase!="outbound": return "There is no outward camp ride to complete."
+			if terms_required(state) and not has_event(state,"halt"): return "Return to the low ground and count every rider before crossing."
 			if not together(state.selected,event.mounts,p,7.0): return "Wait at the marker for every invited rider."
 			state.phase="returning"
 		"return", "cancel":
@@ -117,6 +134,7 @@ static func validate(value: Variant, home_tick: int) -> String:
 			if not valid_mount(e.mounts[i],i): return "Invalid camp event rider observation."
 		var error:=apply(replay,e)
 		if not error.is_empty(): return error
+		replay.events.append(e.duplicate(true))
 		last=int(e.tick)
 	if value.phase!=replay.phase or value.selected!=replay.selected: return "Camp agreement differs from its received events."
 	if value.selected.is_empty():
