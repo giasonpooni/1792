@@ -25,7 +25,7 @@ The intended choices for **future explicitly designated releases** are:
 - **MPL-2.0** for reusable simulation libraries, validators, replay tooling, and procedural systems when file-level reciprocity is desired.
 - **Apache-2.0** for small reference implementations, interchange examples, or integration utilities intended for broad reuse.
 
-**No Cartesian Graphics component is designated MPL-2.0 or Apache-2.0 by this change.** Neither licence applies repository-wide. Do not infer an `MPL-2.0 OR Apache-2.0` dual licence from this policy. Standard licence texts should be added with the first approved component release, not as an ambiguous alternative root licence.
+**No project component is designated MPL-2.0 or Apache-2.0 by this change.** Neither licence applies repository-wide. Do not infer an `MPL-2.0 OR Apache-2.0` dual licence from this policy. Standard licence texts should be added with the first approved component release, not as an ambiguous alternative root licence.
 
 For each separately released component, record its exact paths and release revision, confirm ownership and contributor permissions, review dependencies, and attach the unmodified licence text and accurate per-file notices. For an MPL component, retain its covered-source obligations when distributing it; separate proprietary files must not be used to hide covered modifications. Keep 1792's campaign content and creative assets outside that release unless explicitly authorized.
 
@@ -35,7 +35,7 @@ Official references: [Mozilla's MPL FAQ](https://www.mozilla.org/en-US/MPL/2.0/F
 
 Repository visibility is separate from licensing. This change does not make the repository private, restrict access controls, or remove existing forks. The root notice preserves permissions arising under applicable law, existing licences, and GitHub's terms. See [GitHub's licensing guidance](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository).
 
-No general modding, fan-asset redistribution, commercial reuse, or source-available experimentation licence is granted here. Specific permissions can be agreed separately with Notation Systems Inc. through the Cartesian Graphics project. A future player EULA or modding policy must identify what it permits and preserve applicable third-party and statutory rights.
+No general modding, fan-asset redistribution, commercial reuse, or source-available experimentation licence is granted here. Specific permissions can be agreed separately with Notation Systems Inc. through the Notations Gaming project. A future player EULA or modding policy must identify what it permits and preserve applicable third-party and statutory rights.
 
 ## Contributions and provenance
 

@@ -235,5 +235,5 @@ fonts or other third-party assets are distributed.
 - **S7:** [Jat Chiefs, Shamsher Singh Sandhawalia](https://jatchiefs.com/sardar-shamsher-singh-sandhawalia-of-raja-sansi/): secondary 125-horse report and later magistracy, not an independently checked muster.
 - **S8:** [Encyclopaedia of Sikhism, Thakur Singh Sandhanvalia](https://eos.learnpunjabi.org/THAKUR%20SINGH%20SANDHANVALIA%20%281837-1887%29.html): later biography; not corroboration of the supplied Ballabhgarh operations.
 
-Original game code/content remains under the repository's Cartesian Graphics
+Original game code/content remains under the repository's existing project
 rights. Historical facts and public-domain material are not claimed as owned.

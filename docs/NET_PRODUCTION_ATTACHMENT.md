@@ -54,7 +54,7 @@ commands and the JSON work-order format are documented in NET's
 `docs/INDUSTRIAL_GAME_PRODUCTION.md`. Agents submit parameter candidates; they
 cannot change the title's acceptance checks through those candidates.
 
-The title remains proprietary under Cartesian Graphics' existing terms. The
+The title remains proprietary under the repository's existing project terms. The
 reusable NET adapter contains no copied proprietary title code. Source files stay
 in this repository and are copied only to a local temporary workload directory at
 execution. Neither this profile nor a passing check authorizes publication,

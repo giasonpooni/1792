@@ -1,9 +1,9 @@
-# Shared Cartesian Graphics game architecture
+# Shared Notations Gaming game architecture
 
 Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 
 **Decision:** CG-GAME-ARCH-001, revision 1, 2026-09-28.
-**Scope:** all Cartesian Graphics games, including 1792 and Hero of the Two Worlds.
+**Scope:** all Notations Gaming games under Notation Systems Inc., including 1792 and Hero of the Two Worlds.
 **Status:** adopted development baseline; this document does not implement or certify an integration.
 
 Every title will use the **C++ - Rust - Python - Julia** architecture. This extends the existing Godot/Bevy/Blender and NET/`ciw`/SCR boundaries rather than replacing them. All four languages have defined roles in the development and simulation system; they are not a mandatory four-stage call chain for every frame.
