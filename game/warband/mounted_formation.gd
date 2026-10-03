@@ -30,6 +30,10 @@ static func slot(leader: Vector3, yaw: float, index: int) -> Vector3:
 	# The Home yard is bounded. A formation slot must remain inside its walls.
 	return bounded(leader+offset)
 
+static func following_gap(follower_speed: float, ahead_speed: float) -> float:
+	# Reserve reaction distance and the extra braking travel of a faster follower.
+	return 3.4+.25*ahead_speed+maxf(0.0,(follower_speed*follower_speed-ahead_speed*ahead_speed)/(2*Motor.BRAKING))
+
 static func layout(leader: CharacterBody3D, riders: Array[CharacterBody3D], room: Callable) -> Dictionary:
 	var goals: Array[Vector3]=[]
 	var mode:="paired"
@@ -40,7 +44,14 @@ static func layout(leader: CharacterBody3D, riders: Array[CharacterBody3D], room
 	if mode=="single file":
 		var ahead:=leader
 		for i in range(riders.size()):
-			goals[i]=bounded(ahead.global_position+ahead.global_basis.z*3.4)
+			var rider:=riders[i]
+			var forward:=-ahead.global_basis.z
+			var goal:=bounded(ahead.global_position-forward*following_gap(rider.speed,ahead.speed))
+			# A moving slot can retreat as the horse ahead brakes. Stay facing down
+			# the column while it closes; turning around would obstruct the next rider.
+			if horizontal(rider.global_position-ahead.global_position).dot(forward)<0 and horizontal(goal-rider.global_position).dot(forward)<0:
+				goal=rider.global_position
+			goals[i]=goal
 			ahead=riders[i]
 	return {"mode":mode,"goals":goals}
 
@@ -70,6 +81,8 @@ static func free_distance(mount: CharacterBody3D, direction: Vector3, reach: flo
 
 static func step(mount: CharacterBody3D, waypoint: Vector3, delta: float) -> Dictionary:
 	var offset := horizontal(waypoint-mount.global_position)
+	if offset.length()<ARRIVAL:
+		return mount.step(delta,0,0,false,false,true)
 	var difference := wrapf(atan2(-offset.x,-offset.z)-mount.rotation.y,-PI,PI) if offset.length()>.05 else 0.0
 	var speed_limit: float=mount.gait_speed_limit
 	# v²/(2a), with one integration step and a small stand-off reserved before impact.
@@ -77,6 +90,7 @@ static func step(mount: CharacterBody3D, waypoint: Vector3, delta: float) -> Dic
 	var clear := free_distance(mount,-mount.global_basis.z,reach)
 	var usable := maxf(0.0,clear-.22-mount.speed*delta)
 	var target := minf(speed_limit,sqrt(2*Motor.BRAKING*maxf(0,offset.length()-ARRIVAL)))
+	target=minf(target,maxf(0.0,offset.length()-ARRIVAL)*2.5)
 	target=minf(target,sqrt(2*Motor.BRAKING*usable))
 	if absf(difference)>.25: target=minf(target,2.0)
 	if absf(difference)>.7 or offset.length()<ARRIVAL: target=0.0

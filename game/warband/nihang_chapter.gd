@@ -13,6 +13,7 @@ var _camp_nav:=Navigation.new()
 var _camp_action:=""
 var _camp_choices: Array[String]=[]
 var _camp_formation:="paired"
+var _care_page:=-1
 
 func _init() -> void:
 	model=CampState.new();save_path=WorkshopState.WORKSHOP_SAVE
@@ -85,29 +86,33 @@ func _interact() -> void:
 func _open_camp(kind: String="") -> void:
 	var error:=_camp_access(kind)
 	if not error.is_empty(): _message=error;return
+	if kind=="care": _show_care_page(0);return
 	var camp: Dictionary=model.nihang_camp()
-	var body: String="The elder recognises you from earlier visits with your father. Two familiar riders tend the horses nearby."
+	var body: String="A familiar voice reaches you before anyone stands.\n\nBuddh. Come closer. Your father's companions are tending their horses; the elder makes room for you beside them."
 	var choices: Array=[]
-	if kind=="care":
-		body="The veteran waits beside the horse. Look over its tack and listen before asking to ride."
-		choices=[["Inspect the tack and hear the veteran","camp:care"]]
-	else:
-		match camp.phase:
-			"unmet": choices=[["Greet the elder and the riders","camp:meet"]]
-			"acquainted": body=CampRules.WORDS.meet
-			"prepared":
-				body="%s, take your own household horse. Ask one rider or both to accompany you to the north marker and back. Complete the first household riding gate before setting out."%model.nihang_address(CampRules.ELDER)
-				choices=[["Invite the veteran to ride with me","camp:invite_one"],["Invite both familiar riders","camp:invite_two"]]
-			"outbound", "returning":
-				body="%s, our undertaking is the north practice marker and back. Bring everyone home before we settle it."%model.nihang_address(CampRules.ELDER)
-				if camp.phase=="returning": choices.append(["Return together and thank the riders","camp:return"])
-				choices.append(["End this outing here with everyone present","camp:cancel"])
-			"complete": body=CampRules.WORDS["return"]
-			"cancelled": body=CampRules.WORDS.cancel
+	match camp.phase:
+		"unmet": choices=[["Greet the elder and the riders","camp:meet"]]
+		"acquainted": body=CampRules.WORDS.meet
+		"prepared":
+			body="%s, your own horse; our company. Ask the veteran to ride with you, or bring both riders. The undertaking is the north marker and home again. Wait for one another."%model.nihang_address(CampRules.ELDER)
+			choices=[["Invite the veteran to ride with me","camp:invite_one"],["Invite both familiar riders","camp:invite_two"]]
+		"outbound", "returning":
+			body="%s, our undertaking is the north practice marker and back. Bring everyone home before we settle it."%model.nihang_address(CampRules.ELDER)
+			if camp.phase=="returning": choices.append(["Return together and thank the riders","camp:return"])
+			choices.append(["End this outing here with everyone present","camp:cancel"])
+		"complete": body=CampRules.WORDS["return"]+"\n\nThe elder makes room beside the mat. The horse-care lesson has become an undertaking you kept."
+		"cancelled": body=CampRules.WORDS.cancel
 	choices.append(["Leave the conversation","resume"])
 	_show_dialog("THE CAMP · FAMILIAR VOICES",body,choices)
 	for choice in choices:
 		if choice[1].begins_with("camp:"): _camp_choices.append(choice[1].trim_prefix("camp:"))
+
+func _show_care_page(page: int) -> void:
+	var beat: Dictionary=CampRules.CARE_BEATS[page]
+	var action: String=["care_footing","care_return","care"][page]
+	_show_dialog(beat.title,beat.body,[[beat.choice,"camp:"+action],["Leave the conversation","resume"]])
+	# _show_dialog clears pending actions; arm only the displayed page afterwards.
+	_care_page=page;_camp_choices.append(action)
 
 func _menu_action(action: String) -> void:
 	if action.begins_with("camp:"):
@@ -117,10 +122,10 @@ func _menu_action(action: String) -> void:
 	super._menu_action(action)
 
 func _clear_pending_actions() -> void:
-	super._clear_pending_actions();_camp_action="";_camp_choices.clear()
+	super._clear_pending_actions();_camp_action="";_camp_choices.clear();_care_page=-1
 
 func _resume() -> void:
-	_camp_action="";_camp_choices.clear();super._resume()
+	_camp_action="";_camp_choices.clear();_care_page=-1;super._resume()
 
 func training_entry_error() -> String:
 	if model.nihang_active(): return "Return your camp companions before entering a separate riding lesson."
@@ -129,7 +134,16 @@ func training_entry_error() -> String:
 func _physics_process(delta: float) -> void:
 	if not _camp_action.is_empty():
 		var kind:=_camp_action;_camp_action=""
-		var error:=_camp_access(kind)
+		var beat: bool=kind in ["care_footing","care_return"]
+		var error:=_camp_access("care" if beat else kind)
+		if beat:
+			var expected:=0 if kind=="care_footing" else 1
+			if error.is_empty() and (_care_page!=expected or model.nihang_camp().phase!="acquainted"):
+				error="Return to the veteran before continuing the horse-care conversation."
+			if error.is_empty(): _show_care_page(expected+1)
+			else: _message=error;_resume()
+			return
+		if kind=="care" and _care_page!=2: error="Finish the horse-care conversation with the veteran."
 		if error.is_empty(): error=model.camp_action(kind,true,true)
 		_message=error if not error.is_empty() else CampRules.WORDS[kind]
 		_sync_camp();_resume();return

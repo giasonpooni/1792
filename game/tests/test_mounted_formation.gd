@@ -169,6 +169,45 @@ func narrow_passage() -> void:
 	check(last_mode=="paired","group opens back out after clearing the walls")
 	await finish()
 
+func stop_start_column(hz: int) -> Vector2:
+	Engine.physics_ticks_per_second=hz
+	await setup([Vector3(0,0,12),Vector3(0,0,15.4),Vector3(0,0,18.8)])
+	var riders: Array[CharacterBody3D]=[mounts[1],mounts[2]]
+	var starts: Array[Vector3]=[riders[0].position,riders[1].position]
+	var restart: Array[Vector3]=[]
+	var peaks: Array[float]=[0.0,0.0]
+	var yaws: Array[float]=[0.0,0.0]
+	var rest_speed:=0.0
+	var gap:=INF
+	var largest_step:=0.0
+	for i in range(hz*15):
+		await physics_frame
+		var t:=float(i)/hz
+		var before: Array[Vector3]=[mounts[0].position,riders[0].position,riders[1].position]
+		var moving:=t<3 or (t>=8 and t<10)
+		mounts[0].step(1.0/hz,.8 if moving else 0,0,false,false,not moving)
+		var plan:=Formation.layout(mounts[0],riders,func(_body,_goal): return false)
+		for j in range(2):
+			Formation.step(riders[j],plan.goals[j],1.0/hz)
+			peaks[j]=maxf(peaks[j],riders[j].speed)
+			yaws[j]=maxf(yaws[j],absf(riders[j].rotation.y))
+			if t>=7 and t<8: rest_speed=maxf(rest_speed,riders[j].speed)
+		for j in range(3):
+			largest_step=maxf(largest_step,Formation.horizontal(mounts[j].position-before[j]).length())
+			for k in range(j+1,3):
+				gap=minf(gap,Formation.horizontal(mounts[j].position-mounts[k].position).length())
+		if i==hz*8-1: restart=[riders[0].position,riders[1].position]
+	for j in range(2):
+		check(Formation.horizontal(riders[j].position-starts[j]).length()>15,"column rider %d travels more than 15 metres at %d Hz"%[j,hz])
+		check(peaks[j]>3,"column rider %d reaches riding speed at %d Hz"%[j,hz])
+		check(Formation.horizontal(riders[j].position-restart[j]).length()>5,"column rider %d resumes after waiting at %d Hz"%[j,hz])
+		check(riders[j].speed<.08 and absf(riders[j].rotation.y)<.1 and yaws[j]<.1,"column rider %d settles facing forward without reversing at %d Hz"%[j,hz])
+	check(gap>=3,"column preserves three-metre spacing during both stops at %d Hz: %f"%[hz,gap])
+	check(rest_speed<.08,"column holds a steady rest between seven and eight seconds at %d Hz: %f"%[hz,rest_speed])
+	check(largest_step<=6.0/hz+.015,"column movement uses only bounded motor steps at %d Hz: %f"%[hz,largest_step])
+	var gaps:=Vector2(Formation.horizontal(mounts[0].position-riders[0].position).length(),Formation.horizontal(riders[0].position-riders[1].position).length())
+	await finish();return gaps
+
 func run() -> void:
 	var leader:=Vector3(0,.04,0)
 	check(Formation.slot(leader,0,0).z>leader.z,"northward rider follows behind leader")
@@ -179,4 +218,7 @@ func run() -> void:
 	Engine.physics_ticks_per_second=60
 	await crossing(true);await crossing(false);await obstacles()
 	await terrain();await narrow_passage()
+	var column60:=await stop_start_column(60);var column30:=await stop_start_column(30)
+	check(column60.distance_to(column30)<.3,"rested column gaps remain stable at 30 and 60 Hz: %s / %s"%[column60,column30])
+	Engine.physics_ticks_per_second=60
 	print("MOUNTED_FORMATION_TESTS: %d passed, %d failed"%[passed,failed]);quit(1 if failed else 0)
