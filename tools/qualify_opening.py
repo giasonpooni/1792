@@ -98,6 +98,61 @@ def hex_id(value, length: int = 64) -> bool:
     return isinstance(value, str) and re.fullmatch(r"[0-9a-f]{%d}" % length, value) is not None
 
 
+def finite_point(value) -> bool:
+    return (isinstance(value, list) and len(value) == 3
+            and all(type(item) in (int, float) and math.isfinite(item) for item in value))
+
+
+def focus_motion_check(manifest: dict) -> None:
+    """Verify the earned production-escort evidence, not fixture motion."""
+    evidence = manifest.get("earned_focus_motion")
+    require(isinstance(evidence, dict)
+            and evidence.get("classification") == "automated earned player-input journey; not a human playtest"
+            and evidence.get("actor") == "production household escort"
+            and evidence.get("movement_source") == "displayed protection choice, native G orders and production escort motor"
+            and evidence.get("observer_id") == "ranjit_singh"
+            and evidence.get("sensor_id") == "character-eye"
+            and evidence.get("actor_pose_or_velocity_injected") is False
+            and evidence.get("sensor_pose_injected") is False
+            and evidence.get("route_read") is False
+            and evidence.get("affiliation_read") is False
+            and evidence.get("authored_gameplay_envelope") is True
+            and evidence.get("measured_physiology") is False
+            and evidence.get("authenticated_history") is False,
+            "Missing or overstated earned production Focus motion boundary")
+    observation = evidence.get("identified_observation", {})
+    require(set(observation) == {"id", "label", "kind", "observer_id", "sensor_id", "position", "seen_tick", "expires_tick"}
+            and observation["id"] == "household_guard"
+            and observation["label"] == "Household guard" and observation["kind"] == "ally"
+            and observation["observer_id"] == "ranjit_singh" and observation["sensor_id"] == "character-eye"
+            and finite_point(observation["position"])
+            and whole(observation["seen_tick"]) and observation["expires_tick"] == observation["seen_tick"] + 600,
+            "Earned production escort observation leaks or loses identity/provenance")
+    estimate = evidence.get("estimate", {})
+    ticks = estimate.get("from_ticks")
+    require(set(estimate) == {"position", "origin_position", "from_ticks", "expires_tick", "kind", "observer_id", "sensor_id"}
+            and estimate["kind"] == "estimate"
+            and estimate["observer_id"] == "ranjit_singh" and estimate["sensor_id"] == "character-eye"
+            and finite_point(estimate["origin_position"]) and finite_point(estimate["position"])
+            and isinstance(ticks, list) and len(ticks) == 2 and all(whole(tick) for tick in ticks)
+            and ticks[1] - ticks[0] == 30 and estimate["expires_tick"] == ticks[1] + 120
+            and math.hypot(estimate["position"][0] - estimate["origin_position"][0],
+                           estimate["position"][2] - estimate["origin_position"][2]) > .3,
+            "Earned production escort estimate leaks actor state or loses its bounded sample")
+    require(evidence.get("estimate_tick") == ticks[1]
+            and whole(evidence.get("retracted_tick"))
+            and ticks[1] < evidence["retracted_tick"] < estimate["expires_tick"],
+            "Production escort estimate was not visibly contradicted before its expiry")
+    route = [item for item in manifest.get("route", [])
+             if item.get("id") == "household-escort-focus-motion-earned"]
+    require(len(route) == 1 and route[0].get("home_tick", -1) > evidence["retracted_tick"]
+            and route[0].get("aftermath", {}).get("escort", {}).get("active") is True
+            and route[0]["aftermath"]["escort"].get("instruction") == "follow"
+            and route[0].get("escort_observation", {}).get("visible") is True
+            and route[0]["escort_observation"].get("collision_layer") == 2,
+            "Earned Focus route did not retain the same deployed escort obligation")
+
+
 def normalize(value):
     if type(value) is float and value.is_integer():
         return int(value)
@@ -387,6 +442,8 @@ def check_manifest(folder: Path, checkpoint: Path, final_save: Path, choice: str
                 and (width, height) == (record["width"], record["height"]), "PNG byte/pixel mismatch: " + name)
         require(pixels != pixels[:4] * (width * height), "Blank production frame: " + name)
     if choice == "independent_inquiry":
+        require(manifest.get("earned_focus_motion") in ({}, None),
+                "Independent inquiry cannot inherit household-escort motion evidence")
         expected_guard = {"visible": False, "collision_layer": 0,
                           "position": UNDEPLOYED_GUARD["position"], "yaw": 0, "velocity": [0, 0, 0]}
         require(manifest.get("route") and all(semantic_equal(item.get("escort_observation"), expected_guard)
@@ -408,6 +465,8 @@ def check_manifest(folder: Path, checkpoint: Path, final_save: Path, choice: str
                     for position in positions)
                 and math.hypot(positions[1][0]-positions[0][0], positions[1][2]-positions[0][2]) < .001,
                 "Independent guard refusal displaced the stationary player")
+    else:
+        focus_motion_check(manifest)
     receipt = manifest["earned_training_receipt"]
     receipt_check(receipt)
     shots = manifest["native_shot_observations"]

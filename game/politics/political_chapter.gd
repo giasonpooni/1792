@@ -2,7 +2,9 @@ extends "res://childhood/home_chapter.gd"
 ## Same chapter, physics and world authority, with an opt-in extended menu entry.
 const Campaign := preload("res://politics/political_state.gd")
 const EyeShader := preload("res://perception/one_eye.gdshader")
+const GroundFocus := preload("res://perception/ground_focus.gd")
 var campaign: Campaign
+var ground_focus: Node
 var _eye_level := true
 var _attention_cue := "No watchful glance has been observed. This is not proof of privacy."
 var _north_observer: MeshInstance3D
@@ -41,11 +43,25 @@ func _ready() -> void:
 		label.pixel_size = 0.002
 		resident.add_child(label)
 		_social_visuals.append(resident)
+	ground_focus=GroundFocus.new();ground_focus.name="GroundFocus";add_child(ground_focus);ground_focus.bind(self)
+	ground_focus.register_target("trainer",trainer,"Trainer","interaction")
+	ground_focus.register_target("mother",_mother,"Raj Kaur","ally")
+	ground_focus.register_target("bend_trace",_clue,"Ground trace","clue")
+	ground_focus.register_target("household_horse",horse,"Household horse","interaction",Vector3.UP*1.1)
+	ground_focus.register_target("unknown_assailant",attacker,"Unknown contact","contact",Vector3.UP*1.15)
+	ground_focus.register_target("household_guard",escort,"Household guard","ally",Vector3.UP*1.15)
+	ground_focus.register_target("north_contact",_north_observer,"Unknown contact","contact",Vector3.UP*0.7)
+	for id in Campaign.OUTPOSTS:
+		ground_focus.register_target("outpost_"+id,_outpost_visuals[Campaign.OUTPOSTS.keys().find(id)],str(id).capitalize()+" outpost","interaction",Vector3.UP*0.6)
+	for i in range(Campaign.Politics.SocialProfile.ADDED_RESIDENTS.size()):
+		var id: String=Campaign.Politics.SocialProfile.ADDED_RESIDENTS[i]
+		ground_focus.register_target("resident_"+id,_social_visuals[i],Campaign.Registry.PEOPLE[id].name,"interaction",Vector3.UP*0.8)
 	_sync_eye_camera()
 	_refresh()
 
 func _apply() -> void:
 	super._apply()
+	if is_instance_valid(ground_focus): ground_focus.clear()
 	_sync_eye_camera()
 
 func _sync_eye_camera() -> void:
@@ -65,6 +81,14 @@ func _eye_origin() -> Vector3:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_Z:
+			if ground_focus.active: ground_focus.stop()
+			else:
+				var reason:=_focus_access()
+				if reason.is_empty(): ground_focus.start()
+				else: _message=reason;_refresh()
+			get_viewport().set_input_as_handled()
+			return
 		if event.keycode == KEY_F6:
 			_eye_level = not _eye_level
 			_sync_eye_camera()
@@ -77,9 +101,18 @@ func _unhandled_input(event: InputEvent) -> void:
 			return
 	super._unhandled_input(event)
 
+func _focus_access() -> String:
+	if _paused: return "Close the current conversation or notebook before focusing."
+	if model.mounted() or model.stage() in ["active","caught"]: return "Focus requires a quiet moment on foot."
+	if Input.is_action_pressed("sprint"): return "Slow down before focusing."
+	return ""
+
 func _physics_process(delta: float) -> void:
 	var before: int = model.progress().tick
 	super._physics_process(delta)
+	if is_instance_valid(ground_focus):
+		if ground_focus.active and not _focus_access().is_empty(): ground_focus.stop()
+		ground_focus.sample(int(model.progress().tick))
 	if not _paused and model.progress().tick != before and int(model.progress().tick)%60 == 0:
 		_sample_observers()
 	_sync_eye_camera()
@@ -124,6 +157,7 @@ func _refresh() -> void:
 		_veil.material.set_shader_parameter("loss",p.loss)
 		_veil.material.set_shader_parameter("affected_left",p.affected_left)
 	_hud.text += "\nP reports · F6 camera: %s · Vision: %s (authored profile)\n%s" % ["eye-level" if _eye_level else "follow",p.stage,_attention_cue]
+	if _focus_access().is_empty(): _hud.text += "\nZ Focus · uses the current character-eye vision profile"
 	if campaign.political_inputs().size() >= Campaign.Politics.MAX_INPUTS:
 		_hud.text += "\nPrototype ledger full: further political inputs are refused; save remains available."
 	if is_instance_valid(_north_observer): _north_observer.get_parent().visible = model.stage() == "escaped"
@@ -131,6 +165,7 @@ func _refresh() -> void:
 	for node in _social_visuals: node.get_parent().visible = model.aftermath_phase() == "complete"
 
 func _open_journal() -> void:
+	if is_instance_valid(ground_focus): ground_focus.stop()
 	super._open_journal()
 	_panel_text.text = _panel_text.text.replace("Eye loss is already present; F4 changes only subjective framing. There is no historically established progressive-blindness schedule here.",
 		"The extended new-game profile gradually reduces left-eye contribution during active play and stops at one-eye vision. This is authored, not a verified disease timeline. Imported legacy saves retain stable one-eye vision. F4 changes rendering only; F6 changes viewpoint, not perception or rival knowledge.")
@@ -142,6 +177,10 @@ func _open_journal() -> void:
 	button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	button.pressed.connect(_menu_action.bind("political_import"))
 	_actions.add_child(button)
+
+func _show_dialog(title: String,body: String,actions: Array) -> void:
+	if is_instance_valid(ground_focus): ground_focus.stop()
+	super._show_dialog(title,body,actions)
 
 func _interact() -> void:
 	if model.aftermath_phase() != "complete" or model.mounted():

@@ -1,4 +1,5 @@
-# Copyright (c) 2026 Cartesian Graphics. All rights reserved.
+# Copyright (c) 2026 Notation Systems Inc. / Notations Gaming.
+# All rights reserved.
 extends Node
 ## Focus is an observation presentation on the Home authority's existing clock.
 const Rules := preload("res://perception/focus_rules.gd")
@@ -17,6 +18,7 @@ var _current: Dictionary={}
 var _motion: Dictionary={}
 var _predictions: Dictionary={}
 var _heard: Dictionary={}
+var _retained_notice_until := -1
 var filter_layer: CanvasLayer
 var overlay_layer: CanvasLayer
 var overlay: Control
@@ -56,17 +58,26 @@ func start() -> void:
 	if active: return
 	_task_hud_was_visible=chapter._hud.visible
 	chapter._hud.hide()
-	active=true;_pending.clear();_acquiring.clear();_motion.clear();_current.clear();_set_visible()
+	active=true;_pending.clear();_acquiring.clear();_motion.clear();_current.clear();_retained_notice_until=-1;_set_visible()
+	_sample_compact_hud()
 
 func stop() -> void:
 	if active and is_instance_valid(chapter._hud): chapter._hud.visible=_task_hud_was_visible
-	active=false;_pending.clear();_acquiring.clear();_motion.clear();_current.clear();_set_visible()
+	active=false;_pending.clear();_acquiring.clear();_motion.clear();_current.clear();_retained_notice_until=-1;_set_visible()
+	_sample_compact_hud()
 
 func clear() -> void:
-	stop();_tick=-1;_records.clear();_predictions.clear();_heard.clear();overlay.marks.clear();overlay.queue_redraw()
+	stop();_tick=-1;_records.clear();_predictions.clear();_heard.clear();_retained_notice_until=-1;overlay.marks.clear();overlay.queue_redraw()
 
 func _set_visible() -> void:
 	filter_layer.visible=active;overlay_layer.visible=active
+
+func _sample_compact_hud() -> void:
+	# The optional PoliticalChapter shares the Home sensor interface without the
+	# composed art study. Its original HUD remains the presentation authority.
+	if not "art" in chapter: return
+	if is_instance_valid(chapter) and is_instance_valid(chapter.art) and is_instance_valid(chapter.art.detail) and is_instance_valid(chapter.art.detail.hud):
+		chapter.art.detail.hud.sample()
 
 func sample(tick: int) -> void:
 	if tick<0 or not is_instance_valid(chapter): return
@@ -109,8 +120,14 @@ func _scan_visual(tick: int) -> void:
 				"observer_id":Names.HERO_ID,"sensor_id":"character-eye"})
 			continue
 		var record:=Rules.observation(id,String(target.label),String(target.kind),Names.HERO_ID,at,tick)
+		var previous: Dictionary=_records.get(id,{})
+		if _predictions.has(id) and not previous.is_empty() and int(previous.get("seen_tick",-1))==tick-1:
+			if not Rules.supports(_predictions[id],previous,record): _predictions.erase(id)
 		_records[id]=record
 		_current[id]=true
+		# Confirm that the anonymous dwell became bounded evidence without naming
+		# another subject in the heading or creating persistent tutorial state.
+		if previous.is_empty(): _retained_notice_until=maxi(_retained_notice_until,tick+Rules.RETAINED_NOTICE_TICKS)
 		if not _motion.has(id):
 			_motion[id]=record.duplicate(true)
 			_predictions.erase(id)
@@ -169,6 +186,7 @@ func sound_cues() -> Array:
 
 func _hud_regions() -> Array[Rect2]:
 	var regions: Array[Rect2]=[]
+	if not "art" in chapter: return regions
 	if not is_instance_valid(chapter.art) or not is_instance_valid(chapter.art.detail) or not is_instance_valid(chapter.art.detail.hud): return regions
 	var hud=chapter.art.detail.hud
 	if not hud.visible: return regions
@@ -194,7 +212,13 @@ func _present() -> void:
 	var camera: Camera3D=chapter.get_viewport().get_camera_3d()
 	if not is_instance_valid(camera): return
 	var size: Vector2=chapter.get_viewport().get_visible_rect().size
-	heading.text="FOCUS  ·  Z return  ·  E interact\nHold your gaze to observe."
+	# The compact control strip owns keys. Context appears only until the first
+	# identification, then yields the space to sensory evidence.
+	heading.text="FOCUS"
+	if _tick<_retained_notice_until:
+		heading.text+="\nObservation retained."
+	elif _records.is_empty():
+		heading.text+="\nKeep subject visible until the ring fills." if not _acquiring.is_empty() else "\nLook toward a subject."
 	for cue in sound_cues():
 		var age:=int(ceil(float(_tick-int(cue.heard_tick))/60.0))
 		heading.text+="\n~ %s · heard %s · %ds ago%s" % [cue.label,cue.sector,age," · muffled" if cue.muffled else ""]
@@ -214,15 +238,21 @@ func _present() -> void:
 		var screen:=_screen_point(camera,at,size)
 		if not screen.is_finite(): continue
 		var age:=_tick-int(record.seen_tick)
-		var state: String="seen" if age==0 and _current.has(record.id) else "last seen %ds ago" % int(ceil(age/60.0))
+		var is_current: bool=age==0 and _current.has(record.id)
+		var state:=Rules.observation_state(age,is_current)
 		var mark: Dictionary={"at":screen,"color":Rules.colour(record.kind),"alpha":clampf(1.0-float(age)/Rules.MEMORY_TICKS,0.15,1.0),
-			"text":"%s %s · %s" % [Rules.symbol(record.kind),record.label,state]}
+			"text":"%s %s · %s" % [Rules.symbol(record.kind),record.label,state],
+			# Presentation metadata is derived only from current admission. It lets
+			# the overlay distinguish live evidence from bounded memory without
+			# reading the target again or changing the retained observation.
+			"evidence_state":"observed" if is_current else "remembered"}
 		if _predictions.has(record.id):
 			var end:=Rules.position(_predictions[record.id])
 			var origin:=Rules.position({"position":_predictions[record.id].origin_position})
 			if not camera.is_position_behind(end) and not camera.is_position_behind(origin):
 				mark.prediction=camera.unproject_position(end)
 				mark.prediction_origin=camera.unproject_position(origin)
+				mark.prediction_text=Rules.estimate_label(_predictions[record.id])
 		overlay.marks.append(mark)
 	var pending_marks: Array=[]
 	for pending in acquisitions():

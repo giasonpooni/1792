@@ -1,4 +1,5 @@
-# Copyright (c) 2026 Cartesian Graphics. All rights reserved.
+# Copyright (c) 2026 Notation Systems Inc. / Notations Gaming.
+# All rights reserved.
 extends Control
 ## Screen presentation of recorded evidence, with explicit stale/estimated labels.
 var marks: Array=[]
@@ -35,7 +36,17 @@ func _draw() -> void:
 			var background:=color;background.a*=0.35
 			draw_circle(at,10,background,false,1.5)
 			draw_arc(at,10,-PI*0.5,-PI*0.5+TAU*clampf(float(m.progress),0,1),32,color,2.5,true)
-		else: draw_circle(at,7,color,false,2.0)
+		elif String(m.get("evidence_state",""))=="observed":
+			# A solid centre marks evidence admitted on this exact character-eye
+			# sample. Text and colour remain redundant rather than authoritative.
+			draw_circle(at,8,color,false,2.0)
+			draw_circle(at,3,color,true)
+		else:
+			# A broken hollow ring marks retained last-seen memory. It is visually
+			# distinct from the live dot and from the dashed motion hypothesis.
+			for segment in range(4):
+				var start: float=-PI*0.5+float(segment)*PI*0.5+0.14
+				draw_arc(at,8,start,start+PI*0.5-0.28,8,color,2.0,true)
 		if m.has("prediction"):
 			var end: Vector2=m.prediction
 			var start: Vector2=m.prediction_origin
@@ -49,9 +60,11 @@ func _draw() -> void:
 				for reserved in occupied:
 					if bounds.intersects(reserved): clear=false;break
 				if clear: draw_line(from,to,color,2.0)
-			var estimate_rect:=_label_rect(end,Vector2(84,22),occupied)
+			var estimate_label:=String(m.get("prediction_text","estimated"))
+			var estimate_width:=minf(180.0,font.get_string_size(estimate_label,HORIZONTAL_ALIGNMENT_LEFT,-1,12).x+12)
+			var estimate_rect:=_label_rect(end,Vector2(estimate_width,22),occupied)
 			if estimate_rect.has_area():
-				draw_string(font,estimate_rect.position+Vector2(6,16),"estimated",HORIZONTAL_ALIGNMENT_LEFT,72,12,color)
+				draw_string(font,estimate_rect.position+Vector2(6,16),estimate_label,HORIZONTAL_ALIGNMENT_LEFT,estimate_width-12,12,color)
 				occupied.append(estimate_rect.grow(3))
 
 func _style(alpha: float) -> StyleBoxFlat:

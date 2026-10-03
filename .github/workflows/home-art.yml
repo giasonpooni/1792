@@ -60,6 +60,12 @@ jobs:
             --capture-dir "$HOME/.local/share/godot/app_userdata/1792/gujranwala-beauty-images" \
             | tee test-results/gujranwala-beauty-verification.json
           cp -r "$HOME/.local/share/godot/app_userdata/1792/gujranwala-beauty-images" test-results/
+          FOCUS_PLAYER_JOURNEY_OUTPUT="$PWD/test-results/focus-player-journey" timeout 120 xvfb-run -a \
+            "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --path game \
+            --rendering-method gl_compatibility --audio-driver Dummy --fixed-fps 60 \
+            --script res://tests/test_focus_player_journey.gd 2>&1 | tee test-results/focus-player-journey.log
+          ! grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/focus-player-journey.log
+          grep -q 'FOCUS_PLAYER_JOURNEY_TESTS: [1-9][0-9]* passed, 0 failed' test-results/focus-player-journey.log
           timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
             --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy \
             --script res://tests/render_gujranwala_daily_detail.gd 2>&1 | tee test-results/gujranwala-daily-detail-render.log
@@ -77,6 +83,12 @@ jobs:
             --script res://tests/render_ground_focus.gd 2>&1 | tee test-results/ground-focus-render.log
           ! grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/ground-focus-render.log
           grep -q 'GROUND_FOCUS_RENDER: 14 captures, 0 failures' test-results/ground-focus-render.log
+          POLITICAL_VISION_OUTPUT="$PWD/test-results/political-vision-captures" timeout 120 xvfb-run -a \
+            "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --path game \
+            --rendering-method gl_compatibility --audio-driver Dummy --fixed-fps 60 \
+            --script res://tests/render_political_vision.gd 2>&1 | tee test-results/political-vision-render.log
+          ! grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/political-vision-render.log
+          grep -q 'POLITICAL_RENDER: 7 captures; 0 failures' test-results/political-vision-render.log
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:

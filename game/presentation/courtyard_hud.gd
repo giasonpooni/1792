@@ -1,4 +1,5 @@
-# Copyright (c) 2026 Cartesian Graphics. All rights reserved.
+# Copyright (c) 2026 Notation Systems Inc. / Notations Gaming.
+# All rights reserved.
 extends CanvasLayer
 ## Existing words and task state, in a reversible compact layout; no new knowledge.
 const Beginning:=preload("res://presentation/beginning_guidance.gd")
@@ -92,6 +93,10 @@ func sample() -> void:
 				controls.text+="    Z  Focus    X  Hawk"
 		words.text=_chapter.story_caption() if _chapter.has_method("story_caption") else _chapter._message
 		bottom.visible=not words.text.is_empty()
+		# The strip remains the control owner during Focus. State the reversible
+		# action there instead of repeating E/Z instructions in the sensor heading.
+		if is_instance_valid(_chapter.get("ground_focus")) and _chapter.ground_focus.active:
+			controls.text=controls.text.replace("Z  Focus","Z  Return")
 		control_strip.position=Vector2((size.x-control_strip.size.x)*.5,size.y-control_strip.get_combined_minimum_size().y-18)
 		bottom.position=Vector2((size.x-bottom.size.x)*.5,control_strip.position.y-bottom.get_combined_minimum_size().y-8)
 	for r in _labels:

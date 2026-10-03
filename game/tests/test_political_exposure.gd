@@ -232,6 +232,42 @@ func _run() -> void:
 	chapter._subjective = false
 	chapter._veil.visible = false
 	check(chapter.campaign.perception() == parameters,"clear rendering does not restore eyesight")
+
+	# Focus is hosted by the production extended chapter, but the existing
+	# character-eye policy remains the only visual admission authority. These are
+	# declared geometry fixtures, not an earned player journey or medical measure.
+	var focus=chapter.ground_focus
+	focus.clear();focus._targets.clear()
+	var eye: Vector3=chapter._eye_origin()
+	var forward: Vector3=-chapter.avatar.pivot.global_basis.z
+	var right: Vector3=chapter.avatar.pivot.global_basis.x
+	var affected_at:=eye+(forward*cos(deg_to_rad(70.0))-right*sin(deg_to_rad(70.0)))*2.5
+	var healthy_at:=eye+(forward*cos(deg_to_rad(70.0))+right*sin(deg_to_rad(70.0)))*2.5
+	var affected: Node3D=chapter._box(Vector3(.18,.18,.18),affected_at,Color.RED)
+	var healthy: Node3D=chapter._box(Vector3(.18,.18,.18),healthy_at,Color.GREEN)
+	check(Vision.bearing(forward,affected_at-eye)<0.0 and Vision.bearing(forward,healthy_at-eye)>0.0,
+		"vision fixtures occupy the authored affected and healthy sides")
+	focus.register_target("affected_fixture",affected,"Affected-side fixture")
+	var camera: Camera3D=chapter.get_viewport().get_camera_3d()
+	camera.look_at(affected_at)
+	var z:=InputEventKey.new();z.keycode=KEY_Z;z.pressed=true
+	chapter._unhandled_input(z)
+	check(focus.active,"actual Z input starts Focus in the extended chapter")
+	for _i in range(50):
+		chapter.campaign.advance();focus.sample(int(chapter.campaign.progress().tick))
+	check(not chapter._seen(affected_at,18.0) and focus.acquisitions().is_empty() and focus.observations().is_empty() and focus.overlay.marks.is_empty(),
+		"camera-visible affected-side fixture cannot create acquisition, evidence or overlay")
+	focus.clear();focus._targets.clear()
+	focus.register_target("healthy_fixture",healthy,"Healthy-side fixture")
+	chapter._unhandled_input(z)
+	for _i in range(50):
+		chapter.campaign.advance();focus.sample(int(chapter.campaign.progress().tick))
+	check(chapter._seen(healthy_at,18.0) and focus.observations().size()==1,
+		"the same Focus observer admits a healthy-side target through the existing policy")
+	check(focus.overlay.marks.is_empty(),"character evidence outside the displayed camera creates no marker")
+	camera.look_at(healthy_at);focus.sample(int(chapter.campaign.progress().tick))
+	check(focus.overlay.marks.size()==1,"an admitted observation becomes presentable only when the camera can display it")
+	focus.clear()
 	chapter._open_journal()
 	check(chapter._panel_text.text.contains("authored"),"journal marks authored progression")
 	world.queue_free()

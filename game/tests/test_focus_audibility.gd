@@ -47,17 +47,19 @@ func run() -> void:
 	var saved_layout := AudioServer.generate_bus_layout()
 	var original_state := mixer_snapshot()
 	AudioServer.set_bus_layout(AudioBusLayout.new())
-	AudioServer.bus_count = 4
+	AudioServer.bus_count = 5
 	AudioServer.set_bus_name(1, "FocusParentFixture")
 	AudioServer.set_bus_name(2, "FocusWorldFixture")
 	AudioServer.set_bus_name(3, "FocusSourceFixture")
-	for bus in range(4):
+	AudioServer.set_bus_name(4, "FocusIsolatedFixture")
+	for bus in range(5):
 		AudioServer.set_bus_volume_db(bus, 0.0)
 		AudioServer.set_bus_mute(bus, false)
 		AudioServer.set_bus_solo(bus, false)
 	AudioServer.set_bus_send(1, &"Master")
 	AudioServer.set_bus_send(2, &"FocusParentFixture")
 	AudioServer.set_bus_send(3, &"FocusWorldFixture")
+	AudioServer.set_bus_send(4, &"Master")
 	var source := AudioStreamPlayer3D.new()
 	source.stream = looping_sound()
 	source.volume_db = -12.0
@@ -99,6 +101,23 @@ func run() -> void:
 	check(not Audibility.admitted(source), "Master mute is honored through the complete send chain")
 	AudioServer.set_bus_mute(0, false)
 	check(Audibility.admitted(source), "restoring all route mutes restores eligibility")
+
+	AudioServer.set_bus_solo(4, true)
+	check(source.playing and AudioServer.is_bus_solo(4), "native source remains playing while an isolated mixer branch is soloed")
+	check(not Audibility.admitted(source), "a soloed mixer branch outside the source send path isolates the playing source")
+	AudioServer.set_bus_solo(4, false)
+	AudioServer.set_bus_solo(2, true)
+	check(not Audibility.admitted(source), "soloing a source ancestor does not admit the un-soloed child source bus")
+	AudioServer.set_bus_solo(2, false)
+	AudioServer.set_bus_solo(3, true)
+	check(Audibility.admitted(source), "soloing the source bus admits its complete send chain")
+	for bus in range(4):
+		AudioServer.set_bus_mute(bus, true)
+	check(Audibility.admitted(source), "native solo mode overrides mute flags on the soloed source and its send ancestors")
+	for bus in range(4):
+		AudioServer.set_bus_mute(bus, false)
+	AudioServer.set_bus_solo(3, false)
+	check(Audibility.admitted(source), "clearing native solo isolation restores ordinary routed admission")
 
 	AudioServer.set_bus_volume_db(3, -20.0)
 	AudioServer.set_bus_volume_db(2, -20.0)

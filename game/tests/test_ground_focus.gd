@@ -1,4 +1,5 @@
-# Copyright (c) 2026 Cartesian Graphics. All rights reserved.
+# Copyright (c) 2026 Notation Systems Inc. / Notations Gaming.
+# All rights reserved.
 extends SceneTree
 ## Native physics/interaction checks. Synthetic sensor fixtures never become campaign evidence.
 const Launch := preload("res://childhood/home_launch.gd")
@@ -100,6 +101,7 @@ func acquisition_checks(scene) -> void:
 	focus.sample(0)
 	var pending: Array=focus.acquisitions()
 	check(pending.size()==1 and focus.observations().is_empty(),"first fresh admitted tick exposes progress before identification")
+	check(focus.heading.text=="FOCUS\nKeep subject visible until the ring fills.","anonymous acquisition shows one contextual instruction without repeating interaction keys")
 	if not pending.is_empty():
 		var expected_keys: Array=["position","observed_ticks","required_ticks","sample_tick","observer_id","sensor_id"]
 		var actual_keys: Array=pending[0].keys();actual_keys.sort();expected_keys.sort()
@@ -132,15 +134,20 @@ func acquisition_checks(scene) -> void:
 	check(focus.acquisitions().size()==1 and focus.acquisitions()[0].observed_ticks==44 and focus.observations().is_empty(),"44 uninterrupted sensory ticks remain anonymous")
 	focus.sample(144)
 	check(focus.acquisitions().is_empty() and focus.observations().size()==1 and focus.observations()[0].seen_tick==144,"the 45th admitted tick atomically replaces progress with an identified observation")
+	check(focus.heading.text=="FOCUS\nObservation retained." and focus.heading.text.count("Observation retained.")==1,"ring completion briefly confirms retention without repeating subject identity")
+	focus.sample(144+Rules.RETAINED_NOTICE_TICKS-1)
+	check(focus.heading.text=="FOCUS\nObservation retained.","the authored retention confirmation remains through its last bounded interface tick")
+	focus.sample(144+Rules.RETAINED_NOTICE_TICKS)
+	check(focus.heading.text=="FOCUS","the retention confirmation yields exactly after 90 active ticks while the observation remains")
 	var last_seen: Array=focus.observations()
-	contact.hide();focus.sample(145)
-	contact.show();contact.position.x+=0.4;focus.sample(146)
+	contact.hide();focus.sample(144+Rules.RETAINED_NOTICE_TICKS+1)
+	contact.show();contact.position.x+=0.4;focus.sample(144+Rules.RETAINED_NOTICE_TICKS+2)
 	check(focus.acquisitions().size()==1 and focus.acquisitions()[0].observed_ticks==1 and focus.observations()==last_seen,"reacquisition preserves the older last-seen memory while reporting fresh anonymous progress")
 	focus.stop()
 	check(focus.acquisitions().is_empty() and focus._pending.is_empty() and focus.observations()==last_seen,"stop drops acquisition progress while retaining bounded observation memory")
 	focus.start()
 	check(focus.acquisitions().is_empty(),"restart carries no partial acquisition from the preceding activation")
-	focus.sample(147)
+	focus.sample(144+Rules.RETAINED_NOTICE_TICKS+3)
 	check(focus.acquisitions().size()==1 and focus.acquisitions()[0].observed_ticks==1,"the first new tick after restart begins a new dwell")
 	focus.clear()
 	check(focus.acquisitions().is_empty() and focus.observations().is_empty() and focus._tick==-1,"clear discards both acquisition and retained sensory memory")
@@ -176,8 +183,18 @@ func prediction_identity_checks() -> void:
 	var unbound: Dictionary=first.duplicate(true);unbound.erase("sensor_id")
 	check(Rules.estimate(unbound,other).is_empty(),"two missing sensor identities cannot manufacture a bound motion estimate")
 	if not prediction.is_empty():
+		var supporting:=Rules.observation("subject","Observed subject","contact","observer-a",Vector3(0.31,0,0),41)
+		check(Rules.supports(prediction,second,supporting),"a consecutive character-eye displacement in the observed direction supports the estimate")
+		var reversing:=Rules.observation("subject","Observed subject","contact","observer-a",Vector3(0.29,0,0),41)
+		check(not Rules.supports(prediction,second,reversing),"a newly observed reversal contradicts the prior estimate without reading actor velocity")
+		var divergent:=Rules.observation("subject","Observed subject","contact","observer-a",Vector3(0.8,0,0),41)
+		check(not Rules.supports(prediction,second,divergent),"a newly observed position outside the bounded estimate envelope retracts it")
+		check(Rules.estimate_label(prediction)=="estimated · 0.5s sample","the presentation names the estimate and its observed sample interval")
 		second.position[0]=99
 		check(is_equal_approx(float(prediction.origin_position[0]),0.3),"estimate retains its source endpoint independently of caller snapshot mutation")
+	check(Rules.observation_state(0,true)=="observed now","a current character-eye sample is named as present evidence")
+	check(Rules.observation_state(1,false)=="last seen <1s ago" and Rules.observation_state(59,false)=="last seen <1s ago","sub-second retained evidence is not rounded up to one second")
+	check(Rules.observation_state(60,false)=="last seen 1s ago" and Rules.observation_state(119,false)=="last seen 1s ago" and Rules.observation_state(120,false)=="last seen 2s ago","retained evidence reports completed whole seconds")
 
 func visual_checks(scene) -> void:
 	# Reuse the real Home visibility policy in an empty part of its physics space.
@@ -204,6 +221,8 @@ func visual_checks(scene) -> void:
 	var record: Dictionary = focus.observations()[0]
 	check(record.kind=="contact" and record.label=="Unknown contact" and not record.has("faction"), "unknown contact never exposes hidden hostility or affiliation")
 	check(record.sensor_id=="character-eye" and not record.observer_id.is_empty(), "observation binds the protagonist and character-eye sensor")
+	var live_marks: Array=focus.overlay.marks.filter(func(mark):return String(mark.text).contains("Unknown contact"))
+	check(live_marks.size()==1 and live_marks[0].text=="? Unknown contact · observed now" and live_marks[0].evidence_state=="observed","the live overlay exposes a solid current-evidence state distinct from retained memory")
 	check(scene.model.snapshot()==before and scene.model.journal()==journal, "Focus acquisition leaves campaign state and journal unchanged")
 	check(FileAccess.get_file_as_string(save)==bytes, "Focus never writes or changes the retained native save")
 	var returned: Array = focus.observations()
@@ -213,6 +232,8 @@ func visual_checks(scene) -> void:
 	contact.position += Vector3(5.0,0,0)
 	focus.sample(45)
 	check(Rules.position(focus.observations()[0]).is_equal_approx(Vector3(1000.0,1.49,-8.0)), "lost sight freezes the last observed coordinate instead of tracking hidden motion")
+	var retained_marks: Array=focus.overlay.marks.filter(func(mark):return String(mark.text).contains("Unknown contact"))
+	check(retained_marks.size()==1 and retained_marks[0].text=="? Unknown contact · last seen <1s ago" and retained_marks[0].evidence_state=="remembered","the first retained frame uses a broken memory state without overstating sub-second evidence age")
 	focus.sample(int(record.expires_tick)-1)
 	check(focus.observations().size()==1, "last-seen observation survives until its bounded expiry")
 	focus.sample(int(record.expires_tick))
@@ -327,6 +348,16 @@ func motion_checks(scene) -> void:
 		contact.position.x = 1000.0+float(tick-44)*0.14
 		focus.sample(tick)
 	check(focus.predictions().is_empty(), "implausible observed displacement does not produce an accepted patrol prediction")
+	contact.position=Vector3(1000,1.49,-8)
+	focus.clear(); focus.start(); acquire(focus)
+	for tick in range(45,75):
+		contact.position.x=1000.0+float(tick-44)*0.01
+		focus.sample(tick)
+	check(focus.predictions().has("moving_fixture"),"a supported estimate exists before visible reversal")
+	contact.position.x-=0.01
+	focus.sample(75)
+	check(focus.predictions().is_empty() and absf(Rules.position(focus.observations()[0]).x-contact.position.x)<0.002,
+		"a consecutive admitted reversal retracts the estimate while retaining the current observed point")
 	contact.queue_free(); await frames()
 
 func audio_checks(scene) -> void:
@@ -523,7 +554,8 @@ func compact_layout_checks() -> void:
 		var suffix:=" at %dx%d" % [size.x,size.y]
 		check(hud.visible and hud.top.is_visible_in_tree() and hud.bottom.is_visible_in_tree() and hud.control_strip.is_visible_in_tree(),"actual compact task, directed words and controls remain visible during Focus"+suffix)
 		check(hud.task.text==scene.workshop_hint().replace(" [E]","") and hud.words.text==scene.story_caption() and hud.words.text==scene._message,"compact task and directed words retain native knowledge"+suffix)
-		check(hud.controls.text.contains("E  Speak") and hud.controls.text.contains("B  Accounts") and hud.controls.text.contains("J  Journal") and hud.controls.text.contains("Z  Focus") and hud.controls.text.contains("X  Hawk"),"real compact controls preserve interaction, accounts, journal, Focus and hawk hints"+suffix)
+		check(hud.controls.text.contains("E  Speak") and hud.controls.text.contains("B  Accounts") and hud.controls.text.contains("J  Journal") and hud.controls.text.contains("Z  Return") and not hud.controls.text.contains("Z  Focus") and hud.controls.text.contains("X  Hawk"),"real compact controls state the reversible Focus action once while preserving interaction, accounts, journal and hawk hints"+suffix)
+		check(focus.heading.text=="FOCUS\nKeep subject visible until the ring fills.","anonymous dwell shows one contextual ring instruction without repeating E/Z controls"+suffix)
 		check(scene._marker.visible and scene._marker.text=="Smith · E" and scene._marker.position.is_equal_approx(Craft.SITE+Vector3.UP*2.1),"the native task destination pointer remains the smith without revealing remote readiness"+suffix)
 		check(not scene._hud.is_visible_in_tree() and not scene._caption.is_visible_in_tree() and not scene._narrator_label.is_visible_in_tree(),"compact Focus presentation suppresses duplicate legacy text"+suffix)
 		var viewport:=Rect2(Vector2.ZERO,Vector2(size))
@@ -559,14 +591,14 @@ func compact_layout_checks() -> void:
 		scene.story_attention.reset(int(scene.model.progress().tick))
 		scene._refresh();hud.sample();focus.sample(19);await frames(3)
 		check(scene.story_caption().is_empty() and hud.words.text.is_empty() and not hud.bottom.is_visible_in_tree(),"quiet directed interval removes the empty speech card"+suffix)
-		check(hud.top.is_visible_in_tree() and hud.control_strip.is_visible_in_tree() and hud.controls.text.contains("Z  Focus"),"quiet interval preserves actual task and available controls"+suffix)
+		check(hud.top.is_visible_in_tree() and hud.control_strip.is_visible_in_tree() and hud.controls.text.contains("Z  Return"),"quiet interval preserves actual task and current Focus return control"+suffix)
 		controls_protected=false
 		for rect in focus.overlay.exclusion_rects:
 			if rect.encloses(hud.control_strip.get_global_rect()):controls_protected=true
 		check(controls_protected,"quiet interval still reserves the visible control strip"+suffix)
 		check(focus.acquisitions().size()==1 and not focus.overlay.marks.is_empty(),"quiet interval preserves admitted acquisition and its projected marker"+suffix)
 		focus.stop();hud.sample()
-		check(hud.visible and hud.top.is_visible_in_tree() and hud.control_strip.is_visible_in_tree() and hud.controls.text.contains("Z  Focus"),"returning from Focus preserves the original compact task and controls"+suffix)
+		check(hud.visible and hud.top.is_visible_in_tree() and hud.control_strip.is_visible_in_tree() and hud.controls.text.contains("Z  Focus") and not hud.controls.text.contains("Z  Return"),"returning from Focus restores the original compact task and activation control"+suffix)
 	check(scene.model.snapshot()==retained and scene.model.journal()==journal,"compact resize, Focus progress and layout preserve the frozen native authority")
 	root.size=original_size;root.content_scale_size=original_scale_size;home.queue_free();await frames()
 
