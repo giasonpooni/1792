@@ -36,7 +36,17 @@ func _draw() -> void:
 			var background:=color;background.a*=0.35
 			draw_circle(at,10,background,false,1.5)
 			draw_arc(at,10,-PI*0.5,-PI*0.5+TAU*clampf(float(m.progress),0,1),32,color,2.5,true)
-		else: draw_circle(at,7,color,false,2.0)
+		elif String(m.get("evidence_state",""))=="observed":
+			# A solid centre marks evidence admitted on this exact character-eye
+			# sample. Text and colour remain redundant rather than authoritative.
+			draw_circle(at,8,color,false,2.0)
+			draw_circle(at,3,color,true)
+		else:
+			# A broken hollow ring marks retained last-seen memory. It is visually
+			# distinct from the live dot and from the dashed motion hypothesis.
+			for segment in range(4):
+				var start: float=-PI*0.5+float(segment)*PI*0.5+0.14
+				draw_arc(at,8,start,start+PI*0.5-0.28,8,color,2.0,true)
 		if m.has("prediction"):
 			var end: Vector2=m.prediction
 			var start: Vector2=m.prediction_origin

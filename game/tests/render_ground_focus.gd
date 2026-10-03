@@ -167,10 +167,10 @@ func capture(mode: String,size: Vector2i) -> void:
 		var focus_heading: String=scene.ground_focus.heading.text
 		check(focus_heading.begins_with("FOCUS\nKeep subject visible until the ring fills.") and focus_heading.count("Keep subject visible until the ring fills.")==1 and not focus_heading.contains("E  Observe") and not focus_heading.contains("Z  Return"),"acquiring screenshot keeps one contextual ring instruction, composes with hearing evidence and has no duplicate key list")
 	elif sensor_mode=="live":
-		check(scene.ground_focus.overlay.marks.any(func(mark):return String(mark.text)=="? Unknown contact · observed now"),"live screenshot explicitly distinguishes current observation")
+		check(scene.ground_focus.overlay.marks.any(func(mark):return String(mark.text)=="? Unknown contact · observed now" and mark.evidence_state=="observed"),"live screenshot carries the solid current-evidence state")
 		check(scene.ground_focus.heading.text.contains("Observation retained.") and scene.ground_focus.heading.text.count("Observation retained.")==1 and not scene.ground_focus.heading.text.contains("Unknown contact"),"live screenshot confirms ring completion once without duplicating the staged subject identity")
 	elif sensor_mode=="lastseen":
-		check(scene.ground_focus.overlay.marks.any(func(mark):return String(mark.text)=="? Unknown contact · last seen 1s ago"),"retained screenshot reports only completed whole seconds")
+		check(scene.ground_focus.overlay.marks.any(func(mark):return String(mark.text)=="? Unknown contact · last seen 1s ago" and mark.evidence_state=="remembered"),"retained screenshot carries the broken memory state and reports only completed whole seconds")
 	check(scene.model.snapshot()==retained and scene.model.journal()==journal,"rendering preserves native world and journal: "+mode)
 	var image:=root.get_texture().get_image()
 	var filename:="ground-focus-%s-%dx%d.png" % [mode,size.x,size.y]

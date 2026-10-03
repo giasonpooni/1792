@@ -211,8 +211,8 @@ func run() -> void:
 		check(subject_records[0].observer_id==chapter.Names.HERO_ID and subject_records[0].sensor_id=="character-eye",
 			"earned observation retains its observer and sensor identities")
 	var current_marks: Array=chapter.ground_focus.overlay.marks.filter(func(mark):return String(mark.text).contains("Smith"))
-	check(current_marks.size()==1 and String(current_marks[0].text).ends_with("observed now"),
-		"earned character-eye observation presents the smith as current evidence")
+	check(current_marks.size()==1 and String(current_marks[0].text).ends_with("observed now") and current_marks[0].evidence_state=="observed",
+		"earned character-eye observation presents the smith with the solid current-evidence state")
 	check(chapter.ground_focus.heading.text.contains("Observation retained.") and chapter.ground_focus.heading.text.count("Observation retained.")==1 and not chapter.ground_focus.heading.text.contains("Smith"),
 		"earned ring completion confirms bounded retention once without duplicating the subject identity")
 	check(chapter.model.journal()==saved_journal and FileAccess.get_file_as_bytes(chapter.save_path)==save_bytes,
@@ -229,8 +229,8 @@ func run() -> void:
 		# then visible as retained evidence while fresh dwell is still anonymous.
 		await face(subject.global_position+Vector3.UP*1.0);await frames()
 		var retained_marks: Array=chapter.ground_focus.overlay.marks.filter(func(mark):return String(mark.text).contains("Smith"))
-		check(not chapter.ground_focus.acquisitions().is_empty() and chapter.ground_focus.acquisitions().all(func(sample):return anonymous(sample)) and retained_marks.size()==1 and String(retained_marks[0].text).ends_with("last seen <1s ago"),
-			"looking back presents the prior point as sub-second retained evidence while reacquisition stays anonymous")
+		check(not chapter.ground_focus.acquisitions().is_empty() and chapter.ground_focus.acquisitions().all(func(sample):return anonymous(sample)) and retained_marks.size()==1 and String(retained_marks[0].text).ends_with("last seen <1s ago") and retained_marks[0].evidence_state=="remembered",
+			"looking back presents the prior point with the broken retained-memory state while reacquisition stays anonymous")
 
 	# Yield the sensory view, then continue into the ordinary sealed-message task
 	# with the same production motor. The visible courier can be identified, but

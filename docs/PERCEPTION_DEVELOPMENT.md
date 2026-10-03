@@ -19,6 +19,7 @@ The first Ground Focus pass, PR #75, is merged. This continuation starts from ma
 - Completing an anonymous ring now gives one 90-tick **Observation retained.** confirmation. It carries no subject identity or saved tutorial state, then yields to the evidence; the earned Home journey and staged live frames qualify the transition separately.
 - The optional PoliticalChapter now hosts Ground Focus through its existing offset character-eye origin and authored changing-vision policy. A target displayed by a separately aimed camera still produces no acquisition or retained evidence when the affected-side sensor policy excludes it; ordinary Home does not inherit that optional profile.
 - The fresh Home input journey now continues into the existing sealed-message task. It identifies the visible courier without revealing words or testimony, then proves actual **E** input ends Focus before the original letter and testimony reducers create independently sourced journal receipts. The steward and courier are registered as visible interaction subjects; Focus itself still writes no task state.
+- Earned current observation and retained last-seen evidence now carry explicit presentation states: a solid-centred live marker and a broken hollow memory ring. The existing dashed estimate remains the third distinct geometry. These states are derived only from current character-eye admission and bounded retained evidence; they add no sensor or campaign state.
 
 The production clock, camera, controllers, campaign state, journal, saves, target availability and ordinary E interactions retain authority. None of these display changes exposes a hidden affiliation or completes a task.
 
@@ -30,7 +31,7 @@ Use the pinned Godot 4.5.1 Standard executable, SHA-256 `db07cae7de644278a1884d4
 
 ## Next development priorities
 
-1. Continue first-time comprehension review in earned normal task play. The sealed-message route now proves the sensory-to-**E** handoff; observed, remembered and estimated evidence remain visually distinct.
+1. Continue first-time comprehension review in earned normal task play. The sealed-message route proves the sensory-to-**E** handoff, while current, remembered and estimated evidence now use solid, broken and dashed geometries respectively.
 2. Extend the earned production-actor journey only when another existing actor supplies a distinct player-facing observation case; do not duplicate the qualified courier authority handoff or G-commanded escort motion path.
 3. Extend hearing admission only against native mixer behaviour and meaningful tests. Effects, stream content and physical hearing remain outside the current configured-mixer gate.
 4. Continue the protagonist-vision case only when it adds a distinct played route or presentation review. The existing-policy boundary is now explicitly qualified: camera visibility cannot expand character-eye admission.

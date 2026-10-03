@@ -238,9 +238,14 @@ func _present() -> void:
 		var screen:=_screen_point(camera,at,size)
 		if not screen.is_finite(): continue
 		var age:=_tick-int(record.seen_tick)
-		var state:=Rules.observation_state(age,age==0 and _current.has(record.id))
+		var is_current: bool=age==0 and _current.has(record.id)
+		var state:=Rules.observation_state(age,is_current)
 		var mark: Dictionary={"at":screen,"color":Rules.colour(record.kind),"alpha":clampf(1.0-float(age)/Rules.MEMORY_TICKS,0.15,1.0),
-			"text":"%s %s · %s" % [Rules.symbol(record.kind),record.label,state]}
+			"text":"%s %s · %s" % [Rules.symbol(record.kind),record.label,state],
+			# Presentation metadata is derived only from current admission. It lets
+			# the overlay distinguish live evidence from bounded memory without
+			# reading the target again or changing the retained observation.
+			"evidence_state":"observed" if is_current else "remembered"}
 		if _predictions.has(record.id):
 			var end:=Rules.position(_predictions[record.id])
 			var origin:=Rules.position({"position":_predictions[record.id].origin_position})
