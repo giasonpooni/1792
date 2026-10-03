@@ -66,6 +66,24 @@ class OpeningEvidenceChecks(unittest.TestCase):
                          "engine": "4.5.1-stable (official)", "renderer": "gl_compatibility",
                          "earned_training_receipt": copy.deepcopy(self.receipt),
                          "native_shot_observations": [{"slot": slot, "shot_id": "shot-" + str(slot)} for slot in range(4)],
+                         "earned_focus_motion": {
+                             "classification": "automated earned player-input journey; not a human playtest",
+                             "actor": "production household escort",
+                             "movement_source": "displayed protection choice, native G orders and production escort motor",
+                             "observer_id": "ranjit_singh", "sensor_id": "character-eye",
+                             "identified_observation": {"id": "household_guard", "label": "Household guard", "kind": "ally",
+                                                        "observer_id": "ranjit_singh", "sensor_id": "character-eye",
+                                                        "position": [-6.9, 1.25, 9.2], "seen_tick": 70, "expires_tick": 670},
+                             "estimate": {"position": [-1.1, 1.25, 1.1], "origin_position": [-5.8, 1.25, 7.6],
+                                          "from_ticks": [45, 75], "expires_tick": 195, "kind": "estimate",
+                                          "observer_id": "ranjit_singh", "sensor_id": "character-eye"},
+                             "estimate_tick": 75, "retracted_tick": 90,
+                             "actor_pose_or_velocity_injected": False, "sensor_pose_injected": False,
+                             "route_read": False, "affiliation_read": False, "authored_gameplay_envelope": True,
+                             "measured_physiology": False, "authenticated_history": False},
+                         "route": [{"id": "household-escort-focus-motion-earned", "home_tick": 92,
+                                    "aftermath": {"escort": {"active": True, "instruction": "follow"}},
+                                    "escort_observation": {"visible": True, "collision_layer": 2}}],
                          "final_snapshot": final,
                          "midreturn_persistence": {"saved_snapshot": saved, "restored_snapshot": copy.deepcopy(saved),
                                                    "progressed_snapshot": progressed, "saved_tick": 40, "restored_tick": 40,
@@ -113,6 +131,7 @@ class OpeningEvidenceChecks(unittest.TestCase):
 
     def independent(self):
         self.manifest["inquiry_choice"] = "independent_inquiry"
+        self.manifest["earned_focus_motion"] = {}
         snapshots = [self.manifest["final_snapshot"], self.manifest["final_manual_save"]["snapshot"],
                      *[self.manifest["midreturn_persistence"][field]
                        for field in ("saved_snapshot", "restored_snapshot", "progressed_snapshot")]]
@@ -664,6 +683,24 @@ class OpeningEvidenceChecks(unittest.TestCase):
         result = self.verify()
         self.assertEqual(result["captures"], 18)
         self.assertTrue(result["native_midreturn_rollback_verified"])
+
+    def test_earned_focus_motion_refuses_actor_state_or_overstated_claims(self):
+        for defect in ("velocity", "route", "human", "physiology", "history"):
+            with self.subTest(defect=defect):
+                original = copy.deepcopy(self.manifest["earned_focus_motion"])
+                if defect in ("velocity", "route"):
+                    self.manifest["earned_focus_motion"]["estimate"][defect] = [1, 0, 0]
+                elif defect == "human":
+                    self.manifest["earned_focus_motion"]["classification"] = "human playtest"
+                elif defect == "physiology":
+                    self.manifest["earned_focus_motion"]["measured_physiology"] = True
+                else:
+                    self.manifest["earned_focus_motion"]["authenticated_history"] = True
+                self.update()
+                with self.assertRaises(ValueError):
+                    self.verify()
+                self.manifest["earned_focus_motion"] = original
+        self.update()
 
     def test_png_byte_tamper_and_pixel_identity_are_independent(self):
         image = self.images / (CAPTURES[0] + ".png")

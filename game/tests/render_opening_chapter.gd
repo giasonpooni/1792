@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Notation Systems Inc. / Notations Gaming.
+# All rights reserved.
 extends "res://tests/render_beginning_sequence.gd"
 ## Extends the unseeded beginning route through learned riding, the original
 ## course, practice, tracking, living return and household inquiry. Only real native input enters
@@ -20,6 +22,7 @@ var household_task_persistence: Dictionary={}
 var _household_body_ids: Array=[]
 var _household_guard_observation: Dictionary={}
 var _household_checkpoint_sha:=""
+var earned_focus_motion: Dictionary={}
 
 func _configure_inquiry_choice() -> bool:
 	var supplied:=false
@@ -208,6 +211,7 @@ func finish() -> void:
 		"midreturn_persistence":midreturn_persistence,"final_manual_save":final_manual_save,
 		"household_task_persistence":household_task_persistence,
 		"independent_guard_refusal":independent_guard_refusal,
+		"earned_focus_motion":earned_focus_motion,
 		"input_source":"native routed mouse/key events, physically held guard/quiet keys, ordinary game actions and actual dialog controls",
 		"between_capture_3d_rendering_disabled":true,"historical_authentication":false,"earned_training_receipt":learned_receipt,
 		"native_shot_observations":shot_records,"final_snapshot":chapter.model.snapshot() if is_instance_valid(chapter) else {},
@@ -405,6 +409,62 @@ func _guard_undeployed(boundary: String) -> bool:
 		and chapter.escort.global_position==Aftermath.ESCORT_HOME and chapter.escort.rotation.y==0.0 and chapter.escort.velocity==Vector3.ZERO,
 		"independent inquiry retains the existing undeployed guard at its unchanged home pose: "+boundary)
 
+func _earn_household_guard_focus_motion() -> bool:
+	# This qualification begins only after the displayed protection choice and
+	# ordinary G hold. It moves no actor or sensor directly: native Z/G input and
+	# the player's existing agreement make the production escort move on Home's
+	# clock while the character eye remains the only visual admission source.
+	var journal_before: Array=chapter.model.journal()
+	await look_toward(chapter.escort.global_position+Vector3.UP*1.15)
+	key(KEY_Z);await frames(20)
+	var pending: Array=chapter.ground_focus.acquisitions()
+	if not check(chapter.ground_focus.active and not pending.is_empty() and chapter.ground_focus.observations().is_empty(),
+		"twenty actual Focus ticks keep the held production escort anonymous while showing observation progress"): return false
+	var anonymous:=pending.all(func(sample): return not sample.has("id") and not sample.has("label") and not sample.has("kind") and not sample.has("faction"))
+	var sensor_bound:=pending.all(func(sample): return sample.observer_id==chapter.Names.HERO_ID and sample.sensor_id=="character-eye")
+	if not check(anonymous and sensor_bound,
+		"held-escort acquisition exposes no identity, role or affiliation before the earned dwell"): return false
+	await frames(30)
+	var observations: Array=chapter.ground_focus.observations().filter(func(record): return record.id=="household_guard")
+	if not check(observations.size()==1 and observations[0].label=="Household guard" and observations[0].kind=="ally"
+		and observations[0].observer_id==chapter.Names.HERO_ID and observations[0].sensor_id=="character-eye"
+		and not observations[0].has("faction"),
+		"continuous character-eye evidence identifies only the registered household escort after forty-five ticks"): return false
+	var identified: Dictionary=observations[0].duplicate(true)
+	var motion_origin: Vector3=chapter.escort.global_position
+	key(KEY_G)
+	var estimate: Dictionary={}
+	for _i in range(90):
+		await frames(1)
+		var estimates: Dictionary=chapter.ground_focus.predictions()
+		if estimates.has("household_guard"):
+			estimate=estimates.household_guard.duplicate(true)
+			break
+	if not check(chapter.model.aftermath().escort.instruction=="follow" and not estimate.is_empty()
+		and Base.distance(chapter.escort.global_position,motion_origin)>.5,
+		"actual nearby G and the production escort motor earn a visible moving-contact estimate"): return false
+	if not check(estimate.get("kind")=="estimate" and estimate.get("observer_id")==chapter.Names.HERO_ID
+		and estimate.get("sensor_id")=="character-eye" and estimate.get("from_ticks",[]).size()==2
+		and not estimate.has("velocity") and not estimate.has("route") and not estimate.has("faction") and not estimate.has("source_id"),
+		"earned escort estimate retains observation provenance without actor velocity, route, affiliation or concealed source identity"): return false
+	var estimate_tick: int=int(chapter.model.progress().tick)
+	key(KEY_G);await frames(16)
+	if not check(chapter.model.aftermath().escort.instruction=="hold" and not chapter.ground_focus.predictions().has("household_guard"),
+		"actual hold contradicts and retracts the visible production estimate inside its bounded envelope"): return false
+	key(KEY_G);await frames(3)
+	if not check(chapter.model.aftermath().escort.instruction=="follow",
+		"actual nearby G returns the same escort to the inquiry's existing follow obligation"): return false
+	earned_focus_motion={"classification":"automated earned player-input journey; not a human playtest",
+		"actor":"production household escort","movement_source":"displayed protection choice, native G orders and production escort motor",
+		"observer_id":chapter.Names.HERO_ID,"sensor_id":"character-eye","identified_observation":identified,
+		"estimate":estimate,"estimate_tick":estimate_tick,"retracted_tick":int(chapter.model.progress().tick),
+		"actor_pose_or_velocity_injected":false,"sensor_pose_injected":false,"route_read":false,"affiliation_read":false,
+		"authored_gameplay_envelope":true,"measured_physiology":false,"authenticated_history":false}
+	key(KEY_Z);await frames(2)
+	return check(not chapter.ground_focus.active and chapter.model.journal()==journal_before
+		and chapter.model.validate(chapter.model.snapshot()).is_empty(),
+		"earned production motion evidence remains transient and leaves the journal and whole Home authority valid")
+
 func _return_to_raj() -> bool:
 	for target in [Vector3(3,.14,-8),Vector3(2,.14,1),Aftermath.MOTHER+Vector3(0,0,-1.8)]:
 		if not await walk_to(target): return false
@@ -474,8 +534,8 @@ func _household_inquiry() -> bool:
 		if not await walk_to(Vector3(-1,.14,3)): return false
 		if not check(Base.distance(chapter.escort.global_position,held_position)<.001,"actual walking does not move a held household guard"): return false
 		if not await walk_to(Vector3(-4,.14,5)): return false
-		key(KEY_G);await frames(3)
-		if not check(chapter.model.aftermath().escort.instruction=="follow","actual nearby G regroups the same held guard"): return false
+		if not await _earn_household_guard_focus_motion(): return false
+		note("household-escort-focus-motion-earned")
 	else:
 		if not check(chapter.model.aftermath().decision=="independent_inquiry" and chapter.model.household_disposition()=="Strained independence","actual displayed independent choice earns its original household consequence"): return false
 		if not _guard_undeployed("actual independent agreement"): return false
