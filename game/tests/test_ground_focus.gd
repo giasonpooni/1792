@@ -188,6 +188,9 @@ func prediction_identity_checks() -> void:
 		check(Rules.estimate_label(prediction)=="estimated · 0.5s sample","the presentation names the estimate and its observed sample interval")
 		second.position[0]=99
 		check(is_equal_approx(float(prediction.origin_position[0]),0.3),"estimate retains its source endpoint independently of caller snapshot mutation")
+	check(Rules.observation_state(0,true)=="observed now","a current character-eye sample is named as present evidence")
+	check(Rules.observation_state(1,false)=="last seen <1s ago" and Rules.observation_state(59,false)=="last seen <1s ago","sub-second retained evidence is not rounded up to one second")
+	check(Rules.observation_state(60,false)=="last seen 1s ago" and Rules.observation_state(119,false)=="last seen 1s ago" and Rules.observation_state(120,false)=="last seen 2s ago","retained evidence reports completed whole seconds")
 
 func visual_checks(scene) -> void:
 	# Reuse the real Home visibility policy in an empty part of its physics space.
@@ -214,6 +217,8 @@ func visual_checks(scene) -> void:
 	var record: Dictionary = focus.observations()[0]
 	check(record.kind=="contact" and record.label=="Unknown contact" and not record.has("faction"), "unknown contact never exposes hidden hostility or affiliation")
 	check(record.sensor_id=="character-eye" and not record.observer_id.is_empty(), "observation binds the protagonist and character-eye sensor")
+	var live_marks: Array=focus.overlay.marks.filter(func(mark):return String(mark.text).contains("Unknown contact"))
+	check(live_marks.size()==1 and live_marks[0].text=="? Unknown contact · observed now","the live overlay distinguishes current observation from retained memory")
 	check(scene.model.snapshot()==before and scene.model.journal()==journal, "Focus acquisition leaves campaign state and journal unchanged")
 	check(FileAccess.get_file_as_string(save)==bytes, "Focus never writes or changes the retained native save")
 	var returned: Array = focus.observations()
@@ -223,6 +228,8 @@ func visual_checks(scene) -> void:
 	contact.position += Vector3(5.0,0,0)
 	focus.sample(45)
 	check(Rules.position(focus.observations()[0]).is_equal_approx(Vector3(1000.0,1.49,-8.0)), "lost sight freezes the last observed coordinate instead of tracking hidden motion")
+	var retained_marks: Array=focus.overlay.marks.filter(func(mark):return String(mark.text).contains("Unknown contact"))
+	check(retained_marks.size()==1 and retained_marks[0].text=="? Unknown contact · last seen <1s ago","the first retained frame does not overstate sub-second evidence age")
 	focus.sample(int(record.expires_tick)-1)
 	check(focus.observations().size()==1, "last-seen observation survives until its bounded expiry")
 	focus.sample(int(record.expires_tick))

@@ -64,6 +64,14 @@ static func estimate_label(prediction: Dictionary) -> String:
 	var interval:=maxi(0,int(source_ticks[1])-int(source_ticks[0]))
 	return "estimated · %.1fs sample" % (float(interval)/60.0)
 
+static func observation_state(age_ticks: int, current: bool) -> String:
+	# Report completed time only. A just-lost sample must not be rounded up to
+	# one second, and a current eye sample stays distinct from retained memory.
+	var age:=maxi(0,age_ticks)
+	if current and age==0: return "observed now"
+	if age<60: return "last seen <1s ago"
+	return "last seen %ds ago" % int(age/60)
+
 static func sound_sector(forward: Vector3, offset: Vector3) -> String:
 	var angle := Vector2(forward.x,forward.z).angle_to(Vector2(offset.x,offset.z))
 	var index := posmod(int(round(angle/(PI/4.0))),8)

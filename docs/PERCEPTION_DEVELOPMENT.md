@@ -15,6 +15,7 @@ The first Ground Focus pass, PR #75, is merged. This continuation starts from ma
 - A visible moving contact now retracts an existing estimate as soon as a consecutive admitted eye sample reverses its observed direction or leaves the 0.35 m constant-velocity envelope. Occluded actors are not re-read; the prior hypothesis remains frozen only to its existing short expiry. The line names its observed sample interval rather than implying a known route.
 - Hearing admission now follows Godot's native solo isolation: a playing source is declined when another mixer branch is soloed, admitted when its own bus belongs to the soloed send chain, and evaluated without mute flags while that native solo mode is active. The read-only check still changes no mixer state and makes no stream-sample, effect, output or human-audibility claim.
 - Active Focus now changes the compact strip's existing Z hint to **Return** and removes duplicate E/Z text from the sensor heading. One contextual line explains the empty search or anonymous ring only while no identified observation is retained, then yields the space to observed, remembered, estimated and heard evidence.
+- Visible records now say **observed now**. A just-lost record says **last seen <1s ago**, then advances by completed whole seconds instead of rounding retained evidence upward. The earned Home input journey qualifies the live-to-retained transition after an actual mouse turn.
 
 The production clock, camera, controllers, campaign state, journal, saves, target availability and ordinary E interactions retain authority. None of these display changes exposes a hidden affiliation or completes a task.
 
@@ -26,7 +27,7 @@ Use the pinned Godot 4.5.1 Standard executable, SHA-256 `db07cae7de644278a1884d4
 
 ## Next development priorities
 
-1. Continue first-time comprehension review in earned normal task play. The compact strip and contextual heading now avoid repeated controls; observed, remembered and estimated evidence remain visually distinct.
+1. Continue first-time comprehension review in earned normal task play. The compact strip, contextual heading and honest live/retained ages now avoid repeated or overstated guidance; observed, remembered and estimated evidence remain visually distinct.
 2. Extend the earned production-actor journey beyond the household escort only when another existing actor supplies a distinct player-facing observation case; do not duplicate the qualified G-commanded motion path.
 3. Extend hearing admission only against native mixer behaviour and meaningful tests. Effects, stream content and physical hearing remain outside the current configured-mixer gate.
 4. Consider the protagonist's changing visual condition through the existing perception policy, with explicit gameplay qualification. The camera and overlay must not create visual evidence beyond the character sensor.

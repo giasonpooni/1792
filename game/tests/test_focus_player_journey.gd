@@ -210,6 +210,9 @@ func run() -> void:
 	if not subject_records.is_empty():
 		check(subject_records[0].observer_id==chapter.Names.HERO_ID and subject_records[0].sensor_id=="character-eye",
 			"earned observation retains its observer and sensor identities")
+	var current_marks: Array=chapter.ground_focus.overlay.marks.filter(func(mark):return String(mark.text).contains("Smith"))
+	check(current_marks.size()==1 and String(current_marks[0].text).ends_with("observed now"),
+		"earned character-eye observation presents the smith as current evidence")
 	check(chapter.model.journal()==saved_journal and FileAccess.get_file_as_bytes(chapter.save_path)==save_bytes,
 		"earned Focus evidence writes neither the journal nor the retained save")
 
@@ -219,6 +222,9 @@ func run() -> void:
 		subject_records=chapter.ground_focus.observations().filter(func(record):return record.id=="smith")
 		check(subject_records.size()==1 and subject_records[0].position==observed_position,
 			"turning the character eye away freezes the bounded last-seen point")
+		var retained_marks: Array=chapter.ground_focus.overlay.marks.filter(func(mark):return String(mark.text).contains("Smith"))
+		check(retained_marks.size()==1 and String(retained_marks[0].text).ends_with("last seen <1s ago"),
+			"earned eye loss presents immediate retained evidence without rounding it to one second")
 
 	# Load while Focus is active. The production loader must replace the campaign
 	# state and independently clear every transient perception layer.

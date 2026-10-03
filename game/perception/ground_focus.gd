@@ -228,7 +228,7 @@ func _present() -> void:
 		var screen:=_screen_point(camera,at,size)
 		if not screen.is_finite(): continue
 		var age:=_tick-int(record.seen_tick)
-		var state: String="seen" if age==0 and _current.has(record.id) else "last seen %ds ago" % int(ceil(age/60.0))
+		var state:=Rules.observation_state(age,age==0 and _current.has(record.id))
 		var mark: Dictionary={"at":screen,"color":Rules.colour(record.kind),"alpha":clampf(1.0-float(age)/Rules.MEMORY_TICKS,0.15,1.0),
 			"text":"%s %s · %s" % [Rules.symbol(record.kind),record.label,state]}
 		if _predictions.has(record.id):
