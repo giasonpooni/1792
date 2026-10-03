@@ -23,6 +23,22 @@ PR #83 has merged. The next increment starts from main at
 - The workcell notice copy and its exact-source hash follow the updated root
   notice, repairing the stale-link mismatch encountered in the full suite.
 
+Draft PR #95 continues on that branch. Its baseline `d7a5739` passed all local
+runtime checks and thirteen of fourteen hosted workflows. Historical-world CI
+reached two regency captures before its external 120-second deadline, without
+engine errors. The continuation raises only that bounded renderer allowance to
+300 seconds; three captures, zero failures and error guards remain mandatory.
+
+The continuation also completes the local camp-navigation priority: the received
+greeting directs an optional horse-care lesson to the veteran's horse lines;
+mounting, leaving camp or accepting care yields to ordinary household riding.
+Read-only sampling preserves canonical state, journal and native body poses.
+Its native journey covers F9 restoration, and declared threat fixtures cover
+immediate-danger and failed-attempt priority. The renderer retains both HUD
+handoffs as well as the three paused dialogue pages, using a real final mouse
+choice for care. Hosted qualification must be read from the exact published
+continuation commit before claiming that its timeout repair or new captures passed.
+
 See [the camp guide](NIHANG_COMPANIONS.md) for play, authority and historical scope.
 These additions develop one existing childhood sequence. General recruitment,
 adult campaigning and the full childhood-through-Lahore route are ongoing work.
@@ -61,9 +77,12 @@ imports before diagnosing UI failures caused by unavailable native assets.
 ## Next priorities
 
 Choose against current main and player-visible gaps, avoiding duplicate work in
-other story branches. The next small camp increment is navigation from the first
-greeting to the horse lines, followed by a clear return to household riding
-guidance when care is accepted. Keep danger guidance ahead of optional mentorship.
+other story branches. Navigation from the greeting to the horse lines and the
+return to household riding are now implemented in the continuation. Finish its hosted
+qualification before starting another feature. Keep danger guidance ahead of
+optional mentorship. Adjacent integration PR #96 develops the opening, household,
+instructor and ecology stories; avoid duplicating those changes or editing that
+branch from this pass.
 
 Then develop the next consequential undertaking: a companion's terms, a journey
 that exercises those terms and a witnessed consequence. Prefer a complete short

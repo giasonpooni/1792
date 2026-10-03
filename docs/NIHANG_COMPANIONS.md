@@ -39,6 +39,14 @@ group switches to single file where paired slots lack clear passage and spreads
 out again in open ground. These prompts read the existing state and grant no
 progress. Immediate danger and failed-attempt guidance retain priority.
 
+After the elder's greeting, the compact HUD also directs the optional horse-care
+lesson to the veteran's horse lines. This local prompt appears only on foot,
+within ten metres of the camp, during the original household riding stage and
+without another commitment or carried workshop load. It yields when you mount
+or leave the camp, and disappears as soon as care is accepted. The original
+household horse and next riding gate then regain the objective. No new quest,
+clock, event, knowledge record or saved presentation field is introduced.
+
 This first outing is finite and available once per run. The camp remains after
 completion. There is no gold, troop, skill or loyalty-point farming. Earlier
 saves can restore the whole prior run. Follow the HUD's ordinary lesson prompts
@@ -148,6 +156,10 @@ horse separation throughout the outing, and checks overlapping-save refusal.
 It verifies the three actual care buttons, rejection of unavailable and stale
 page actions, paused state and journal equality on partial pages, F5 resume,
 F9 rollback and obstruction introduced before the final care choice.
+The native journey also checks the greeted camp's destination marker, pure HUD
+sampling, mounting and walking away, restoration of local guidance after F9, and
+the immediate handoff after care. Declared domain fixtures separately verify
+active-encounter and failed-attempt priority in the actual compact HUD.
 
 `test_mounted_formation.gd` uses declared native physics fixtures for head-on and
 crossing passes, stopping behind a parked horse at 30 and 60 Hz, newly introduced
@@ -181,4 +193,8 @@ Headless runs also retain active and completed whole-world snapshots when this
 output directory is set, plus `before-care.json` at the first care page, for
 subsequent native rendering of executed state. `render_nihang_care.gd` loads that
 executed snapshot and uses native E and actual buttons to review the three pages;
-it does not claim another newly traversed journey.
+it does not claim another newly traversed journey. It retains two further HUD
+captures: optional care before the conversation and ordinary household riding
+after a real mouse click accepts the final care choice. Partial pages retain
+the same paused snapshot; the final click records exactly one existing care event.
+The manifest distinguishes these advancing Home HUD captures from paused dialogue.

@@ -53,7 +53,10 @@ jobs:
           LIBGL_ALWAYS_SOFTWARE: '1'
         run: |
           set -euo pipefail
-          timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy --script res://tests/render_regency_access.gd 2>&1 | tee test-results/regency-access-render.log
+          # The native audience route reached its second capture after 88 seconds
+          # on the software renderer. Allow the actual runner's departure too;
+          # all three captures and the existing engine-error checks remain required.
+          timeout 300 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy --script res://tests/render_regency_access.gd 2>&1 | tee test-results/regency-access-render.log
           if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/regency-access-render.log; then
             exit 1
           fi

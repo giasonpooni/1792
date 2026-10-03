@@ -9,6 +9,7 @@ const Base:=preload("res://childhood/childhood_state.gd")
 const Pose:=preload("res://tests/aftermath_fixture.gd")
 const Launch:=preload("res://childhood/home_launch.gd")
 const Store:=preload("res://childhood/checkpoint_store.gd")
+const Guidance:=preload("res://presentation/beginning_guidance.gd")
 const SAVE:="user://nihang-camp-test-only.json"
 var passed:=0
 var failed:=0
@@ -196,6 +197,40 @@ func check_guidance(scene,task: String,target: Vector3) -> void:
 	check(hud.narrator.text.contains("/ 2 riders nearby"),"visible guidance reports the actual selected group")
 	check(scene.model.snapshot()==before,"camp guidance sampling changes no authoritative state")
 
+func check_care_guidance(scene) -> void:
+	var before: Dictionary=scene.model.snapshot();var journal: Array=scene.model.journal()
+	var bodies: Array=[scene.avatar.global_transform,scene.horse.global_transform,scene.camp_horses[0].global_transform,scene.camp_horses[1].global_transform]
+	var hud: Node=scene.art.detail.hud
+	for _i in range(4): hud.sample()
+	check(hud.visible and hud.task.text=="Listen beside the horse lines" and hud.narrator.text.contains("Optional"),"received greeting directs optional local care in the real compact HUD")
+	check(scene._marker.visible and scene._marker.position.is_equal_approx(R.HORSE_LINES[0]+Vector3.UP*2.1) and scene._marker.text=="Veteran's horse · E","care guidance points to the actual veteran's horse")
+	check(scene.model.snapshot()==before and scene.model.journal()==journal,"care guidance invents no progress or testimony")
+	check(bodies==[scene.avatar.global_transform,scene.horse.global_transform,scene.camp_horses[0].global_transform,scene.camp_horses[1].global_transform],"guidance sampling moves no physical body")
+
+func care_priority() -> void:
+	# Explicit domain fixtures isolate threat priority; they are not a played route.
+	var known:=State.new();ok(known.restore(fixture()),"priority fixture starts at declared camp")
+	ok(known.camp_action("meet",true,true),"priority fixture supplies a received elder greeting")
+	var threat:=Base.new();ok(threat.restore(Pose.precursor()),"declared priority threat precursor")
+	ok(threat.observe_quarry(true),"declared precursor observes the quarry")
+	ok(Pose.pose(threat,Base.SITES.bend),"declared priority arrival at the bend")
+	ok(threat.start_ambush(),"declared priority encounter begins")
+	ok(Pose.pose(threat,R.CAMP),"declared threat-side position tests the nearby camp HUD")
+	var home:=Launch.make_world();var scene=home.get_node("ChildhoodChapter")
+	root.add_child(home);await frames(4);home.process_mode=Node.PROCESS_MODE_DISABLED
+	for stage in ["active","caught"]:
+		if stage=="caught":
+			for _i in range(3): threat.take_hit()
+		var value: Dictionary=threat.snapshot();value.nihang_camp=known.nihang_camp()
+		ok(scene.model.restore(value),"declared acquainted "+stage+" fixture")
+		scene._apply();scene._refresh();scene.art.detail.hud.sample()
+		var before: Dictionary=scene.model.snapshot();var journal: Array=scene.model.journal()
+		var visible: Dictionary=Guidance.read(scene)
+		check(scene.camp_guidance().is_empty() and not visible.title.contains("NIHANG"),"optional care yields to "+stage+" guidance")
+		check(scene.art.detail.hud.task.text==visible.task and scene.art.detail.hud.visible,"actual compact HUD retains "+stage+" priority")
+		check(scene.model.snapshot()==before and scene.model.journal()==journal,"priority sampling grants no camp progress in "+stage)
+	home.queue_free();await frames()
+
 func capture_snapshot(scene,filename: String) -> void:
 	var output:=OS.get_environment("NIHANG_CAPTURE_OUTPUT")
 	if output.is_empty(): return
@@ -251,15 +286,27 @@ func journey() -> void:
 	root.add_child(home);await frames(8)
 	watched=scene;closest_horses=INF
 	ok(scene._candidate_error(scene.model),"initial Home including camp has standing room")
+	check(scene.camp_guidance().is_empty(),"unmet camp supplies no premature care direction")
 	look(scene,R.CAMP);await tap(scene,KEY_E)
 	check(scene._paused and scene._camp_choices.has("meet"),"local E opens camp")
 	var paused: Dictionary=scene.model.snapshot();await frames(10)
 	check(scene.model.snapshot()==paused,"conversation pauses original Home clock")
 	await press(scene,"Greet the elder")
 	check(scene.model.nihang_camp().phase=="acquainted","native greeting establishes familiar relationship")
+	check_care_guidance(scene)
+	await tap(scene,KEY_F5)
+	await walk(scene,Vector3(17,0,-15));await tap(scene,KEY_F)
+	check(scene.model.mounted() and scene.camp_guidance().is_empty(),"native mount keeps the ordinary riding objective ahead of optional care")
+	check(scene.art.detail.hud.task.text.begins_with("Ride through gate"),"mounted rider sees the next original household gate")
+	await tap(scene,KEY_F9);check_care_guidance(scene)
+	await walk(scene,R.CAMP+Vector3(-11,0,0))
+	check(scene.camp_guidance().is_empty() and scene.art.detail.hud.task.text=="Mount the household horse","leaving camp on foot returns to the ordinary lesson")
+	await tap(scene,KEY_F9);check_care_guidance(scene)
 	await walk(scene,R.HORSE_LINES[0]+Vector3(-1.4,0,0));look(scene,R.HORSE_LINES[0]);await tap(scene,KEY_E)
 	await care_pages(scene)
 	check(scene.model.nihang_camp().phase=="prepared","native horse-care lesson")
+	check(scene.camp_guidance().is_empty() and scene.art.detail.hud.task.text=="Mount the household horse","accepted care immediately hands attention back to household riding")
+	capture_snapshot(scene,"after-care.json")
 	await walk(scene,R.CAMP+Vector3(1.8,0,0));look(scene,R.CAMP);await tap(scene,KEY_E)
 	await press(scene,"Invite both")
 	check(scene.model.nihang_camp().selected==R.RIDERS,"two mounted companions selected")
@@ -352,7 +399,7 @@ func stale_care() -> void:
 	home.queue_free();await frames()
 
 func run() -> void:
-	domain();await journey();await stale_menu();await stale_care()
+	domain();await journey();await stale_menu();await stale_care();await care_priority()
 	for suffix in ["",".tmp",".checkpoint"]:
 		if FileAccess.file_exists(SAVE+suffix): DirAccess.remove_absolute(ProjectSettings.globalize_path(SAVE+suffix))
 	print("NIHANG_CAMP_TESTS: %d passed, %d failed"%[passed,failed]);quit(1 if failed else 0)

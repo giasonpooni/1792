@@ -231,8 +231,16 @@ func _restore_checkpoint() -> void:
 	_clear_pending_actions();_message="Whole Home checkpoint restored, including camp relationships.";_resume()
 
 func camp_guidance() -> Dictionary:
-	# A read-only projection of the accepted undertaking into the existing HUD.
+	# Project received invitations and accepted undertakings into the existing HUD.
 	var camp: Dictionary=model.nihang_camp()
+	if camp.phase=="acquainted":
+		# This optional local lesson cannot displace danger, another undertaking,
+		# mounted riding or a task elsewhere in Home. No presentation state is saved.
+		if model.stage()!="riding" or model.mounted() or model.position().distance_to(CampRules.CAMP)>10 or model._other_commitment() or model.carrying_workshop(): return {}
+		return {"title":"GUJRANWALA  /  THE NIHANG HORSE LINES","task":"Listen beside the horse lines",
+			"progress":"Optional · The elder asked you to listen beside the horse lines.\nYour household riding lesson remains available.",
+			"controls":"WASD  Walk     Mouse  Look     E  Speak     F  Mount     J / Esc  Journal and menu",
+			"target":CampRules.HORSE_LINES[0],"marker":"Veteran's horse · E","show_target":true}
 	if not CampRules.active(camp.phase): return {}
 	var nearby:=0
 	for id in camp.selected:

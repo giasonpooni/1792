@@ -11,6 +11,8 @@ var evidence: CanvasLayer
 var annotation: Label
 var frozen: Dictionary
 var captures: Array[Dictionary]=[]
+var guidance_captures: Array[Dictionary]=[]
+var final_care_choice_pressed:=false
 var failures:=0
 var source_sha256:=""
 
@@ -74,12 +76,36 @@ func capture(index: int,id: String) -> void:
 		"camera":"original player camera facing the nearby veteran; no body pose changes"})
 	print("NIHANG_CARE_CAPTURE: "+filename)
 
+func capture_guidance(id: String,task: String,target: Vector3) -> void:
+	annotation.position=Vector2(16,190)
+	annotation.text="EXECUTED-STATE RENDERING · retained input-driven Home journey\nOriginal HUD · optional horse care yields to household riding"
+	await frames()
+	var before: Dictionary=scene.model.snapshot();var journal: Array=scene.model.journal()
+	var hud: Node=scene.art.detail.hud;hud.sample()
+	check(not scene._paused and hud.visible and hud.task.text==task,"native compact guidance shows "+id)
+	check(scene._marker.visible and scene._marker.position.is_equal_approx(target+Vector3.UP*2.1),"native destination marker matches "+id)
+	check(scene.model.snapshot()==before and scene.model.journal()==journal,"guidance sampling changes no state or testimony: "+id)
+	var viewport:=Rect2(Vector2.ZERO,Vector2(1280,720))
+	var bounds: Array=[]
+	for control in [hud.top,hud.bottom,hud.title,hud.task,hud.narrator,hud.words,hud.controls,annotation]:
+		check(control.is_visible_in_tree() and viewport.encloses(control.get_global_rect()),"visible guidance fits: "+id+" / "+control.name)
+		bounds.append(rect_value(control.get_global_rect()))
+	var image:=root.get_texture().get_image()
+	check(not image.is_empty() and image.get_size()==Vector2i(1280,720),"native guidance frame dimensions: "+id)
+	var filename:="guidance-"+id+".png";var path:=output.path_join(filename)
+	check(image.save_png(path)==OK,"native guidance screenshot retained: "+id)
+	guidance_captures.append({"file":filename,"image_sha256":FileAccess.get_sha256(path),"task":task,
+		"phase":scene.model.nihang_camp().phase,"marker":scene._marker.text,"bounds":bounds,
+		"sampled_snapshot_sha256":JSON.stringify(before,"",true,true).sha256_text(),
+		"sampling_preserves_state":scene.model.snapshot()==before,"classification":"read-only HUD sampling during an executing Home"})
+	print("NIHANG_GUIDANCE_CAPTURE: "+filename)
+
 func finish() -> void:
 	var manifest:={"schema":"1792.nihang-care-native-render.v1","classification":"executed-state rendering from retained input-driven Home journey",
-		"source_file":"before-care.json","source_sha256":source_sha256,"captures":captures,"failures":failures,
+		"source_file":"before-care.json","source_sha256":source_sha256,"captures":captures,"guidance_captures":guidance_captures,"failures":failures,
 		"engine":Engine.get_version_info().string,"renderer":RenderingServer.get_current_rendering_method(),
 		"adapter":RenderingServer.get_video_adapter_name(),"human_playtest":false,"fresh_journey":false,
-		"final_care_choice_pressed":false}
+		"final_care_choice_pressed":final_care_choice_pressed}
 	if not output.is_empty():
 		var file:=FileAccess.open(output.path_join("care-render.json"),FileAccess.WRITE)
 		check(file!=null,"render manifest retained")
@@ -90,6 +116,7 @@ func finish() -> void:
 	if is_instance_valid(evidence): evidence.queue_free()
 	await process_frame
 	print("NIHANG_CARE_RENDER: %d captures; %d failures"%[captures.size(),failures])
+	print("NIHANG_GUIDANCE_RENDER: %d captures; %d failures"%[guidance_captures.size(),failures])
 	quit(1 if failures else 0)
 
 func run() -> void:
@@ -115,12 +142,6 @@ func run() -> void:
 	check(scene._candidate_error(scene.model).is_empty(),"retained state fits original Home geometry")
 	var offset: Vector3=Rules.HORSE_LINES[0]-scene.avatar.global_position
 	scene.avatar.pivot.rotation.y=atan2(-offset.x,-offset.z)
-	# Camera facing is presentation setup; the actual local E path admits the conversation.
-	var event:=InputEventKey.new();event.keycode=KEY_E;event.pressed=true
-	scene._unhandled_input(event);await frames()
-	check(scene._paused and scene._care_page==0,"local E opens the first horse-care page")
-	if not scene._paused or scene._care_page!=0: await finish();return
-	frozen=scene.model.snapshot()
 	evidence=CanvasLayer.new();evidence.layer=30;root.add_child(evidence)
 	annotation=Label.new();annotation.position=Vector2(16,16);annotation.size=Vector2(1000,48)
 	annotation.text="EXECUTED-STATE RENDERING · retained input-driven Home journey\nOriginal player camera facing the veteran · Home pauses during the three care pages"
@@ -129,9 +150,24 @@ func run() -> void:
 	annotation.add_theme_color_override("font_shadow_color",Color.BLACK)
 	annotation.add_theme_constant_override("shadow_offset_x",2);annotation.add_theme_constant_override("shadow_offset_y",2)
 	annotation.mouse_filter=Control.MOUSE_FILTER_IGNORE;evidence.add_child(annotation)
+	await capture_guidance("horse-lines","Listen beside the horse lines",Rules.HORSE_LINES[0])
+	annotation.position=Vector2(16,16)
+	annotation.text="EXECUTED-STATE RENDERING · retained input-driven Home journey\nOriginal player camera facing the veteran · Home pauses during the three care pages"
+	# Camera facing is presentation setup; the actual local E path admits the conversation.
+	var event:=InputEventKey.new();event.keycode=KEY_E;event.pressed=true
+	scene._unhandled_input(event);await frames()
+	check(scene._paused and scene._care_page==0,"local E opens the first horse-care page")
+	if not scene._paused or scene._care_page!=0: await finish();return
+	frozen=scene.model.snapshot()
 	await capture(0,"bridle")
 	await click_choice("Inspect the tack");await capture(1,"footing")
 	await click_choice("Look at the footing");await capture(2,"return")
 	check(scene.model.nihang_camp().phase=="acquainted" and scene.model.snapshot()==frozen,"partial conversation grants no final care receipt")
+	await click_choice("I will bring the horse home")
+	final_care_choice_pressed=scene.model.nihang_camp().phase=="prepared"
+	check(final_care_choice_pressed and scene.model.nihang_camp().events.size()==frozen.nihang_camp.events.size()+1,"final actual mouse choice records care exactly once")
+	check(scene.camp_guidance().is_empty(),"accepted care relinquishes optional guidance")
+	await capture_guidance("household-riding","Mount the household horse",Rules.Ride.position(scene.model.horse_record()))
+	check(guidance_captures.size()==2,"both native guidance handoffs captured")
 	check(not FileAccess.file_exists(scene.save_path),"rendering creates no player save")
 	await finish()
