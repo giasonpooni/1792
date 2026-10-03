@@ -41,6 +41,9 @@ func _ready() -> void:
 	hawk_scout.register_target("unknown_assailant",attacker,"Unknown assailant")
 	ground_focus=GroundFocus.new();ground_focus.name="GroundFocus";add_child(ground_focus);ground_focus.bind(self)
 	ground_focus.register_target("trainer",trainer,"Trainer","interaction")
+	for id in ["steward","courier"]:
+		if _message_speakers.has(id):
+			ground_focus.register_target(id,_message_speakers[id],id.capitalize(),"interaction",Vector3.UP*0.3)
 	ground_focus.register_target("mother",_mother,"Raj Kaur","ally")
 	ground_focus.register_target("bend_trace",_clue,"Ground trace","clue")
 	ground_focus.register_target("household_horse",horse,"Household horse","interaction",Vector3.UP*1.1)
@@ -178,6 +181,10 @@ func _open_journal() -> void:
 		_workshop_button("Import prior youth/visual save · replaces this whole run","import")
 
 func _interact() -> void:
+	# The established E interaction owns task receipts. Focus may retain bounded
+	# observations, but it yields the live sensory presentation before any task
+	# reducer or dialogue is allowed to answer the input.
+	if is_instance_valid(ground_focus) and ground_focus.active: ground_focus.stop()
 	if model.aftermath_phase()=="complete" and not model.brawl_busy() and model.position().distance_to(GateRules.GUARD)<=3.0:
 		var error:=_gate_access()
 		if not error.is_empty(): _message=error;return

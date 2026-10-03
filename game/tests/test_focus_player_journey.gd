@@ -232,6 +232,39 @@ func run() -> void:
 		check(not chapter.ground_focus.acquisitions().is_empty() and chapter.ground_focus.acquisitions().all(func(sample):return anonymous(sample)) and retained_marks.size()==1 and String(retained_marks[0].text).ends_with("last seen <1s ago"),
 			"looking back presents the prior point as sub-second retained evidence while reacquisition stays anonymous")
 
+	# Yield the sensory view, then continue into the ordinary sealed-message task
+	# with the same production motor. The visible courier can be identified, but
+	# neither the letter contents nor testimony exist until the existing E reducer
+	# receives actual player input.
+	key(KEY_Z);await frames(2)
+	check(not chapter.ground_focus.active and chapter.model.stage()=="letter" and not chapter.model.progress().letter_seen,
+		"the earned opening route reaches the normal letter task without staged campaign progress")
+	var courier: Node3D=chapter._message_speakers.courier
+	if not await walk(chapter.Model.SITES.courier,.65): await finish();return
+	await face(courier.global_position+Vector3.UP*0.3)
+	check(chapter._seen(courier.global_position+Vector3.UP*0.3,18.0),
+		"the production character-eye policy admits the played courier encounter")
+	var before_courier_focus: Dictionary=chapter.model.snapshot()
+	var journal_before_courier_focus: Array=chapter.model.journal()
+	key(KEY_Z);await frames(60)
+	var courier_records: Array=chapter.ground_focus.observations().filter(func(record):return record.id=="courier")
+	check(courier_records.size()==1 and courier_records[0].label=="Courier" and courier_records[0].observer_id==chapter.Names.HERO_ID and courier_records[0].sensor_id=="character-eye",
+		"continuous played observation identifies the existing visible courier with explicit observer and sensor")
+	check(chapter.model.snapshot()==before_courier_focus and chapter.model.journal()==journal_before_courier_focus,
+		"courier observation reveals no sealed words, testimony or campaign receipt")
+	key(KEY_E);await frames(3)
+	check(not chapter.ground_focus.active and chapter.model.progress().letter_seen and chapter.model.progress().heard.is_empty(),
+		"actual E yields Focus and lets the existing letter inspection own its receipt")
+	check(chapter.model.journal().size()==journal_before_courier_focus.size()+1 and chapter.model.journal()[-1].id=="letter" and chapter.model.journal()[-1].source_id=="self",
+		"letter inspection records only the protagonist's bounded observation")
+	key(KEY_E);await frames(3)
+	check(chapter.model.progress().heard==["courier"] and chapter.model.journal().size()==journal_before_courier_focus.size()+2,
+		"a second actual E admits the courier's existing testimony through its normal task reducer")
+	check(chapter.model.journal()[-1].id=="courier" and chapter.model.journal()[-1].source_id==chapter.Model.ACCOUNTS.courier.source_id and chapter.model.journal()[-1].channel==chapter.Model.ACCOUNTS.courier.channel,
+		"the testimony receipt retains its authored source and channel instead of inheriting Focus identity")
+	key(KEY_Z);await frames(3)
+	check(chapter.ground_focus.active,"Focus can resume after the established task interaction completes")
+
 	# Load while Focus is active. The production loader must replace the campaign
 	# state and independently clear every transient perception layer.
 	key(KEY_F9);await process_frame;await physics_frame
