@@ -28,7 +28,9 @@ const WORDS := {
 	"halt": "Little rider, you looked back before crossing. We are all here. Now take us to the marker, and bring us home the same way.",
 	"turn": "Little rider, we have reached the marker together. Turn for the camp and bring everyone back.",
 	"return": "Buddh, everyone is home. You kept the undertaking. Sit with us when the horses have rested.",
-	"cancel": "Buddh, we are all back at the camp. We can leave the practice ride unfinished today."
+	"cancel": "Buddh, we are all back at the camp. We can leave the practice ride unfinished today.",
+	"second_ready": "Little rider, you stopped when no wall held you, counted us, and brought us home. When you ask for the farther road, I will ride.",
+	"second_deferred": "Little rider, today we brought the horses home before the undertaking was done. Keep one road from promise to return; then ask me for the farther one."
 }
 
 static func initial() -> Dictionary:
@@ -48,6 +50,12 @@ static func has_event(state: Dictionary, kind: String) -> bool:
 
 static func terms_required(state: Dictionary) -> bool:
 	return state.events.any(func(event): return event.kind in ["invite_one_terms","invite_two_terms"])
+
+static func kept_first_terms(state: Dictionary) -> bool:
+	return state.phase=="complete" and has_event(state,"halt") and has_event(state,"return")
+
+static func second_outing_answered(state: Dictionary) -> bool:
+	return has_event(state,"second_ready") or has_event(state,"second_deferred")
 
 static func point(value: Array) -> Vector3:
 	return Vector3(value[0],value[1],value[2])
@@ -117,6 +125,12 @@ static func apply(state: Dictionary, event: Dictionary) -> String:
 			for id in state.selected:
 				if event.mounts[RIDERS.find(id)].speed>0.15: return "Wait for the escort's horses to stop."
 			state.phase="complete" if kind=="return" else "cancelled"
+		"second_ready":
+			if second_outing_answered(state): return "The veteran has already answered about another road."
+			if not kept_first_terms(state): return "The veteran will not promise the farther road before the first undertaking is kept."
+		"second_deferred":
+			if second_outing_answered(state): return "The veteran has already answered about another road."
+			if state.phase not in ["complete","cancelled"] or kept_first_terms(state): return "The completed first undertaking already supports a different answer."
 	return ""
 
 static func validate(value: Variant, home_tick: int) -> String:

@@ -12,9 +12,11 @@ var annotation: Label
 var frozen: Dictionary
 var captures: Array[Dictionary]=[]
 var guidance_captures: Array[Dictionary]=[]
+var followup_captures: Array[Dictionary]=[]
 var final_care_choice_pressed:=false
 var failures:=0
 var source_sha256:=""
+var completed_source_sha256:=""
 
 func _initialize() -> void: run.call_deferred()
 
@@ -108,9 +110,69 @@ func capture_guidance(id: String,task: String,target: Vector3) -> void:
 		"sampling_preserves_state":scene.model.snapshot()==before,"classification":"read-only HUD sampling during an executing Home"})
 	print("NIHANG_GUIDANCE_CAPTURE: "+filename)
 
+func capture_followup(id: String,expected_text: String,button_count: int) -> void:
+	await frames()
+	check(scene._paused and scene._panel_text.text.contains(expected_text),"farther-road dialogue shows "+id)
+	var before: Dictionary=scene.model.snapshot()
+	var viewport:=Rect2(Vector2.ZERO,Vector2(1280,720))
+	var panel: Rect2=scene._panel.get_global_rect()
+	var text: Rect2=scene._panel_text.get_global_rect()
+	var scroll: Rect2=scene._journal_scroll.get_global_rect()
+	check(scene._panel.is_visible_in_tree() and viewport.encloses(panel),"farther-road panel fits viewport: "+id)
+	check(scene._panel_text.is_visible_in_tree() and viewport.encloses(text) and scroll.encloses(text),"farther-road text fits its scroll viewport: "+id)
+	var buttons: Array=[]
+	for button in scene._actions.get_children():
+		if not button is Button: continue
+		var bounds: Rect2=button.get_global_rect()
+		check(button.is_visible_in_tree() and viewport.encloses(bounds) and scroll.encloses(bounds),"farther-road button fits without scrolling: "+button.text)
+		buttons.append({"text":button.text,"rect":rect_value(bounds)})
+	check(buttons.size()==button_count,"farther-road page has bounded choices: "+id)
+	var image:=root.get_texture().get_image();var filename:="followup-"+id+".png";var path:=output.path_join(filename)
+	check(not image.is_empty() and image.get_size()==Vector2i(1280,720),"farther-road native frame dimensions: "+id)
+	check(image.save_png(path)==OK,"farther-road native screenshot retained: "+id)
+	followup_captures.append({"file":filename,"image_sha256":FileAccess.get_sha256(path),"panel_text":scene._panel_text.text,
+		"panel_rect":rect_value(panel),"label_rect":rect_value(text),"scroll_rect":rect_value(scroll),"buttons":buttons,
+		"snapshot_sha256":JSON.stringify(before,"",true,true).sha256_text(),"sampling_preserves_state":scene.model.snapshot()==before,
+		"classification":"executed-state follow-up in the original Home dialogue"})
+	print("NIHANG_FOLLOWUP_CAPTURE: "+filename)
+
+func render_followup() -> void:
+	var source:=output.path_join("completed-outing.json")
+	check(FileAccess.file_exists(source),"retained completed outing exists for farther-road rendering")
+	if not FileAccess.file_exists(source): return
+	completed_source_sha256=FileAccess.get_sha256(source)
+	var value: Variant=JSON.parse_string(FileAccess.get_file_as_string(source))
+	check(value is Dictionary,"retained completed outing parses as a whole Home snapshot")
+	if not value is Dictionary: return
+	if is_instance_valid(home): home.queue_free()
+	await process_frame
+	home=Launch.make_world();scene=home.get_node("ChildhoodChapter")
+	scene.save_path=output.path_join("unwritten-followup-render-slot.json")
+	var error: String=scene.model.restore(value)
+	check(error.is_empty(),"retained completed outing validates: "+error)
+	if not error.is_empty(): return
+	root.add_child(home);await frames(5)
+	check(scene._candidate_error(scene.model).is_empty(),"retained completed outing fits original Home geometry")
+	var offset: Vector3=Rules.CAMP-scene.avatar.global_position
+	scene.avatar.pivot.rotation.y=atan2(-offset.x,-offset.z)
+	annotation.position=Vector2(16,16)
+	annotation.text="EXECUTED-STATE RENDERING · retained input-driven camp ride\nOriginal Home dialogue · veteran willingness derives from the witnessed first undertaking"
+	var event:=InputEventKey.new();event.keycode=KEY_E;event.pressed=true
+	scene._unhandled_input(event);await frames()
+	check(scene._camp_choices.has("second_ready"),"kept executed outing exposes the farther-road question")
+	await capture_followup("question","stopped at the low ground",2)
+	await click_choice("Ask the veteran")
+	check(Rules.has_event(scene.model.nihang_camp(),"second_ready"),"actual rendered choice records veteran willingness")
+	check(scene._message==Rules.WORDS.second_ready,"rendered answer uses the retained childhood moniker text")
+	scene.avatar.pivot.rotation.y=atan2(-offset.x,-offset.z)
+	scene._unhandled_input(event);await frames()
+	await capture_followup("answer",Rules.WORDS.second_ready,1)
+	check(not FileAccess.file_exists(scene.save_path),"farther-road rendering creates no player save")
+
 func finish() -> void:
 	var manifest:={"schema":"1792.nihang-care-native-render.v1","classification":"executed-state rendering from retained input-driven Home journey",
-		"source_file":"before-care.json","source_sha256":source_sha256,"captures":captures,"guidance_captures":guidance_captures,"failures":failures,
+		"source_file":"before-care.json","source_sha256":source_sha256,"completed_source_file":"completed-outing.json","completed_source_sha256":completed_source_sha256,
+		"captures":captures,"guidance_captures":guidance_captures,"followup_captures":followup_captures,"failures":failures,
 		"engine":Engine.get_version_info().string,"renderer":RenderingServer.get_current_rendering_method(),
 		"adapter":RenderingServer.get_video_adapter_name(),"human_playtest":false,"fresh_journey":false,
 		"final_care_choice_pressed":final_care_choice_pressed}
@@ -125,6 +187,7 @@ func finish() -> void:
 	await process_frame
 	print("NIHANG_CARE_RENDER: %d captures; %d failures"%[captures.size(),failures])
 	print("NIHANG_GUIDANCE_RENDER: %d captures; %d failures"%[guidance_captures.size(),failures])
+	print("NIHANG_FOLLOWUP_RENDER: %d captures; %d failures"%[followup_captures.size(),failures])
 	quit(1 if failures else 0)
 
 func run() -> void:
@@ -178,4 +241,6 @@ func run() -> void:
 	await capture_guidance("household-riding","Mount the household horse",Rules.Ride.position(scene.model.horse_record()))
 	check(guidance_captures.size()==2,"both native guidance handoffs captured")
 	check(not FileAccess.file_exists(scene.save_path),"rendering creates no player save")
+	await render_followup()
+	check(followup_captures.size()==2,"both farther-road pages captured")
 	await finish()

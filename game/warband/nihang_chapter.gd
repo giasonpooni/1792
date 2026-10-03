@@ -116,7 +116,12 @@ func _open_camp(kind: String="") -> void:
 		"complete":
 			body=CampRules.WORDS["return"]+"\n\nThe elder makes room beside the mat. The horse-care lesson has become an undertaking you kept."
 			if CampRules.has_event(camp,"halt"): body+="\n\nThe veteran answers before the elder asks: Little rider stopped at the low ground and counted us before he crossed."
-		"cancelled": body=CampRules.WORDS.cancel
+			if CampRules.has_event(camp,"second_ready"): body+="\n\n"+CampRules.WORDS.second_ready
+			elif not CampRules.second_outing_answered(camp): choices.append(["Ask the veteran about the farther road","camp:second_ready"])
+		"cancelled":
+			body=CampRules.WORDS.cancel
+			if CampRules.has_event(camp,"second_deferred"): body+="\n\n"+CampRules.WORDS.second_deferred
+			elif not CampRules.second_outing_answered(camp): choices.append(["Ask the veteran about the farther road","camp:second_deferred"])
 	choices.append(["Leave the conversation","resume"])
 	_show_dialog("THE CAMP · FAMILIAR VOICES",body,choices)
 	for choice in choices:

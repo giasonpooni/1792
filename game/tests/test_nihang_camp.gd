@@ -142,6 +142,17 @@ func domain() -> void:
 	turn_ready.nihang_camp.mounts[0].position=Base.coords(R.TURN+Vector3(1.5,0,0))
 	ok(model.restore(turn_ready),"declared mounted group after the witnessed halt")
 	ok(model.camp_action("turn",true,true),"kept term admits the practice-marker turn")
+	var home_ready:=model.snapshot()
+	home_ready.player.position=Base.coords(R.CAMP);home_ready.actors[Names.HERO_ID].position=Base.coords(R.CAMP)
+	home_ready.riding.horse.position=Base.coords(R.CAMP+Vector3(-3,0,0));home_ready.riding.horse.rider_id=""
+	for i in range(home_ready.nihang_camp.mounts.size()):
+		home_ready.nihang_camp.mounts[i].position=Base.coords(R.HORSE_LINES[i]);home_ready.nihang_camp.mounts[i].speed=0.0
+	ok(model.restore(home_ready),"declared returned group after the kept term")
+	ok(model.camp_action("return",true,true),"completed first undertaking records its homecoming")
+	check(R.kept_first_terms(model.nihang_camp()),"second-outing willingness derives from halt and homecoming history")
+	ok(model.camp_action("second_ready",true,true),"veteran agrees to a farther road after the kept undertaking")
+	check(model.journal().any(func(e): return e.id=="nihang_second_ready" and e.source_id==R.RIDERS[0] and e.text.begins_with("Little rider")),"readiness remains received veteran testimony")
+	refused(model,model.camp_action.bind("second_ready",true,true),"farther-road answer cannot repeat")
 	ok(model.restore(at_camp),"restore full domain fixture")
 	ok(model.save_to(SAVE),"save active relationship and poses")
 	var loaded:=State.new();ok(loaded.load_from(SAVE),"load active camp")
@@ -159,6 +170,9 @@ func domain() -> void:
 		refused(model,model.restore.bind(bad),"malformed camp "+kind)
 	ok(model.camp_action("cancel",true,true),"bounded undertaking ends together at camp")
 	check(model.nihang_camp().phase=="cancelled","cancel does not grant completed ride")
+	ok(model.camp_action("second_deferred",true,true),"unfinished first ride receives a readable not-yet answer")
+	check(model.journal().any(func(e): return e.id=="nihang_second_deferred" and e.source_id==R.RIDERS[0] and e.text.begins_with("Little rider")),"deferred willingness is received veteran testimony")
+	refused(model,model.camp_action.bind("second_ready",true,true),"unfinished ride cannot invent veteran willingness")
 	ok(model.restore(before_invitation),"earlier save discards later invitation")
 	check(model.nihang_camp().selected.is_empty() and not model.nihang_active(),"rollback removes future companions")
 	var legacy:=prepared()
@@ -431,6 +445,12 @@ func journey() -> void:
 	capture_snapshot(scene,"completed-outing.json")
 	look(scene,R.CAMP);await tap(scene,KEY_E)
 	check(scene._panel_text.text.contains("Buddh, everyone is home") and scene._panel_text.text.contains("stopped at the low ground"),"familiar homecoming shows the witnessed consequence")
+	check(scene._camp_choices.has("second_ready"),"kept undertaking exposes one player-paced farther-road question")
+	await press(scene,"Ask the veteran")
+	check(R.has_event(scene.model.nihang_camp(),"second_ready"),"actual follow-up choice records the veteran's derived willingness")
+	check(scene._message==R.WORDS.second_ready and scene._message.begins_with("Little rider"),"native answer retains the relationship moniker")
+	look(scene,R.CAMP);await tap(scene,KEY_E)
+	check(scene._panel_text.text.contains(R.WORDS.second_ready) and not scene._camp_choices.has("second_ready"),"reopened camp retains the answer without a repeatable choice")
 	await frames(2)
 	if not output.is_empty() and DisplayServer.get_name()!="headless":
 		await RenderingServer.frame_post_draw
@@ -468,8 +488,26 @@ func stale_care() -> void:
 	check(scene._care_page== -1 and not scene._paused,"failed final beat clears the transient conversation")
 	home.queue_free();await frames()
 
+func deferred_second_outing() -> void:
+	# A declared settled fixture isolates the readable alternative; the separate
+	# journey above remains the authority for physically completing the first ride.
+	var model:=prepared()
+	ok(model.camp_action("invite_two_terms",true,true),"deferred-answer fixture accepts the first undertaking")
+	ok(model.camp_action("cancel",true,true),"deferred-answer fixture returns everyone without completing it")
+	var home:=Launch.make_world();var scene=home.get_node("ChildhoodChapter");scene.save_path=SAVE
+	ok(scene.model.restore(model.snapshot()),"declared unfinished ride imports for presentation")
+	root.add_child(home);await frames(8)
+	look(scene,R.CAMP);await tap(scene,KEY_E)
+	check(scene._panel_text.text.contains("unfinished today") and scene._camp_choices.has("second_deferred"),"unfinished ride exposes the alternative farther-road question")
+	await press(scene,"Ask the veteran")
+	check(R.has_event(scene.model.nihang_camp(),"second_deferred"),"actual alternative choice records the not-yet answer")
+	check(scene._message==R.WORDS.second_deferred and scene._message.begins_with("Little rider"),"deferred native answer retains the relationship moniker")
+	look(scene,R.CAMP);await tap(scene,KEY_E)
+	check(scene._panel_text.text.contains(R.WORDS.second_deferred) and not scene._camp_choices.has("second_deferred"),"reopened unfinished camp retains the answer without repetition")
+	home.queue_free();await frames()
+
 func run() -> void:
-	domain();mixed_authority();await journey();await stale_menu();await stale_care();await care_priority()
+	domain();mixed_authority();await journey();await stale_menu();await stale_care();await deferred_second_outing();await care_priority()
 	for suffix in ["",".tmp",".checkpoint"]:
 		if FileAccess.file_exists(SAVE+suffix): DirAccess.remove_absolute(ProjectSettings.globalize_path(SAVE+suffix))
 	print("NIHANG_CAMP_TESTS: %d passed, %d failed"%[passed,failed]);quit(1 if failed else 0)

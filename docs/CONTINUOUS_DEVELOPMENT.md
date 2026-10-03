@@ -31,11 +31,24 @@ from main at `43521dbeb939ce0b3f833e965f90c2112478688b`, on
 
 Draft PR #101 publishes this continuation for review.
 
-Local focused qualification is complete at 301 assertions with zero failures,
-and the full configured suite exits zero on Godot 4.5.1. Hosted results must be
-bound to the exact published continuation commit before they are reported as
-passing. This execution host cannot attach Godot to its virtual X display, so the
-hosted graphics workflow remains the visual-review authority.
+Its exact head `2925a36b23d2d3562afb67f127b8fba444198456` and tree
+`1143ba7f19e61cde02b9c92e586822d5aca0df36` passed all fifteen hosted
+workflows. The retained childhood artifact bound 301 camp assertions and five
+native captures to that source.
+
+The current continuation carries the witnessed first undertaking into one later
+choice. After a completed halt and homecoming, the veteran tells **Little rider**
+he will take the farther road. An outing ended unfinished receives a distinct
+one-time not-yet answer. Both are received veteran testimony derived from the
+finite event history; neither grants loyalty, troops, currency or a second outing.
+The original Home dialogue, clock, journal, save and checkpoint remain authoritative.
+
+Local focused qualification is now 334 assertions with zero failures, and the
+full configured suite exits zero on the checksum-pinned Godot 4.5.1 runtime.
+Retained-state software rendering adds the question and answer to the existing
+three care and two guidance captures: seven native captures, zero failures. Hosted
+results for the successor commit must still bind its exact source before they are
+reported as passing.
 
 See [the camp guide](NIHANG_COMPANIONS.md) for play, authority and historical scope.
 These additions develop one existing childhood sequence. General recruitment,
@@ -74,16 +87,15 @@ imports before diagnosing UI failures caused by unavailable native assets.
 
 ## Next priorities
 
-Finish exact-commit full-suite and hosted qualification for the low-ground terms
-increment before starting another feature. Keep danger guidance ahead of optional
-mentorship and avoid duplicating adjacent opening, household, instructor and
-ecology work. Draft PR #100 qualifies the existing Focus system's earned-input
-journey; it changes Focus tests, documentation and CI rather than this camp route.
+Finish exact-commit hosted qualification for the farther-road answer before
+starting another feature. Keep danger guidance ahead of optional mentorship and
+avoid duplicating adjacent opening, household, instructor and ecology work. Draft
+PR #100 qualifies the existing Focus system's earned-input journey; it changes
+Focus tests, documentation and CI rather than this camp route.
 
-Then carry this witnessed obligation into one later bounded choice rather than
-expanding the roster immediately: the veteran's willingness to accompany a second
-outing should derive from the received halt/homecoming history, with a readable
-alternative for an unfinished first ride. Recruiting
+Then turn the accepted answer into one short second outing with its own route,
+stated term and witnessed payoff. A deferred answer must remain legible without
+inventing access. Prefer a complete route over roster expansion. Recruiting
 mercenaries, specific outlaw bands and local kinship contingents requires distinct
 terms and identities. Hiring a leader does not transfer an entire clan. Historic
 Thuggee-associated content needs period and geographic evidence before authoring.
@@ -104,6 +116,7 @@ approach: state a need, keep its authority explicit, execute it and retain evide
 | A jatha returns together | Selected rider identities and native mount poses | Input-driven ride, turnaround and stopped check-in |
 | A follower leaves stopping room | Shared horse motor and physical collision | Stop/start column at 30 and 60 Hz; spacing and final rest |
 | A rider's stated term constrains the route | Received invitation and halt events | Direct-marker refusal; physical dismount/count; witnessed homecoming |
+| A veteran decides whether to ride again | Received halt and homecoming, or unfinished check-in | Actual one-time question; readiness/deferred testimony; rendered answer |
 | An earlier save discards a future promise | Existing whole-Home save authority | F5/F9 rollback; no future page action or care testimony |
 | A loaded formation is judged as staged state | Existing world-clearance preflight | Stale live peers excluded; staged overlaps still refused |
 

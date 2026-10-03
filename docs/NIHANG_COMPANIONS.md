@@ -36,6 +36,11 @@ not a historical map location.
 6. Return to camp, stop, dismount and wait for the escort to park. Speak to the
    elder to finish. Everyone must physically return. The undertaking can also be
    ended unfinished at camp with everyone present.
+7. Ask the veteran about a farther road. If the low-ground term and homecoming
+   were both witnessed, he answers **Little rider** and agrees to ride when asked.
+   If the first ride ended unfinished, he says to carry one undertaking from
+   promise to return before asking again. This records one answer; it does not
+   begin or simulate the second outing.
 
 The main objective display follows the accepted outing: mount, keep the low-ground
 term, reach the marker together, then bring everyone back. Its marker points to
@@ -53,10 +58,11 @@ or leave the camp, and disappears as soon as care is accepted. The original
 household horse and next riding gate then regain the objective. No new quest,
 clock, event, knowledge record or saved presentation field is introduced.
 
-This first outing is finite and available once per run. The camp remains after
-completion. There is no gold, troop, skill or loyalty-point farming. Earlier
-saves can restore the whole prior run. Follow the HUD's ordinary lesson prompts
-to continue the existing childhood sequence after the outing.
+This first outing and its farther-road question are finite and available once per
+run. The camp remains after completion. There is no gold, troop, skill or
+loyalty-point farming. Earlier saves can restore the whole prior run. Follow the
+HUD's ordinary lesson prompts to continue the existing childhood sequence after
+the outing.
 
 ## Relationships and identity
 
@@ -89,6 +95,10 @@ The sequence uses a return motif: intimate recognition, attention to the horse,
 a stated condition, the low-ground halt, the shared ride and a homecoming witness.
 The elder's invitation establishes the condition, the player's attempted shortcut
 can be refused, and the veteran names the kept term after the group returns. The
+later question makes that conduct consequential: the veteran's willingness is
+derived from the received halt and return, while an unfinished ride receives an
+authored not-yet answer rather than a hidden loyalty penalty. The farther road is
+foreshadowing, not an implemented destination or historical claim. The
 warning to leave stopping room is exercised by the actual riding system. Prose describes
 small gestures beside the existing horse lines and mat; these are authored stage
 directions in text, not new gesture animations or a forced camera sequence.
@@ -137,6 +147,11 @@ earlier clear checkpoint; the loader does not move characters to invent clearanc
 Staged restore queries explicitly exclude every stale live horse projection, then
 compare the staged poses against one another. This makes F9 judge the saved group,
 not the group positions being discarded.
+The second-outing answer is another finite received event on this same state. A
+ready answer validates only after replay finds both the low-ground halt and the
+completed homecoming. Cancelled or legacy-unwitnessed first rides can record only
+the deferred answer. Reopening the camp shows the received answer without exposing
+a repeatable choice.
 
 ## Evidence and scope
 
@@ -191,6 +206,13 @@ uses the actual count choice, remounts and completes the route. The camp journey
 checks the real compact objective HUD before mounting, at the halt, outbound,
 returning and after F9, plus retention of the witnessed term and restoration of
 ordinary lessons after check-in.
+It then presses the real farther-road button after the executed homecoming and
+checks the relationship moniker, one-time receipt and retained answer. A separate
+declared settled fixture presses the actual alternative button after an unfinished
+ride. The focused suite contains 334 passing assertions. Retained-state native
+rendering captures the farther-road question and accepted answer at 1280 by 720,
+in addition to the three care pages and two guidance handoffs; all seven captures
+must fit without scrolling or clipping.
 These fixtures are
 physics experiments, separate from the input-driven childhood journey. Local
 avoidance is bounded to the small camp group; it is not an arbitrary-size crowd
