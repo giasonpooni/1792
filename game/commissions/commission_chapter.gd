@@ -26,8 +26,13 @@ func _build_world() -> void:
 	specialist_body.floor_snap_length=.18
 	# A second body must not acquire the scene camera merely by being instantiated.
 	specialist_body.get_node("CameraPivot/SpringArm3D/Camera3D").current=false
+	# This reused player scene is an instructor, never the Home nameplate owner.
+	# Remove its unused canvas before _ready can queue deletion during a parked
+	# opening; retained-world visits must observe a stable set of live canvases.
+	var identity:=specialist_body.get_node("HomeIdentity")
+	specialist_body.remove_child(identity);identity.free()
 	add_child(specialist_body)
-	specialist_body.get_node("HomeIdentity").hide();specialist_body.get_node("MeshInstance3D").hide()
+	specialist_body.get_node("MeshInstance3D").hide()
 	specialist_body.add_to_group("physical_home_agents")
 	_commission_proxy=preload("res://player/locomotion_proxy.gd").new();_commission_proxy.name="LocomotionProxy";specialist_body.add_child(_commission_proxy)
 	specialist_body.collision_mask=1;specialist_body.add_collision_exception_with(avatar);specialist_body.add_collision_exception_with(horse)
