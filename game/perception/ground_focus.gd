@@ -1,4 +1,5 @@
-# Copyright (c) 2026 Cartesian Graphics. All rights reserved.
+# Copyright (c) 2026 Notation Systems Inc. / Notations Gaming.
+# All rights reserved.
 extends Node
 ## Focus is an observation presentation on the Home authority's existing clock.
 const Rules := preload("res://perception/focus_rules.gd")
@@ -109,6 +110,9 @@ func _scan_visual(tick: int) -> void:
 				"observer_id":Names.HERO_ID,"sensor_id":"character-eye"})
 			continue
 		var record:=Rules.observation(id,String(target.label),String(target.kind),Names.HERO_ID,at,tick)
+		var previous: Dictionary=_records.get(id,{})
+		if _predictions.has(id) and not previous.is_empty() and int(previous.get("seen_tick",-1))==tick-1:
+			if not Rules.supports(_predictions[id],previous,record): _predictions.erase(id)
 		_records[id]=record
 		_current[id]=true
 		if not _motion.has(id):
@@ -223,6 +227,7 @@ func _present() -> void:
 			if not camera.is_position_behind(end) and not camera.is_position_behind(origin):
 				mark.prediction=camera.unproject_position(end)
 				mark.prediction_origin=camera.unproject_position(origin)
+				mark.prediction_text=Rules.estimate_label(_predictions[record.id])
 		overlay.marks.append(mark)
 	var pending_marks: Array=[]
 	for pending in acquisitions():

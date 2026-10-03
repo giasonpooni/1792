@@ -25,7 +25,7 @@ An unknown contact is not promoted to an enemy, faction member or conspirator by
 
 Two acquired visual position samples at least **30 ticks (0.5 s)** apart may produce a constant-horizontal-velocity estimate. The estimator refuses motion below 0.15 m/s, above the authored 7.5 m/s bound, mismatched observation identities or samples more than one second apart. It reads no actor velocity, destination, route, intention or future chapter tick.
 
-The dashed line is labelled **estimated**, carries its two source observation ticks, and expires at most **120 ticks (2 s)** after its latest source. Both samples must come from the same observer and sensor; the estimate retains those identities. Occlusion stops updates; reacquisition starts a new continuous history. A direction change can invalidate the estimate immediately in reality: this prototype provides a visual hypothesis, not a calibrated probability or guaranteed patrol path.
+The dashed line is labelled **estimated** with its observed sample interval, carries its two source observation ticks, and expires at most **120 ticks (2 s)** after its latest source. Both samples must come from the same observer and sensor; the estimate retains those identities. A consecutive eye sample retracts the line when its observed displacement reverses direction or departs more than 0.35 m from the constant-velocity envelope. This check compares admitted positions rather than reading actor velocity, destination or route. Occlusion stops updates and freezes the existing estimate until its bounded expiry; reacquisition starts a new continuous history. A direction change may still occur while hidden: this prototype provides a visual hypothesis, not a calibrated probability or guaranteed patrol path.
 
 ## Hearing
 

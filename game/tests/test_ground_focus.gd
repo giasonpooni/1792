@@ -1,4 +1,5 @@
-# Copyright (c) 2026 Cartesian Graphics. All rights reserved.
+# Copyright (c) 2026 Notation Systems Inc. / Notations Gaming.
+# All rights reserved.
 extends SceneTree
 ## Native physics/interaction checks. Synthetic sensor fixtures never become campaign evidence.
 const Launch := preload("res://childhood/home_launch.gd")
@@ -176,6 +177,13 @@ func prediction_identity_checks() -> void:
 	var unbound: Dictionary=first.duplicate(true);unbound.erase("sensor_id")
 	check(Rules.estimate(unbound,other).is_empty(),"two missing sensor identities cannot manufacture a bound motion estimate")
 	if not prediction.is_empty():
+		var supporting:=Rules.observation("subject","Observed subject","contact","observer-a",Vector3(0.31,0,0),41)
+		check(Rules.supports(prediction,second,supporting),"a consecutive character-eye displacement in the observed direction supports the estimate")
+		var reversing:=Rules.observation("subject","Observed subject","contact","observer-a",Vector3(0.29,0,0),41)
+		check(not Rules.supports(prediction,second,reversing),"a newly observed reversal contradicts the prior estimate without reading actor velocity")
+		var divergent:=Rules.observation("subject","Observed subject","contact","observer-a",Vector3(0.8,0,0),41)
+		check(not Rules.supports(prediction,second,divergent),"a newly observed position outside the bounded estimate envelope retracts it")
+		check(Rules.estimate_label(prediction)=="estimated · 0.5s sample","the presentation names the estimate and its observed sample interval")
 		second.position[0]=99
 		check(is_equal_approx(float(prediction.origin_position[0]),0.3),"estimate retains its source endpoint independently of caller snapshot mutation")
 
@@ -327,6 +335,16 @@ func motion_checks(scene) -> void:
 		contact.position.x = 1000.0+float(tick-44)*0.14
 		focus.sample(tick)
 	check(focus.predictions().is_empty(), "implausible observed displacement does not produce an accepted patrol prediction")
+	contact.position=Vector3(1000,1.49,-8)
+	focus.clear(); focus.start(); acquire(focus)
+	for tick in range(45,75):
+		contact.position.x=1000.0+float(tick-44)*0.01
+		focus.sample(tick)
+	check(focus.predictions().has("moving_fixture"),"a supported estimate exists before visible reversal")
+	contact.position.x-=0.01
+	focus.sample(75)
+	check(focus.predictions().is_empty() and absf(Rules.position(focus.observations()[0]).x-contact.position.x)<0.002,
+		"a consecutive admitted reversal retracts the estimate while retaining the current observed point")
 	contact.queue_free(); await frames()
 
 func audio_checks(scene) -> void:

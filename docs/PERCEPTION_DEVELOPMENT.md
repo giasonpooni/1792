@@ -11,6 +11,7 @@ The first Ground Focus pass, PR #75, is merged. This continuation starts from ma
 - Dynamic on-foot controls retain Z/X; Focus instructions and marker labels avoid the real compact task and word cards. Short predicted dashes also avoid reserved UI regions.
 - The workcell notice is synchronized with the current root licence, with its source hash refreshed. This repairs the inherited exact-copy check without changing the root notice or terms.
 - The successor composition is now merged into the current Home. A separate native player-input journey starts from fresh Home state, walks through the retained collision world, turns the character eye with mouse input, demonstrates anonymous dwell and modal interruption, earns the observation, and uses actual F5/F9 input to prove whole-state rollback clears all transient perception.
+- A visible moving contact now retracts an existing estimate as soon as a consecutive admitted eye sample reverses its observed direction or leaves the 0.35 m constant-velocity envelope. Occluded actors are not re-read; the prior hypothesis remains frozen only to its existing short expiry. The line names its observed sample interval rather than implying a known route.
 
 The production clock, camera, controllers, campaign state, journal, saves, target availability and ordinary E interactions retain authority. None of these display changes exposes a hidden affiliation or completes a task.
 
@@ -23,7 +24,7 @@ Use the pinned Godot 4.5.1 Standard executable, SHA-256 `db07cae7de644278a1884d4
 ## Next development priorities
 
 1. Review marker density and first-time comprehension in normal task play. Keep observed, remembered and estimated evidence visually distinct while reducing repeated instructions.
-2. Extend the earned journey toward bounded moving-contact evidence without manufacturing actor velocity, route intent or affiliation.
+2. Extend the earned journey to a production moving actor without staging its velocity, route intent or affiliation; the current contradiction checks use native visibility with an explicit motion fixture.
 3. Extend hearing admission only against native mixer behaviour and meaningful tests. Effects, solo isolation, stream content and physical hearing remain outside the current configured-gain gate.
 4. Consider the protagonist's changing visual condition through the existing perception policy, with explicit gameplay qualification. The camera and overlay must not create visual evidence beyond the character sensor.
 

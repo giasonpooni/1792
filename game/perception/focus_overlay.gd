@@ -1,4 +1,5 @@
-# Copyright (c) 2026 Cartesian Graphics. All rights reserved.
+# Copyright (c) 2026 Notation Systems Inc. / Notations Gaming.
+# All rights reserved.
 extends Control
 ## Screen presentation of recorded evidence, with explicit stale/estimated labels.
 var marks: Array=[]
@@ -49,9 +50,11 @@ func _draw() -> void:
 				for reserved in occupied:
 					if bounds.intersects(reserved): clear=false;break
 				if clear: draw_line(from,to,color,2.0)
-			var estimate_rect:=_label_rect(end,Vector2(84,22),occupied)
+			var estimate_label:=String(m.get("prediction_text","estimated"))
+			var estimate_width:=minf(180.0,font.get_string_size(estimate_label,HORIZONTAL_ALIGNMENT_LEFT,-1,12).x+12)
+			var estimate_rect:=_label_rect(end,Vector2(estimate_width,22),occupied)
 			if estimate_rect.has_area():
-				draw_string(font,estimate_rect.position+Vector2(6,16),"estimated",HORIZONTAL_ALIGNMENT_LEFT,72,12,color)
+				draw_string(font,estimate_rect.position+Vector2(6,16),estimate_label,HORIZONTAL_ALIGNMENT_LEFT,estimate_width-12,12,color)
 				occupied.append(estimate_rect.grow(3))
 
 func _style(alpha: float) -> StyleBoxFlat:

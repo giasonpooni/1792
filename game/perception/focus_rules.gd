@@ -1,4 +1,5 @@
-# Copyright (c) 2026 Cartesian Graphics. All rights reserved.
+# Copyright (c) 2026 Notation Systems Inc. / Notations Gaming.
+# All rights reserved.
 extends RefCounted
 ## Transient observations and bounded estimates; never reads a future patrol route.
 const RANGE := 18.0
@@ -7,6 +8,8 @@ const MEMORY_TICKS := 600
 const MOTION_INTERVAL := 30
 const PREDICTION_TICKS := 120
 const MAX_OBSERVED_SPEED := 7.5
+const MOTION_CONTRADICTION_DISTANCE := 0.35
+const MOTION_DIRECTION_MIN_DISTANCE := 0.005
 const SOUND_TICKS := 120
 const KINDS := ["contact", "interaction", "clue", "ally", "threat"]
 
@@ -30,6 +33,36 @@ static func estimate(previous: Dictionary, current: Dictionary) -> Dictionary:
 	return {"position":[end.x,end.y,end.z],"origin_position":current.position.duplicate(),"from_ticks":[int(previous.seen_tick),int(current.seen_tick)],
 		"expires_tick":int(current.seen_tick)+PREDICTION_TICKS,"kind":"estimate",
 		"observer_id":current.observer_id,"sensor_id":current.sensor_id}
+
+static func supports(prediction: Dictionary, previous: Dictionary, current: Dictionary) -> bool:
+	# Retain an estimate only while new consecutive eye samples support it. This
+	# compares observed positions; it never reads an actor velocity or route.
+	if previous.get("id")!=current.get("id"): return false
+	if previous.get("observer_id")!=current.get("observer_id") or previous.get("sensor_id")!=current.get("sensor_id"): return false
+	if prediction.get("observer_id")!=current.get("observer_id") or prediction.get("sensor_id")!=current.get("sensor_id"): return false
+	var source_ticks: Variant=prediction.get("from_ticks")
+	if not source_ticks is Array or source_ticks.size()!=2: return false
+	var previous_tick:=int(previous.get("seen_tick",-1))
+	var current_tick:=int(current.get("seen_tick",-1))
+	var source_tick:=int(source_ticks[1])
+	if current_tick!=previous_tick+1 or current_tick<=source_tick or current_tick>=int(prediction.get("expires_tick",-1)): return false
+	var projected:=position(prediction)-position({"position":prediction.get("origin_position",[])})
+	projected.y=0.0
+	if not projected.is_finite() or projected.length()<=0.0: return false
+	var observed:=position(current)-position(previous)
+	observed.y=0.0
+	if observed.length()>=MOTION_DIRECTION_MIN_DISTANCE and observed.normalized().dot(projected.normalized())<=0.0: return false
+	var elapsed:=float(current_tick-source_tick)/float(PREDICTION_TICKS)
+	var expected:=position({"position":prediction.origin_position})+projected*elapsed
+	var error:=position(current)-expected
+	error.y=0.0
+	return error.length()<=MOTION_CONTRADICTION_DISTANCE
+
+static func estimate_label(prediction: Dictionary) -> String:
+	var source_ticks: Variant=prediction.get("from_ticks")
+	if not source_ticks is Array or source_ticks.size()!=2: return "estimated"
+	var interval:=maxi(0,int(source_ticks[1])-int(source_ticks[0]))
+	return "estimated · %.1fs sample" % (float(interval)/60.0)
 
 static func sound_sector(forward: Vector3, offset: Vector3) -> String:
 	var angle := Vector2(forward.x,forward.z).angle_to(Vector2(offset.x,offset.z))
