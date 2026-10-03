@@ -3,8 +3,8 @@
   "recipe": "1792.smith.v1",
   "sources": {
     "characters/character_names.gd": {
-      "sha256": "sha256:c6f39cc8bb3eeea51bd8c6427c4be0f7af0a13a272ffb39a4891cd5545578df6",
-      "bytes": 833
+      "sha256": "sha256:b989bbe7aa80f542fb040ff375c97aab78685be90ccfb243e54e01f3850fd194",
+      "bytes": 1497
     },
     "childhood/childhood_state.gd": {
       "sha256": "sha256:c56c37b10e7f23a9b300300f7b4bf9ad5ba02d3dd26b48ec0a9eeefcfb0ba764",

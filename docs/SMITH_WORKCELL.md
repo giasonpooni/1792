@@ -4,7 +4,8 @@ Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 
 This optional capsule attaches the existing Home workshop to NET's executable
 workcell. It is not another quest, a replacement Home world, or a change to any
-player save. The original nine rule/presentation dependencies remain unchanged.
+player save. It reuses nine original rule/presentation dependencies, with exact revisions
+selected by the source manifest.
 
 ## What is built
 

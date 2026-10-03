@@ -19,6 +19,9 @@ static func read(chapter: Node3D) -> Dictionary:
 	var model=chapter.model
 	var state: Dictionary=model.progress()
 	var stage: String=model.stage()
+	if stage not in ["active","caught"] and chapter.has_method("camp_guidance"):
+		var camp: Dictionary=chapter.camp_guidance()
+		if not camp.is_empty(): return camp
 	var result:={"title":"GUJRANWALA  /  LEARNING HOME","task":"","progress":"","controls":"","target":Vector3.ZERO,"marker":"","show_target":false}
 	match stage:
 		"orientation":
