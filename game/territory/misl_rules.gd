@@ -19,6 +19,7 @@ const PROJECTS := {
 	"storehouse":{"cost":20,"timber":4,"tools":1,"work":4},
 	"mill":{"cost":28,"timber":4,"tools":1,"work":4}}
 const Base := preload("res://childhood/childhood_state.gd")
+const Commission := preload("res://commissions/commission_rules.gd")
 
 static func initial() -> Dictionary:
 	return {"purse":18,"treasury":120,
@@ -50,6 +51,10 @@ static func _room(s: Dictionary, quantity: int) -> bool:
 	return stored(s)+quantity <= capacity(s)
 
 static func apply(s: Dictionary, kind: String, arg: String) -> String:
+	if kind.begins_with("commission."): return Commission.apply(s,kind,arg)
+	if Commission.committed(s) and kind in ["accept_delivery","accept_escort"]: return "Settle the instructor's commission before another load."
+	if s.has("commission") and s.commission.lesson=="active" and kind=="release_guard" and s.guards-1<=s.commission.guard_slot:
+		return "This guard is committed to the funded drill."
 	# Caller works on a copy; rejected decisions never mutate the live authority.
 	match kind:
 		"buy":
@@ -170,6 +175,9 @@ static func _watch(s: Dictionary) -> void:
 		s.meeting = "missed"
 		s.favor = maxi(0,s.favor-12)
 		s.last_notice = "The meeting was missed. This penalty is applied once, not every watch."
+	# The existing household payroll settles first; the optional specialist uses
+	# the same watch, treasury and stock. The reserve pays only specialist wages.
+	Commission.upkeep(s)
 
 static func blank_merchant() -> Dictionary:
 	return {"id":CARAVAN_ID,"position":Base.coords(MARKET+Vector3(1,0,0)),
@@ -194,6 +202,9 @@ static func validate(value: Variant, tick: int, reducer: Callable = Callable()) 
 		if e.kind == "watch":
 			if e.tick != next_watch: return "Upkeep occurred on the wrong tick."
 		elif e.tick >= next_watch: return "Missing due upkeep before transaction."
+		if e.kind.begins_with("commission."):
+			var instruction:=Commission.payload(e.arg)
+			if instruction.is_empty() or instruction.tick!=e.tick: return "Commission instruction time differs from its receipt."
 		var error: String = reducer.call(replay,e.kind,e.arg) if reducer.is_valid() else apply(replay,e.kind,e.arg)
 		if not error.is_empty(): return "Invalid retained economic action: "+error
 		prior = int(e.tick)

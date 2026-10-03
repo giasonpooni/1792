@@ -8,9 +8,11 @@ received knowledge and physical travel.
 
 ## Current increment
 
-PR #83 has merged. The next increment starts from main at
-`152d880a3c221272525645c44f8d3e2a535d8529`, on
-`feat/nihang-care-sequence-v1-20261003`:
+PR #96 merged the current Home stories, instructor, ecology and retained
+horse-physics repairs. PR #98 then added the qualified Focus observation and
+audio work, bringing main to `df145fc2d01bcd4f4a77680c588ed63e5129f6b6`.
+Draft PR #95 continues on
+`feat/nihang-care-sequence-v1-20261003` and is reconciled with that main line:
 
 - A voluntary three-beat horse-care conversation: bridle, footing and return.
   Only its final choice records the existing care event; all intermediate pages
@@ -23,21 +25,27 @@ PR #83 has merged. The next increment starts from main at
 - The workcell notice copy and its exact-source hash follow the updated root
   notice, repairing the stale-link mismatch encountered in the full suite.
 
-Draft PR #95 continues on that branch. Its baseline `d7a5739` passed all local
-runtime checks and thirteen of fourteen hosted workflows. Historical-world CI
-reached two regency captures before its external 120-second deadline, without
-engine errors. The continuation raises only that bounded renderer allowance to
-300 seconds; three captures, zero failures and error guards remain mandatory.
+The published camp-navigation continuation `f7c2f11` completed all fourteen
+hosted workflows before reconciliation. Its five native childhood captures and
+three regency captures were inspected and bound to the exact published source,
+tree and pinned runtime. The reconciliation retains main's faster regency capture
+harness, integrated Home authority and expanded exact-source NET closure. Against
+the PR #96 main head, the complete local suite passed with 92 native markers and
+14,538 passing assertions, plus 5,565 political-exposure and 1,843 social-field
+assertions. Camp coverage now composes both sets of checks: 254 passed, 0 failed.
+After the PR #98 merge, the affected current-main checks also pass: ground Focus
+158, Focus audibility 30 and attention guidance 41. The display-only beginning
+capture remains a hosted qualification requirement.
 
-The continuation also completes the local camp-navigation priority: the received
+The camp-navigation continuation completes the local priority: the received
 greeting directs an optional horse-care lesson to the veteran's horse lines;
 mounting, leaving camp or accepting care yields to ordinary household riding.
 Read-only sampling preserves canonical state, journal and native body poses.
 Its native journey covers F9 restoration, and declared threat fixtures cover
 immediate-danger and failed-attempt priority. The renderer retains both HUD
 handoffs as well as the three paused dialogue pages, using a real final mouse
-choice for care. Hosted qualification must be read from the exact published
-continuation commit before claiming that its timeout repair or new captures passed.
+choice for care. The reconciled merge commit still requires its own hosted
+qualification before the branch can be considered mergeable again.
 
 See [the camp guide](NIHANG_COMPANIONS.md) for play, authority and historical scope.
 These additions develop one existing childhood sequence. General recruitment,
@@ -78,11 +86,11 @@ imports before diagnosing UI failures caused by unavailable native assets.
 
 Choose against current main and player-visible gaps, avoiding duplicate work in
 other story branches. Navigation from the greeting to the horse lines and the
-return to household riding are now implemented in the continuation. Finish its hosted
-qualification before starting another feature. Keep danger guidance ahead of
-optional mentorship. Adjacent integration PR #96 develops the opening, household,
-instructor and ecology stories; avoid duplicating those changes or editing that
-branch from this pass.
+return to household riding are implemented in the continuation. Finish hosted
+qualification of the reconciliation before starting another feature. Keep danger
+and active Focus guidance ahead of optional mentorship. PRs #96 and #98 are now
+part of main; treat their opening, household, instructor, ecology, perception and
+physics work as the current inherited baseline rather than duplicating it.
 
 Then develop the next consequential undertaking: a companion's terms, a journey
 that exercises those terms and a witnessed consequence. Prefer a complete short

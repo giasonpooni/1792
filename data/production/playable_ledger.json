@@ -2,10 +2,10 @@
   "schema": "1792.playable-ledger.v1",
   "title": "1792: The Lotus Throne — playable mission and sequence ledger",
   "as_of": "2026-10-02",
-  "main_commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+  "main_commit": "cd3a473b6725872d4c03f190cd1b07ae940d72c9",
   "policy": {
     "count_unit": "One authored objective arc; child beats and mutually exclusive routes are not additional sequences.",
-    "scope": "Repository main plus 36 open PR heads inventoried on the snapshot date. Not a claim that all branches are composed or release-ready.",
+    "scope": "Availability refreshed against main cd3a473b6725872d4c03f190cd1b07ae940d72c9. The original 36 draft-head coverage records remain a historical inventory; their open/closed status is not a live claim.",
     "historical_material": "Preserve legends, disputed accounts and cinematic invention with attribution; implementation status is independent of historical confidence.",
     "verification": "Source/path inventory only in this pass; previous feature test reports are not fresh playtests."
   },
@@ -279,7 +279,7 @@
       "id": "MEM-001",
       "title": "Maha’s family story / Charat Singh",
       "kind": "presentation",
-      "delivery": "draft",
+      "delivery": "main",
       "pr": 71,
       "commit": "21f8cf824d6b5dd98b2bb44dfa37948adafd55e7",
       "branch": "feat/opening-game-v1-20261002",
@@ -292,14 +292,15 @@
       "parent_id": null,
       "beats": [],
       "historical_basis": "Attributed family-history adaptation; ten pages are not ten missions.",
-      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
-      "implementation": "Implemented prototype on the recorded revision."
+      "verification": "Source ancestry checked against current main; feature-specific earlier test receipts remain in source documentation.",
+      "implementation": "Implemented prototype on the recorded revision.",
+      "available_on_main_commit": "cd3a473b6725872d4c03f190cd1b07ae940d72c9"
     },
     {
       "id": "HOME-014",
       "title": "Maha’s horsecraft lesson",
       "kind": "playable_sequence",
-      "delivery": "draft",
+      "delivery": "main",
       "pr": 71,
       "commit": "21f8cf824d6b5dd98b2bb44dfa37948adafd55e7",
       "branch": "feat/opening-game-v1-20261002",
@@ -316,8 +317,9 @@
         "Mounted matchlock handling"
       ],
       "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
-      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
-      "implementation": "Implemented prototype on the recorded revision."
+      "verification": "Source ancestry checked against current main; feature-specific earlier test receipts remain in source documentation.",
+      "implementation": "Implemented prototype on the recorded revision.",
+      "available_on_main_commit": "cd3a473b6725872d4c03f190cd1b07ae940d72c9"
     },
     {
       "id": "HOME-015",
@@ -453,7 +455,7 @@
       "id": "MAHA-001",
       "title": "Mahan’s field camp",
       "kind": "playable_sequence",
-      "delivery": "draft",
+      "delivery": "main",
       "pr": 9,
       "commit": "8e858c00d4cd457f3a44174229462fd192b8cee0",
       "branch": "feat/mahan-interlude-v1",
@@ -471,14 +473,15 @@
         "Fixed endpoint"
       ],
       "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
-      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
-      "implementation": "Implemented prototype on the recorded revision."
+      "verification": "Source ancestry checked against current main; feature-specific earlier test receipts remain in source documentation.",
+      "implementation": "Implemented prototype on the recorded revision.",
+      "available_on_main_commit": "cd3a473b6725872d4c03f190cd1b07ae940d72c9"
     },
     {
       "id": "PRO-001",
       "title": "Sobraon to the oral telling",
       "kind": "playable_sequence",
-      "delivery": "draft",
+      "delivery": "main",
       "pr": 77,
       "commit": "e42ddd552879673b7477dbd4f926e389c1aa8e5b",
       "branch": "feat/sobraon-oral-opening-v1-20261002",
@@ -496,14 +499,15 @@
         "Narrator handoff"
       ],
       "historical_basis": "Historical framing with original veteran viewpoint and authored survival actions.",
-      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
-      "implementation": "Implemented prototype on the recorded revision."
+      "verification": "Source ancestry checked against current main; feature-specific earlier test receipts remain in source documentation.",
+      "implementation": "Implemented prototype on the recorded revision.",
+      "available_on_main_commit": "cd3a473b6725872d4c03f190cd1b07ae940d72c9"
     },
     {
       "id": "TALE-001",
       "title": "The Wedding Road",
       "kind": "playable_sequence",
-      "delivery": "draft",
+      "delivery": "main",
       "pr": 76,
       "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
       "branch": "feat/punjab-chiefs-playable-v1-20261002",
@@ -522,7 +526,7 @@
         "Return to the keeper with your account of the arrival."
       ],
       "historical_basis": "retrospective_family_account; The source connects Bhagwan Singh's alliance through his sister with losses of territory and attempted interference. The errands, witnesses, dialogue and local outcomes are original. The prospective bride Raj Kaur is distinct from Ranjit Singh's mother.",
-      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "verification": "Source ancestry checked against current main; feature-specific earlier test receipts remain in source documentation.",
       "catalogue_id": "delegation",
       "choices": [
         {
@@ -561,13 +565,14 @@
           ]
         }
       ],
-      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+      "available_on_main_commit": "cd3a473b6725872d4c03f190cd1b07ae940d72c9"
     },
     {
       "id": "TALE-002",
       "title": "The Unequal Victory",
       "kind": "playable_sequence",
-      "delivery": "draft",
+      "delivery": "main",
       "pr": 76,
       "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
       "branch": "feat/punjab-chiefs-playable-v1-20261002",
@@ -586,7 +591,7 @@
         "Decide how the remaining dressings should leave the gathering."
       ],
       "historical_basis": "retrospective_family_account; The book records shifting Nakai, Sukerchakia and other chief relationships, the 1785 coalition after Jai Singh's 1783 seizure, and failed reconciliation. This local escort and honour dispute is invented to make those pressures playable.",
-      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "verification": "Source ancestry checked against current main; feature-specific earlier test receipts remain in source documentation.",
       "catalogue_id": "alliance",
       "choices": [
         {
@@ -625,13 +630,14 @@
           ]
         }
       ],
-      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+      "available_on_main_commit": "cd3a473b6725872d4c03f190cd1b07ae940d72c9"
     },
     {
       "id": "TALE-003",
       "title": "A Stranger at the Threshold",
       "kind": "playable_sequence",
-      "delivery": "draft",
+      "delivery": "main",
       "pr": 76,
       "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
       "branch": "feat/punjab-chiefs-playable-v1-20261002",
@@ -650,7 +656,7 @@
         "Escort the dependent into the sheltered passage."
       ],
       "historical_basis": "retrospective_family_account; The book attributes Wazir Singh's murder to Dal Singh, son of Hira Singh of Bahrwal, and says an unnamed devoted servant later killed Dal Singh in his household. The player witnesses warning signs and shelters people; choices do not cancel that recorded death or establish omniscient guilt.",
-      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "verification": "Source ancestry checked against current main; feature-specific earlier test receipts remain in source documentation.",
       "catalogue_id": "revenge",
       "choices": [
         {
@@ -689,13 +695,14 @@
           ]
         }
       ],
-      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+      "available_on_main_commit": "cd3a473b6725872d4c03f190cd1b07ae940d72c9"
     },
     {
       "id": "TALE-004",
       "title": "Desi Remembers the Reins",
       "kind": "playable_sequence",
-      "delivery": "draft",
+      "delivery": "main",
       "pr": 76,
       "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
       "branch": "feat/punjab-chiefs-playable-v1-20261002",
@@ -714,7 +721,7 @@
         "Return to the companion and choose what the story remembers."
       ],
       "historical_basis": "recorded_ancestral_tradition; The book names Budha Singh's piebald mare Desi and credits him with surviving about forty wounds. This short ride, horse responses and dialogue are original. It preserves the larger-than-life ancestor without treating the ride as a documented journey.",
-      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "verification": "Source ancestry checked against current main; feature-specific earlier test receipts remain in source documentation.",
       "catalogue_id": "desi",
       "choices": [
         {
@@ -753,13 +760,14 @@
           ]
         }
       ],
-      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+      "available_on_main_commit": "cd3a473b6725872d4c03f190cd1b07ae940d72c9"
     },
     {
       "id": "TALE-005",
       "title": "What Can Be Carried",
       "kind": "playable_sequence",
-      "delivery": "draft",
+      "delivery": "main",
       "pr": 76,
       "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
       "branch": "feat/punjab-chiefs-playable-v1-20261002",
@@ -778,7 +786,7 @@
         "Escort the weary follower to the shelter entrance."
       ],
       "historical_basis": "retrospective_account_with_treasure_tradition; The source contains Ramgarhia humiliation, release with gifts, retaliatory vows, exile and a treasure-in-a-well episode. This relief errand and its choices are original, with the treasure retained as narrated possibility rather than a fabricated documented discovery by the player.",
-      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "verification": "Source ancestry checked against current main; feature-specific earlier test receipts remain in source documentation.",
       "catalogue_id": "exile",
       "choices": [
         {
@@ -817,13 +825,14 @@
           ]
         }
       ],
-      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+      "available_on_main_commit": "cd3a473b6725872d4c03f190cd1b07ae940d72c9"
     },
     {
       "id": "TALE-006",
       "title": "The Water of Bahrwal",
       "kind": "playable_sequence",
-      "delivery": "draft",
+      "delivery": "main",
       "pr": 76,
       "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
       "branch": "feat/punjab-chiefs-playable-v1-20261002",
@@ -842,7 +851,7 @@
         "Return to the well and draw its sweetened water."
       ],
       "historical_basis": "recorded_miracle_legend; The book records Hem Raj carrying the sleeping Guru Arjun home on a charpai, brackish water becoming sweet, and a blessing promising a powerful descendant. This adaptation preserves the miracle as the legend tells it. Dialogue and attendant errands are original; no Guru avatar, impersonation or religious-building entry is required.",
-      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "verification": "Source ancestry checked against current main; feature-specific earlier test receipts remain in source documentation.",
       "catalogue_id": "well",
       "choices": [
         {
@@ -881,13 +890,14 @@
           ]
         }
       ],
-      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+      "available_on_main_commit": "cd3a473b6725872d4c03f190cd1b07ae940d72c9"
     },
     {
       "id": "TALE-007",
       "title": "The Door to the Young Chief",
       "kind": "playable_sequence",
-      "delivery": "draft",
+      "delivery": "main",
       "pr": 76,
       "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
       "branch": "feat/punjab-chiefs-playable-v1-20261002",
@@ -906,7 +916,7 @@
         "Complete the audience register after the door closes."
       ],
       "historical_basis": "conflicting_regency_accounts_with_original_dramatization; The Memorial records Lakhpat Rai quarrelling with Dal Singh, Maha Singh's maternal uncle, and a temporary reconciliation. Buxi supplies the household power struggle. The user-selected 1792 frame retains the project chronology beside the Memorial's 1790 succession. Sada's participation in this particular access dispute and all dialogue are original adaptations of the supplied political plot. This Dal is the elder regency figure, distinct from Dal son of Hira Singh of Bahrwal, killed in the revenge account.",
-      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "verification": "Source ancestry checked against current main; feature-specific earlier test receipts remain in source documentation.",
       "catalogue_id": "regency",
       "choices": [
         {
@@ -945,13 +955,14 @@
           ]
         }
       ],
-      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+      "available_on_main_commit": "cd3a473b6725872d4c03f190cd1b07ae940d72c9"
     },
     {
       "id": "TALE-008",
       "title": "The Whisper After Midnight",
       "kind": "playable_sequence",
-      "delivery": "draft",
+      "delivery": "main",
       "pr": 76,
       "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
       "branch": "feat/punjab-chiefs-playable-v1-20261002",
@@ -970,7 +981,7 @@
         "Choose how the night register will carry the accusation."
       ],
       "historical_basis": "conflicting_accusations_with_original_witness_story; Griffin repeats allegations about Raj Kaur, Lakhpat Rai and matricide, then doubts the killing stories. Buxi describes the struggle over authority and cites Sinha's rejection of Smyth's accusation. Neither establishes guilt. This night, its letter, the witnesses and every spoken line are invented. Poison remains an allegation voiced by a character, never an acquired poison item or biological finding. Timing is deliberately broad; no death in 1801 is asserted.",
-      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "verification": "Source ancestry checked against current main; feature-specific earlier test receipts remain in source documentation.",
       "catalogue_id": "rumours",
       "choices": [
         {
@@ -1009,13 +1020,14 @@
           ]
         }
       ],
-      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+      "available_on_main_commit": "cd3a473b6725872d4c03f190cd1b07ae940d72c9"
     },
     {
       "id": "TALE-009",
       "title": "Two Names in the Dispatch",
       "kind": "playable_sequence",
-      "delivery": "draft",
+      "delivery": "main",
       "pr": 76,
       "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
       "branch": "feat/punjab-chiefs-playable-v1-20261002",
@@ -1034,7 +1046,7 @@
         "Escort the rider to the departure entrance with the dispatch."
       ],
       "historical_basis": "conflicting_birth_and_legitimacy_accounts; Griffin alleges substituted children and later political acknowledgement; the Memorial records the twins' birth announcement, thanksgiving and Mehtab's maternity. Neither the courier nor the choices establish biological truth. All dialogue, dispatch handling and minor witnesses are original. The scene preserves competing accusations without encoding strict male primogeniture or deciding future accession. Its authored 1807 frame follows the selected announcement variant and does not silently reconcile every source chronology.",
-      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "verification": "Source ancestry checked against current main; feature-specific earlier test receipts remain in source documentation.",
       "catalogue_id": "heirs",
       "choices": [
         {
@@ -1073,13 +1085,14 @@
           ]
         }
       ],
-      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+      "available_on_main_commit": "cd3a473b6725872d4c03f190cd1b07ae940d72c9"
     },
     {
       "id": "TALE-010",
       "title": "The Fortress in the Letter",
       "kind": "playable_sequence",
-      "delivery": "draft",
+      "delivery": "main",
       "pr": 76,
       "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
       "branch": "feat/punjab-chiefs-playable-v1-20261002",
@@ -1098,7 +1111,7 @@
         "Escort the agent to the outer entrance and complete the handoff."
       ],
       "historical_basis": "secondary_diplomatic_account_with_original_courier_scene; The university entry records secret negotiations with British officers. Discover Sikhism describes a November 1808 offer of Atalgarh to Metcalfe tied to restoration of possessions. The packet, route, receiving agent and conditions voiced here are invented. This stage ends with an approach delivered, never a completed alliance, an invented interception or a transfer of the fort. Atalgarh here belongs to Sada's diplomatic story, not Dal Singh's Akalgarh identity.",
-      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "verification": "Source ancestry checked against current main; feature-specific earlier test receipts remain in source documentation.",
       "catalogue_id": "overture",
       "choices": [
         {
@@ -1137,13 +1150,14 @@
           ]
         }
       ],
-      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+      "available_on_main_commit": "cd3a473b6725872d4c03f190cd1b07ae940d72c9"
     },
     {
       "id": "TALE-011",
       "title": "Behind the Lowered Curtain",
       "kind": "playable_sequence",
-      "delivery": "draft",
+      "delivery": "main",
       "pr": 76,
       "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
       "branch": "feat/punjab-chiefs-playable-v1-20261002",
@@ -1162,7 +1176,7 @@
         "Escort the covered litter to the outer camp entrance."
       ],
       "historical_basis": "source_attributed_escape_with_original_retainer_viewpoint; Griffin and the university entry preserve a covered-litter escape followed by detention. Discover Sikhism dates its account to 1820 and names Vasakha Singh as the informing retainer and Desa Singh as the pursuer. This 1820–1821 frame retains chronology variants. The player is a fictional additional retainer; dialogue, papers and movement choices are original. Detention is fixed. Local agency determines the treatment of bearers, the wording of a report and how the party reaches its last gate, never a successful alternate escape.",
-      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "verification": "Source ancestry checked against current main; feature-specific earlier test receipts remain in source documentation.",
       "catalogue_id": "litter",
       "choices": [
         {
@@ -1201,13 +1215,14 @@
           ]
         }
       ],
-      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+      "available_on_main_commit": "cd3a473b6725872d4c03f190cd1b07ae940d72c9"
     },
     {
       "id": "TALE-012",
       "title": "When the Camp Falls Quiet",
       "kind": "playable_sequence",
-      "delivery": "draft",
+      "delivery": "main",
       "pr": 76,
       "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
       "branch": "feat/punjab-chiefs-playable-v1-20261002",
@@ -1226,7 +1241,7 @@
         "Give Ranjit his father's message."
       ],
       "historical_basis": "retrospective_history_with_declared_dramatic_handover; This scene selects Griffin's 1792 illness and withdrawal, not the Memorial's 1790 child-victory outcome. The father's private words, delegated tasks, veteran, young runner, evacuation staging and choices are original drama. Authority passes through a small order to care for the camp; this is not evidence for a documented bedside investiture. Maha's death after his return remains fixed. Mana Singh is a research lead, not the identity assigned to the fictional veteran.",
-      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "verification": "Source ancestry checked against current main; feature-specific earlier test receipts remain in source documentation.",
       "catalogue_id": "sodhra",
       "choices": [
         {
@@ -1265,13 +1280,14 @@
           ]
         }
       ],
-      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+      "available_on_main_commit": "cd3a473b6725872d4c03f190cd1b07ae940d72c9"
     },
     {
       "id": "TALE-013",
       "title": "Names at the Gate",
       "kind": "playable_sequence",
-      "delivery": "draft",
+      "delivery": "main",
       "pr": 76,
       "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
       "branch": "feat/punjab-chiefs-playable-v1-20261002",
@@ -1290,7 +1306,7 @@
         "Settle one immediate need before the household leaves."
       ],
       "historical_basis": "secondary_reference_with_original_local_negotiation; The entry takes the reported estates and military employment offered to Jan Muhammad's sons as its historical anchor. The unnamed family representative, veteran, clerk, guarantees, supplies, dialogue and local outcomes are original. These people speak for particular households, never every Chattha family. The sequence follows the conflict without replaying its killing; jobs and provision do not erase bereavement. The late-1790s period is separate from the 1792 opening.",
-      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
+      "verification": "Source ancestry checked against current main; feature-specific earlier test receipts remain in source documentation.",
       "catalogue_id": "settlement",
       "choices": [
         {
@@ -1329,7 +1345,8 @@
           ]
         }
       ],
-      "implementation": "Playable blockout adaptation; five beats; local branch outcomes."
+      "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+      "available_on_main_commit": "cd3a473b6725872d4c03f190cd1b07ae940d72c9"
     },
     {
       "id": "MICRO-001",
@@ -1415,7 +1432,7 @@
       "id": "STUDY-002",
       "title": "Ground-contact course",
       "kind": "study",
-      "delivery": "draft",
+      "delivery": "main",
       "pr": 68,
       "commit": "7ab4692886fa7bda97953a948db6ec4bfce50497",
       "branch": "feat/ground-contact-physics-v1-20261002",
@@ -1428,14 +1445,15 @@
       "parent_id": null,
       "beats": [],
       "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
-      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
-      "implementation": "Implemented prototype on the recorded revision."
+      "verification": "Source ancestry checked against current main; feature-specific earlier test receipts remain in source documentation.",
+      "implementation": "Implemented prototype on the recorded revision.",
+      "available_on_main_commit": "cd3a473b6725872d4c03f190cd1b07ae940d72c9"
     },
     {
       "id": "STUDY-003",
       "title": "Horsecraft study",
       "kind": "study",
-      "delivery": "draft",
+      "delivery": "main",
       "pr": 71,
       "commit": "21f8cf824d6b5dd98b2bb44dfa37948adafd55e7",
       "branch": "feat/opening-game-v1-20261002",
@@ -1448,8 +1466,9 @@
       "parent_id": null,
       "beats": [],
       "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
-      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
-      "implementation": "Implemented prototype on the recorded revision."
+      "verification": "Source ancestry checked against current main; feature-specific earlier test receipts remain in source documentation.",
+      "implementation": "Implemented prototype on the recorded revision.",
+      "available_on_main_commit": "cd3a473b6725872d4c03f190cd1b07ae940d72c9"
     },
     {
       "id": "STUDY-004",
@@ -1495,7 +1514,7 @@
       "id": "SYSTEM-001",
       "title": "Hawk scouting",
       "kind": "mechanic",
-      "delivery": "draft",
+      "delivery": "main",
       "pr": 73,
       "commit": "153ed09fb0d843346402d771afb0053a5e1c3f39",
       "branch": "feat/hawk-scout-v1-20261002",
@@ -1508,14 +1527,15 @@
       "parent_id": null,
       "beats": [],
       "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
-      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
-      "implementation": "Implemented prototype on the recorded revision."
+      "verification": "Source ancestry checked against current main; feature-specific earlier test receipts remain in source documentation.",
+      "implementation": "Implemented prototype on the recorded revision.",
+      "available_on_main_commit": "cd3a473b6725872d4c03f190cd1b07ae940d72c9"
     },
     {
       "id": "SYSTEM-002",
       "title": "Ground Focus",
       "kind": "mechanic",
-      "delivery": "draft",
+      "delivery": "main",
       "pr": 75,
       "commit": "79d23545ff8c62ffb782e478497d0bf532767ea2",
       "branch": "feat/ground-focus-v1-20261002",
@@ -1528,8 +1548,9 @@
       "parent_id": null,
       "beats": [],
       "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
-      "verification": "Repository/source inventory; gameplay suites not rerun for this ledger.",
-      "implementation": "Implemented prototype on the recorded revision."
+      "verification": "Source ancestry checked against current main; feature-specific earlier test receipts remain in source documentation.",
+      "implementation": "Implemented prototype on the recorded revision.",
+      "available_on_main_commit": "cd3a473b6725872d4c03f190cd1b07ae940d72c9"
     }
   ],
   "backlog": [
@@ -2197,5 +2218,14 @@
         "MAHA-001"
       ]
     }
-  ]
+  ],
+  "active_development": {
+    "branch": "feat/instructor-story-v1-20261003",
+    "ids": [
+      "HOME-017"
+    ],
+    "guide": "docs/INSTRUCTOR_STORY_DEVELOPMENT.md",
+    "plan": "docs/MISSION_DEVELOPMENT_PLAN.md",
+    "note": "A Funded Instructor is composed into current Home with original candidate concern, consent, physical escort, local signing and interrupted-practice payoff. Earlier HOME-001–016 increments remain included. The active guide records current targeted qualification separately from the pinned source inventory. The 33-sequence figure remains the historical inventory snapshot, not a fresh census of all recent branches."
+  }
 }

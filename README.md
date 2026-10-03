@@ -90,11 +90,24 @@ The planned narrative spans his childhood, rise and reign. Current production
 priority is childhood through the prelude to the Lahore campaign, followed by the
 rest of his life before historical-character DLC production.
 
-The [playable mission and sequence ledger](docs/PLAYABLE_MISSION_LEDGER.md)
-inventories main and draft-branch content with stable IDs, launch instructions,
-prerequisites, outcomes and source revisions. Its
-[machine-readable register](data/production/playable_ledger.json) keeps playable
-sequences, variants, mechanics and planned work separate.
+The [mission development plan](docs/MISSION_DEVELOPMENT_PLAN.md) gives every
+playable sequence its next dramatic and gameplay target. Start with
+[The Words Between Us](docs/MESSAGE_FOLLOWUP.md), the opening message's optional
+question-and-report sequence. The [mission ledger](docs/PLAYABLE_MISSION_LEDGER.md)
+and [machine-readable register](data/production/playable_ledger.json) retain stable
+IDs, launch instructions and source revisions, separating prototypes from future work.
+The next [childhood development pass](docs/CHILDHOOD_ARC_DEVELOPMENT.md) connects
+riding, practice, tracking, the ambush and the household inquiry with clearer
+staging, feedback and responses shaped by what the player experienced.
+The [story pacing pass](docs/STORY_PACING_AND_ATTENTION.md) adds timed captions,
+quiet intervals, adaptive guidance and dialogue recall, with individual literary
+and cinematic direction for all 33 sequence cards.
+The [household story pass](docs/HOUSEHOLD_STORY_DEVELOPMENT.md) develops five more existing sequences with distinct dialogue, visible cargo and work states, recoverable escort cues, and guidance that keeps the immediate responsibility in view.
+The [friends and horsecraft pass](docs/FRIENDS_AND_HORSECRAFT_STORY.md) gives the bazaar return a choice of conversation, makes recovering a separated friend clearer, and focuses each remembered riding exercise on its current demand.
+
+The [rope and remounts pass](docs/ROPE_AND_REMOUNT_STORY.md) brings two retained stories into this Home: an optional chain of tellings and a three-route yard investigation, with local consequences and a shared save.
+
+The [funded instructor pass](docs/INSTRUCTOR_STORY_DEVELOPMENT.md) continues that Home with candidate consent, an actual walk together, a local signing and supported practice. Its promise to keep a place ready returns when attendance breaks; the immediate cue names the next repair, then yields to the resumed lesson.
 
 ## Title and story
 
@@ -166,6 +179,12 @@ course before campaign admission.
 
 [Play](#play) · [Production order and historical perspective](docs/HISTORICAL_PERSPECTIVE.md) ·
 [Foundry integration](docs/FOUNDRY.md)
+Mounting now checks the rider's full collision shape along the approach. Narrow gaps
+and low barriers block the transfer even when the horse is visible; refusal preserves
+the walking state. Dismount placement also accounts for sloped ground and the actual
+walking capsule. Saved horse poses use the horse hull to check ground support on
+inclines, preserve actual headroom and check the full airborne hull for obstacles.
+[Mounting and riding physics](docs/RIDING.md#spatial-checks).
 
 ## Play
 
@@ -225,6 +244,17 @@ knowledge or save history. Punjabi authoring and voice production remain future 
 
 [Reconstruction and historical sources](docs/GUJRANWALA_1792.md) ·
 [Integration receipt](docs/GUJRANWALA_INTEGRATION.md)
+
+The [courtyard detail pass](docs/COURTYARD_FABRIC_DETAIL.md) adds photo-informed
+cusped reveals, grouped shaft detail, recessed panels and timber bearers to the
+existing bays. Geometry and trim colours remain authored interpretations, with
+unchanged collision and campaign state.
+
+**Punjab ecology mosaic:** F7 → **Ecology / seasonal study** previews cultivated
+margins, grazing/scrub, riverine thickets and wetland edges in the same Home.
+Dry, monsoon and receding-water appearances retain separate source dates and
+reconstruction decisions. Movement, concealment and seasonal-route effects remain
+proposed mechanics. [Evidence, scope and controls](docs/PUNJAB_ECOLOGY.md).
 
 ## New playable task: Water for the Household
 
@@ -306,7 +336,7 @@ Two fictional distant scout contacts sit beyond the household's ordinary ground 
 
 [Controls, observation semantics, limits and qualification](docs/HAWK_SCOUT.md)
 
-Ground **Focus** uses the same character-eye visibility checks as Home interactions. A continuous 45-tick look marks a visible contact, speaker, horse or ground trace. Color and symbols describe the observed affordance; unknown people remain unknown. **E** still performs the existing inspection or conversation. Focus does not grant journal knowledge or complete a task.
+Ground **Focus** uses the same character-eye visibility checks as Home interactions. A neutral **Observing** ring shows progress toward a continuous 45-tick look, then marks a visible contact, speaker, horse or ground trace. The ring reveals no identity before acquisition. Color and symbols describe the observed affordance; unknown people remain unknown. **E** still performs the existing inspection or conversation. Focus does not grant journal knowledge or complete a task.
 
 Last-seen markers age on the existing chapter clock. Dashed two-second motion estimates use two observed positions, never a hidden patrol route. Actual nearby hammer playback can produce a coarse directional sound cue, without a concealed person's identity or exact location. Dialogues, sprinting, mounting and hawk scouting end Focus; whole-world restoration clears its transient records. [Controls, limits and qualification](docs/GROUND_FOCUS.md).
 

@@ -73,6 +73,11 @@ received event records, a derived agreement phase, selected actor IDs, and two
 current mount poses. The same `childhood.tick` drives it. Old saves supply no
 invented acquaintance, escort or testimony. F5/F9 and the existing checkpoint
 store preserve the extension; restoring an earlier run discards later agreements.
+The integrated Home also contains household, remount and instructor undertakings.
+Their existing commitment authority remains shared: an active camp escort blocks
+another reservation or outing, while an existing reservation blocks invitation.
+Greeting and horse care remain available because they do not reserve riders.
+Composed restore checks refuse overlapping commitments rather than selecting one.
 The three care pages are transient presentation, outside the save and journal.
 Partial reading pauses Home and grants no testimony. F5 follows the established
 save-and-resume behavior; reopening starts at the bridle. F9 and checkpoint restore

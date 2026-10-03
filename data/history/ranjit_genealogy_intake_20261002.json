@@ -1,0 +1,41 @@
+{
+  "schema": "1792.genealogy-reference-intake.v1",
+  "recorded_date": "2026-10-02",
+  "id": "iqbalnama_tree_supplied_20261002",
+  "filename": "family-tree-of-maharaja-ranjit-singh-written-in-perso-v0-z39ov56sinhf1.webp",
+  "sha256": "433b7e083f320bb9bcb86104b33788d077feaf2a4859c76f36f7307426919a68",
+  "bytes": 570556,
+  "pixels": [
+    1080,
+    1668
+  ],
+  "review_status": "image and printed English caption inspected; manuscript labels not transcribed or translated",
+  "printed_caption": {
+    "figure": "9",
+    "title": "Family tree of Maharaja Ranjit Singh",
+    "work": "Iqbalnama-i-Maharaja Ranjit Singh",
+    "holding_institution": "Maharaja Ranjit Singh Museum, Amritsar",
+    "accession_as_printed": "Acc. No nil"
+  },
+  "attribution_status": "Caption on supplied reproduction; museum record not independently verified.",
+  "observations": [
+    "A branching diagram links flower-shaped name cartouches, using light and gold-coloured lines.",
+    "Perso-Arabic script appears in the cartouches, headings and border; language and full readings remain unresolved.",
+    "The supplied image includes a printed English book/plate caption. No dated colophon or usable accession number is established from it."
+  ],
+  "observation_date": null,
+  "manuscript_date": null,
+  "reproduction_date": null,
+  "external_leads": [
+    {
+      "url": "https://commons.wikimedia.org/wiki/File:Family-tree_of_Maharaja_Ranjit_Singh,_from_the_'Iqbalnama-i-Maharaja_Ranjit_Singh',_circa_first_half_of_the_19th_century.png",
+      "status": "Search-index metadata inspected, not pixel-matched or museum-authenticated.",
+      "finding": "Contributor names Jean-Marie Lafont, Maharaja Ranjit Singh: Lord of the Five Rivers (2002), as the reproduction source. Contributor supplies a tentative nineteenth-century dating and uncertain readings; neither is admitted as verified here."
+    }
+  ],
+  "reconstruction_decision": "Keep as a genealogical document lead. Transcribe each label and trace each line separately, with uncertainty, before proposing reported parentage, marriage or dynastic affiliation edges. Do not equate a drawn line with independently verified biological parentage.",
+  "accepted_character_relationships": [],
+  "existing_actor_ids_modified": false,
+  "raw_file_committed": false,
+  "redistribution_rights": "not_established_for_supplied_reproduction"
+}

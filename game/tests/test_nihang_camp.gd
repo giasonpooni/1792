@@ -10,6 +10,7 @@ const Pose:=preload("res://tests/aftermath_fixture.gd")
 const Launch:=preload("res://childhood/home_launch.gd")
 const Store:=preload("res://childhood/checkpoint_store.gd")
 const Guidance:=preload("res://presentation/beginning_guidance.gd")
+const InstructorFixture:=preload("res://tests/instructor_story_fixture.gd")
 const SAVE:="user://nihang-camp-test-only.json"
 var passed:=0
 var failed:=0
@@ -154,6 +155,33 @@ func domain() -> void:
 	ok(model.observe_quarry(true),"checkpoint-ready quarry")
 	ok(Store.write(SAVE+".checkpoint",model.snapshot(),Vector3.ZERO,"return_trail",State),"whole Home checkpoint retains relationships")
 	ok(Store.read(SAVE+".checkpoint",State).error,"checkpoint read with explicit authority")
+
+func mixed_authority() -> void:
+	# Domain fixtures exercise admission and restore across the composed state
+	# ladder; the separate journey continues to qualify actual camp travel.
+	var model:=State.new()
+	ok(model.restore(InstructorFixture.make("available")),"current Home retains instructor-capable state")
+	ok(Pose.pose(model,R.CAMP),"domain reaches camp with funded household")
+	ok(model.camp_action("meet",true,true),"funded Home hears the elder")
+	ok(Pose.pose(model,R.HORSE_LINES[0]),"funded Home reaches horses")
+	ok(model.camp_action("care",true,true),"funded Home hears horse care")
+	ok(Pose.pose(model,R.CAMP),"funded Home returns to elder")
+	ok(model.camp_action("invite_one",true,true),"funded Home admits camp outing")
+	var active:=model.nihang_camp()
+	ok(Pose.pose(model,model.Commission.HOME),"declared household contact during camp outing")
+	refused(model,model.commission_action.bind("reserve","standard"),"camp prevents concurrent instructor reservation")
+	refused(model,model.begin_remounts,"camp prevents concurrent remount inquiry")
+	var reserved:=InstructorFixture.make("reserved")
+	reserved.nihang_camp=active
+	refused(model,model.restore.bind(reserved),"loaded instructor reservation cannot overlap camp")
+	model=State.new()
+	ok(model.restore(InstructorFixture.make("reserved")),"valid reserved instructor remains accepted")
+	ok(Pose.pose(model,R.CAMP),"declared camp contact during instructor reservation")
+	ok(model.camp_action("meet",true,true),"introduction does not reserve another outing")
+	ok(Pose.pose(model,R.HORSE_LINES[0]),"reserved Home reaches horses")
+	ok(model.camp_action("care",true,true),"care does not reserve another outing")
+	ok(Pose.pose(model,R.CAMP),"reserved Home returns to elder")
+	refused(model,model.camp_action.bind("invite_one",true,true),"instructor reservation prevents camp undertaking")
 
 func look(scene,at: Vector3) -> void:
 	var delta: Vector3=at-scene.avatar.global_position
@@ -399,7 +427,7 @@ func stale_care() -> void:
 	home.queue_free();await frames()
 
 func run() -> void:
-	domain();await journey();await stale_menu();await stale_care();await care_priority()
+	domain();mixed_authority();await journey();await stale_menu();await stale_care();await care_priority()
 	for suffix in ["",".tmp",".checkpoint"]:
 		if FileAccess.file_exists(SAVE+suffix): DirAccess.remove_absolute(ProjectSettings.globalize_path(SAVE+suffix))
 	print("NIHANG_CAMP_TESTS: %d passed, %d failed"%[passed,failed]);quit(1 if failed else 0)

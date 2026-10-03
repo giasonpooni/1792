@@ -5,8 +5,10 @@ const Fabric := preload("res://reconstruction/district_fabric.gd")
 const Narrator := preload("res://narrative/shah_observer.gd")
 const Water := preload("res://territory/water_round_rules.gd")
 const WaterView := preload("res://territory/water_round_view.gd")
+const WaterStory := preload("res://territory/water_round_story.gd")
 var water_view: Node3D
 var _water_action := ""
+var _water_choices: Array[String] = []
 var fabric: Node3D
 var narrator := Narrator.new()
 var _narrator_label: Label
@@ -48,10 +50,14 @@ func _unhandled_input(event: InputEvent) -> void:
 	super._unhandled_input(event)
 
 func _show_dialog(title: String, body: String, actions: Array) -> void:
+	_water_choices.clear()
+	_water_action=""
 	super._show_dialog(title,body,actions)
 	if is_instance_valid(_narrator_label): _narrator_label.hide()
 
 func _open_journal() -> void:
+	_water_choices.clear()
+	_water_action=""
 	super._open_journal()
 	if is_instance_valid(_narrator_label): _narrator_label.hide()
 
@@ -79,10 +85,17 @@ func _sync_water() -> void:
 func _clear_pending_actions() -> void:
 	super._clear_pending_actions()
 	_water_action=""
+	_water_choices.clear()
+
+func _resume() -> void:
+	_water_choices.clear()
+	_water_action=""
+	super._resume()
 
 func _menu_action(action: String) -> void:
 	if action.begins_with("water:"):
-		_water_action=action.trim_prefix("water:")
+		var kind := action.trim_prefix("water:")
+		if _paused and kind in _water_choices and _water_action.is_empty(): _water_action=kind
 		return
 	super._menu_action(action)
 
@@ -90,12 +103,33 @@ func _physics_process(delta: float) -> void:
 	if not _water_action.is_empty():
 		var action:=_water_action
 		_water_action=""
-		var error: String=model.begin_water_round() if action=="begin" else model.water_action(action)
-		_message=error if not error.is_empty() else "Household water round · "+action+" recorded."
+		if not _paused or action not in _water_choices: return
+		var error := "Return to the well or quartermaster and face the task before continuing."
+		var site := Water.STORE if action in ["begin", "deposit"] else Water.WELL
+		if _water_contact(site): error = model.begin_water_round() if action=="begin" else model.water_action(action)
+		_message=error if not error.is_empty() else WaterStory.action_line(action,model.water_round())
 		_sync_water()
 		_resume()
 		return
+	# Only a live clock transition gets a completion beat. Rebinding a loaded or
+	# fixture-mutated ledger refreshes the props, without replaying a false event.
+	var before: Dictionary = model.water_round()
+	var prior_tick: int = int(model.progress().tick)
+	var was_paused := _paused
 	super._physics_process(delta)
+	if was_paused or _paused or int(model.progress().tick) != prior_tick + 1 or before.is_empty(): return
+	var after: Dictionary = model.water_round()
+	if after.is_empty() or before.ledger.phase != "drawing": return
+	if after.ledger.phase == "carrying":
+		_message = WaterStory.filled_line(after)
+		_refresh()
+	elif after.ledger.phase == "ready":
+		_message = "Buddh · I have left the rope. That draw will have to begin again."
+		_refresh()
+
+func _water_contact(site: Vector3) -> bool:
+	if site == Water.STORE: return _economy_contact(site)
+	return not model.mounted() and avatar.is_on_floor() and avatar.global_position.distance_to(model.position()) <= 0.25 and Water.near_site(model.position(),site) and _seen(site+Vector3.UP*1.4,4.5)
 
 func _interact() -> void:
 	if model.aftermath_phase()=="complete" and not model.mounted() and Water.near_site(model.position(),Water.WELL):
@@ -103,12 +137,18 @@ func _interact() -> void:
 			_message="Face the well from an unobstructed position."
 			return
 		var actions: Array=[]
+		var choices: Array[String]=[]
 		if model.has_water_round():
 			match model.water_round().ledger.phase:
-				"ready": actions.append(["Draw one load · 180 existing ticks / 3 abstract units","water:draw"])
-				"drawing": actions.append(["Cancel this draw · no water consumed","water:cancel"])
+				"ready":
+					actions.append(["Draw one load","water:draw"])
+					choices.append("draw")
+				"drawing":
+					actions.append(["Cancel this draw","water:cancel"])
+					choices.append("cancel")
 		actions.append(["Return","resume"])
-		_show_dialog("WELL · HOUSEHOLD WATER ROUND",WaterView.status(model.water_round(),int(model.progress().tick))+"\n\nAssigned task quantities, not litres, water safety or a measured well yield. Water is transferred once the draw finishes; money and historical knowledge do not change.",actions)
+		_show_dialog("THE EAST WELL",WaterStory.well_body(model.water_round()),actions)
+		_water_choices.assign(choices)
 		return
 	super._interact()
 
@@ -124,6 +164,7 @@ func _open_quartermaster() -> void:
 		action="deposit"
 		text="Deposit carried water into the household vessel"
 	if action.is_empty(): return
+	_water_choices.assign([action])
 	var button:=Button.new()
 	button.text=text
 	button.custom_minimum_size.y=42
@@ -134,4 +175,4 @@ func _open_quartermaster() -> void:
 	button.grab_focus()
 
 func _account_text() -> String:
-	return super._account_text()+"\n\n"+WaterView.status(model.water_round(),int(model.progress().tick))+"\nThis finite round does not yet model recurring household water consumption."
+	return super._account_text()+"\n\n"+WaterView.status(model.water_round(),int(model.progress().tick))+"\nWATER ACCOUNT · Six assigned units, carried in loads of three; not litres, water safety or measured well yield. Each draw uses 180 existing simulation ticks. The finite task does not model recurring consumption or grant money. Scene dialogue is original authored fiction."

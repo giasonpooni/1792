@@ -59,6 +59,14 @@ func point(value: Vector3) -> Array:
 	return [value.x, value.y, value.z]
 
 func capture(id: String, camera_at: Vector3, look_at: Vector3) -> void:
+	# Software rendering need not redraw every travel tick. Native scene input,
+	# physics, actors and choices continue throughout; draw every earned capture
+	# with the same settling frames and post-draw boundary as the original probe.
+	root.disable_3d = false
+	await _capture_drawn(id, camera_at, look_at)
+	root.disable_3d = true
+
+func _capture_drawn(id: String, camera_at: Vector3, look_at: Vector3) -> void:
 	controls()
 	# Camera movement is presentation only, always outside the protected room.
 	scene._cut_camera.position = camera_at
@@ -136,6 +144,7 @@ func run() -> void:
 	if check(scene.model.sequence_id == "audience", "existing visit starts the audience tale"):
 		scene.begin_play()
 		await frames(6)
+		root.disable_3d = true
 		await journey()
 	controls()
 	current_scene = null
@@ -144,6 +153,7 @@ func run() -> void:
 	finish()
 
 func finish() -> void:
+	root.disable_3d = false
 	check(captures == 3, "all three earned moments were captured")
 	var file := FileAccess.open(MANIFEST, FileAccess.WRITE)
 	if check(file != null, "manifest opens"):

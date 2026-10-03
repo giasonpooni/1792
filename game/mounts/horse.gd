@@ -10,6 +10,8 @@ const ACCELERATION := 4.5
 const BRAKING := 9.0
 const GRAVITY := 22.0
 const DISMOUNT_CLEARANCE_LIFTS := [0.0,0.02,0.04,0.06,0.08,0.12,0.16]
+const SAVED_GROUND_CLEARANCE := 0.05
+const SAVED_SUPPORT_REACH := 0.20
 var speed := 0.0
 var gait_speed_limit := Rules.MAX_SPEED # Optional supplied-condition cap; original default preserved.
 var _rider: Node3D
@@ -29,7 +31,7 @@ func _ready() -> void:
 	_hull.height = 3.2 # Conservative horse+rider hull; no mesh-perfect collision claim.
 	var collider := CollisionShape3D.new()
 	collider.name = "Hull"
-	collider.position.y = 1.6
+	collider.position.y = _hull.height * 0.5
 	collider.shape = _hull
 	add_child(collider)
 	_build_blockout()
@@ -132,15 +134,16 @@ func clear_mount_path(avatar: CharacterBody3D) -> bool:
 	var fraction:=space.cast_motion(query)
 	return fraction.size()==2 and fraction[0]>=0.999
 
-func dismount_position(avatar: CharacterBody3D) -> Variant:
+func dismount_position(avatar: CharacterBody3D, retained_seated_hull: bool = false) -> Variant:
 	# Try both sides, then rear/front. Ray ground, then clear and sweep the same
 	# collision shape/local transform that resumes walking after dismount.
 	var space := get_world_3d().direct_space_state
-	# A seated scene may disable its walking shape. Admission still sweeps that
-	# configured shape before the scene reenables it at the accepted landing.
-	var collider:=_avatar_collider(avatar,true)
+	# Only a seated adapter that retains and reenables this walking shape may
+	# explicitly qualify it while disabled. Ordinary unavailable hulls refuse.
+	var collider:=_avatar_collider(avatar,retained_seated_hull)
 	if collider==null or collision_mask==0: return null
 	var exclusions: Array[RID]=[get_rid(),avatar.get_rid()]
+	var minimum_normal_y := cos(minf(floor_max_angle, avatar.floor_max_angle))
 	for offset in [global_basis.x * 1.8, -global_basis.x * 1.8, global_basis.z * 2.1, -global_basis.z * 2.1]:
 		var p: Vector3 = global_position + offset
 		# Cover the full vertical change possible across this horizontal offset at
@@ -149,7 +152,7 @@ func dismount_position(avatar: CharacterBody3D) -> Variant:
 		var reach:=maxf(0.8,offset.length()*tan(floor_max_angle)+0.2)
 		var ray:=PhysicsRayQueryParameters3D.create(p+Vector3.UP*reach,p-Vector3.UP*reach,collision_mask,exclusions)
 		var hit := space.intersect_ray(ray)
-		if hit.is_empty() or hit.normal.y < cos(deg_to_rad(40.0)):
+		if hit.is_empty() or hit.normal.y < minimum_normal_y:
 			continue
 		var destination:=avatar.global_transform;destination.origin=hit.position+Vector3.UP*0.04
 		var clear_destination:Variant=_raised_clear_avatar(space,avatar,collider,destination)
@@ -167,17 +170,37 @@ func record_fits_world(record: Dictionary, avatar: CharacterBody3D, staged_peers
 	# Domain validation runs first. Check loaded pose without mutating this body.
 	var query := PhysicsShapeQueryParameters3D.new()
 	query.shape = _hull
+	var center_y := _hull.height * 0.5
+	if record.grounded:
+		# Preserve the existing lower-cap tolerance without lifting the top into
+		# valid headroom. Only this query owns the shortened shape; the live hull
+		# and airborne clearance retain the complete horse+rider capsule.
+		var clearance_hull := _hull.duplicate() as CapsuleShape3D
+		clearance_hull.height -= SAVED_GROUND_CLEARANCE
+		query.shape = clearance_hull
+		center_y += SAVED_GROUND_CLEARANCE * 0.5
 	query.collision_mask = 1
 	query.exclude = [get_rid(), avatar.get_rid()]
 	query.exclude.append_array(staged_peers)
-	query.transform = Transform3D(Basis(Vector3.UP, record.yaw), Rules.position(record) + Vector3.UP * 1.65)
+	query.transform = Transform3D(Basis(Vector3.UP, record.yaw), Rules.position(record) + Vector3.UP * center_y)
 	if not get_world_3d().direct_space_state.intersect_shape(query, 1).is_empty():
 		return false
 	if record.grounded:
-		var p := Rules.position(record)
-		var ray := PhysicsRayQueryParameters3D.create(p + Vector3.UP * 0.1, p - Vector3.UP * 0.2, 1, query.exclude)
-		var floor_hit := get_world_3d().direct_space_state.intersect_ray(ray)
-		return not floor_hit.is_empty() and floor_hit.normal.y >= cos(deg_to_rad(40.0))
+		# A rounded hull can stand on a slope with its root above a short centre
+		# ray's reach. Qualify the saved hull itself without moving the live body.
+		# Retain the .05 lower-cap tolerance and .20 ground-search allowance.
+		query.motion = Vector3.DOWN * (SAVED_GROUND_CLEARANCE + SAVED_SUPPORT_REACH)
+		var space := get_world_3d().direct_space_state
+		var fraction := space.cast_motion(query)
+		if fraction.size() != 2 or fraction[0] == 1.0:
+			return false
+		# get_rest_info ignores motion; sample just beyond the first contact.
+		# The .002 margin stabilizes the normal query, not the search distance.
+		query.transform.origin += query.motion * minf(1.0, fraction[1] + 0.001)
+		query.motion = Vector3.ZERO
+		query.margin = 0.002
+		var floor_hit := space.get_rest_info(query)
+		return not floor_hit.is_empty() and floor_hit.normal.y >= cos(floor_max_angle)
 	return true
 
 func _piece(parent: Node3D, size: Vector3, at: Vector3, color: Color) -> MeshInstance3D:

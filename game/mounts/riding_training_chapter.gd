@@ -56,11 +56,11 @@ func _interact() -> void:
 		if not error.is_empty(): _message=error;return
 		if model.has_riding_skill("single_standing"):
 			_show_dialog("RIDING PRACTICE · LEARNED HORSECRAFT",
-				"Practise standing riding or pair riding with the training horses. Your mounted matchlock skill is available in either formation. These horses and matchlocks belong to this practice session; they are not added to your household or inventory.",
+				"Trainer: One horse or two today, Buddh? Take the practice matchlocks if you wish. Bring everything back when you finish.\n\nChoose a formation. Your learned skills stay with you when you return.",
 				[["Practise on one horse","riding:single"],["Practise across two horses","riding:pair"],["Return to Home","resume"]])
 			return
 		_show_dialog("RIDING LESSON · A TALE OF MAHA SINGH",
-			"As Buddh learns to ride, a tale of his father's horsemanship becomes a playable lesson. Practice standing on one horse, standing across two horses, and managing mounted matchlocks.\n\nThe tale's exact passage, battle and date remain unresolved. This is an authored training flashback. Your current Home waits here while you practise.",
+			"Trainer: They tell a tale of your father riding two horses, Buddh. Begin with one. We will see what your feet remember when the smoke comes.\n\nThree exercises: one horse, a pair, then four matchlocks. Finish and return to learn the skills; leave at any time to try again later.",
 			[["Practice the remembered feat" if model.has_riding_skill("single_standing") else "Learn the remembered feat","riding:begin"],["Continue the Home lesson","resume"]])
 		return
 	super._interact()
@@ -140,7 +140,7 @@ func _refresh() -> void:
 		_hud.text+="\nRIDING SKILLS · after the first riding gate, return to the stable trainer [E]"
 
 func _restore_workshop_file(path: String,retry: bool) -> void:
-	var staged:=SkillState.new();var error: String=staged.load_from(path)
+	var staged=model.get_script().new();var error: String=staged.load_from(path)
 	if error.is_empty() and retry and staged.brawl_phase()!="challenged": error="No pre-confrontation bazaar snapshot."
 	if error.is_empty(): error=_candidate_error(staged)
 	if error.is_empty(): error=model.restore(staged.snapshot())
@@ -154,13 +154,13 @@ func _capture_checkpoint(reason: String) -> void:
 	# The absent extension is the same locked state. Retain legacy checkpoint
 	# reader compatibility until a lesson receipt actually needs preservation.
 	if snapshot.riding_skills.lesson_receipts.is_empty(): snapshot.erase("riding_skills")
-	if error.is_empty(): error=Checkpoint.write(checkpoint_path(),snapshot,avatar.pivot.rotation,reason,SkillState)
+	if error.is_empty(): error=Checkpoint.write(checkpoint_path(),snapshot,avatar.pivot.rotation,reason,model.get_script())
 	_checkpoint_note="Checkpoint saved with riding skills." if error.is_empty() else "Checkpoint not saved: "+error
 	_message+="\n"+_checkpoint_note
 
 func _restore_checkpoint() -> void:
-	var result:=Checkpoint.read(checkpoint_path(),SkillState)
-	var error: String=result.error;var staged:=SkillState.new()
+	var result:=Checkpoint.read(checkpoint_path(),model.get_script())
+	var error: String=result.error;var staged=model.get_script().new()
 	if error.is_empty(): error=staged.restore(result.envelope.snapshot)
 	if error.is_empty(): error=_candidate_error(staged)
 	if error.is_empty(): error=model.restore(staged.snapshot())

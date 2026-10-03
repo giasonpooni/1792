@@ -7,6 +7,9 @@ var kit := Kit.new()
 var smith_arm: Node3D
 var coal: MeshInstance3D
 var finished: Node3D
+var unfinished: Node3D
+var waiting_blanks: Array[Node3D]=[]
+var active_blank: Node3D
 var carried: Node3D
 var hammer_audio: AudioStreamPlayer3D
 var last_tick := -1
@@ -35,7 +38,16 @@ func build(avatar: Node3D) -> void:
 	kit.rod(base,Vector3(-2.8,2.7,0),Vector3(1.9,2.7,0),0.065,wood)
 	kit.canopy(base,Vector3(-0.45,2.68,0.1),Vector2(4.7,3.8),"b49a73","7b6553")
 	kit.pot(base,Vector3(1.6,0,1.3),0.55)
-	finished=Node3D.new();finished.position=Vector3(0.1,1.04,1.3);base.add_child(finished)
+	# The same bench carries the setup and payoff: raw heads, then handled tools,
+	# then the space left behind by collection. These props never grant inventory.
+	unfinished=Node3D.new();unfinished.name="UnfinishedPair";unfinished.position=Vector3(0.1,1.04,1.3);base.add_child(unfinished)
+	var raw_steel:=kit.plain("454a4b",0.25)
+	for x in [-0.45,0.4]:
+		var blank:=Node3D.new();blank.position.x=x;unfinished.add_child(blank)
+		_blank(blank,raw_steel);waiting_blanks.append(blank)
+	active_blank=Node3D.new();active_blank.name="BlankOnAnvil";active_blank.position=Vector3(0.12,0.895,-0.8);base.add_child(active_blank)
+	_blank(active_blank,kit.plain("9a6950",0.25))
+	finished=Node3D.new();finished.name="FinishedPair";finished.position=Vector3(0.1,1.04,1.3);base.add_child(finished)
 	_tools(finished,wood,steel)
 	# Original articulated costume proxy, not a researched named artisan or production rig.
 	var person:=Node3D.new();person.name="FictionalSmith";base.add_child(person)
@@ -77,6 +89,12 @@ func _tools(parent: Node3D,wood: Material,steel: Material) -> void:
 		kit.box(parent,Vector3(x,0,0),Vector3(0.12,0.08,0.62),wood)
 		kit.box(parent,Vector3(x,0,-0.25),Vector3(0.32,0.12,0.15),steel)
 
+func _blank(parent: Node3D,steel: Material) -> void:
+	# Unhafted stock: a broad head and a short rough tang, visibly unlike the
+	# long wooden handles on the finished pair. No historical tool-type claim.
+	kit.box(parent,Vector3(0,0,-0.1),Vector3(0.31,0.065,0.30),steel)
+	kit.box(parent,Vector3(0,0,0.14),Vector3(0.14,0.06,0.19),steel)
+
 static func _strike_stream() -> AudioStreamWAV:
 	# Original damped partials: a prototype cue, not an authentic historical recording.
 	var bytes:=PackedByteArray();bytes.resize(7056*2)
@@ -94,6 +112,10 @@ func sample(tick: int,phase: String,started_tick: int) -> void:
 	var cycle:=posmod(elapsed,72)
 	smith_arm.rotation.x=0.68*(1.0-cos(TAU*float(cycle)/72.0)) if phase=="working" else 0.15
 	coal.visible=phase=="working";finished.visible=phase=="ready";carried.visible=phase in ["fuel","tools"]
+	unfinished.visible=phase in ["unassigned","fuel","working"]
+	waiting_blanks[0].visible=phase!="working"
+	waiting_blanks[1].visible=true
+	active_blank.visible=phase=="working"
 	carried.get_node("ToolHeads").visible=phase=="tools"
 	kit.sample(tick)
 	if continuous and phase=="working" and cycle==0:
