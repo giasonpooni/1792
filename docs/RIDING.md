@@ -115,6 +115,28 @@ Malformed/unsupported records, invalid rider identity, nonfinite motion, out-of-
 parked horses with speed, mismatched actor/horse locations, and blocked loaded poses are
 rejected. A failed load does not partially replace the live horse or campaign.
 
+### Saved horse support on slopes
+
+Grounded saved poses now qualify support by sweeping the horse capsule downward from
+the saved position and yaw. The previous short ray through the root rejected actual
+motor-settled poses on 37°–39.9° ramps. A vertical capsule of radius 0.8 m on an inclined
+plane has root height `0.8 * (sec(angle) - 1)` above the plane under its centre; at 39°
+that is about **0.229 m**, beyond the old 0.20 m centre ray even while the hull touches
+the ground to one side.
+
+The existing lifted-hull obstruction check remains first. A **0.25 m** downward hull
+sweep then retains the prior **0.05 m** query lift plus **0.20 m** support-search allowance.
+Only a detected contact proceeds to a normal query. That query samples at most 0.00025 m
+beyond the unsafe sweep fraction, with a 0.002 m contact margin, and checks the horse's
+existing floor-angle limit. The normal-query margin does not extend a collision-free
+sweep. No live body moves during validation.
+
+This intentionally preserves flat-ground compatibility: candidate feet at 0.199 m still
+pass, while 0.201 m fails. The allowance is a bounded load tolerance, not proof that a
+forged grounded record is touching the floor. Existing clear airborne-pose handling,
+save fields, staged admission and the single campaign clock remain intact. Irregular
+terrain, dynamic support and physical horse hoof contacts remain separate work.
+
 The footprint bounds in `riding_rules.gd` are prototype guardrails, not Punjab's historical
 frontiers. Spatial load checks cover the horse; general on-foot save/world collision
 validation remains inherited and is not claimed as solved here.
@@ -174,6 +196,27 @@ flat, 35° and 45° diagnostic ramps. Accepted placements settle using the exist
 player motor; the steep fixture remains refused. Captures bind the operation,
 execution, source bytes and pixel hashes without claiming a historical terrain survey
 or a played campaign route.
+
+The next saved-support increment adds **132** checks in `test_horse_grounding.gd` and
+**24** in `test_horse_slope_load.gd`. The same tests against `b5f0c6c` produce respectively
+**124 passes / 8 expected failures** and **19 passes / 5 expected failures**. The Home
+test settles through the existing horse motor and mounted reducer on an authored 39°
+ramp, saves, installs a distinguishable live state, then invokes the actual load path.
+Successful loading restores the saved state and clock. Obstructed saved poses and
+removed support preserve the live authority, physical projections and original save bytes.
+
+`test_horse_slopes.gd` adds **72** checks of existing movement across nine broad-ramp
+fixtures: 0°, 20° and 35°, each uphill, downhill and across the slope. After setup,
+acceleration, travel and braking all use the shared horse motor. Measured steady
+three-dimensional path speed is **10.997–11.0001 m/s**, and braking from the 11 m/s cap
+takes **74 physics ticks** at 60 Hz over **6.629–6.631 m**. All measured travel samples
+remain grounded. These are authored controller settings on the pinned runtime, not
+equestrian measurements or a played campaign journey. The hypothesized sustained-slope
+speed loss was not reproduced, so the motor, acceleration and braking were retained.
+
+With rerun riding **177**, childhood **110**, companions **229**, and water-round **277**
+checks, saved-support qualification totals **1,021 native checks**, plus **8** structural
+checks. The whole game suite was not rerun for this increment.
 
 `render_riding.gd` creates five controlled render fixtures. They are actual Godot images,
 but capture success is not a human playtest and fixture placement is not autonomous travel.

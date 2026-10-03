@@ -169,10 +169,21 @@ func record_fits_world(record: Dictionary, avatar: CharacterBody3D) -> bool:
 	if not get_world_3d().direct_space_state.intersect_shape(query, 1).is_empty():
 		return false
 	if record.grounded:
-		var p := Rules.position(record)
-		var ray := PhysicsRayQueryParameters3D.create(p + Vector3.UP * 0.1, p - Vector3.UP * 0.2, 1, query.exclude)
-		var floor_hit := get_world_3d().direct_space_state.intersect_ray(ray)
-		return not floor_hit.is_empty() and floor_hit.normal.y >= cos(deg_to_rad(40.0))
+		# A rounded hull can stand on a slope with its root above a short centre
+		# ray's reach. Qualify the saved hull itself without moving the live body.
+		# Retain the existing .05 query lift and .20 ground-search allowance.
+		query.motion = Vector3.DOWN * 0.25
+		var space := get_world_3d().direct_space_state
+		var fraction := space.cast_motion(query)
+		if fraction.size() != 2 or fraction[0] == 1.0:
+			return false
+		# get_rest_info ignores motion; sample just beyond the first contact.
+		# The .002 margin stabilizes the normal query, not the search distance.
+		query.transform.origin += query.motion * minf(1.0, fraction[1] + 0.001)
+		query.motion = Vector3.ZERO
+		query.margin = 0.002
+		var floor_hit := space.get_rest_info(query)
+		return not floor_hit.is_empty() and floor_hit.normal.y >= cos(floor_max_angle)
 	return true
 
 func _piece(parent: Node3D, size: Vector3, at: Vector3, color: Color) -> MeshInstance3D:

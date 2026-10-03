@@ -41,7 +41,8 @@ it does not advance Buddh's biography or replace a story chapter.
 Mounting now checks the rider's full collision shape along the approach. Narrow gaps
 and low barriers block the transfer even when the horse is visible; refusal preserves
 the walking state. Dismount placement also accounts for sloped ground and the actual
-walking capsule. [Mounting and riding physics](docs/RIDING.md#spatial-checks).
+walking capsule. Saved horse poses use the horse hull to check ground support on
+inclines. [Mounting and riding physics](docs/RIDING.md#spatial-checks).
 
 ## Play
 

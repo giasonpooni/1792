@@ -47,6 +47,12 @@ def main() -> int:
         "dismount-clearance", "DISMOUNT_CLEARANCE_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_dismount_home.gd"],
         "dismount-home", "DISMOUNT_HOME_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_horse_slopes.gd"],
+        "horse-slopes", "HORSE_SLOPE_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_horse_grounding.gd"],
+        "horse-grounding", "HORSE_GROUNDING_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_horse_slope_load.gd"],
+        "horse-slope-load", "HORSE_SLOPE_LOAD_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_companions.gd"],
         "companions", "COMPANION_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_character_names.gd"],
