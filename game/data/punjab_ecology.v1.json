@@ -1,0 +1,572 @@
+{
+  "schema": "1792.punjab-ecology.v1",
+  "id": "gujranwala-ecology-mosaic.v1",
+  "target_year": 1792,
+  "frame": "gujranwala-compressed-local-metres",
+  "georeferenced": false,
+  "classification": "bounded_reconstruction_study",
+  "sources": [
+    {
+      "id": "grewal_vegetation",
+      "title": "Natural Vegetation and Wildlife in the Punjab",
+      "author": "Reeta Grewal",
+      "file_name": "4_grewal_r.pdf",
+      "url": null,
+      "publication_year": null,
+      "role": "historical_synthesis",
+      "location": "Historical Punjab; varies by cited account",
+      "observation_period": {
+        "start_year": null,
+        "end_year": null,
+        "label": "Multiple centuries; dates belong to individual accounts"
+      },
+      "locator": "JPS 11:1, printed pp. 39-57; p. 42 and appendix p. 54",
+      "review": "Named passages inspected; underlying Barr journal not inspected",
+      "limits": "Synthesis of travellers, poetry and later gazetteers; not a 1792 ecological survey.",
+      "accessed": "2026-10-02"
+    },
+    {
+      "id": "nair_1978",
+      "title": "Flora of the Punjab Plains",
+      "author": "N. C. Nair",
+      "file_name": "Flora of Punjab Plains.pdf",
+      "url": null,
+      "publication_year": 1978,
+      "role": "botanical_reference",
+      "location": "Indian Punjab and Haryana; not Pakistani Gujranwala",
+      "observation_period": {
+        "start_year": 1961,
+        "end_year": 1966,
+        "label": "Principal fieldwork; also herbarium and earlier literature"
+      },
+      "locator": "Scan pp. 2, 4-6: title, foreword, preface, introduction",
+      "review": "Scanned front matter inspected; species-level entries still require individual verification",
+      "limits": "Identification, nomenclature, habitat and specimen leads only; no direct 1792 occurrence or abundance inference.",
+      "accessed": "2026-10-02"
+    },
+    {
+      "id": "iqbal_2025",
+      "title": "Colonial Governance in Gujrat: Revenue Administration and Judicial Transformation under British Rule (1849-1947)",
+      "author": "Ayesha Iqbal",
+      "file_name": "Acad.Int.J.Soc.Sci.44b.2025.409-420.pdf",
+      "url": "https://doi.org/10.63056/academia.4.4%20(b).2025.1638",
+      "publication_year": 2025,
+      "role": "later_governance",
+      "location": "Gujrat district",
+      "observation_period": {
+        "start_year": 1849,
+        "end_year": 1947,
+        "label": "Study period, not one field observation"
+      },
+      "locator": "Printed pp. 409-410, 418 (references)",
+      "review": "Scope and 1918 reference inspected",
+      "limits": "Deferred later historical layer; excluded from opening habitat/land-law admission.",
+      "accessed": "2026-10-02"
+    },
+    {
+      "id": "douie_1916",
+      "title": "The Panjab, North-West Frontier Province, and Kashmir",
+      "author": "James Douie",
+      "file_name": null,
+      "url": "https://www.gutenberg.org/cache/epub/24562/pg24562-images.html",
+      "publication_year": 1916,
+      "role": "retrospective_account",
+      "location": "Punjab; local subregions distinguished",
+      "observation_period": {
+        "start_year": null,
+        "end_year": 1916,
+        "label": "Retrospective and contemporary material; not an 1792 survey"
+      },
+      "locator": "Ch. VI: Bar vegetation; Ch. XIII: Canals before annexation",
+      "review": "Relevant sections inspected",
+      "limits": "Pre-annexation irrigation and pastoral context; cannot locate a particular 1792 canal or field.",
+      "accessed": "2026-10-02"
+    },
+    {
+      "id": "noaa_dolphin_review",
+      "title": "Indus River Dolphin 5-Year Review",
+      "author": "NOAA / National Marine Fisheries Service",
+      "file_name": null,
+      "url": "https://repository.library.noaa.gov/view/noaa/17049/noaa_17049_DS1.pdf",
+      "publication_year": null,
+      "role": "habitat_review",
+      "location": "Indus system and tributaries",
+      "observation_period": {
+        "start_year": null,
+        "end_year": null,
+        "label": "Modern review with historical distribution records"
+      },
+      "locator": "PDF pp. 9-11, sections 2.3.1.5-2.3.1.6",
+      "review": "Range, habitat and fragmentation passages inspected",
+      "limits": "Former range and habitat suitability do not establish local 1792 density; retain source-era taxonomy.",
+      "accessed": "2026-10-02"
+    },
+    {
+      "id": "kew_neem",
+      "title": "Azadirachta indica A.Juss. | Plants of the World Online",
+      "author": "Royal Botanic Gardens, Kew",
+      "file_name": null,
+      "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:1213180-2/general-information",
+      "publication_year": null,
+      "role": "taxonomy_authority",
+      "location": "Taxonomic record; no historical placement",
+      "observation_period": {
+        "start_year": null,
+        "end_year": null,
+        "label": "Accessed 2026-10-02"
+      },
+      "locator": "Accepted name and common names",
+      "review": "Taxon and neem common name inspected",
+      "limits": "Corrects a name association; does not identify an observed historical specimen.",
+      "accessed": "2026-10-02"
+    },
+    {
+      "id": "bl_gujrat_settlement",
+      "title": "Gujrat: Final report of the fourth regular settlement, 1912-16; H. S. Williamson",
+      "author": "British Library catalogue",
+      "file_name": null,
+      "url": "https://searcharchives.bl.uk/catalog/040-000150972",
+      "publication_year": null,
+      "role": "archive_catalogue",
+      "location": "Gujrat district",
+      "observation_period": {
+        "start_year": 1912,
+        "end_year": 1916,
+        "label": "Report coverage; catalogue gives publication at Lahore in 1916"
+      },
+      "locator": "IOR/V/27/314/505",
+      "review": "Catalogue inspected; original report not inspected",
+      "limits": "Bibliographic discrepancy remains open until the report itself is checked.",
+      "accessed": "2026-10-02"
+    }
+  ],
+  "observations": [
+    {
+      "id": "barr_grass_corridor",
+      "source_id": "grewal_vegetation",
+      "observation_date": {
+        "start_year": 1839,
+        "end_year": 1839,
+        "label": "Barr journey, as retold by Grewal"
+      },
+      "location": "Between Gujranwala and Wazirabad",
+      "habitat": "dry_scrub_grazing",
+      "identification_confidence": "habitat_only",
+      "kind": "historical_environment",
+      "statement": "Grewal reports a stretch of grass and jungle along this corridor.",
+      "locator": "Printed p. 42; footnote 22"
+    },
+    {
+      "id": "barr_lahore_swamp",
+      "source_id": "grewal_vegetation",
+      "observation_date": {
+        "start_year": 1839,
+        "end_year": 1839,
+        "label": "Barr journey, as retold by Grewal"
+      },
+      "location": "Swampy ground beyond Lahore; exact reach unspecified",
+      "habitat": "riverine_thicket",
+      "identification_confidence": "habitat_only",
+      "kind": "historical_environment",
+      "statement": "Tall grasses are reported in swampy ground; ten feet is about 3.05 metres. This is not a Gujranwala grass-height measurement.",
+      "locator": "Printed p. 42; footnote 22"
+    },
+    {
+      "id": "bar_pasture",
+      "source_id": "douie_1916",
+      "observation_date": {
+        "start_year": null,
+        "end_year": 1916,
+        "label": "Retrospective grazing account; exact observation date unknown"
+      },
+      "location": "Bar tracts of western Punjab; not one mapped polygon",
+      "habitat": "dry_scrub_grazing",
+      "identification_confidence": "habitat_only",
+      "kind": "historical_environment",
+      "statement": "Grazing and scrub coexisted with scattered cultivation. Uncultivated does not mean unused.",
+      "locator": "Ch. VI: western plains; Ch. XXV: Shahpur"
+    },
+    {
+      "id": "old_irrigation",
+      "source_id": "douie_1916",
+      "observation_date": {
+        "start_year": null,
+        "end_year": 1849,
+        "label": "Pre-annexation; individual construction dates vary"
+      },
+      "location": "Western Punjab inundation channels; Ravi canal serving Lahore gardens",
+      "habitat": "settlement_cultivated",
+      "identification_confidence": "habitat_only",
+      "kind": "historical_environment",
+      "statement": "Seasonal irrigation preceded annexation, and an older Ravi canal supplied Lahore gardens. No such canal alignment is assigned to this prototype.",
+      "locator": "Ch. XIII: Canals before annexation"
+    },
+    {
+      "id": "nair_identification_scope",
+      "source_id": "nair_1978",
+      "observation_date": {
+        "start_year": 1961,
+        "end_year": 1966,
+        "label": "Principal fieldwork; additional collections and literature included"
+      },
+      "location": "Indian Punjab and Haryana",
+      "habitat": "regional_reference",
+      "identification_confidence": "reference_only",
+      "kind": "botanical_reference",
+      "statement": "A later botanical identification resource, with specimens and synonyms; no 1792 Gujranwala occurrence is asserted.",
+      "locator": "Preface and introduction"
+    },
+    {
+      "id": "barr_captive_tigers",
+      "source_id": "grewal_vegetation",
+      "observation_date": {
+        "start_year": 1839,
+        "end_year": 1839,
+        "label": "Barr journey, as retold by Grewal"
+      },
+      "location": "Account refers to Hari Singh Nalwa; capture locality unspecified",
+      "habitat": "captive",
+      "identification_confidence": "source_label_only",
+      "kind": "captive_animal",
+      "statement": "Four tigers in a cage are reported. This does not support wild tiger abundance near Gujranwala.",
+      "locator": "Printed p. 42; footnote 23"
+    },
+    {
+      "id": "dolphin_range_habitat",
+      "source_id": "noaa_dolphin_review",
+      "observation_date": {
+        "start_year": null,
+        "end_year": null,
+        "label": "Mixed historical range and modern habitat review"
+      },
+      "location": "Indus system including Punjab tributaries",
+      "habitat": "river_channel",
+      "identification_confidence": "regional_range_only",
+      "kind": "wildlife_reference",
+      "statement": "Former tributary range is credible; suitable flow, depth and connected channel habitat must precede any placement.",
+      "locator": "PDF pp. 9-11"
+    },
+    {
+      "id": "grewal_name_pair",
+      "source_id": "grewal_vegetation",
+      "observation_date": {
+        "start_year": null,
+        "end_year": null,
+        "label": "Appendix compiled from references; not a specimen date"
+      },
+      "location": "Appendix, no collection locality",
+      "habitat": "taxonomic_reference",
+      "identification_confidence": "conflicting_labels",
+      "kind": "taxonomic_reference",
+      "statement": "Original pairing is preserved separately from its taxonomic correction.",
+      "locator": "Printed p. 54 (PDF p. 16)"
+    },
+    {
+      "id": "gujrat_governance",
+      "source_id": "iqbal_2025",
+      "observation_date": {
+        "start_year": 1849,
+        "end_year": 1947,
+        "label": "Historical study period"
+      },
+      "location": "Gujrat district",
+      "habitat": "later_governance",
+      "identification_confidence": "not_applicable",
+      "kind": "later_governance",
+      "statement": "Revenue surveys, property records and courts are later-layer research context.",
+      "locator": "Printed pp. 409-410"
+    }
+  ],
+  "habitats": [
+    {
+      "id": "settlement_cultivated",
+      "label": "Settlement and cultivated margins",
+      "visual_treatment": "Small plots, planted shade, earthen bunds and existing wells, paths and livestock.",
+      "gameplay_proposal": {
+        "status": "proposed_not_active",
+        "effects": [
+          "Water access",
+          "Witnesses and local authority",
+          "Supplies"
+        ]
+      },
+      "species_identification": "functional_forms_only_pending_specimen_checks"
+    },
+    {
+      "id": "dry_scrub_grazing",
+      "label": "Dry scrub and grazing country",
+      "visual_treatment": "Patchy grass, bare ground and irregular thorn-bush forms; retain open grazing space.",
+      "gameplay_proposal": {
+        "status": "proposed_not_active",
+        "effects": [
+          "Exposed riding",
+          "Intermittent concealment",
+          "Grazing routes"
+        ]
+      },
+      "species_identification": "functional_forms_only_pending_specimen_checks"
+    },
+    {
+      "id": "riverine_thicket",
+      "label": "Riverine thickets",
+      "visual_treatment": "Tall grass and reed forms, unresolved tamarisk-like shrub forms, wet soil and an illustrative drainage edge.",
+      "gameplay_proposal": {
+        "status": "proposed_not_active",
+        "effects": [
+          "Dense concealment",
+          "Restricted movement",
+          "Uncertain crossings"
+        ]
+      },
+      "species_identification": "functional_forms_only_pending_specimen_checks"
+    },
+    {
+      "id": "seasonal_wetland",
+      "label": "Seasonal wetland margins",
+      "visual_treatment": "Mud, low sedges/reeds and changing visible water extent.",
+      "gameplay_proposal": {
+        "status": "proposed_not_active",
+        "effects": [
+          "Season-dependent routes",
+          "Season-dependent visibility"
+        ]
+      },
+      "species_identification": "functional_forms_only_pending_specimen_checks"
+    }
+  ],
+  "reconstruction_decisions": [
+    {
+      "id": "retain_cultivated_settlement",
+      "target_year": 1792,
+      "classification": "reconstruction_inference",
+      "habitat_id": "settlement_cultivated",
+      "observation_ids": [
+        "old_irrigation",
+        "bar_pasture"
+      ],
+      "identification_confidence": "habitat_analogue_species_unresolved",
+      "decision": "Preserve existing wells, settlements and fields; add a planted field edge. These placements are authored.",
+      "placement_confidence": "authored_unlocated",
+      "canonical_admission": false
+    },
+    {
+      "id": "infer_grazing_mosaic",
+      "target_year": 1792,
+      "classification": "reconstruction_inference",
+      "habitat_id": "dry_scrub_grazing",
+      "observation_ids": [
+        "barr_grass_corridor",
+        "bar_pasture"
+      ],
+      "identification_confidence": "habitat_analogue_species_unresolved",
+      "decision": "Back-project a patchy grass/scrub mosaic; a 1839 corridor account does not map 1792 patch boundaries.",
+      "placement_confidence": "authored_unlocated",
+      "canonical_admission": false
+    },
+    {
+      "id": "illustrate_riverine_habitat",
+      "target_year": 1792,
+      "classification": "reconstruction_inference",
+      "habitat_id": "riverine_thicket",
+      "observation_ids": [
+        "barr_lahore_swamp"
+      ],
+      "identification_confidence": "habitat_analogue_species_unresolved",
+      "decision": "Use Lahore swamp evidence as a regional habitat analogue only; this is not a located Gujranwala river reach.",
+      "placement_confidence": "authored_unlocated",
+      "canonical_admission": false
+    },
+    {
+      "id": "illustrate_seasonal_margin",
+      "target_year": 1792,
+      "classification": "reconstruction_inference",
+      "habitat_id": "seasonal_wetland",
+      "observation_ids": [
+        "barr_lahore_swamp"
+      ],
+      "identification_confidence": "habitat_analogue_species_unresolved",
+      "decision": "Seasonal water extent is an authored comparison; no measured 1792 hydrology, river course or calendar binding.",
+      "placement_confidence": "authored_unlocated",
+      "canonical_admission": false
+    }
+  ],
+  "placements": [
+    {
+      "id": "cultivated_margin",
+      "habitat_id": "settlement_cultivated",
+      "reconstruction_decision_id": "retain_cultivated_settlement",
+      "location": {
+        "frame": "gujranwala-compressed-local-metres",
+        "position": [
+          58,
+          0.08,
+          21
+        ],
+        "footprint": [
+          23,
+          18
+        ],
+        "georeferenced": false
+      },
+      "seed": 179201,
+      "collision": false,
+      "navigation": false,
+      "gameplay_active": false
+    },
+    {
+      "id": "grazing_scrub",
+      "habitat_id": "dry_scrub_grazing",
+      "reconstruction_decision_id": "infer_grazing_mosaic",
+      "location": {
+        "frame": "gujranwala-compressed-local-metres",
+        "position": [
+          48,
+          0.08,
+          -25
+        ],
+        "footprint": [
+          22,
+          18
+        ],
+        "georeferenced": false
+      },
+      "seed": 179202,
+      "collision": false,
+      "navigation": false,
+      "gameplay_active": false
+    },
+    {
+      "id": "riverine_pocket",
+      "habitat_id": "riverine_thicket",
+      "reconstruction_decision_id": "illustrate_riverine_habitat",
+      "location": {
+        "frame": "gujranwala-compressed-local-metres",
+        "position": [
+          58,
+          0.08,
+          43
+        ],
+        "footprint": [
+          18,
+          12
+        ],
+        "georeferenced": false
+      },
+      "seed": 179203,
+      "collision": false,
+      "navigation": false,
+      "gameplay_active": false
+    },
+    {
+      "id": "wetland_margin",
+      "habitat_id": "seasonal_wetland",
+      "reconstruction_decision_id": "illustrate_seasonal_margin",
+      "location": {
+        "frame": "gujranwala-compressed-local-metres",
+        "position": [
+          43,
+          0.08,
+          52
+        ],
+        "footprint": [
+          12,
+          12
+        ],
+        "georeferenced": false
+      },
+      "seed": 179204,
+      "collision": false,
+      "navigation": false,
+      "gameplay_active": false
+    }
+  ],
+  "taxonomic_corrections": [
+    {
+      "id": "willow_neem_pair",
+      "observation_id": "grewal_name_pair",
+      "original_wording": "willow azadirachta indica",
+      "corrected_scientific_name": "Azadirachta indica A.Juss.",
+      "corrected_common_name": "neem",
+      "authority_source_id": "kew_neem",
+      "status": "name_association_corrected_specimen_unresolved",
+      "identification_confidence": "high_for_name_not_for_historical_specimen",
+      "decision": "Do not create a willow from this pairing; historical occurrence and specimen identity remain unverified."
+    }
+  ],
+  "evidence_issues": [
+    {
+      "id": "gujrat_fourth_settlement_date",
+      "source_ids": [
+        "iqbal_2025",
+        "bl_gujrat_settlement"
+      ],
+      "reported_publication_year": 1918,
+      "catalogued_publication_year": 1916,
+      "report_coverage": [
+        1912,
+        1916
+      ],
+      "status": "unresolved_original_report_needed",
+      "opening_admission": false
+    }
+  ],
+  "wildlife_policy": {
+    "placement_status": "deferred",
+    "spawn_records": [],
+    "abundance_claims": [],
+    "captive_observation_ids": [
+      "barr_captive_tigers"
+    ],
+    "dolphin": {
+      "observation_id": "dolphin_range_habitat",
+      "required_before_placement": [
+        "located_river_reach",
+        "dated_range_evidence",
+        "depth_evidence",
+        "flow_evidence",
+        "channel_connectivity_evidence"
+      ],
+      "local_placement_supported": false
+    }
+  },
+  "season_profiles": {
+    "dry": {
+      "label": "Dry-season study",
+      "grass_color": "a59d64",
+      "scrub_color": "747950",
+      "soil_color": "786e50",
+      "water_color": "697f79",
+      "grass_height_scale": 0.7,
+      "vegetation_fraction": 0.55,
+      "water_extent": 0.22
+    },
+    "monsoon": {
+      "label": "Monsoon study",
+      "grass_color": "899652",
+      "scrub_color": "64764a",
+      "soil_color": "514d3a",
+      "water_color": "768675",
+      "grass_height_scale": 1.0,
+      "vegetation_fraction": 1.0,
+      "water_extent": 0.9
+    },
+    "receding": {
+      "label": "Receding-water study",
+      "grass_color": "989357",
+      "scrub_color": "6e7950",
+      "soil_color": "62583e",
+      "water_color": "6d827b",
+      "grass_height_scale": 0.88,
+      "vegetation_fraction": 0.8,
+      "water_extent": 0.5
+    }
+  },
+  "default_season": "dry",
+  "season_authority": "manual_visual_preview_only",
+  "limits": [
+    "The existing metric atlas remains authoritative for world coordinates; these pockets are compressed scenery outside the playable wall.",
+    "No inferred historical boundary, population, animal density or verified plant inventory.",
+    "Seasons do not advance the chapter clock or change saves, collision, movement, detection or economy.",
+    "The childhood scene uses the existing start state; target_year 1792 is the reconstruction envelope, not a newly assigned childhood event date."
+  ]
+}

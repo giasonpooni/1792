@@ -73,6 +73,12 @@ knowledge or save history. Punjabi authoring and voice production remain future 
 [Reconstruction and historical sources](docs/GUJRANWALA_1792.md) ·
 [Integration receipt](docs/GUJRANWALA_INTEGRATION.md)
 
+**Punjab ecology mosaic:** F7 → **Ecology / seasonal study** previews cultivated
+margins, grazing/scrub, riverine thickets and wetland edges in the same Home.
+Dry, monsoon and receding-water appearances retain separate source dates and
+reconstruction decisions. Movement, concealment and seasonal-route effects remain
+proposed mechanics. [Evidence, scope and controls](docs/PUNJAB_ECOLOGY.md).
+
 ## New playable task: Water for the Household
 
 After accepting the household allowance, ask the quartermaster for the optional

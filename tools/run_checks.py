@@ -33,6 +33,8 @@ def main() -> int:
         print("Godot is unavailable: runtime tests NOT RUN.", file=sys.stderr)
         return 2
     run([args.godot, "--headless", "--path", "game", "--editor", "--import"], "import")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_punjab_ecology.gd"],
+        "punjab-ecology", "PUNJAB_ECOLOGY_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_command_story.gd"],
         "command-story", "COMMAND_STORY_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_house_reporting.gd"],

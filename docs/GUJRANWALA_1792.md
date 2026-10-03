@@ -17,6 +17,11 @@ existing game clock; consulting it grants no places, reports or memories to Budd
 
 ## Research decisions
 
+The [Punjab ecology extension](PUNJAB_ECOLOGY.md) adds a source-separated landscape
+mosaic through the existing reversible Home art layer. Its four exterior pockets
+and seasonal previews have their own evidence catalogue; they do not change this
+architectural manifest, the world atlas or the qualified playable bounds.
+
 **Courtyard vocabulary, not a copied 1792 floor plan.** Ahmad and Khilat's 2023
 field study documents verandahs, courtyards, masonry and timber features and an
 open forecourt (kucha). These support architectural comparison, not our exact

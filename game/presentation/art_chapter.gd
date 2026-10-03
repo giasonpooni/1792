@@ -31,7 +31,14 @@ func open_art_study() -> void:
 	if not is_instance_valid(art) or art.manifest.is_empty() or (_paused and not _art_open): return
 	_show_dialog("HOME · VISUAL DEVELOPMENT STUDY",
 		"The same childhood scene and saved world. Lighting presets do not advance the calendar.\n\nBlender-authored bay and fitted garment study, with attributed CC0 surface samples plus the reversible Gujranwala beauty/depth/microdetail passes: jali depth, garden pockets, market still life, warm practicals, skyline rhythm, selective patina, distant foliage, timber reveals, trim, repairs and quiet storage. Horse and supporting figures remain proxies. No survey or authenticated costume is claimed.\n\nPresentation: %s · light: %s\nCloth samples the existing chapter clock and freezes here.\nContent SHA-256: %s" % ["study" if art.enabled else "retained greybox",art.preset,art.digest],
-		[["HUD: compact / original","art:hud"],["Walking camera: close / original","art:camera"],["Authored kit / earlier study","art:refinement"],["Compare: study / retained greybox","art:toggle"],["Daylight","art:daylight"],["Golden hour","art:golden_hour"],["Evening","art:evening"],["Return to childhood","resume"]])
+		[["HUD: compact / original","art:hud"],["Walking camera: close / original","art:camera"],["Authored kit / earlier study","art:refinement"],["Compare: study / retained greybox","art:toggle"],["Daylight","art:daylight"],["Golden hour","art:golden_hour"],["Evening","art:evening"],["Ecology / seasonal study","art:ecology"],["Return to childhood","resume"]])
+	_art_open=true
+
+func open_ecology_study() -> void:
+	if not is_instance_valid(art) or not is_instance_valid(art.ecology) or (_paused and not _art_open): return
+	_show_dialog("PUNJAB · " + art.ecology.season.to_upper() + " VISUAL STUDY",
+		art.ecology.catalog.notebook(),
+		[["Dry","art:ecology_dry"],["Monsoon","art:ecology_monsoon"],["Receding water","art:ecology_receding"],["Back to visual study","art:back"],["Return to childhood","resume"]])
 	_art_open=true
 
 func _show_dialog(title: String, body: String, actions: Array) -> void:
@@ -46,6 +53,10 @@ func _menu_action(action: String) -> void:
 	if action.begins_with("art:"):
 		if not _art_open: return
 		var choice:=action.trim_prefix("art:")
+		if choice=="ecology": open_ecology_study();return
+		if choice.begins_with("ecology_"):
+			art.ecology.set_season(choice.trim_prefix("ecology_"))
+			open_ecology_study();return
 		if choice=="hud": art.detail.hud.compact=not art.detail.hud.compact;art.detail.hud.sample()
 		elif choice=="camera": art.detail.set_camera(not art.detail.close_camera)
 		elif choice=="refinement": art.set_refinement(not art.refinement_enabled)
