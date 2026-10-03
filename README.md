@@ -73,6 +73,11 @@ knowledge or save history. Punjabi authoring and voice production remain future 
 [Reconstruction and historical sources](docs/GUJRANWALA_1792.md) ·
 [Integration receipt](docs/GUJRANWALA_INTEGRATION.md)
 
+The [courtyard detail pass](docs/COURTYARD_FABRIC_DETAIL.md) adds photo-informed
+cusped reveals, grouped shaft detail, recessed panels and timber bearers to the
+existing bays. Geometry and trim colours remain authored interpretations, with
+unchanged collision and campaign state.
+
 **Punjab ecology mosaic:** F7 → **Ecology / seasonal study** previews cultivated
 margins, grazing/scrub, riverine thickets and wetland edges in the same Home.
 Dry, monsoon and receding-water appearances retain separate source dates and

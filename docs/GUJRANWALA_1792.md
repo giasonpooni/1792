@@ -27,6 +27,11 @@ six video links, six unique uploaded courtyard images and two later historical
 studies. Inspected photo motifs, metadata-only video leads, paper chronology
 conflicts and proposed uses remain separate from active geometry admissions.
 
+The [courtyard fabric detail pass](COURTYARD_FABRIC_DETAIL.md) now applies selected
+photo motifs as authored visual additions: cusped reveals, grouped shaft detail,
+shallow wall panels and timber bearers. These additions retain the existing
+collision envelopes and do not date the photographed fabric to 1792.
+
 **Courtyard vocabulary, not a copied 1792 floor plan.** Ahmad and Khilat's 2023
 field study documents verandahs, courtyards, masonry and timber features and an
 open forecourt (kucha). These support architectural comparison, not our exact

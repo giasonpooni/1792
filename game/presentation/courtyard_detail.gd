@@ -7,6 +7,7 @@ const SURFACE := preload("res://presentation/courtyard_surface.gdshader")
 const SURFACE_MAPS := {0:[preload("res://assets/surfaces/plastered_wall_diff_1k.png"),preload("res://assets/surfaces/plastered_wall_disp_1k.png"),preload("res://assets/surfaces/plastered_wall_rough_1k.png")],3:[preload("res://assets/surfaces/dirt_diff_1k.png"),preload("res://assets/surfaces/dirt_disp_1k.png"),preload("res://assets/surfaces/dirt_rough_1k.png")]}
 const HUD := preload("res://presentation/courtyard_hud.gd")
 const Envelope := preload("res://reconstruction/courtyard_envelope.gd")
+const Fabric := preload("res://presentation/courtyard_fabric.gd")
 const BUILD_PATH := "res://assets/courtyard/build.json"
 const ASSET_HASHES := {"courtyard_bay.glb":"196ee691fe7dc05759a8e5372a9e3938777ddac24278d870753fa9e272dbb1e0","childhood_costume.glb":"26462a9eba66eb872f94639c3d961f0b2517cd42c10beefaab3634c8caefac70"}
 var enabled := false
@@ -28,6 +29,7 @@ var _arm: SpringArm3D
 var _camera_original: Dictionary
 var _bay_count := 0
 var _carried_origin: Transform3D
+var fabric: Node3D
 static func validate_receipt(v: Variant) -> String:
 	if not v is Dictionary or v.get("schema")!="1792.blender-courtyard.v1": return "Unknown Blender receipt."
 	if v.get("georeferenced")!=false or v.get("historically_verified")!=false or v.get("classification")!="original-authoring-study": return "Incorrect reconstruction claim."
@@ -68,6 +70,9 @@ func build(chapter: Node3D,art: Node3D) -> String:
 		_style_import(bay);_bay_count+=1
 		var fill:=MeshInstance3D.new();fill.mesh=Envelope.infill();fill.material_override=material(Color("baae96"),0);bay.add_child(fill)
 		var back:=MeshInstance3D.new();var panel:=BoxMesh.new();panel.size=Vector3(4.25,3.35,.03);back.mesh=panel;back.position=Vector3(0,1.675,.43);back.material_override=material(Color("baae96"),0);bay.add_child(back)
+	fabric=Fabric.new();fabric.name="PhotoInformedFabric";add_child(fabric)
+	error=fabric.build(self)
+	if not error.is_empty(): return error
 	source_skeleton=art._hero_proxy.skeleton
 	for v in art._hero_proxy.find_children("*","MeshInstance3D",true,false): hide_mesh(v)
 	child_root=CHILD.instantiate();child_root.name="FittedChildhoodCostume";art._hero_proxy.add_child(child_root)

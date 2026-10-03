@@ -81,6 +81,7 @@ def main() -> int:
         "home-workshop", "HOME_WORKSHOP_TESTS:")
     run([sys.executable,"tools/check_courtyard.py"],"courtyard-contracts")
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_courtyard.gd"],"courtyard","COURTYARD_TESTS:")
+    run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_courtyard_fabric.gd"],"courtyard-fabric","COURTYARD_FABRIC_TESTS:")
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_gujranwala_beauty.gd"],"gujranwala-beauty","GUJRANWALA_BEAUTY_TESTS:")
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_gujranwala_depth.gd"],"gujranwala-depth","GUJRANWALA_DEPTH_TESTS:")
     run([args.godot,"--headless","--fixed-fps","60","--path","game","--script","res://tests/test_gujranwala_microdetail.gd"],"gujranwala-microdetail","GUJRANWALA_MICRODETAIL_TESTS:")
