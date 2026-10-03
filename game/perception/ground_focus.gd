@@ -73,6 +73,9 @@ func _set_visible() -> void:
 	filter_layer.visible=active;overlay_layer.visible=active
 
 func _sample_compact_hud() -> void:
+	# The optional PoliticalChapter shares the Home sensor interface without the
+	# composed art study. Its original HUD remains the presentation authority.
+	if not "art" in chapter: return
 	if is_instance_valid(chapter) and is_instance_valid(chapter.art) and is_instance_valid(chapter.art.detail) and is_instance_valid(chapter.art.detail.hud):
 		chapter.art.detail.hud.sample()
 
@@ -183,6 +186,7 @@ func sound_cues() -> Array:
 
 func _hud_regions() -> Array[Rect2]:
 	var regions: Array[Rect2]=[]
+	if not "art" in chapter: return regions
 	if not is_instance_valid(chapter.art) or not is_instance_valid(chapter.art.detail) or not is_instance_valid(chapter.art.detail.hud): return regions
 	var hud=chapter.art.detail.hud
 	if not hud.visible: return regions
