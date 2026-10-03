@@ -20,6 +20,7 @@ static func position(record: Dictionary) -> Vector3:
 
 static func estimate(previous: Dictionary, current: Dictionary) -> Dictionary:
 	if previous.id != current.id or previous.observer_id != current.observer_id: return {}
+	if String(previous.get("sensor_id",""))!=String(current.get("sensor_id","")) or String(current.get("sensor_id","")).is_empty(): return {}
 	var ticks: int=int(current.seen_tick)-int(previous.seen_tick)
 	if ticks<MOTION_INTERVAL or ticks>MOTION_INTERVAL*2: return {}
 	var velocity := (position(current)-position(previous))*60.0/float(ticks)
@@ -27,7 +28,8 @@ static func estimate(previous: Dictionary, current: Dictionary) -> Dictionary:
 	if not velocity.is_finite() or velocity.length()<0.15 or velocity.length()>MAX_OBSERVED_SPEED: return {}
 	var end := position(current)+velocity*float(PREDICTION_TICKS)/60.0
 	return {"position":[end.x,end.y,end.z],"origin_position":current.position.duplicate(),"from_ticks":[int(previous.seen_tick),int(current.seen_tick)],
-		"expires_tick":int(current.seen_tick)+PREDICTION_TICKS,"kind":"estimate"}
+		"expires_tick":int(current.seen_tick)+PREDICTION_TICKS,"kind":"estimate",
+		"observer_id":current.observer_id,"sensor_id":current.sensor_id}
 
 static func sound_sector(forward: Vector3, offset: Vector3) -> String:
 	var angle := Vector2(forward.x,forward.z).angle_to(Vector2(offset.x,offset.z))

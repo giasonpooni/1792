@@ -88,6 +88,8 @@ func sample() -> void:
 				_chapter._marker.text="Smith · dismount first"
 			_chapter._marker.visible=true
 			narrator.visible=not narrator.text.is_empty() and not moving and not _chapter.model.mounted()
+			if _chapter.has_method("_focus_access") and _chapter._focus_access().is_empty():
+				controls.text+="    Z  Focus    X  Hawk"
 		words.text=_chapter.story_caption() if _chapter.has_method("story_caption") else _chapter._message
 		bottom.visible=not words.text.is_empty()
 		control_strip.position=Vector2((size.x-control_strip.size.x)*.5,size.y-control_strip.get_combined_minimum_size().y-18)

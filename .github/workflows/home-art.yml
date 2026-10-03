@@ -75,8 +75,8 @@ jobs:
             "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" --path game \
             --rendering-method gl_compatibility --audio-driver Dummy --fixed-fps 60 \
             --script res://tests/render_ground_focus.gd 2>&1 | tee test-results/ground-focus-render.log
-          ! grep -E '^(SCRIPT ERROR|ERROR):' test-results/ground-focus-render.log
-          grep -q 'GROUND_FOCUS_RENDER: .* captures, 0 failures' test-results/ground-focus-render.log
+          ! grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/ground-focus-render.log
+          grep -q 'GROUND_FOCUS_RENDER: 14 captures, 0 failures' test-results/ground-focus-render.log
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
