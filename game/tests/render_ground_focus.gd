@@ -164,7 +164,8 @@ func capture(mode: String,size: Vector2i) -> void:
 	if sensor_mode=="acquiring":
 		var rings: Array=scene.ground_focus.overlay.marks.filter(func(mark):return mark.has("progress"))
 		check(rings.size()==1 and rings[0].text=="Observing" and is_equal_approx(float(rings[0].progress),20.0/45.0),"native acquiring screenshot contains the neutral pending ring")
-		check(scene.ground_focus.heading.text=="FOCUS\nKeep subject visible until the ring fills.","acquiring screenshot keeps one contextual ring instruction and no duplicate key list")
+		var focus_heading:=scene.ground_focus.heading.text
+		check(focus_heading.begins_with("FOCUS\nKeep subject visible until the ring fills.") and focus_heading.count("Keep subject visible until the ring fills.")==1 and not focus_heading.contains("E  Observe") and not focus_heading.contains("Z  Return"),"acquiring screenshot keeps one contextual ring instruction, composes with hearing evidence and has no duplicate key list")
 	check(scene.model.snapshot()==retained and scene.model.journal()==journal,"rendering preserves native world and journal: "+mode)
 	var image:=root.get_texture().get_image()
 	var filename:="ground-focus-%s-%dx%d.png" % [mode,size.x,size.y]
