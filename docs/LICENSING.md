@@ -1,8 +1,10 @@
 # Licensing policy
 
-Copyright (c) 2026 Cartesian Graphics. All rights reserved.
+Copyright (c) 2026 Notation Systems Inc. All rights reserved.
 
-**1792 is proprietary by default.** The [root notice](../LICENSE) applies to original material owned by Cartesian Graphics unless an explicit separate licence applies. This policy documents the licensing boundary; it does not itself grant additional rights.
+Existing Cartesian Graphics/creator credits and third-party notices remain preserved.
+
+**1792 is proprietary by default.** The [root notice](../LICENSE) applies to original material owned or validly controlled by Notation Systems Inc. unless an explicit separate licence applies. This policy documents the licensing boundary; it does not itself grant additional rights.
 
 ## Scope and precedence
 
@@ -14,7 +16,7 @@ Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 | Separately licensed or third-party material | Its applicable licence and notices remain controlling for that material. |
 | Historical facts, ideas, mathematical methods, and public-domain material | Not claimed as Cartesian Graphics copyright by these notices. |
 
-A root notice cannot override upstream rights or license material that Cartesian Graphics does not own. Preserve existing notices and keep third-party attribution separate from project ownership. A technical integration with NET, Godot, Bevy, or Blender does not relicense another repository or transfer ownership to Cartesian Graphics.
+A root notice cannot override upstream rights or license material that Notation Systems Inc. does not own or control. Preserve existing notices and keep third-party attribution separate from project ownership. A technical integration with NET, Godot, Bevy, or Blender does not relicense another repository or transfer ownership to Notation Systems Inc..
 
 ## Deliberately reusable technology
 
@@ -33,7 +35,7 @@ Official references: [Mozilla's MPL FAQ](https://www.mozilla.org/en-US/MPL/2.0/F
 
 Repository visibility is separate from licensing. This change does not make the repository private, restrict access controls, or remove existing forks. The root notice preserves permissions arising under applicable law, existing licences, and GitHub's terms. See [GitHub's licensing guidance](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository).
 
-No general modding, fan-asset redistribution, commercial reuse, or source-available experimentation licence is granted here. Specific permissions can be agreed separately with Cartesian Graphics. A future player EULA or modding policy must identify what it permits and preserve applicable third-party and statutory rights.
+No general modding, fan-asset redistribution, commercial reuse, or source-available experimentation licence is granted here. Specific permissions can be agreed separately with Notation Systems Inc. through the Cartesian Graphics project. A future player EULA or modding policy must identify what it permits and preserve applicable third-party and statutory rights.
 
 ## Contributions and provenance
 
@@ -49,3 +51,16 @@ Before distributing a playable build, verify the actual build rather than relyin
 4. Recheck separately licensed components and retain rights granted in earlier releases; a new root notice does not revoke those grants.
 
 This documentation change is not a release-compliance certification, an ownership-chain audit, or a substitute for legal review of commercial distribution agreements.
+
+## Declared ownership and outreach
+
+The owner identified Notation Systems Inc. as legal asset owner on 2 October 2026,
+and stated assets are original with a reference-only corpus. The
+[scope record](licensing/OWNERSHIP_AND_SCOPE.md) distinguishes that declaration
+from independent title verification. This change creates no assignment or
+worldwide legal certification and retains creator/third-party credits.
+
+Before any act requiring authorization, [request permission](https://github.com/giasonpooni/1792-The-Lotus-Throne/issues/new?template=licensing-request.yml&title=Licensing%20request)
+and obtain an express signed written grant. A request is not authorization.
+The root AI/mining reservation preserves mandatory exceptions and prior/platform
+permissions. Corpus sources, CC0 surfaces and MIT-covered code retain their rights.

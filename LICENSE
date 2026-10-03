@@ -1,50 +1,90 @@
-1792 - Proprietary Copyright Notice
+1792: The Lotus Throne — Permission Only Rights Notice
+Version 1.1 | 2 October 2026
 
-Copyright (c) 2026 Cartesian Graphics. All rights reserved.
+Copyright (c) 2026 Notation Systems Inc. All rights reserved.
+Declared owner of original project material: Notation Systems Inc.
+Issuing/project names: Cartesian Graphics Ltd.; Giason Pooni Studios.
+Existing Cartesian Graphics and creator credits remain preserved.
+Owner declaration and asset records: docs/licensing/OWNERSHIP_AND_SCOPE.md
+and docs/licensing/release-register.json.
 
-Scope
------
-This notice applies to original material in this repository in which
-Cartesian Graphics holds copyright, including game source code, scripts,
-scenes, authored world and campaign content, documentation, and original
-creative assets, except where an explicit separate licence applies.
+1. COVERED MATERIAL
 
-Reservation of rights
----------------------
-No permission is granted by this notice to reproduce, modify, distribute,
-sublicense, sell, or otherwise exploit protected material covered by this
-notice. Such permission must come from a separate written licence from
-Cartesian Graphics, except to the extent the activity is already permitted
-by applicable law, an existing valid licence, or the applicable hosting
-platform's terms.
+This notice applies only to original protected material in this repository that
+Notation Systems Inc. owns or is authorized to license: game source, scripts,
+scenes, authored dialogue/world/campaign content, documentation and creative
+assets, except explicit separate licences and exclusions below. The repository
+commit accompanying a copy identifies its source revision. The register pins
+selected asset versions; it is not an exhaustive build inventory or independent
+title certification.
 
-Public access to this repository is not an open-source licence and does
-not grant a general right to commercial or noncommercial reuse. Nothing
-in this notice limits viewing or forking rights granted under GitHub's
-applicable terms while the repository is hosted publicly there.
+2. PRIOR OUTREACH AND EXPRESS SIGNED PERMISSION
 
-Excluded material and preserved rights
---------------------------------------
-Third-party code, assets, tools, libraries, and other material retain their
-respective owners, licences, copyright notices, and attribution requirements.
-This notice does not relicense them or narrow rights previously granted
-under an applicable third-party or open-source licence. An explicit valid
-separate licence governs only the material it identifies.
+This notice grants no public licence. Before any activity requiring the Rights
+Holder's authorization, contact Notation Systems Inc. through the maintainer
+and obtain its express signed written grant. Subject to preserved rights and
+mandatory law, no general commercial, personal, internal, educational, research,
+evaluation, modding or other noncommercial permission is granted to copy,
+download, install, execute, modify, adapt, translate, distribute, publish,
+display, perform, extract, host, incorporate, sublicense, sell or otherwise
+exploit covered protected material, in whole or in part.
 
-No copyright is asserted by this notice over historical facts, ideas,
-mathematical methods, public-domain material, or other material not subject
-to copyright protection. No trademark or patent licence is granted here.
-Nothing in this notice limits rights or exceptions under applicable law.
+Each grant must identify recipient, material/version, permitted acts and purpose,
+users, systems, territory, term and conditions. One act, asset or version does
+not authorize another. Include installation, execution, temporary copying and
+backups where needed. Play/build instructions explain authorized operation and
+are not separate permission grants. Valid earlier permissions survive under
+their own terms.
 
-Separate permissions
---------------------
-Original creative assets are subject to the same reservation of rights;
-see docs/ASSET_LICENSING.md. Any deliberately open-sourced component must
-have an explicit scope and licence as described in docs/LICENSING.md.
-Simply mentioning MPL-2.0 or Apache-2.0 does not apply either licence to
-1792 or any of its files.
+Request route:
+https://github.com/giasonpooni/1792-The-Lotus-Throne/issues/new?template=licensing-request.yml&title=Licensing%20request
 
-This is a rights-reservation notice, not a player EULA, a contributor
-agreement, a copyright assignment, or a promise of support or warranty.
-For permissions, contact Cartesian Graphics through the repository
-maintainer. See THIRD_PARTY_NOTICES.md for third-party information.
+A request, response, acknowledgement, access, credit, negotiation, payment,
+possession or silence is not permission. Do not post confidential proposals,
+personal details or asset uploads in a public issue. Request private discussion
+before disclosing sensitive terms.
+
+3. ARTIFICIAL INTELLIGENCE AND TEXT AND DATA MINING
+
+To the fullest extent permitted by law, the Rights Holder expressly reserves
+reproduction/extraction rights in covered protected material for text and data
+mining, datasets, indexing, embeddings, AI/model training, fine tuning,
+evaluation, distillation and development or improvement. A separate signed
+grant must expressly authorize these acts where permission is required.
+This text deploys no technical access control and does not erase mandatory
+exceptions, existing grants or platform permissions.
+
+4. EXCLUSIONS AND PRESERVED RIGHTS
+
+Third-party works, reference-corpus source material, separately licensed
+components and earlier valid grants retain their own terms. This notice does
+not revoke or narrow them or impose restrictions forbidden by their licences.
+The six dirt/plaster samples in game/assets/surfaces/sources.json remain
+CC0-1.0. The Godot-derived tools/godot451_json.py and included upstream MIT
+notices retain their terms. See THIRD_PARTY_NOTICES.md and the release register.
+
+Reference images, videos, scans, publications, recordings, translations and
+other source expression do not become project-owned through research, links,
+user supply or inspiration. Original annotations and qualifying original
+selection/arrangement may have separate rights without ownership of sources.
+
+No exclusive copyright is claimed in facts, historical names, ideas, methods,
+mathematical concepts, public-domain material or independent implementations.
+No patent or trademark licence is granted. Statutory rights and exceptions
+independently applicable without permission remain available.
+
+5. PUBLIC HOSTING AND ENFORCEMENT
+
+Public visibility is not a general reuse licence. GitHub's independently
+applicable viewing, forking and other platform permissions, including applicable
+platform-authorized AI uses, remain effective.
+This notice does not make public files confidential or require permission for
+acts already lawfully permitted.
+
+The Rights Holder reserves lawful remedies for unauthorized acts within its
+enforceable rights. This notice alone creates no contractual assent, audit
+access, automatic fine, confidentiality agreement or choice of court. It is
+not a player EULA or contribution assignment. Controlled business access needs
+an executed agreement and completed scope; a player grant must identify the
+player's intended permissions. Enforcement depends on rights, facts, applicable
+law and competent courts, without universal legal-clearance certification.

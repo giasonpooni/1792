@@ -1,0 +1,140 @@
+{
+  "schema": "notation.original-release-rights-register.v1",
+  "policy_version": "1.1",
+  "recorded_local_date": "2026-10-02",
+  "timezone": "America/Toronto",
+  "repository": "giasonpooni/1792-The-Lotus-Throne",
+  "inspected_source_commit": "4baaaff0835d53f4a115d951e29d0fddd10c8e2d",
+  "inspected_source_tree": "f1418a80f0687be974e67684d49978da50ff4bd0",
+  "declared_rights_holder": "Notation Systems Inc.",
+  "declaration_evidence": "Owner-supplied conversation declaration; assets original and reference-only corpus; Notation Systems Inc. selected as owner.",
+  "independent_title_verification": false,
+  "assignment_created_by_notice": false,
+  "licensing_contact": "https://github.com/giasonpooni/1792-The-Lotus-Throne/issues/new?template=licensing-request.yml&title=Licensing%20request",
+  "governing_notice": "LICENSE",
+  "scope": "Original protected project expression owned or validly controlled by the declared rights holder, subject to specific exceptions and valid prior grants.",
+  "selected_asset_versions": [
+    {
+      "asset_id": "courtyard_bay",
+      "path": "game/assets/courtyard/courtyard_bay.glb",
+      "source_revision": "4baaaff0835d53f4a115d951e29d0fddd10c8e2d",
+      "git_blob_sha": "bd83e98ac387be7a19f5aea00ac89ce3b8600fb0",
+      "content_sha256": "196ee691fe7dc05759a8e5372a9e3938777ddac24278d870753fa9e272dbb1e0",
+      "sha256_evidence": "Retained build.json receipt; not independently recalculated in documentation review",
+      "creation_evidence": [
+        "game/assets/courtyard/build.json",
+        "tools/art/build_courtyard.py",
+        "docs/COURTYARD_AUTHORED.md"
+      ],
+      "rights_holder": "Notation Systems Inc. (owner-declared)",
+      "prior_grants": "Existing proprietary root notice; any valid earlier individual or platform grant remains applicable",
+      "incorporated_third_party_material": "Build recipe declares no third-party assets in these GLBs; external CC0 surfaces are separate and excluded",
+      "status": "enrolled",
+      "applicable_notice": "LICENSE"
+    },
+    {
+      "asset_id": "childhood_costume",
+      "path": "game/assets/courtyard/childhood_costume.glb",
+      "source_revision": "4baaaff0835d53f4a115d951e29d0fddd10c8e2d",
+      "git_blob_sha": "8507021a7c0e434e594908a801ef7d2af3363e0b",
+      "content_sha256": "26462a9eba66eb872f94639c3d961f0b2517cd42c10beefaab3634c8caefac70",
+      "sha256_evidence": "Retained build.json receipt; not independently recalculated in documentation review",
+      "creation_evidence": [
+        "game/assets/courtyard/build.json",
+        "tools/art/build_courtyard.py",
+        "docs/COURTYARD_AUTHORED.md"
+      ],
+      "rights_holder": "Notation Systems Inc. (owner-declared)",
+      "prior_grants": "Existing proprietary root notice; any valid earlier individual or platform grant remains applicable",
+      "incorporated_third_party_material": "Build recipe declares no third-party assets in these GLBs; external CC0 surfaces are separate and excluded",
+      "status": "enrolled",
+      "applicable_notice": "LICENSE"
+    }
+  ],
+  "excluded_source_files": [
+    {
+      "path": "game/assets/surfaces/dirt_diff_1k.png",
+      "git_blob_sha": "0dd9ac38a7efe9c561c6d18e55d7a0341f2f0051",
+      "content_sha256": "95324326812021f88a5668709572e16beb9fbb1c275576c45de09bc7da8cafa5",
+      "sha256_evidence": "Retained sources.json",
+      "source_author": "Charlotte Baglioni",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/dirt/dirt_diff_4k.jpg",
+      "license": "CC0-1.0",
+      "notice": "game/assets/surfaces/README.md",
+      "status": "excluded-from-proprietary-claim"
+    },
+    {
+      "path": "game/assets/surfaces/dirt_disp_1k.png",
+      "git_blob_sha": "d95301d4ddbf59a73507f78591bd99fa422dae9b",
+      "content_sha256": "4606f5caae5c5fec439bda201efb8d2c091adf83830b76029bcb90cd1e5fff47",
+      "sha256_evidence": "Retained sources.json",
+      "source_author": "Charlotte Baglioni",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/dirt/dirt_disp_4k.jpg",
+      "license": "CC0-1.0",
+      "notice": "game/assets/surfaces/README.md",
+      "status": "excluded-from-proprietary-claim"
+    },
+    {
+      "path": "game/assets/surfaces/dirt_rough_1k.png",
+      "git_blob_sha": "01a9868067e054992551a7bfb1710ff59c6f1e28",
+      "content_sha256": "80b15fd46b37b7a0b42c8d48fb7e8f3f6eaa7f3d4733dad0b289aa26936312e4",
+      "sha256_evidence": "Retained sources.json",
+      "source_author": "Charlotte Baglioni",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/dirt/dirt_rough_4k.jpg",
+      "license": "CC0-1.0",
+      "notice": "game/assets/surfaces/README.md",
+      "status": "excluded-from-proprietary-claim"
+    },
+    {
+      "path": "game/assets/surfaces/plastered_wall_diff_1k.png",
+      "git_blob_sha": "dbd9951e9a9fa23014a676707b4be5dcaad362a9",
+      "content_sha256": "aac9d7a52df68b8a3282eff140ad485a05d51b6e53123512c7d2c32439a52986",
+      "sha256_evidence": "Retained sources.json",
+      "source_author": "Amal Kumar",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/plastered_wall/plastered_wall_diff_4k.jpg",
+      "license": "CC0-1.0",
+      "notice": "game/assets/surfaces/README.md",
+      "status": "excluded-from-proprietary-claim"
+    },
+    {
+      "path": "game/assets/surfaces/plastered_wall_disp_1k.png",
+      "git_blob_sha": "91c05cc394f6c9477a997b2389412d3607c05cbc",
+      "content_sha256": "47af13bc6815b196a8f1e1b8101ceef04edb6b98bf0ac5b6df4d2acbe29fa62a",
+      "sha256_evidence": "Retained sources.json",
+      "source_author": "Amal Kumar",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/plastered_wall/plastered_wall_disp_4k.jpg",
+      "license": "CC0-1.0",
+      "notice": "game/assets/surfaces/README.md",
+      "status": "excluded-from-proprietary-claim"
+    },
+    {
+      "path": "game/assets/surfaces/plastered_wall_rough_1k.png",
+      "git_blob_sha": "4eb71b5f01545bdc4ac5ee08587d9689947dc46b",
+      "content_sha256": "f1f392869baf81a1ec622c277a3d8e4ecf5b7bb685b4d1c26744b7e07948699e",
+      "sha256_evidence": "Retained sources.json",
+      "source_author": "Amal Kumar",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/plastered_wall/plastered_wall_rough_4k.jpg",
+      "license": "CC0-1.0",
+      "notice": "game/assets/surfaces/README.md",
+      "status": "excluded-from-proprietary-claim"
+    },
+    {
+      "path": "tools/godot451_json.py",
+      "git_blob_sha": "c8400ea626757a9fcf64f41084c71a1c65bf47d0",
+      "license": "MIT (included upstream Godot terms)",
+      "notice": "THIRD_PARTY_NOTICES.md and included helper notice",
+      "status": "preserve-existing-terms"
+    }
+  ],
+  "reference_boundaries": {
+    "source_expression_owned": false,
+    "original_annotations_and_qualifying_arrangement": "Separate rights only where applicable; not a transfer of source rights",
+    "facts_ideas_historical_names_methods": "No exclusive copyright claim"
+  },
+  "prior_valid_grants_preserved": true,
+  "platform_permissions_preserved": true,
+  "exported_build_clearance": false,
+  "complete_component_inventory": false,
+  "global_legal_clearance": false
+}
+

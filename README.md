@@ -373,11 +373,18 @@ archive/    Earlier disconnected layout study, not an active world
 
 ## Rights
 
-**Copyright (c) 2026 Cartesian Graphics. All rights reserved.**
+**Copyright (c) 2026 Notation Systems Inc. All rights reserved in covered original material.**
+Cartesian Graphics remains the project label; existing creator/upstream credits survive.
 Original protected game code and content are proprietary unless explicitly
 licensed otherwise. Engine and third-party rights remain separate. No claim is
-made over historical facts or public-domain material. No archival photos, copied
-plans, licensed game assets or voice recordings were imported for this update.
+made over historical facts or public-domain material. The reference corpus stays separate from ownership of authored work. Included
+CC0 dirt/plaster samples and the Godot-derived MIT helper retain source terms.
+[Owner declaration and asset scope](docs/licensing/OWNERSHIP_AND_SCOPE.md).
+
+Before any reuse requiring authorization, [request permission](https://github.com/giasonpooni/1792-The-Lotus-Throne/issues/new?template=licensing-request.yml&title=Licensing%20request)
+and obtain an express signed written grant. Play/development instructions describe
+authorized operation and do not themselves grant permission. Valid prior grants,
+mandatory exceptions and platform permissions remain applicable.
 
 [LICENSE](LICENSE) · [Licensing scope](docs/LICENSING.md) ·
 [Asset rules](docs/ASSET_LICENSING.md) · [Third-party notices](THIRD_PARTY_NOTICES.md)
