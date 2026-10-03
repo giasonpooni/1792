@@ -15,6 +15,16 @@ func ok(error: String) -> void:
 	if not error.is_empty(): failed+=1;push_error(error)
 func check(value: bool,label: String) -> void:
 	if not value: failed+=1;push_error(label)
+func look(scene,site: Vector3) -> void:
+	var direction: Vector3=site-scene.avatar.global_position
+	scene.avatar.pivot.rotation.y=atan2(-direction.x,-direction.z)
+func press(scene,prefix: String) -> void:
+	for button in scene._actions.get_children():
+		if button.text.begins_with(prefix):
+			button.pressed.emit()
+			await frames(2)
+			return
+	check(false,"Missing rendered-scene action: "+prefix)
 func capture(name: String, camera: Camera3D=null, water_surface: MeshInstance3D=null) -> void:
 	await process_frame
 	await RenderingServer.frame_post_draw
@@ -38,6 +48,7 @@ func _run() -> void:
 	ok(scene.model.restore(Fixture.complete()))
 	root.add_child(home)
 	await frames()
+	scene._message="" # A post-inquiry fixture has no freshly spoken opening line.
 	ok(scene.model.begin_allowance())
 	scene._open_quartermaster()
 	await capture("assignment")
@@ -51,7 +62,10 @@ func _run() -> void:
 	camera.position=Vector3(31,6,21)
 	camera.look_at(Vector3(24,1.5,15))
 	camera.current=true
-	ok(scene.model.water_action("draw"))
+	await frames()
+	look(scene,Water.WELL)
+	scene._interact()
+	await press(scene,"Draw one load")
 	await frames(80)
 	await capture("drawing")
 	await frames(185)
@@ -59,13 +73,19 @@ func _run() -> void:
 	await capture("carrying",camera,scene.water_view.carried_water)
 	ok(Pose.pose(scene.model,Water.STORE-Vector3(0,0,1)))
 	scene._apply()
-	ok(scene.model.water_action("deposit"))
+	await frames()
+	look(scene,Water.STORE)
+	scene._open_quartermaster()
+	await press(scene,"Deposit carried water")
 	ok(Pose.pose(scene.model,Vector3(26,0.14,14)))
 	ok(scene.model.water_action("draw"))
 	for _i in range(180):scene.model.advance()
 	ok(Pose.pose(scene.model,Water.STORE-Vector3(0,0,1)))
 	scene._apply()
-	ok(scene.model.water_action("deposit"))
+	await frames()
+	look(scene,Water.STORE)
+	scene._open_quartermaster()
+	await press(scene,"Deposit carried water")
 	camera.position=Vector3(8,3.8,0.5) # In the yard, clear of the stable roof at z=-7..-1.
 	camera.fov=60
 	camera.look_at(Vector3(4.5,0.9,5.5))

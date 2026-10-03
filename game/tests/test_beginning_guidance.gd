@@ -6,6 +6,7 @@ extends SceneTree
 const Launch := preload("res://childhood/home_launch.gd")
 const Base := preload("res://childhood/childhood_state.gd")
 const Guidance := preload("res://presentation/beginning_guidance.gd")
+const HouseholdGuidance := preload("res://presentation/household_guidance.gd")
 const Menu := preload("res://ui/main_menu.tscn")
 const Household := preload("res://territory/misl_rules.gd")
 const Workshop := preload("res://workshops/workshop_state.gd")
@@ -65,6 +66,8 @@ func click_choice(fragment: String,exact: bool=false) -> bool:
 				wheel=InputEventMouseButton.new()
 				wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN;wheel.position=within;wheel.global_position=within;wheel.pressed=false
 				root.push_input(wheel,true);await frames(2)
+			if not chapter._journal_scroll.get_global_rect().encloses(button.get_global_rect()):
+				print("GUIDANCE SCROLL DIAGNOSTIC: ",JSON.stringify({"phase":chapter.model.workshop_phase(),"button":str(button.get_global_rect()),"scroll":str(chapter._journal_scroll.get_global_rect()),"offset":chapter._journal_scroll.scroll_vertical,"maximum":chapter._journal_scroll.get_v_scroll_bar().max_value,"page":chapter._journal_scroll.get_v_scroll_bar().page}))
 			if not check(root.get_visible_rect().encloses(button.get_global_rect()) and chapter._journal_scroll.get_global_rect().encloses(button.get_global_rect()),"actual pointer choice is visible inside its scroll viewport: "+fragment): return false
 			var at: Vector2=button.get_global_rect().get_center()
 			# Viewport events alone do not move the native window pointer used by release.
@@ -130,7 +133,7 @@ func check_ui(task_fragment: String, marker_fragment: String = "") -> void:
 	check(chapter.model.snapshot() == before and chapter.model.journal() == journal and physics_identity() == bodies, "guidance reads and HUD sampling have no canonical, journal or physics authority")
 	check(hud.visible and hud.task.text.contains(task_fragment) and not hud.task.text.contains("\n"), "compact beginning shows one current objective: " + task_fragment)
 	check(not chapter._hud.is_visible_in_tree() and not chapter._caption.is_visible_in_tree() and not chapter._narrator_label.is_visible_in_tree(), "single compact task and dialogue replace the three legacy text blocks")
-	check(hud.words.text == chapter._message and hud.controls.text.contains("WASD") and hud.controls.text.contains("Mouse"), "actual remembered words and current movement controls remain available")
+	check(hud.words.text == chapter.story_caption() and hud.controls.text.contains("WASD") and hud.controls.text.contains("Mouse"), "directed caption and current movement controls remain available")
 	if marker_fragment.is_empty():
 		check(not chapter._marker.visible, "orientation has no premature target marker")
 	else:
@@ -334,7 +337,11 @@ func check_priority_presentation(subject: GuidanceSubject,label: String) -> void
 	chapter._apply();chapter._refresh()
 	var before: Dictionary=chapter.model.snapshot();var journal: Array=chapter.model.journal();var bodies:=physics_identity()
 	for _i in range(4): chapter.art.detail.hud.sample()
-	check(not chapter.art.detail.hud.visible and chapter._hud.is_visible_in_tree(),"compact household presentation yields to existing "+label+" UI")
+	var foreground: Dictionary=HouseholdGuidance.read(chapter)
+	if foreground.is_empty():
+		check(not chapter.art.detail.hud.visible and chapter._hud.is_visible_in_tree(),"compact household presentation yields to existing "+label+" UI")
+	else:
+		check(chapter.art.detail.hud.visible and not chapter._hud.is_visible_in_tree() and chapter.art.detail.hud.task.text==foreground.task,"accepted responsibility replaces optional commission in compact "+label+" UI")
 	check(chapter.model.snapshot()==before and chapter.model.journal()==journal and physics_identity()==bodies,"priority sampling preserves whole state, journal and collision identities for "+label)
 	check(chapter.model.restore(previous).is_empty(),"previous presentation world restored after "+label)
 	chapter._message=previous_message;chapter._apply();chapter._refresh();home.process_mode=old_process

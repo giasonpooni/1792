@@ -89,7 +89,7 @@ jobs:
           if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/aftermath-render.log; then
             exit 1
           fi
-          grep -q 'AFTERMATH_RENDER: 5 captures; 0 failures' test-results/aftermath-render.log
+          grep -q 'AFTERMATH_RENDER: 6 captures; 0 failures' test-results/aftermath-render.log
           timeout 90 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
             --path game --rendering-method gl_compatibility --audio-driver Dummy \
             --script res://tests/render_gujranwala.gd 2>&1 | tee test-results/gujranwala-render.log
@@ -126,6 +126,12 @@ jobs:
             exit 1
           fi
           grep -q 'RIDING_TRAINING_RENDER: 6 captures; 0 failures' test-results/riding-training-render.log
+          timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/render_horsecraft_story.gd 2>&1 | tee test-results/horsecraft-story-render.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/horsecraft-story-render.log; then exit 1; fi
+          grep -q 'HORSECRAFT_STORY_RENDER: 5 captures; 0 failures' test-results/horsecraft-story-render.log
+          cp -r "$HOME/.local/share/godot/app_userdata/1792/horsecraft-story-images" test-results/
           cp -r "$HOME/.local/share/godot/app_userdata/1792/riding-training-images" test-results/
           timeout 180 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
             --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy \
@@ -150,6 +156,16 @@ jobs:
             exit 1
           fi
           grep -Eq '^BEGINNING_GUIDANCE_TESTS: [1-9][0-9]* passed, 0 failed$' test-results/beginning-guidance.log
+          HOUSEHOLD_ATTENTION_RENDER=1 timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/test_household_attention.gd 2>&1 | tee test-results/household-attention.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/household-attention.log; then exit 1; fi
+          grep -Eq '^HOUSEHOLD_ATTENTION_TESTS: [1-9][0-9]* passed, 0 failed; 10 captures$' test-results/household-attention.log
+          HOUSEHOLD_ACTION_RENDER=1 timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
+            --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy \
+            --script res://tests/test_household_action_priority.gd 2>&1 | tee test-results/household-action-priority.log
+          if grep -E '^(SCRIPT ERROR|SHADER ERROR|ERROR):' test-results/household-action-priority.log; then exit 1; fi
+          grep -Eq '^HOUSEHOLD_ACTION_PRIORITY_TESTS: [1-9][0-9]* passed, 0 failed; 9 captures$' test-results/household-action-priority.log
           timeout 120 xvfb-run -a "$RUNNER_TEMP/godot/Godot_v4.5.1-stable_linux.x86_64" \
             --fixed-fps 60 --path game --rendering-method gl_compatibility --audio-driver Dummy \
             --script res://tests/render_beginning_sequence.gd 2>&1 | tee test-results/beginning-sequence-render.log

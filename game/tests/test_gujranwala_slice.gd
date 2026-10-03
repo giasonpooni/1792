@@ -177,6 +177,13 @@ func _played_water_resume() -> void:
 	var home:=Launch.make_world("new");var scene=home.get_node("ChildhoodChapter");scene.continuation_path=slot
 	run_paths.append(scene.save_path);ok(scene.model.restore(Fixture.complete()),"played route starts from declared inquiry fixture")
 	root.add_child(home);current_scene=home;await frames(8);await press(scene,"Continue in the courtyard")
+	# Startup parks native walking physics while the welcome dialog is open.
+	# Let the resumed real motor acquire floor contact before opening an account;
+	# transactions deliberately refuse an airborne or unsettled actor.
+	for _i in range(12):
+		if scene.avatar.is_on_floor(): break
+		await physics_frame
+	check(scene.avatar.is_on_floor(),"resumed played route acquires native floor contact before household transaction")
 	look(scene,Supply.QUARTERMASTER);await tap(scene,KEY_E);await press(scene,"Accept the limited")
 	await tap(scene,KEY_E);await press(scene,"Accept household water round")
 	check(Guide.inspect(scene.model).active=="water","played route guides assigned water")

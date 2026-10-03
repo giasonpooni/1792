@@ -10,6 +10,8 @@ const GateRules := preload("res://access/gate_rules.gd")
 const HawkScout := preload("res://scouting/hawk_scout.gd")
 const HomeScoutContacts := preload("res://scouting/home_scout_contacts.gd")
 const GroundFocus := preload("res://perception/ground_focus.gd")
+const WorkshopStory := preload("res://workshops/workshop_story.gd")
+const HouseholdActions := preload("res://presentation/household_action_priority.gd")
 var bazaar_performance: Node
 var hawk_scout: Node3D
 var scout_contacts: Node3D
@@ -141,11 +143,33 @@ func _workshop_button(label: String,kind: String) -> void:
 
 func _open_quartermaster() -> void:
 	super._open_quartermaster()
-	if not model.has_economy(): return
+	if not model.has_economy():
+		_focus_household_continuation("home")
+		return
 	match model.workshop_phase():
 		"unassigned": _workshop_button("Commission two tool bundles · carry 2 timber and 4 household coins","reserve")
 		"fuel": _workshop_button("Return undelivered workshop fuel and payment · cancel this job","refund")
 		"tools": _workshop_button("Return both tool bundles to household stock","deliver")
+	_focus_household_continuation("home")
+
+func _open_market() -> void:
+	super._open_market()
+	_focus_household_continuation("market")
+
+func _focus_household_continuation(speaker: String) -> void:
+	# Later story layers call this again after appending their own offers.
+	# Only an already offered action can become the current continuation.
+	var button := HouseholdActions.promote(self, speaker)
+	if button == null: return
+	var lead := HouseholdActions.briefing(self, speaker, HouseholdActions.action_id(button))
+	if not lead.is_empty():
+		# Match the immediate spoken concern to the selected responsibility.
+		# Optional orders remain in the same menu without competing exposition.
+		var summary := _brief_text() if model.has_economy() or HouseholdActions.action_id(button) == "econ:begin" else ""
+		_panel_text.text = _panel_text.text.get_slice("\n", 0) + "\n\n" + lead + ("\n\n" + summary if not summary.is_empty() else "")
+	_layout()
+	_journal_scroll.follow_focus = true
+	button.grab_focus()
 
 func _open_journal() -> void:
 	if is_instance_valid(ground_focus): ground_focus.stop()
@@ -204,17 +228,11 @@ func _record_mounted(motion: Dictionary,delta: float) -> String:
 	return model.record_gate_ride(motion,delta,witnessed)
 
 func _open_smith() -> void:
-	var text: String={"unassigned":"Smith · Ask your quartermaster about the two tool bundles. I cannot charge his household on your word alone.",
-		"fuel":"Smith · Put the assigned timber and payment here. I can then finish the two bundles; you must come back for them.",
-		"working":"Smith · The work is underway. The bundles remain here until you collect them. You can wait nearby or return later.",
-		"ready":"Smith · Here are the two bundles. Will you carry them back yourself? They are not in the household store yet.",
-		"tools":"Smith · You have both bundles. Take them to the quartermaster; I will not issue them twice.",
-		"complete":"Smith · Your household has received this order. The commission is settled.",
-		"cancelled":"Smith · The undelivered commission was cancelled. There is no charge or order here."}.get(model.workshop_phase(),"")
+	var text := WorkshopStory.conversation(model.workshop_phase())
 	var choices: Array=[["Return","resume"]]
 	var kind: String="start" if model.workshop_phase()=="fuel" else "collect" if model.workshop_phase()=="ready" else ""
 	if not kind.is_empty(): choices.push_front(["Hand over fuel and payment" if kind=="start" else "Collect both tool bundles", "smith:"+kind])
-	_show_dialog("HOUSEHOLD SMITH · ORIGINAL FICTION",text+"\n\nA fictional childhood errand in the authored Home cell, not a documented event or surveyed workshop. The existing game clock pauses during conversation.",choices)
+	_show_dialog("HOUSEHOLD SMITH",text,choices)
 	if not kind.is_empty(): _workshop_choices.append(kind)
 
 func _workshop_access(kind: String) -> String:
@@ -241,7 +259,7 @@ func _physics_process(delta: float) -> void:
 		if kind=="import": _load(YouthState.BRAWL_SAVE);return
 		var error:=_workshop_access(kind) # Recheck the actual world after the menu was opened.
 		if error.is_empty(): error=model.workshop_action(kind)
-		_message=error if not error.is_empty() else Craft.WORDS[kind]
+		_message=error if not error.is_empty() else WorkshopStory.acknowledgment(kind)
 		_sync_economy();_resume();_sync_workshop();return
 	super._physics_process(delta)
 	if is_instance_valid(scout_contacts): scout_contacts.sample(int(model.progress().tick))

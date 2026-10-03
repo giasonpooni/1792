@@ -1,0 +1,2291 @@
+{
+  "schema": "1792.mission-development.v1",
+  "title": "1792: The Lotus Throne — mission development cards",
+  "as_of": "2026-10-03",
+  "ledger_path": "data/production/playable_ledger.json",
+  "ledger_snapshot_commit": "4e85c2a469aae1cb567162b87ccf23eeaaa8d7a3",
+  "scope": {
+    "sequence_cards": 33,
+    "secondary_queue_entries": 13,
+    "backlog_entries": 40,
+    "meaning": "These cards define the next development increment for inventoried prototypes. They do not add playable sequences or certify their new features as implemented.",
+    "active_increment": [
+      "HOME-017"
+    ],
+    "status_policy": "development_status refers to the proposed increment only. baseline describes the ledger snapshot. implementation_receipt stays null until the increment has a concrete reviewed revision and verification.",
+    "count_policy": "Child beats, alternate approaches, presentations, mechanics and source retellings are not extra missions. The 28-entry youth slate includes one implemented adaptation alias and 27 planned entries.",
+    "history_policy": "Keep legends, miracles, conflicting allegations and dramatic invention. Preserve the ledger’s historical basis beside every card. Player choice may alter local care, communication or immediate outcomes without silently proving an allegation or overwriting a declared fixed historical endpoint.",
+    "cinematic_policy": "Build cinema from playable approach, staging, sound, performance and consequential action. A proposed cinematic moment is not a claim that cinematics, voice, animation or finished art already exist.",
+    "verification_policy": "The original authoring pass checked card coverage and consistency. Runtime increments record targeted local checks in their current_pass guides; the other draft branches have not all been freshly played or integrated.",
+    "narrative_direction_policy": "All narrative_direction blocks retain their planned literary, staging and attention directions. Acceptance statements are intended review conditions, not test receipts. Current runtime work composes HOME-017 above the earlier HOME-001–016 increments. current_pass records the implemented subset and limits; later retained prototypes need separate integration. This adds no sequences.",
+    "attention_policy": "Prioritize the next meaningful action, protect imminent threat cues, reduce repeated prose, and leave recoverable quiet intervals. Never force attention with hidden failure timers, disable player control for a camera composition, or treat continued play time as evidence of narrative quality. Persistent objectives and reviewable information remain available."
+  },
+  "phases": [
+    {
+      "id": "P0",
+      "title": "Opening decisions",
+      "purpose": "Develop HOME-001 and HOME-002 first: orientation, staged delivery, clarification choice and trainer receipt.",
+      "entry_ids": [
+        "HOME-001",
+        "HOME-002"
+      ]
+    },
+    {
+      "id": "P1",
+      "title": "Complete the childhood dramatic arc",
+      "purpose": "Give riding, sparring, tracking, ambush and inquiry coherent staging and recoverable progression.",
+      "entry_ids": [
+        "HOME-003",
+        "HOME-004",
+        "HOME-005",
+        "HOME-006",
+        "HOME-007"
+      ]
+    },
+    {
+      "id": "P2",
+      "title": "Make Gujranwala relationships playable",
+      "purpose": "Develop labor, companions, household service and optional training around finite resources and physical attendance.",
+      "entry_ids": [
+        "HOME-008",
+        "HOME-009",
+        "HOME-010",
+        "HOME-011",
+        "HOME-012",
+        "HOME-013",
+        "HOME-014",
+        "HOME-015",
+        "HOME-016",
+        "HOME-017"
+      ]
+    },
+    {
+      "id": "P3",
+      "title": "Individualize the historical recollections",
+      "purpose": "Replace shared-blockout sameness with each tale’s distinct action, staging and local consequences while retaining legends and source variants.",
+      "entry_ids": [
+        "TALE-001",
+        "TALE-002",
+        "TALE-003",
+        "TALE-004",
+        "TALE-005",
+        "TALE-006",
+        "TALE-007",
+        "TALE-008",
+        "TALE-009",
+        "TALE-010",
+        "TALE-011",
+        "TALE-012",
+        "TALE-013"
+      ]
+    },
+    {
+      "id": "P4",
+      "title": "Connect command and the retrospective frame",
+      "purpose": "Develop the command patrol, Mahan field prototype and survivor prologue without treating them as a completed imperial campaign.",
+      "entry_ids": [
+        "CMD-001",
+        "MAHA-001",
+        "PRO-001"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "HOME-001",
+      "title": "Learning the yard",
+      "phase_priority": "P0",
+      "development_status": "in_development",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "main",
+        "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+        "source_path": "docs/PLAYABLE_GUIDE.md",
+        "implementation": "Implemented prototype on the recorded revision.",
+        "era": "1792",
+        "launch": "Run game/project.godot; choose Home territory.",
+        "prerequisites": "Follow the preceding childhood prompts."
+      },
+      "dramatic_question": "Can a child find his own bearings in a household already full of adult purposes?",
+      "playable_objective": "Walk the yard, turn deliberately toward its landmarks, and find the courier without losing control of movement.",
+      "encounter_or_choice": "Choose the first landmark to inspect; the lead-in makes the message a discoverable interruption rather than another unrelated instruction.",
+      "local_consequence": "The next objective names the courier and where to find him; exploration creates no hidden literacy or political knowledge.",
+      "cinematic_moment": "Hooves, work and voices establish ordinary household life before a waiting courier cuts across it.",
+      "next_implementation_task": "Improve the orientation lead-in, landmark staging and objective text that hands the player into HOME-002.",
+      "acceptance_criterion": "A fresh start explains walk and look, completion leads visibly to the courier, and pausing or repeating an interaction cannot skip the message lesson.",
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "implementation_receipt": null,
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/MESSAGE_FOLLOWUP.md",
+        "branch": "feat/opening-mission-development-v1-20261002",
+        "limits": "Textual staging and prototype actors; cinematic animation, voice and final art remain planned."
+      },
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "Can a child find his own bearings in a household already full of adult purposes?",
+        "dramatic_turn": "The yard begins as a place to wander; noticing someone waiting turns familiar space into a first responsibility.",
+        "setup_payoff": "Establish the courtyard threshold as home before later departures and the ambush make reaching it matter.",
+        "playable_staging": "Let the courier wait against a clear stretch of wall. Work and movement provide depth, while one open approach makes the waiting figure legible without taking the camera.",
+        "attention_pattern": "Broad exploration narrows to one human interruption. Introduce walk and look before the courier prompt; avoid displaying every later control at once.",
+        "recovery": "After the player finds the courier, give a short unhurried approach with no repeated summons.",
+        "agency": "The player chooses their path and when to approach. Looking elsewhere is permitted, and orientation help remains recallable.",
+        "acceptance": "A fresh player can describe where Home ends and point to the courier; idle exploration causes no repeated caption stream or skipped lesson."
+      }
+    },
+    {
+      "id": "HOME-002",
+      "title": "The sealed message",
+      "phase_priority": "P0",
+      "development_status": "in_development",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "main",
+        "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+        "source_path": "docs/PLAYABLE_GUIDE.md",
+        "implementation": "Implemented prototype on the recorded revision.",
+        "era": "1792",
+        "launch": "Run game/project.godot; choose Home territory.",
+        "prerequisites": "Follow the preceding childhood prompts."
+      },
+      "dramatic_question": "What does a future ruler do when the words of an order and the account of its bearer leave uncertainty?",
+      "playable_objective": "Receive the sealed message, hear courier and steward, and decide how to take the uncertain account to the trainer.",
+      "encounter_or_choice": "After both initial accounts, ask the steward to proceed directly to the trainer or first return to the courier for clarification; existing training stays available.",
+      "local_consequence": "The journal keeps the selected approach, any clarification actually heard, and the trainer’s receipt; neither path discovers a hidden culprit or grants a risk modifier.",
+      "cinematic_moment": "The seal remains visible in the child’s hand while an older voice supplies its meaning; the reply is the child’s first deliberate public decision.",
+      "next_implementation_task": "Add the optional post-reading conversation, clarification interaction, trainer acknowledgment, remembered receipt and matching objective cues.",
+      "acceptance_criterion": "Both approaches can reach their trainer acknowledgment, clarification is credited only after hearing it, repeat interactions do not duplicate receipts, and normal riding progression remains available.",
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "implementation_receipt": null,
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/MESSAGE_FOLLOWUP.md",
+        "branch": "feat/opening-mission-development-v1-20261002",
+        "limits": "Textual staging and prototype actors; cinematic animation, voice and final art remain planned."
+      },
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "What does a future ruler do when the words of an order and the account of its bearer leave uncertainty?",
+        "dramatic_turn": "A seemingly simple delivery becomes a choice about how honestly to carry uncertainty.",
+        "setup_payoff": "The seal promises authority; the courier’s limited sight undercuts certainty. The trainer later acknowledges exactly the account the player chose to give.",
+        "playable_staging": "Keep bearer, steward and trainer in distinct working places so clarification has a physical cost and the return approach feels intentional.",
+        "attention_pattern": "Present the message, then the gap in the account, then the optional choice. Allow one speaker at a time rather than revealing all branches in advance.",
+        "recovery": "Close the trainer exchange on one acknowledgment and return to walking; do not immediately stack a second political explanation.",
+        "agency": "Proceed directly or return for clarification. Neither path is presented as a secretly correct test of intelligence.",
+        "acceptance": "A player can distinguish the two available approaches and recall what the courier actually saw; the trainer’s wording matches received information and stays reviewable."
+      }
+    },
+    {
+      "id": "HOME-003",
+      "title": "First riding gates",
+      "phase_priority": "P1",
+      "development_status": "in_development",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "main",
+        "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+        "source_path": "docs/PLAYABLE_GUIDE.md",
+        "implementation": "Implemented prototype on the recorded revision.",
+        "era": "1792",
+        "launch": "Run game/project.godot; choose Home territory.",
+        "prerequisites": "Follow the preceding childhood prompts."
+      },
+      "dramatic_question": "Can the child turn confidence into control when the horse has momentum of its own?",
+      "playable_objective": "Mount, pass the three gates in order, brake, and dismount on clear ground.",
+      "encounter_or_choice": "A trainer calls for a controlled approach to the last gate; the player can slow early or recover after overshooting.",
+      "local_consequence": "Feedback distinguishes missing a gate from losing control and returns the rider to the unfinished part without awarding an advanced horsecraft flag.",
+      "cinematic_moment": "The courtyard opens into a longer sightline as the horse accelerates, then the last gate tightens the composition around a deliberate stop.",
+      "next_implementation_task": "Stage a readable entry and stopping area, add contextual trainer reactions, and make the next valid gate apparent from horseback.",
+      "acceptance_criterion": "A first-time player can identify the next gate and stopping requirement; wrong-order passage cannot complete the course and a safe retry preserves completed gates.",
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "implementation_receipt": null,
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/CHILDHOOD_ARC_DEVELOPMENT.md",
+        "branch": "feat/childhood-arc-development-v1-20261002",
+        "limits": "Procedural staging and original text; final animation, voice and cinematic art remain future work.",
+        "attention_increment": {
+          "status": "implemented_and_locally_verified",
+          "guide": "docs/STORY_PACING_AND_ATTENTION.md",
+          "behavior": "Active gate and steering task remain visible; secondary guidance recedes while moving or mounted, with timed gate reactions.",
+          "verification": "Focused native caption, scene, HUD and trace suites; inherited childhood arc, aftermath, courtyard, beginning and staging checks; native presentation inspection. See guide and PR #82 for exact results and limits."
+        }
+      },
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "Can the child turn confidence into control when the horse has momentum of its own?",
+        "dramatic_turn": "Acceleration feels like mastery until the final gate asks for restraint; a controlled stop completes the emotional as well as physical lesson.",
+        "setup_payoff": "The pale stitch on completed gates records effort. The final stopping patch introduces making space, a skill echoed in retreat from the later attack.",
+        "playable_staging": "Expose the next numbered gate along the riding line; place the stopping patch beyond the last gate with room for a visible correction.",
+        "attention_pattern": "Use one movement cue before mounting, a brief response after each true gate passage, and silence while the player steers. Suppress unrelated household reminders during the run.",
+        "recovery": "Allow an unscored settling pause after the stop. An overshoot receives one actionable correction and keeps already-earned progress.",
+        "agency": "The rider controls speed and retry line; cinematic framing never pulls the camera off the next gate.",
+        "acceptance": "During a full-speed attempt the next gate and braking instruction remain legible without competing captions; a wrong-order pass cannot trigger praise or advance the sequence."
+      }
+    },
+    {
+      "id": "HOME-004",
+      "title": "Guard and counter",
+      "phase_priority": "P1",
+      "development_status": "in_development",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "main",
+        "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+        "source_path": "docs/PLAYABLE_GUIDE.md",
+        "implementation": "Implemented prototype on the recorded revision.",
+        "era": "1792",
+        "launch": "Run game/project.godot; choose Home territory.",
+        "prerequisites": "Follow the preceding childhood prompts."
+      },
+      "dramatic_question": "Will the child strike in anger or wait for the opening his teacher has exposed?",
+      "playable_objective": "Read two telegraphed blows, hold guard, recover and counter within the trainer’s opening.",
+      "encounter_or_choice": "Early swings meet a guarded response; a patient counter produces a clear change in the trainer’s stance.",
+      "local_consequence": "The lesson records one learned sequence and gives specific corrective feedback without practice damage or an arbitrary damage upgrade.",
+      "cinematic_moment": "The sound of the yard falls behind the rhythm of two practice blows; the teacher briefly lowers his weapon after a clean counter.",
+      "next_implementation_task": "Give each practice phase distinct posture, caption and sound cues, with recovery feedback tied to the actual strike window.",
+      "acceptance_criterion": "Early, late and correctly timed counters receive distinct feedback; the lesson finishes only after the required guards and counter, with no damage in practice.",
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "implementation_receipt": null,
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/CHILDHOOD_ARC_DEVELOPMENT.md",
+        "branch": "feat/childhood-arc-development-v1-20261002",
+        "limits": "Procedural staging and original text; final animation, voice and cinematic art remain future work.",
+        "attention_increment": {
+          "status": "implemented_and_locally_verified",
+          "guide": "docs/STORY_PACING_AND_ATTENTION.md",
+          "behavior": "Short combat cues; readable priority for immediate actions; look-first-then-answer motif carries into tracking.",
+          "verification": "Focused native caption, scene, HUD and trace suites; inherited childhood arc, aftermath, courtyard, beginning and staging checks; native presentation inspection. See guide and PR #82 for exact results and limits."
+        }
+      },
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "Will the child strike in anger or wait for the opening his teacher has exposed?",
+        "dramatic_turn": "The urge to answer each blow immediately gives way to recognizing a deliberate opening.",
+        "setup_payoff": "The teacher’s raised weapon sets an expectation that the later assailant’s tell recalls; the resemblance helps action without implying identical timing or intent.",
+        "playable_staging": "Keep the weapon silhouette separate from the trainer’s torso and background. A visible recovery posture supplies the counter opportunity.",
+        "attention_pattern": "Build a readable rhythm of preparation, guard, recovery and counter. Corrective feedback survives long enough to read, while an incoming blow’s cue takes precedence.",
+        "recovery": "After a clean counter, lower the weapon and leave a brief still interval before the next objective. Failed timing invites another cycle without humiliation.",
+        "agency": "The player may wait and observe complete cycles, attempt early, or recover after a miss; no forced camera cut supplies the answer.",
+        "acceptance": "Early, late and unfaced responses remain distinct, an imminent strike stays readable, and the final success reaction occurs once after the admitted counter."
+      }
+    },
+    {
+      "id": "HOME-005",
+      "title": "Tracks beyond Home",
+      "phase_priority": "P1",
+      "development_status": "in_development",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "main",
+        "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+        "source_path": "docs/PLAYABLE_GUIDE.md",
+        "implementation": "Implemented prototype on the recorded revision.",
+        "era": "1792",
+        "launch": "Run game/project.godot; choose Home territory.",
+        "prerequisites": "Follow the preceding childhood prompts."
+      },
+      "dramatic_question": "Can observation overcome the urge to hurry toward a prize?",
+      "playable_objective": "Follow three physical traces and quietly reach an observation position beside the quarry.",
+      "encounter_or_choice": "A tempting direct line passes the later trace but cannot replace examining the earlier evidence; noisy approach calls for a calmer second attempt.",
+      "local_consequence": "The remembered trail contains only examined traces; completion records observation of the animal, not a kill or harvested item.",
+      "cinematic_moment": "Reeds and dry scrub part just enough for a first distant glimpse; the final approach holds on the animal’s breathing and the player’s footsteps.",
+      "next_implementation_task": "Make the three traces visually distinct, use terrain to connect their sightlines, and replace generic guidance with evidence-specific observations.",
+      "acceptance_criterion": "Each trace requires proximity and eye-level visibility, out-of-order inspection explains what is missing, and the final approach cannot complete through a wall or while rushing.",
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "implementation_receipt": null,
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/CHILDHOOD_ARC_DEVELOPMENT.md",
+        "branch": "feat/childhood-arc-development-v1-20261002",
+        "limits": "Procedural staging and original text; final animation, voice and cinematic art remain future work.",
+        "attention_increment": {
+          "status": "implemented_and_locally_verified",
+          "guide": "docs/STORY_PACING_AND_ATTENTION.md",
+          "behavior": "Timed observations yield quiet; original quarry reaction; two exact dressing overlaps cleared with restrained ground contrast.",
+          "verification": "Focused native caption, scene, HUD and trace suites; inherited childhood arc, aftermath, courtyard, beginning and staging checks; native presentation inspection. See guide and PR #82 for exact results and limits."
+        }
+      },
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "Can observation overcome the urge to hurry toward a prize?",
+        "dramatic_turn": "The promised reward shifts from catching an animal to noticing how little evidence can disclose.",
+        "setup_payoff": "Shallow prints, bent reeds and pressed grass change from surface details into a sequence of movement. The final breathing animal resolves the trail without a kill.",
+        "playable_staging": "Compose each trace from a different silhouette and viewing height; vegetation should guide the next search area while leaving the evidence itself unobscured.",
+        "attention_pattern": "Repeat search, inspect, understand with longer quiet gaps between discoveries. Reserve the largest visual reveal for the quarry rather than spending it on markers.",
+        "recovery": "After the animal is observed, permit a still moment with optional looking before the return objective; approaching too loudly offers a readable reset.",
+        "agency": "The player chooses the route between traces and when to stop. Focus may assist finding a trace but cannot substitute for physical inspection.",
+        "acceptance": "A playtester can name all three observations in order, find the quarry without a caption obscuring it, and retry a noisy approach without duplicate memories."
+      }
+    },
+    {
+      "id": "HOME-006",
+      "title": "The return-path ambush",
+      "phase_priority": "P1",
+      "development_status": "in_development",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "main",
+        "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+        "source_path": "docs/PLAYABLE_GUIDE.md",
+        "implementation": "Implemented prototype on the recorded revision.",
+        "era": "1792",
+        "launch": "Run game/project.godot; choose Home territory.",
+        "prerequisites": "Follow the preceding childhood prompts."
+      },
+      "dramatic_question": "Can the child bring his lessons to bear when the return home becomes dangerous?",
+      "playable_objective": "Recognize the ambush, create space by movement or a guarded counter, and reach the courtyard alive.",
+      "encounter_or_choice": "Escape immediately or face the attacker long enough to open a safer retreat; mounted escape remains a supported route.",
+      "local_consequence": "The aftermath receives only the assault details the player actually observed; reaching safety does not identify the attacker’s employer.",
+      "cinematic_moment": "The familiar return bend suddenly conceals movement; the courtyard’s light becomes a practical destination while footsteps close behind.",
+      "next_implementation_task": "Rework the bend’s approach and escape sightline, give the assailant an unmistakable warning tell, and stage the household’s arrival response.",
+      "acceptance_criterion": "Both immediate escape and guard-counter retreat are viable, failed attempts restart the encounter without corrupting the household state, and unseen identity information is never added.",
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "implementation_receipt": null,
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/CHILDHOOD_ARC_DEVELOPMENT.md",
+        "branch": "feat/childhood-arc-development-v1-20261002",
+        "limits": "Procedural staging and original text; final animation, voice and cinematic art remain future work.",
+        "attention_increment": {
+          "status": "implemented_and_locally_verified",
+          "guide": "docs/STORY_PACING_AND_ATTENTION.md",
+          "behavior": "Threat preempts queued incidental speech; physical return clears combat captions and reframes the household gate.",
+          "verification": "Focused native caption, scene, HUD and trace suites; inherited childhood arc, aftermath, courtyard, beginning and staging checks; native presentation inspection. See guide and PR #82 for exact results and limits."
+        }
+      },
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "Can the child bring his lessons to bear when the return home becomes dangerous?",
+        "dramatic_turn": "A route already learned as safe becomes threatening, and the lesson’s value changes from performance to survival.",
+        "setup_payoff": "The familiar bend conceals a changed presence. The courtyard threshold established at the opening becomes a concrete escape destination.",
+        "playable_staging": "Retain recognizable return landmarks, reveal the attacker’s preparatory movement against open space, and preserve a readable route toward Home.",
+        "attention_pattern": "Let a brief quiet approach precede the warning. During pursuit, threat and escape information outrank reflective prose; save interpretation for safety.",
+        "recovery": "Crossing into safety releases the immediate threat before household dialogue begins. Avoid replacing pursuit with a long compulsory explanation at the gate.",
+        "agency": "Escape, counter to create space, or use the supported mounted route. The moment does not require fighting simply to see the next scene.",
+        "acceptance": "Every supported retreat route receives a usable warning and unobstructed escape cue; unseen attacker details never appear in the later account, and post-escape dialogue cannot restart danger."
+      }
+    },
+    {
+      "id": "HOME-007",
+      "title": "The household inquiry",
+      "phase_priority": "P1",
+      "development_status": "in_development",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "main",
+        "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+        "source_path": "docs/AFTERMATH.md",
+        "implementation": "Implemented prototype on the recorded revision.",
+        "era": "1792",
+        "launch": "Run game/project.godot; choose Home territory.",
+        "prerequisites": "HOME-006"
+      },
+      "dramatic_question": "Who gets to shape the account of an attack before the child has understood it himself?",
+      "playable_objective": "Hear the household accounts, choose escort or independent inquiry, inspect the bend and return a bounded report.",
+      "encounter_or_choice": "Raj Kaur’s offer makes protection useful but socially visible; investigating alone changes the exchange and presence at the bend.",
+      "local_consequence": "The report retains chosen approach and inspected evidence, while uncertainty survives both routes and neither produces a culprit.",
+      "cinematic_moment": "The same bend is quieter on the return visit; a guard’s presence, or its absence, changes the distance between the child and the road.",
+      "next_implementation_task": "Give the inquiry a staged household discussion, branch-specific companion blocking and a final report assembled from heard and seen details.",
+      "acceptance_criterion": "Both inquiry routes reach a distinct acknowledgment, omitted evidence is not reported as seen, and restoring the checkpoint restores the companion and chosen route together.",
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "implementation_receipt": null,
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/CHILDHOOD_ARC_DEVELOPMENT.md",
+        "branch": "feat/childhood-arc-development-v1-20261002",
+        "limits": "Procedural staging and original text; final animation, voice and cinematic art remain future work.",
+        "attention_increment": {
+          "status": "implemented_and_locally_verified",
+          "guide": "docs/STORY_PACING_AND_ATTENTION.md",
+          "behavior": "Existing evidence-led report gains a completion reflection without naming a culprit; optional replay remains separate from evidence.",
+          "verification": "Focused native caption, scene, HUD and trace suites; inherited childhood arc, aftermath, courtyard, beginning and staging checks; native presentation inspection. See guide and PR #82 for exact results and limits."
+        }
+      },
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "Who gets to shape the account of an attack before the child has understood it himself?",
+        "dramatic_turn": "The family’s offer of protection becomes a question about who accompanies the child and how the child describes an uncertain event.",
+        "setup_payoff": "Revisit the ambush bend under altered circumstances. Identical ground becomes quieter evidence, and the optional guard changes its social meaning.",
+        "playable_staging": "Begin with Raj Kaur within ordinary household space, stage the escort beside rather than ahead of the player, and place the final report where both can be addressed.",
+        "attention_pattern": "Organize the arc as offer, return, observation and report. Present only the active decision, then release movement; keep the final account short enough to compare its sources.",
+        "recovery": "After reporting, allow a household response and a quiet return to available activities. Do not reveal a culprit merely to manufacture closure.",
+        "agency": "Escort and independent inquiry remain valid. The player determines which available testimony and physical evidence they actually obtain before reporting.",
+        "acceptance": "Both approaches reach a distinct acknowledgment; the report visibly separates heard and seen information, contains no absent evidence, and cannot be submitted through an obstructed or closed conversation."
+      }
+    },
+    {
+      "id": "HOME-008",
+      "title": "Four-food delivery",
+      "phase_priority": "P2",
+      "development_status": "in_development",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "main",
+        "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+        "source_path": "docs/PLAYABLE_GUIDE.md",
+        "implementation": "Implemented prototype on the recorded revision.",
+        "era": "1792",
+        "launch": "Run game/project.godot; choose Home territory.",
+        "prerequisites": "Completed inquiry; allowance/resources where required by the linked guide."
+      },
+      "dramatic_question": "Can the young heir keep an ordinary promise when rank does not carry the food for him?",
+      "playable_objective": "Accept the four-food contract, collect its actual cargo and deliver it to the market recipient.",
+      "encounter_or_choice": "Decide whether to check the delivery terms with the household before setting off; the recipient responds to the real cargo rather than the player’s title.",
+      "local_consequence": "The existing finite payment remains attached to one successful handover; a failed attempt leaves a clear account of missing cargo.",
+      "cinematic_moment": "A busy market makes room for a small, practical exchange: a tally, a handover, and a recipient who returns immediately to work.",
+      "next_implementation_task": "Author a short contract briefing, show cargo and recipient spatially, and stage the single delivery acknowledgment.",
+      "acceptance_criterion": "Exactly four food leave the carried supply on success, payout occurs once, and save/load before or after handover cannot repeat the reward.",
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "Can the young heir keep an ordinary promise when rank does not carry the food for him?",
+        "dramatic_turn": "A task accepted under the heir’s name ends in an ordinary recipient checking whether the promise was kept.",
+        "setup_payoff": "The four-food tally at departure returns as the same tally at handover; the echo makes accountability visible without a speech about humility.",
+        "playable_staging": "Show cargo where it is collected and keep the recipient engaged in market work. The exchange briefly interrupts that work and then lets it resume.",
+        "attention_pattern": "Brief terms, free travel, one concrete inspection, one acknowledgment. Use a missing-cargo response only when the player attempts an incomplete handover.",
+        "recovery": "Leave space after payment for the market to resume. Do not turn a completed delivery into an immediate chain of new orders.",
+        "agency": "The player chooses the route and whether to confirm terms first; the recipient evaluates the actual delivery rather than choosing between flattering dialogue options.",
+        "acceptance": "A player can recall what was owed and recognize the same cargo at arrival; repeated interaction neither repeats the reward nor continually restates a finished objective."
+      },
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/HOUSEHOLD_STORY_DEVELOPMENT.md",
+        "branch": "feat/household-story-development-v1-20261002",
+        "behavior": "Four-portion briefing and matching handover acknowledgment; four visible carried parcels; active cargo guidance and local offered-action checks.",
+        "literary_technique": "A four-part visual tally makes an ordinary promise concrete; the recipient acknowledges the delivery rather than the heir’s rank.",
+        "verification": {
+          "focused_test": "game/tests/test_delivery_story.gd",
+          "shared_tests": [
+            "game/tests/test_household_attention.gd",
+            "game/tests/test_household_action_priority.gd"
+          ],
+          "results": "See the guide and development PR for observed results and fixture limits."
+        },
+        "limits": "Original dialogue and procedural staging; final performance, audio, cinematic art and first-time human attention evaluation remain future work. This implements a subset of the planned narrative_direction, not every proposed moment."
+      }
+    },
+    {
+      "id": "HOME-009",
+      "title": "Bring the carrier Home",
+      "phase_priority": "P2",
+      "development_status": "in_development",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "main",
+        "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+        "source_path": "docs/PLAYABLE_GUIDE.md",
+        "implementation": "Implemented prototype on the recorded revision.",
+        "era": "1792",
+        "launch": "Run game/project.godot; choose Home territory.",
+        "prerequisites": "Completed inquiry; allowance/resources where required by the linked guide."
+      },
+      "dramatic_question": "Does giving an escort order matter if the person entrusted to you cannot keep up?",
+      "playable_objective": "Meet the return carrier, keep physical contact during the journey, and check the same carrier and cargo into Home.",
+      "encounter_or_choice": "Stop and regroup when the carrier is separated or continue ahead and return to recover contact; the disputed crossing remains an optional route of this arc.",
+      "local_consequence": "Arrival is earned by the carrier’s physical return, with one existing supply check-in and no additional cargo for alternate paths.",
+      "cinematic_moment": "At the gate the child turns back; the laden carrier is still crossing the open road and the escort must wait.",
+      "next_implementation_task": "Add readable lost-contact and regroup behavior, an arrival blocking pass, and a shared handover used by the ordinary and disputed routes.",
+      "acceptance_criterion": "Reaching Home alone cannot finish; a separated carrier can be recovered, and every route resolves the same one-time check-in.",
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "Does giving an escort order matter if the person entrusted to you cannot keep up?",
+        "dramatic_turn": "The apparent finish at the gate reveals that arrival means bringing another person, not merely reaching a marker.",
+        "setup_payoff": "The carrier’s uneven pace introduced on departure pays off when the player must turn back or wait. The laden silhouette is the continuity cue across route variants.",
+        "playable_staging": "Use bends and the final gate to expose changing distance to the carrier. Keep the same carrier and load visible during regroup and check-in.",
+        "attention_pattern": "Alternate movement with short checks of companion position. Lost-contact guidance activates on separation, then subsides after reunion instead of becoming a constant escort alarm.",
+        "recovery": "A reunited carrier is allowed to catch breath; the final unload resolves the shared trip before any further supply request.",
+        "agency": "Choose pace and route, recover a separation, or use the disputed crossing. Waiting is a meaningful act of escort, not a hidden timer penalty.",
+        "acceptance": "A player who reaches Home alone understands whom to recover; ordinary and disputed routes conclude through the same physical check-in and one cargo receipt."
+      },
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/HOUSEHOLD_STORY_DEVELOPMENT.md",
+        "branch": "feat/household-story-development-v1-20261002",
+        "behavior": "Physical separation, reunion and arrival cues; one carrier and load; accepted check-in puts down the same cosmetic load; recoverable carrier guidance.",
+        "literary_technique": "An apparent finish at the gate becomes a decision to wait or return for the person entrusted to the player.",
+        "verification": {
+          "focused_test": "game/tests/test_delivery_story.gd",
+          "shared_tests": [
+            "game/tests/test_household_attention.gd",
+            "game/tests/test_household_action_priority.gd"
+          ],
+          "results": "See the guide and development PR for observed results and fixture limits."
+        },
+        "limits": "Original dialogue and procedural staging; final performance, audio, cinematic art and first-time human attention evaluation remain future work. This implements a subset of the planned narrative_direction, not every proposed moment."
+      }
+    },
+    {
+      "id": "HOME-010",
+      "title": "Water for the household",
+      "phase_priority": "P2",
+      "development_status": "in_development",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "main",
+        "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+        "source_path": "docs/GUJRANWALA_WATER_ROUND.md",
+        "implementation": "Implemented prototype on the recorded revision.",
+        "era": "1792",
+        "launch": "Run game/project.godot; choose Home territory.",
+        "prerequisites": "Completed inquiry; allowance/resources where required by the linked guide."
+      },
+      "dramatic_question": "Will the heir notice how much labor sits beneath the household’s ordinary comfort?",
+      "playable_objective": "Draw three units at the well twice, carry each load on foot, and return six units to the household.",
+      "encounter_or_choice": "The second trip makes the player choose a usable, steady route with the loaded carrier; waiting during the draw offers a short exchange with another household worker.",
+      "local_consequence": "Water accounting follows the real draw and deposits; conversation changes local acknowledgment without producing repeatable money.",
+      "cinematic_moment": "The well’s rope creaks against the rim, then the frame drops to the weight of the carried vessels on the walk back.",
+      "next_implementation_task": "Stage the draw and deposit as visible actions, add one concise worker exchange, and communicate load restrictions before the player tries to mount.",
+      "acceptance_criterion": "Two valid draws and deposits deliver exactly six units, load restrictions are explained in context, and interruption or reload cannot create water.",
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "Will the heir notice how much labor sits beneath the household’s ordinary comfort?",
+        "dramatic_turn": "The repeated water journey changes the well from background scenery into labor the household depends on.",
+        "setup_payoff": "Return to the same rope and vessels on the second trip, but let a short worker exchange change what the player notices about the repetition.",
+        "playable_staging": "Keep rope, filled vessels and household deposit visible at their actual interaction points; stage a passable walking route that reads differently under load.",
+        "attention_pattern": "Teach the first draw once. On the second, keep instructions compact and offer optional conversation during an existing pause rather than extending it.",
+        "recovery": "Finish on the settled vessels and worker acknowledgment. The player can leave without waiting through an extra ceremonial speech.",
+        "agency": "The player chooses a usable walking route and whether to listen; listening is not a prerequisite for the water’s practical value.",
+        "acceptance": "The second trip adds a changed human observation without replaying the full tutorial; six deposited units are visible in accounting and interrupted draws cannot duplicate water."
+      },
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/HOUSEHOLD_STORY_DEVELOPMENT.md",
+        "branch": "feat/household-story-development-v1-20261002",
+        "behavior": "Concise first-draw instruction, changed second-trip inner observation, live fill/deposit dialogue, visible vessel levels and contextual load guidance.",
+        "literary_technique": "Repetition with variation: the same road shifts from an errand to an awareness of everyday labor. The implemented voice is Buddh’s inner observation, not the planned worker exchange.",
+        "verification": {
+          "focused_test": "game/tests/test_water_round_story.gd",
+          "shared_tests": [
+            "game/tests/test_household_attention.gd",
+            "game/tests/test_household_action_priority.gd"
+          ],
+          "results": "See the guide and development PR for observed results and fixture limits."
+        },
+        "limits": "Original dialogue and procedural staging; final performance, audio, cinematic art and first-time human attention evaluation remain future work. This implements a subset of the planned narrative_direction, not every proposed moment."
+      }
+    },
+    {
+      "id": "HOME-011",
+      "title": "The smith’s commission",
+      "phase_priority": "P2",
+      "development_status": "in_development",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "main",
+        "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+        "source_path": "docs/HOME_WORKSHOP_INTEGRATION.md",
+        "implementation": "Implemented prototype on the recorded revision.",
+        "era": "1792",
+        "launch": "Run game/project.godot; choose Home territory.",
+        "prerequisites": "Completed inquiry; allowance/resources where required by the linked guide."
+      },
+      "dramatic_question": "Can a promise to improve the household survive the cost and waiting that skilled work requires?",
+      "playable_objective": "Reserve fuel and fee, hand over the commission, return when the smith has finished, and deliver the two tools Home.",
+      "encounter_or_choice": "Before handover, commit the reserved resources or cancel openly; after handover, the smith gives an honest progress report rather than a second purchase.",
+      "local_consequence": "Cancellation releases only the pre-handover reservation; completion yields the existing two tools once and records the household’s receipt.",
+      "cinematic_moment": "A tool-shaped blank passes from dark workbench to furnace light; the collected pair is carried out through the same threshold later.",
+      "next_implementation_task": "Connect commission dialogue to the smith’s workcell staging and make reservation, work underway, collection and Home delivery distinct visible states.",
+      "acceptance_criterion": "All four stages read clearly, cancellation is unavailable after handover, and collecting or delivering twice cannot duplicate tools or fee deductions.",
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "Can a promise to improve the household survive the cost and waiting that skilled work requires?",
+        "dramatic_turn": "An attractive promise of new tools becomes an obligation to pay for time and skilled work.",
+        "setup_payoff": "The two unfinished blanks seen at commission return as the completed pair; the same workbench anchors reservation, work, and collection.",
+        "playable_staging": "Stage each work state with a clear object arrangement. Let the smith remain occupied while giving a short, state-specific answer.",
+        "attention_pattern": "Concentrate explanation at the commitment decision. During work, provide a concise progress response only on inquiry and let the player pursue other activities.",
+        "recovery": "Collection gives one satisfying handover; the Home delivery closes the promise with a practical use implied by staging rather than another lengthy briefing.",
+        "agency": "Commit or cancel before handover, then choose when to return. Avoid forcing the player to stare at a progress bar to demonstrate patience.",
+        "acceptance": "A returning player can tell reserved, working and ready states apart; cancellation and completion retain their existing resource rules and repeated queries do not replay the original pitch."
+      },
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/HOUSEHOLD_STORY_DEVELOPMENT.md",
+        "branch": "feat/household-story-development-v1-20261002",
+        "behavior": "State-specific commitment dialogue and matching receipt; unfinished blanks, work underway, completed pair and empty collected bench; compiled workcell rebinds these props.",
+        "literary_technique": "The two rough blanks return as two completed tools; the empty bench and carried pair make the continuing obligation visible.",
+        "verification": {
+          "focused_test": "game/tests/test_workshop_story_staging.gd",
+          "shared_tests": [
+            "game/tests/test_household_attention.gd",
+            "game/tests/test_household_action_priority.gd"
+          ],
+          "results": "See the guide and development PR for observed results and fixture limits."
+        },
+        "limits": "Original dialogue and procedural staging; final performance, audio, cinematic art and first-time human attention evaluation remain future work. This implements a subset of the planned narrative_direction, not every proposed moment."
+      }
+    },
+    {
+      "id": "HOME-012",
+      "title": "Sukerchakia household service",
+      "phase_priority": "P2",
+      "development_status": "in_development",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "main",
+        "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+        "source_path": "docs/SUKERCHAKIA_SERVICE.md",
+        "implementation": "Implemented prototype on the recorded revision.",
+        "era": "1792",
+        "launch": "Run game/project.godot; choose Home territory.",
+        "prerequisites": "Completed inquiry; allowance/resources where required by the linked guide."
+      },
+      "dramatic_question": "Can the child accept responsibility for someone else’s service without pretending to have seen what the guard saw?",
+      "playable_objective": "Hear the market and well requests, provision an already hired guard, dispatch him, and receive his returned accounts.",
+      "encounter_or_choice": "Choose which finite request to serve first; if provisions or attendance are missing, resolve those needs before ordering departure.",
+      "local_consequence": "The guard’s report remains an attributed report received only when heard, with no firsthand memory from delegated work.",
+      "cinematic_moment": "The guard walks away carrying the household’s supplies; an empty place at the gate persists until he physically returns.",
+      "next_implementation_task": "Give the two requesters different immediate needs and add a visible departure, absence, return and report sequence around the existing service state.",
+      "acceptance_criterion": "Dispatch respects hire and provision requirements, both requests finish once, and returned information appears only after the player hears the guard.",
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "Can the child accept responsibility for someone else’s service without pretending to have seen what the guard saw?",
+        "dramatic_turn": "Giving a service order creates an absence the child must wait to understand through another person’s account.",
+        "setup_payoff": "Establish the guard’s place at the gate before departure; the empty place and eventual return supply a visual refrain for delegated responsibility.",
+        "playable_staging": "Give market and well requesters different workspaces and immediate concerns. Show supplies pass to the same guard who departs and returns.",
+        "attention_pattern": "One request at a time establishes need; departure ends the briefing. Keep unfinished distant work out of the child’s captions until a physical report arrives.",
+        "recovery": "Allow ordinary activity during absence. The report ends with the guard returning to duty instead of repeated reminders that delegation occurred.",
+        "agency": "Choose which finite request to serve first and resolve real provision gaps. Receiving a report remains an action the player performs.",
+        "acceptance": "The two requests are distinguishable in a retelling, absence produces no fabricated firsthand knowledge, and only hearing the return report updates the child’s account."
+      },
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/HOUSEHOLD_STORY_DEVELOPMENT.md",
+        "branch": "feat/household-story-development-v1-20261002",
+        "behavior": "Distinct local requests, departure acknowledgment, carried satchel, empty guard post and received-account closure; distant progress stays out of compact guidance.",
+        "literary_technique": "An order creates a visible absence; its meaning returns through another person’s attributed account.",
+        "verification": {
+          "focused_test": "game/tests/test_service_story.gd",
+          "shared_tests": [
+            "game/tests/test_household_attention.gd",
+            "game/tests/test_household_action_priority.gd"
+          ],
+          "results": "See the guide and development PR for observed results and fixture limits."
+        },
+        "limits": "Original dialogue and procedural staging; final performance, audio, cinematic art and first-time human attention evaluation remain future work. This implements a subset of the planned narrative_direction, not every proposed moment."
+      }
+    },
+    {
+      "id": "HOME-013",
+      "title": "The Bhangi Bazaar Brawl",
+      "phase_priority": "P2",
+      "development_status": "in_development",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "main",
+        "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+        "source_path": "docs/YOUTH_CAMPAIGN.md",
+        "implementation": "Implemented prototype on the recorded revision.",
+        "era": "1792",
+        "launch": "Run game/project.godot; choose Home territory.",
+        "prerequisites": "Completed inquiry; allowance/resources where required by the linked guide."
+      },
+      "dramatic_question": "What kind of courage will the child’s friends remember: winning a public challenge or bringing everyone home?",
+      "playable_objective": "Walk with Mela and Jiva to the bazaar confrontation, counter or withdraw together, then regroup and report Home.",
+      "encounter_or_choice": "Stand through the challenge or deliberately leave with both companions; the friends react to the choice without turning withdrawal into a failed mission.",
+      "local_consequence": "The local retelling and companion responses remember the chosen resolution; no route declares a wider clan uniformly hostile.",
+      "cinematic_moment": "A market conversation loses its casual rhythm; after the confrontation, the camera finds the three friends walking at the same pace again.",
+      "next_implementation_task": "Complete approach, confrontation and regroup blocking; author separate companion lines for a guarded resolution and collective withdrawal.",
+      "acceptance_criterion": "Both resolutions complete, neither companion teleports through the encounter, and the Home report matches the actual route after save/load.",
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "What kind of courage will the child’s friends remember: winning a public challenge or bringing everyone home?",
+        "dramatic_turn": "A public challenge asks the friends to perform courage; the return journey reveals what each thinks courage cost.",
+        "setup_payoff": "Introduce Mela and Jiva’s different rhythms on approach, let pressure interrupt them, then restore or alter those rhythms during regroup.",
+        "playable_staging": "Keep both companions readable beside the confrontation and provide a visible withdrawal lane. The final walk reunites three people rather than isolating a triumphant hero.",
+        "attention_pattern": "Warm conversation tightens into a short challenge, then opens into action. Reserve the fullest companion reaction for safety, where the player can hear it.",
+        "recovery": "After the resolution, use an ordinary shared walk before the Home report. Silence may carry discomfort; do not fill every step with praise.",
+        "agency": "Counter or withdraw with the group. Neither option sacrifices a companion offscreen to force a moral lesson.",
+        "acceptance": "Both companions physically regroup, withdrawal receives authored completion, and the final exchange differs by resolution without making all Bhangi characters enemies."
+      },
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/FRIENDS_AND_HORSECRAFT_STORY.md",
+        "branch": "feat/friends-horsecraft-story-v1-20261002",
+        "behavior": "Optional outcome-specific conversation with the same Mela and Jiva on the return walk; current friend-recovery guidance, immediate combat-cue priority and a local wait gesture at regroup.",
+        "literary_technique": "The promised short walk becomes a story the three friends disagree about; the final exchange returns to their agreement to come Home together.",
+        "limits": "Original dialogue and procedural presentation; cinematic art, recorded performances and human comprehension/pacing tests remain future work. Existing world, evidence, combat and skill authorities remain in place.",
+        "verification": {
+          "guide": "docs/FRIENDS_AND_HORSECRAFT_STORY.md",
+          "tests": [
+            "game/tests/test_bazaar_story.gd",
+            "game/tests/test_bazaar_regroup_cue.gd",
+            "game/tests/test_bazaar_guidance.gd",
+            "game/tests/test_bazaar_direction.gd"
+          ],
+          "limits": "Targeted native checks and inspected views; no first-time human comprehension study or full-repository rerun."
+        }
+      }
+    },
+    {
+      "id": "HOME-014",
+      "title": "Maha’s horsecraft lesson",
+      "phase_priority": "P2",
+      "development_status": "in_development",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "feat/opening-game-v1-20261002",
+        "commit": "21f8cf824d6b5dd98b2bb44dfa37948adafd55e7",
+        "source_path": "docs/HORSECRAFT_STUDY.md",
+        "implementation": "Implemented prototype on the recorded revision.",
+        "era": "1792",
+        "launch": "Run game/project.godot; choose Home territory. Speak to the stable trainer after the first riding lesson.",
+        "prerequisites": "HOME-003"
+      },
+      "dramatic_question": "Can showmanship be disciplined enough to become a useful mounted skill?",
+      "playable_objective": "Complete moving single-horse balance, paired-horse balance, then mounted firing, reloading and withdrawal.",
+      "encounter_or_choice": "The trainer allows a controlled reset between exercises; the player chooses when to stand, settle, fire and withdraw while movement continues.",
+      "local_consequence": "Only each completed exercise grants its existing corresponding capability; the standalone practice scene never grants campaign skills.",
+      "cinematic_moment": "The paired horses briefly settle into one rhythm before the lesson changes to smoke, reload and a controlled retreat.",
+      "next_implementation_task": "Give the three exercises separate staging and instructor reactions, strengthen mounted input feedback, and make the retreat a visible finish.",
+      "acceptance_criterion": "Each flag requires its own actual exercise, retrying one cannot complete another, and exiting the lesson returns Home with only earned capabilities.",
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "Can showmanship be disciplined enough to become a useful mounted skill?",
+        "dramatic_turn": "The exhilaration of a feat gives way to the discipline of recovering balance and withdrawing after a shot.",
+        "setup_payoff": "Use a repeated instructor cue about settling the horse across single balance, paired balance and firing; its meaning deepens with each exercise.",
+        "playable_staging": "Give each exercise its own stretch of ground, clear lateral space and a visible end. The last withdrawal returns through a landmark already passed on approach.",
+        "attention_pattern": "Escalate one demand at a time. Teach each new input before motion, use only immediate corrections during the maneuver, and separate exercises with a reset.",
+        "recovery": "Let horse and rider settle between demonstrations. A failed attempt returns to the current exercise rather than replaying all praise and instruction.",
+        "agency": "The player chooses when to stand, settle and fire inside the actual maneuver; instructor performance never substitutes for their admitted action.",
+        "acceptance": "A novice can state the current exercise without reading three instruction sets, retries preserve only earned capabilities, and standalone practice cannot write campaign rewards."
+      },
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/FRIENDS_AND_HORSECRAFT_STORY.md",
+        "branch": "feat/friends-horsecraft-story-v1-20261002",
+        "behavior": "Three original teaching motifs, a compact current-exercise demand, finite earned-milestone reactions and different completed, withdrawn and learned-practice returns.",
+        "literary_technique": "A repeated instruction to attend to the horse develops from individual balance to caring for a pair and ending a feat safely.",
+        "limits": "Original dialogue and procedural presentation; cinematic art, recorded performances and human comprehension/pacing tests remain future work. Existing world, evidence, combat and skill authorities remain in place.",
+        "verification": {
+          "guide": "docs/FRIENDS_AND_HORSECRAFT_STORY.md",
+          "tests": [
+            "game/tests/test_horsecraft_story.gd",
+            "game/tests/test_riding_training.gd"
+          ],
+          "limits": "Targeted native checks and inspected views; no first-time human comprehension study or full-repository rerun."
+        }
+      }
+    },
+    {
+      "id": "HOME-015",
+      "title": "Missing remounts",
+      "phase_priority": "P2",
+      "development_status": "in_development",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "draft",
+        "branch": "feat/missing-remounts-v1",
+        "commit": "06fccd1ededdfe203c8135efc4f844aeb78899d9",
+        "source_path": "docs/MISSING_REMOUNTS.md",
+        "implementation": "Implemented prototype on the recorded revision.",
+        "era": "1792",
+        "launch": "Run game/project.godot; choose Home territory. Hear the quartermaster’s brief.",
+        "prerequisites": "Inquiry and allowance"
+      },
+      "dramatic_question": "Can the young heir establish what happened to the remounts without treating suspicion as permission?",
+      "playable_objective": "Reach the private yard, inspect the sealed tally and both horses, then report the limited observations to the quartermaster.",
+      "encounter_or_choice": "Seek an introduction through the east gate, use the service gap, or observe from the ramp; witnesses react to how the boundary was crossed.",
+      "local_consequence": "The report distinguishes what was seen and what was read aloud; the route may create a local witness account but never a horse or cash grant.",
+      "cinematic_moment": "Two horses shift behind a private gate while the sealed tally remains out of reach of easy explanation.",
+      "next_implementation_task": "Build three legible approach routes with different witness staging and a report conversation that names the actual evidence obtained.",
+      "acceptance_criterion": "All three routes can deliver the required observations, unseen or unread tally content is absent from the report, and witness memory follows the route actually taken.",
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "Can the young heir establish what happened to the remounts without treating suspicion as permission?",
+        "dramatic_turn": "Finding the horses offers visual certainty, but the sealed tally and the route of entry make the explanation less certain.",
+        "setup_payoff": "The gate first signifies exclusion and later becomes part of the witness account. The same two horses anchor evidence across all approaches.",
+        "playable_staging": "Give introduction, service gap and ramp different physical compositions and witnesses; keep the tally separate from information that can simply be seen.",
+        "attention_pattern": "Offer one clear observation goal before route selection. After entry, prioritize the nearby evidence and let social consequences emerge at report rather than flooding the approach with warnings.",
+        "recovery": "Provide an exit and a quiet walk to the quartermaster before the report so the player can distinguish discovery from inference.",
+        "agency": "Choose how to approach and which observations to secure; crossing a boundary does not automatically authorize confiscation or settle theft.",
+        "acceptance": "Players can explain their route, what each horse inspection established and how tally contents were learned; the report preserves those differences without adding a recovery reward."
+      },
+      "integration_preparation": {
+        "status": "composed_in_current_story_pass",
+        "reviewed_commit": "06fccd1ededdfe203c8135efc4f844aeb78899d9",
+        "order_after": "HOME-016 current-Home integration",
+        "requirements": [
+          "Rebase remount operations above the current state and chapter chain instead of replacing home_launch with the old basic Gujranwala controller.",
+          "Remove obsolete architecture/gujranwala_fabric ownership; fit the private yard, ramp, messenger route and standing-space checks to current reconstruction/district_fabric.",
+          "Use current conversation offer scopes and physical contact checks; verify all three approaches, witnesses, interruption and whole-world restore.",
+          "Keep locating the same two horses distinct from confiscation, collection or a new reward."
+        ],
+        "staging_next": "Make the public introduction, service gap and raised observation route visually legible; the gate changes from an obstacle on approach to part of the witness account at report."
+      },
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/ROPE_AND_REMOUNT_STORY.md",
+        "branch": "feat/rope-remount-story-v1-20261002",
+        "behavior": "Three physical approaches to the private yard in current Gujranwala; scoped invitation, horses and sealed tally inspected separately, a local readout and optional aftermath. Existing witness reports retain physical messenger delay.",
+        "literary_technique": "The two empty places motivate an ordinary errand; finding the horses answers where while the sealed tally postpones why. The gate becomes part of Buddh’s own account at Home.",
+        "limits": "Original fictional scenes and procedural art. Finished actor performances, recorded voices and human pacing review remain work. No new historical authentication or mission-count increase.",
+        "verification": {
+          "guide": "docs/ROPE_AND_REMOUNT_STORY.md",
+          "tests": [
+            "game/tests/test_remounts.gd",
+            "game/tests/test_rope_remount_integration.gd"
+          ],
+          "limits": "Targeted routes and cross-domain fixtures are identified separately; the full repository suite has not been rerun."
+        }
+      }
+    },
+    {
+      "id": "HOME-016",
+      "title": "The borrowed rope",
+      "phase_priority": "P2",
+      "development_status": "in_development",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "draft",
+        "branch": "feat/oral-memory-v1",
+        "commit": "575b95f398059a8d26ca03c57c75a198eb1a8293",
+        "source_path": "docs/ORAL_MEMORY.md",
+        "implementation": "Implemented prototype on the recorded revision.",
+        "era": "1792",
+        "launch": "Run game/project.godot; choose Home territory. Listen to the quartermaster’s rope story.",
+        "prerequisites": "Completed inquiry"
+      },
+      "dramatic_question": "What is owed to a story when two people remember its lesson differently?",
+      "playable_objective": "Hear the rope story’s variants, inspect the rope, compare the accounts, and retell a chosen version to a local listener.",
+      "encounter_or_choice": "Preserve one teller’s framing or openly name the disagreement; the physical rope can prompt recollection but cannot settle the story’s moral.",
+      "local_consequence": "The listener receives the selected attributed telling; the game stores transmission rather than declaring a canonical truth.",
+      "cinematic_moment": "The same length of rope passes through two different gestures as its tellers place emphasis on different parts of the memory.",
+      "next_implementation_task": "Stage each telling with a distinct voice and object handling, then add a concise retelling response that reflects the player’s chosen attribution.",
+      "acceptance_criterion": "The two accounts remain distinguishable, repeat listening adds no independent corroboration, and the listener receives only the retelling actually selected.",
+      "historical_basis": "Explicitly fictional sakhi-inspired transmission episode.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "What is owed to a story when two people remember its lesson differently?",
+        "dramatic_turn": "A familiar object seems to promise a single answer until two tellers make different meanings from it.",
+        "setup_payoff": "The rope’s worn place becomes a repeated gesture, emphasized differently by each teller and recalled in the player’s final version.",
+        "playable_staging": "Place tellers in different ordinary tasks with access to the same rope. Let object handling show emphasis without a flashback claiming either account as objective truth.",
+        "attention_pattern": "Keep each telling short and distinct; allow comparison only after both have been heard. The final retelling asks for one clear emphasis rather than a memory quiz.",
+        "recovery": "Leave a pause after the listener’s response. The disagreement can remain alive without a corrective narrator entering to settle it.",
+        "agency": "Repeat a teller’s version with attribution or name the disagreement. Choosing what travels onward is the action, not solving the past.",
+        "acceptance": "A player can distinguish the two moral emphases and identify whose words were passed on; the saved transmission never upgrades either version into canonical fact."
+      },
+      "integration_preparation": {
+        "status": "composed_in_current_story_pass",
+        "reviewed_commit": "575b95f398059a8d26ca03c57c75a198eb1a8293",
+        "order_after": "HOME-013/014 story increment; preferred next additive integration",
+        "requirements": [
+          "Compose the optional oral_memory extension above current RidingSkillState and attach interactions without replacing the active Home chain.",
+          "Move recollection into the journal; the draft F7 binding conflicts with the current art-study control.",
+          "Preserve exact content digests and source-parent transmission receipts. Changing received text needs an explicit content-version/migration decision.",
+          "Validate one full physical hear/inspect/compare/retell journey and interrupted dialogs alongside prior workshop, service and riding receipts."
+        ],
+        "staging_next": "Introduce the worn loop as an ordinary object, let two tellers emphasize different parts of its story, and let the selected attributed retelling be the payoff. No flashback should silently settle either account."
+      },
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/ROPE_AND_REMOUNT_STORY.md",
+        "branch": "feat/rope-remount-story-v1-20261002",
+        "behavior": "Optional situated tellings, repaired-rope inspection, remembered comparison, delayed recollection and source-bound retelling through the current Home journal. Received content and rules retain their original byte identity.",
+        "literary_technique": "A repeated object acquires incompatible meanings. Distinct scene framing emphasizes each teller, while Buddh chooses which attributed account travels onward.",
+        "limits": "Original fictional scenes and procedural art. Finished actor performances, recorded voices and human pacing review remain work. No new historical authentication or mission-count increase.",
+        "verification": {
+          "guide": "docs/ROPE_AND_REMOUNT_STORY.md",
+          "tests": [
+            "game/tests/test_oral_memory_current.gd",
+            "game/tests/test_rope_remount_integration.gd"
+          ],
+          "limits": "Targeted routes and cross-domain fixtures are identified separately; the full repository suite has not been rerun."
+        }
+      }
+    },
+    {
+      "id": "HOME-017",
+      "title": "A funded instructor",
+      "phase_priority": "P2",
+      "development_status": "in_development",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "draft",
+        "branch": "feat/funded-service-v1",
+        "commit": "ae3dffe2e2182a7692e0d430393c1fc5955f6b06",
+        "source_path": "docs/FUNDED_SERVICE.md",
+        "implementation": "Implemented prototype on the recorded revision.",
+        "era": "1792",
+        "launch": "Run game/project.godot; choose Home territory. Reserve the instructor commission.",
+        "prerequisites": "Inquiry, allowance, sufficient household funds"
+      },
+      "dramatic_question": "Can the household sustain the teacher it wants, beyond the promise of a wage?",
+      "playable_objective": "Reserve the commission, meet and escort the instructor, sign terms, provision the pupil, and complete funded practice.",
+      "encounter_or_choice": "Commit only when wages and supplies are available; during practice, recover attendance or supplies when an interruption stops progress.",
+      "local_consequence": "The instructor’s presence, pay and eligible teaching time determine progress; unsupported promises cannot produce trained pupils.",
+      "cinematic_moment": "A quiet signing at the quartermaster’s desk is followed by an ordinary drill whose pauses reveal what the contract actually costs.",
+      "next_implementation_task": "Review human pacing and develop the candidate, signing and pupil performances beyond the current procedural staging.",
+      "acceptance_criterion": "Commission, escort and signing occur in order; practice advances only with attendance and required supplies, and interrupted or resumed sessions do not double-charge.",
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "Can the household sustain the teacher it wants, beyond the promise of a wage?",
+        "dramatic_turn": "A signed teaching promise becomes real only when teacher, pupil and supplies can meet in the same place.",
+        "setup_payoff": "The instructor’s stated concern at introduction returns as a concrete interruption in practice, linking the contract to a visible duty.",
+        "playable_staging": "Stage introduction, signing and drill in separate functional spaces. An interrupted session changes posture and activity so the missing condition is perceptible.",
+        "attention_pattern": "Explain funding at commitment, attendance on escort, and equipment at practice. Expose only the active unmet condition instead of repeating the whole contract.",
+        "recovery": "When practice resumes, acknowledge the repaired condition once and let the drill continue without further interruption.",
+        "agency": "The player decides when to commit and which practical deficiency to remedy; a paid signature alone never makes pupils trained.",
+        "acceptance": "The player can explain why practice stopped from its immediate cue, restore that condition, and see eligible teaching time resume without duplicate fees or progress."
+      },
+      "integration_preparation": {
+        "status": "integrated_in_current_pass",
+        "reviewed_commit": "ae3dffe2e2182a7692e0d430393c1fc5955f6b06",
+        "order_after": "Borrowed Rope and current-district Missing Remounts integration",
+        "requirements": [
+          "Compose commission escrow/upkeep/replay with current workshop reduction rather than overwriting shared misl_rules.",
+          "Extend commitment checks to workshop custody and active riding/intro sessions.",
+          "Qualify secondary-view physics, attention, current actor movement and retained session ownership; retain the draft camera-transition fix.",
+          "Test commission/escort/signing order and mixed smith/instructor receipts, plus interruption, supplies, wages and no duplicate charge."
+        ],
+        "staging_next": "Develop the current practical concern, interrupted-practice echo and resumption acknowledgement into finished face, hand and pupil performances."
+      },
+      "current_pass": {
+        "status": "prototype_implemented_and_locally_verified",
+        "guide": "docs/INSTRUCTOR_STORY_DEVELOPMENT.md",
+        "branch": "feat/instructor-story-v1-20261003",
+        "behavior": "Candidate consent, physical escort and local signing compose with the current Home treasury, workshop, remounts, oral accounts and riding session. Limited instructor control retains separate participation and a shared world. Practice admits only supplied attendance and preserves progress through interruption.",
+        "literary_technique": "The place kept ready begins as the candidate's practical concern, becomes a promise at signing and returns as an actionable absence during interrupted teaching. Repair receives one finite acknowledgement; completion opens the duty of tomorrow.",
+        "limits": "Original fictional dialogue and procedural bodies. One bounded 180-tick practice, not a full combat lesson, mastery award, finished performance or completed campaign. No new mission count or historical authentication.",
+        "verification": {
+          "guide": "docs/INSTRUCTOR_STORY_DEVELOPMENT.md",
+          "tests": [
+            "game/tests/test_instructor_economy.gd",
+            "game/tests/test_instructor_story.gd",
+            "game/tests/test_instructor_current_integration.gd"
+          ],
+          "limits": "Targeted physical routes and separate domain fixtures are identified in the guide. Full repository suite and human pacing review are separate."
+        }
+      }
+    },
+    {
+      "id": "CMD-001",
+      "title": "Lahore road patrol",
+      "phase_priority": "P4",
+      "development_status": "planned",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "main",
+        "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+        "source_path": "docs/COMMAND_STORIES.md",
+        "implementation": "Implemented prototype on the recorded revision.",
+        "era": "1801 fictional fixture",
+        "launch": "Main menu → Lahore · Command story.",
+        "prerequisites": "None"
+      },
+      "dramatic_question": "How much authority can a ruler safely delegate before hearing what the road actually requires?",
+      "playable_objective": "Assign the patrol, control the captain or delegate the same order, inspect village and outpost, and receive the return report.",
+      "encounter_or_choice": "Organize the patrol or withdraw on the available observations; switching viewpoint changes control, not the number of orders or riders.",
+      "local_consequence": "Riders remain committed until the delayed report resolves the original order; the ruler learns only the report received.",
+      "cinematic_moment": "The departure order is heard at court, then the same riders appear on a quieter road where the decision has physical costs.",
+      "next_implementation_task": "Author a distinct road dilemma and concise village/outpost reactions around the existing command loop, keeping delegated and direct control equivalent.",
+      "acceptance_criterion": "Both control modes resolve one shared order, no viewpoint switch duplicates riders, and the report reflects the actual patrol or withdrawal outcome.",
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "How much authority can a ruler safely delegate before hearing what the road actually requires?",
+        "dramatic_turn": "An order that sounds simple at court becomes a road decision whose costs are carried by the assigned riders.",
+        "setup_payoff": "The same order phrase is heard at departure and qualified by the return report; the change in meaning comes from witnessed road conditions.",
+        "playable_staging": "Carry a recognizable patrol composition from court to village and outpost. Switching viewpoint keeps the order and committed riders continuous.",
+        "attention_pattern": "Give court one decision, the road one local dilemma, and return one bounded report. Avoid simultaneous strategic panels and urgent local action prompts.",
+        "recovery": "Allow a quiet return interval before the hearing. When delegated, the waiting ruler can act elsewhere without receiving the patrol’s unreported discoveries.",
+        "agency": "Control the captain or delegate, then organize or withdraw within available information. Viewpoint changes access, not the authority to duplicate orders.",
+        "acceptance": "Direct and delegated runs resolve the same original order and riders; the final report states its limits and cannot expose information the captain never acquired."
+      }
+    },
+    {
+      "id": "MAHA-001",
+      "title": "Mahan’s field camp",
+      "phase_priority": "P4",
+      "development_status": "planned",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "feat/mahan-interlude-v1",
+        "commit": "8e858c00d4cd457f3a44174229462fd192b8cee0",
+        "source_path": "docs/MAHAN_INTERLUDE.md",
+        "implementation": "Implemented prototype on the recorded revision.",
+        "era": "1790 development fixture; chronology variants retained",
+        "launch": "Main menu → 1790 / Mahan Singh / Field camp (interlude).",
+        "prerequisites": "None"
+      },
+      "dramatic_question": "What can a father still put in order when the campaign’s horizon is narrowing?",
+      "playable_objective": "Send scouts to ford and ridge, hear delayed reports, consult retainers, choose march or hold, and reach the fixed endpoint.",
+      "encounter_or_choice": "Spend time and provisions improving the account or advance with incomplete knowledge; bounded field orders change the immediate march, not the recorded death.",
+      "local_consequence": "The camp retains which reports arrived and which orders were issued; the father’s endpoint and chronology variant remain declared.",
+      "cinematic_moment": "A scout returns to find the same tent quieter; the last instruction carries farther than the father can now march.",
+      "next_implementation_task": "Give the ford and ridge different practical risks, stage report arrival and the final handover, and connect the field prototype to a clearly marked retrospective frame.",
+      "acceptance_criterion": "March and hold produce distinct local supply/report histories, delayed knowledge is not available early, and every supported route reaches the declared fixed endpoint without inventing a completed father campaign.",
+      "historical_basis": "Original authored gameplay; historical setting does not authenticate the episode.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "What can a father still put in order when the campaign’s horizon is narrowing?",
+        "dramatic_turn": "The father’s command remains purposeful while his shrinking physical horizon makes each unfinished duty more intimate.",
+        "setup_payoff": "Repeat the ford and ridge names in preparation and arriving reports, then let the final handover refer to a duty actually addressed by the player.",
+        "playable_staging": "Keep the tent, provision point and returning scouts in a comprehensible camp. Changes in attendance and activity suggest the narrowing campaign without an omniscient death countdown.",
+        "attention_pattern": "Alternate one field decision with an actual delayed report. Give the final handover less interface noise and more time than a routine order, without disabling comprehension controls.",
+        "recovery": "After the last instruction, let the camp’s ordinary work carry the transition. Avoid a rapid reward montage after the fixed loss.",
+        "agency": "Choose what to learn, whether to march or hold, and how to use limited provisions. Immediate care matters even though the selected historical endpoint is fixed.",
+        "acceptance": "The player can connect the final handover to a completed or unresolved duty; missing reports stay missing, and no local choice silently changes the declared chronology or death."
+      }
+    },
+    {
+      "id": "PRO-001",
+      "title": "Sobraon to the oral telling",
+      "phase_priority": "P4",
+      "development_status": "planned",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "feat/sobraon-oral-opening-v1-20261002",
+        "commit": "e42ddd552879673b7477dbd4f926e389c1aa8e5b",
+        "source_path": "docs/SOBRAON_ORAL_OPENING.md",
+        "implementation": "Implemented prototype on the recorded revision.",
+        "era": "1846 → 1849 → retrospective",
+        "launch": "Begin through the branch’s Home launcher.",
+        "prerequisites": "None"
+      },
+      "dramatic_question": "What does a survivor choose to carry when an army’s crossing is gone?",
+      "playable_objective": "Escape the Sobraon earthworks, optionally carry a wounded soldier, steer timber across the Sutlej, and approach the later surrender tableau.",
+      "encounter_or_choice": "Take the wounded man and accept slower movement or move alone; steer through the river’s physical obstacles before the later oral telling.",
+      "local_consequence": "The immediate survival presentation remembers the rescue choice; the veteran’s later knowledge does not enter the child’s 1792 state.",
+      "cinematic_moment": "The roar of the river cuts to the heavy silence of dropped muskets, then an oral voice carries the image into family memory.",
+      "next_implementation_task": "Polish danger telegraphs, wounded-carry staging, timber feedback and the transition between the three times; keep the handoff to the family introduction explicit.",
+      "acceptance_criterion": "Both rescue choices can complete the crossing, river failure retries the bank checkpoint, skipping has a coherent handoff, and no future information or prologue supplies migrate into Home.",
+      "historical_basis": "Historical framing with original veteran viewpoint and authored survival actions.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "What does a survivor choose to carry when an army’s crossing is gone?",
+        "dramatic_turn": "The crossing’s destruction turns military defeat into a personal decision about who can be carried into the future telling.",
+        "setup_payoff": "The burden of the wounded soldier shapes the escape and the veteran’s later memory; river noise gives way to the silence of surrendered weapons.",
+        "playable_staging": "Keep near obstacles and viable water direction visible from the controlled survivor. Treat the later tableau as a distinct temporal frame before entering the child’s world.",
+        "attention_pattern": "Begin with a legible survival problem before wider spectacle. Present the rescue choice in a moment with enough room to understand it, then reserve reflective narration for the aftermath.",
+        "recovery": "Allow a substantial quiet transition after river survival; the oral voice begins when immediate steering danger has ended.",
+        "agency": "Carry the wounded man or move alone, then steer the timber. Rescue changes the physical burden and remembered presentation without deciding the battle’s outcome.",
+        "acceptance": "Players understand the rescue choice before committing, can still read river hazards under the selected route, and recognize the time shift without receiving later-era knowledge in 1792."
+      }
+    },
+    {
+      "id": "TALE-001",
+      "title": "The Wedding Road",
+      "phase_priority": "P3",
+      "development_status": "planned",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "feat/punjab-chiefs-playable-v1-20261002",
+        "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+        "source_path": "game/history/punjab_chiefs_catalogue.json",
+        "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+        "era": "Late eighteenth century; Nakai marriage negotiations",
+        "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects delegation.",
+        "prerequisites": "None"
+      },
+      "dramatic_question": "Can a family alliance reach the doorway without becoming a public contest over who commands it?",
+      "playable_objective": "Inspect the gifts, receive the delegate, escort the arrival, hear the rival messenger and return an account to the keeper.",
+      "encounter_or_choice": "Enter with visible ceremony or a quieter practical approach, then choose whom to alert about the rival message.",
+      "local_consequence": "The local arrival and final account reflect presentation and disclosure; the scene does not award the marriage or determine the bride’s life.",
+      "cinematic_moment": "Gift bearers pause at a threshold while a lone messenger waits just outside the procession’s rhythm.",
+      "next_implementation_task": "Replace the generic courtyard beats with a visible delegation, distinct gifts, rival messenger staging and an arrival reaction for each local ending.",
+      "acceptance_criterion": "Both entry approaches remain playable, the alerted party matches the player’s choice, and the final account names only information heard during the errand.",
+      "historical_basis": "retrospective_family_account; The source connects Bhagwan Singh's alliance through his sister with losses of territory and attempted interference. The errands, witnesses, dialogue and local outcomes are original. The prospective bride Raj Kaur is distinct from Ranjit Singh's mother.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "Can a family alliance reach the doorway without becoming a public contest over who commands it?",
+        "dramatic_turn": "A celebratory arrival becomes fragile when a lone messenger interrupts its carefully arranged public meaning.",
+        "setup_payoff": "The gift bundle is first a promise of alliance, then an awkward thing held while adults negotiate who may speak.",
+        "playable_staging": "Stage the procession as a moving depth cue and the rival messenger as a still interruption near its threshold. Escort remains in the player’s hands.",
+        "attention_pattern": "Give gifts and arrival room before introducing the rival message. Once tension rises, keep the playable question to presentation and disclosure rather than explaining the whole family history.",
+        "recovery": "The final account occurs after the bearers are settled. Ordinary unloading releases the tension without pretending the marriage’s future is decided.",
+        "agency": "Choose the approach and whom to alert. The bride’s life and the alliance’s ultimate success are outside this errand’s authority.",
+        "acceptance": "The messenger interrupts an already understandable arrival, both approaches remain physically complete, and the keeper’s response names the chosen disclosure without granting a marriage outcome."
+      }
+    },
+    {
+      "id": "TALE-002",
+      "title": "The Unequal Victory",
+      "phase_priority": "P3",
+      "development_status": "planned",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "feat/punjab-chiefs-playable-v1-20261002",
+        "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+        "source_path": "game/history/punjab_chiefs_catalogue.json",
+        "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+        "era": "1785; a remembered coalition and its strained aftermath",
+        "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects alliance.",
+        "prerequisites": "None"
+      },
+      "dramatic_question": "Whose sacrifice disappears when a coalition begins to tell a single story of victory?",
+      "playable_objective": "Hear the grievance, help the wounded companion across the passage, challenge the announcement and decide where the remaining dressings go.",
+      "encounter_or_choice": "Give priority to public recognition or immediate relief; the companion’s passage makes the practical cost of either emphasis visible.",
+      "local_consequence": "The gathering’s local account and allocation of dressings differ; no choice rewrites the coalition’s campaign result.",
+      "cinematic_moment": "A victory announcement continues over the sound of a wounded companion stopping halfway across the crossing.",
+      "next_implementation_task": "Stage the wounded escort with pauses and acknowledgment, separate the announcer from the relief point, and make the final allocation visible in the scene.",
+      "acceptance_criterion": "The companion physically reaches the crossing marker, the selected dressings recipient is reflected in the ending, and recognition never erases the recorded political dispute.",
+      "historical_basis": "retrospective_family_account; The book records shifting Nakai, Sukerchakia and other chief relationships, the 1785 coalition after Jai Singh's 1783 seizure, and failed reconciliation. This local escort and honour dispute is invented to make those pressures playable.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "Whose sacrifice disappears when a coalition begins to tell a single story of victory?",
+        "dramatic_turn": "A victory announcement sounds complete until the wounded companion’s interrupted crossing exposes what the celebration leaves out.",
+        "setup_payoff": "The same announcement is heard before and after the player encounters its omitted cost; the remaining dressings make recognition compete with immediate need.",
+        "playable_staging": "Let the speaker remain audible while the wounded companion pauses visibly in the passage. The player moves between ceremony and care rather than watching a narrated comparison.",
+        "attention_pattern": "Use one public claim, one personal interruption and one bounded allocation. Keep contextual faction exposition optional after the immediate escort need is understood.",
+        "recovery": "After the allocation, give the companion a small bodily response and let the gathering continue. Avoid a triumph sting for choosing whom to help.",
+        "agency": "Emphasize public recognition or immediate relief within finite supplies; either choice leaves a person and a cost visible.",
+        "acceptance": "The player can name the companion’s need and what was allocated, while the local announcement response changes without rewriting the coalition’s larger victory."
+      }
+    },
+    {
+      "id": "TALE-003",
+      "title": "A Stranger at the Threshold",
+      "phase_priority": "P3",
+      "development_status": "planned",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "feat/punjab-chiefs-playable-v1-20261002",
+        "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+        "source_path": "game/history/punjab_chiefs_catalogue.json",
+        "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+        "era": "1790; the book's account of revenge after Wazir Singh's death",
+        "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects revenge.",
+        "prerequisites": "None"
+      },
+      "dramatic_question": "How far can a warning protect a household when the player cannot prove what a stranger intends?",
+      "playable_objective": "Question the stranger, compare the gate witness, warn the steward and escort a dependent into shelter.",
+      "encounter_or_choice": "Give the warning as a concern or as a firmer alarm, then prioritize the dependent’s safe passage through a gathering that continues around them.",
+      "local_consequence": "The household response and witness wording change locally; the warning neither establishes omniscient guilt nor cancels the attributed death.",
+      "cinematic_moment": "The gathering remains audible as the dependent enters a narrower, quieter passage and the stranger disappears from the player’s view.",
+      "next_implementation_task": "Make the two accounts spatially and vocally distinct, add a time-conscious shelter walk without a false alternate-history rescue promise, and stage the report.",
+      "acceptance_criterion": "All permitted warnings can lead to shelter, the dependent must arrive physically, and every ending distinguishes witnessed signs from the later recorded revenge account.",
+      "historical_basis": "retrospective_family_account; The book attributes Wazir Singh's murder to Dal Singh, son of Hira Singh of Bahrwal, and says an unnamed devoted servant later killed Dal Singh in his household. The player witnesses warning signs and shelters people; choices do not cancel that recorded death or establish omniscient guilt.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "How far can a warning protect a household when the player cannot prove what a stranger intends?",
+        "dramatic_turn": "A questionable warning becomes an immediate duty of protection before certainty about the stranger is available.",
+        "setup_payoff": "The outer threshold admits the stranger; an inner passage later shelters the dependent. Repeated doorways separate access from trust.",
+        "playable_staging": "Keep the gathering alive in the background while the protected route narrows. Losing sight of the stranger leaves an honest absence rather than revealing hidden intent by cutaway.",
+        "attention_pattern": "Question, compare, warn, then move. Once escort starts, safety cues outrank further speculation about guilt.",
+        "recovery": "At shelter, lower the urgency and let the warning’s uncertainty persist. No final villain reveal supplies a reward for suspicion.",
+        "agency": "Choose the warning’s strength and complete the dependent’s passage. The player can alter care and wording within the fixed source frame.",
+        "acceptance": "The dependent arrives physically, warning language follows the selected degree of certainty, and no offscreen shot or journal line proves an intent the player could not know."
+      }
+    },
+    {
+      "id": "TALE-004",
+      "title": "Desi Remembers the Reins",
+      "phase_priority": "P3",
+      "development_status": "planned",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "feat/punjab-chiefs-playable-v1-20261002",
+        "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+        "source_path": "game/history/punjab_chiefs_catalogue.json",
+        "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+        "era": "Early eighteenth century; ancestral recollection",
+        "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects desi.",
+        "prerequisites": "None"
+      },
+      "dramatic_question": "Does an ancestor’s legend live in spectacular feats or in the horse he learned to trust?",
+      "playable_objective": "Mount Desi, ride the marked journey, cover the required distance, water and dismount, then choose the companion’s closing emphasis.",
+      "encounter_or_choice": "Let the closing telling emphasize the larger-than-life rider or the mare’s endurance; the ride remains one real mounted journey.",
+      "local_consequence": "The companion preserves the selected telling, while the short ride grants no proof of forty wounds or campaign horsecraft capability.",
+      "cinematic_moment": "The watering pause reveals the mare’s breathing and dust-marked coat after the storyteller’s sweeping claims.",
+      "next_implementation_task": "Give Desi a recognizable piebald appearance, shape the route into a crest and watering pause, and stage the two closing emphases with the horse present.",
+      "acceptance_criterion": "The route requires actual mounted travel and dismounting, both legend emphases remain available, and replay cannot grant Home training flags.",
+      "historical_basis": "recorded_ancestral_tradition; The book names Budha Singh's piebald mare Desi and credits him with surviving about forty wounds. This short ride, horse responses and dialogue are original. It preserves the larger-than-life ancestor without treating the ride as a documented journey.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "Does an ancestor’s legend live in spectacular feats or in the horse he learned to trust?",
+        "dramatic_turn": "The ancestor’s extraordinary reputation gives way to the ordinary care that makes an enduring ride possible.",
+        "setup_payoff": "The storyteller’s account of forty wounds surrounds a much smaller, physically real journey; Desi’s breathing at water gives the legend a tangible center.",
+        "playable_staging": "Keep horse, rein response and changing ground in view. The watering place opens the composition after the ride rather than serving only as a completion marker.",
+        "attention_pattern": "Let the opening boast be brief, make the middle primarily riding, and save the choice of emphasis for the stillness at water.",
+        "recovery": "Allow watering and dismounting to breathe before the final telling. Do not cover the animal’s rest with constant historical narration.",
+        "agency": "The player completes one ride and chooses which aspect the companion stresses; they do not enact every feat claimed by tradition.",
+        "acceptance": "The ride’s physical finish is clear, both closing emphases preserve the ancestral legend, and no completion text claims the prototype proves the wound count or grants campaign horsecraft."
+      }
+    },
+    {
+      "id": "TALE-005",
+      "title": "What Can Be Carried",
+      "phase_priority": "P3",
+      "development_status": "planned",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "feat/punjab-chiefs-playable-v1-20261002",
+        "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+        "source_path": "game/history/punjab_chiefs_catalogue.json",
+        "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+        "era": "Late eighteenth century; Ramgarhia displacement and return traditions",
+        "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects exile.",
+        "prerequisites": "None"
+      },
+      "dramatic_question": "What remains of a chief’s dignity when his followers need shelter more than another vow?",
+      "playable_objective": "Hear the elder, choose an offer from salvaged supplies, negotiate hospitality and escort a weary follower to shelter.",
+      "encounter_or_choice": "Offer practical relief or preserve more of the party’s portable wealth; the host responds to the offer and the follower bears the delay.",
+      "local_consequence": "Tonight’s hospitality and the party’s remaining supplies shape the local ending; the treasure in the well remains a narrated possibility.",
+      "cinematic_moment": "A follower lowers a salvaged bundle at a host’s threshold while someone behind them still speaks of revenge.",
+      "next_implementation_task": "Build a visibly burdened arrival, make the offered supplies tangible, and author host/follower responses that distinguish pride, need and obligation.",
+      "acceptance_criterion": "Each valid offer yields a coherent hospitality response, the follower reaches shelter physically, and no choice silently converts the treasure tradition into a documented player discovery.",
+      "historical_basis": "retrospective_account_with_treasure_tradition; The source contains Ramgarhia humiliation, release with gifts, retaliatory vows, exile and a treasure-in-a-well episode. This relief errand and its choices are original, with the treasure retained as narrated possibility rather than a fabricated documented discovery by the player.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "What remains of a chief’s dignity when his followers need shelter more than another vow?",
+        "dramatic_turn": "A vow to recover lost standing meets the immediate fact of a tired follower who needs a place to rest.",
+        "setup_payoff": "A salvaged bundle first signifies lost wealth, then becomes an offer of hospitality. The treasure-in-the-well story remains an unresolved imagined elsewhere.",
+        "playable_staging": "Place the follower where the player must notice their slowing movement before negotiating at the host’s threshold; show any offered supplies as part of that exchange.",
+        "attention_pattern": "Open with the elder’s pressure, then narrow to a practical offer. Keep the treasure story as an optional or brief attributed aside that does not compete with escort cues.",
+        "recovery": "Shelter ends the immediate need. Give the follower a moment to put the bundle down before returning to larger ambitions.",
+        "agency": "Choose what to offer and escort the person who bears the delay. Preserving portable wealth has an immediate human tradeoff, not a hidden moral score.",
+        "acceptance": "The host and follower respond to the actual offer, remaining supplies agree with it, and no visual clue silently promises a discoverable historical treasure."
+      }
+    },
+    {
+      "id": "TALE-006",
+      "title": "The Water of Bahrwal",
+      "phase_priority": "P3",
+      "development_status": "planned",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "feat/punjab-chiefs-playable-v1-20261002",
+        "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+        "source_path": "game/history/punjab_chiefs_catalogue.json",
+        "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+        "era": "Ancestral legend; Guru Arjun and Hem Raj",
+        "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects well.",
+        "prerequisites": "None"
+      },
+      "dramatic_question": "How does a household remember a welcome that its descendants understand as a blessing?",
+      "playable_objective": "Draw the first water, prepare the welcome, hear the charpai episode and blessing at the exterior threshold, then return to draw again.",
+      "encounter_or_choice": "Choose where to place care and attention during the welcome while the telling preserves its miraculous transformation.",
+      "local_consequence": "The closing reflection remembers the chosen service and sweetened water within the legend’s frame; it grants no numerical miracle bonus.",
+      "cinematic_moment": "The same rope returns over the well’s rim after the blessing, with the changed water held in a still, attentive pause.",
+      "next_implementation_task": "Give the first and second draws distinct sensory presentation, stage the welcome through attendants and objects, and retain the complete miracle in the oral account.",
+      "acceptance_criterion": "Both draws and the welcome occur in order, the miracle remains present in the telling, and the scene requires no Guru impersonation or religious-building entry.",
+      "historical_basis": "recorded_miracle_legend; The book records Hem Raj carrying the sleeping Guru Arjun home on a charpai, brackish water becoming sweet, and a blessing promising a powerful descendant. This adaptation preserves the miracle as the legend tells it. Dialogue and attendant errands are original; no Guru avatar, impersonation or religious-building entry is required.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "How does a household remember a welcome that its descendants understand as a blessing?",
+        "dramatic_turn": "The repeated act of drawing water becomes a family’s way of remembering a miraculous welcome.",
+        "setup_payoff": "The same rope crosses the same rim before and after the blessing. Repetition gives the changed water its emotional weight within the legend.",
+        "playable_staging": "Keep service actions at the exterior threshold and well; frame the sacred event through the attendant’s work and the telling, with no required Guru avatar or building entry.",
+        "attention_pattern": "Establish the first draw plainly, slow for the welcome and spoken blessing, then let the second draw arrive without competing objectives.",
+        "recovery": "Hold a quiet, user-controlled reflection after the changed water. The legend needs room to be received rather than immediately converted into a reward screen.",
+        "agency": "The player chooses where to place care during the welcome while the miraculous transformation remains as the tradition tells it.",
+        "acceptance": "The before-and-after water sequence is legible, the blessing remains explicitly inside its legendary frame, and no action grants an unrecorded numerical miracle bonus."
+      }
+    },
+    {
+      "id": "TALE-007",
+      "title": "The Door to the Young Chief",
+      "phase_priority": "P3",
+      "development_status": "planned",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "feat/punjab-chiefs-playable-v1-20261002",
+        "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+        "source_path": "game/history/punjab_chiefs_catalogue.json",
+        "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+        "era": "1792; the Sukerchakia household",
+        "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects regency.",
+        "prerequisites": "None"
+      },
+      "dramatic_question": "Who can reach the young chief when every adult treats access as authority?",
+      "playable_objective": "Receive the audience order, hear Dal Singh’s objection, announce and escort Sada Kaur, then complete the register.",
+      "encounter_or_choice": "Choose how to announce the arrival and whose objection to preserve in the register; control of a doorway becomes a political act.",
+      "local_consequence": "Witness acknowledgment and register wording differ locally; the scene does not settle who legitimately controlled the entire regency.",
+      "cinematic_moment": "An audience door closes between the child and the player while rival claimants remain on opposite sides of the waiting place.",
+      "next_implementation_task": "Block the waiting factions as a tense, navigable audience queue and author specific reactions to the announcement and register choices.",
+      "acceptance_criterion": "The escort completes without bypassing the waiting dispute, register text reflects selected attribution, and the elder Dal Singh remains distinct from the Bahrwal revenge figure.",
+      "historical_basis": "conflicting_regency_accounts_with_original_dramatization; The Memorial records Lakhpat Rai quarrelling with Dal Singh, Maha Singh's maternal uncle, and a temporary reconciliation. Buxi supplies the household power struggle. The user-selected 1792 frame retains the project chronology beside the Memorial's 1790 succession. Sada's participation in this particular access dispute and all dialogue are original adaptations of the supplied political plot. This Dal is the elder regency figure, distinct from Dal son of Hira Singh of Bahrwal, killed in the revenge account.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "Who can reach the young chief when every adult treats access as authority?",
+        "dramatic_turn": "A routine audience order becomes an exercise in deciding whose claim to authority crosses a doorway.",
+        "setup_payoff": "The audience door begins as a route and ends as a boundary between the young chief and those who manage access to him; the register preserves the selected wording.",
+        "playable_staging": "Place the objecting elder and arriving Sada Kaur on different sides of the waiting space. The player must announce and escort rather than merely choose a faction in a menu.",
+        "attention_pattern": "Introduce each claim through the immediate access problem. Save wider regency context for optional record material after the register decision.",
+        "recovery": "Once the door closes, let the waiting space settle before the register response. The silence can carry exclusion without a speech declaring the winner.",
+        "agency": "Choose announcement and recorded objection. The local act changes witnesses’ responses while leaving the wider legitimacy dispute open.",
+        "acceptance": "A player can identify who requested access, who objected and what was recorded; the elder Dal Singh remains distinct from the namesake in the separate revenge account."
+      }
+    },
+    {
+      "id": "TALE-008",
+      "title": "The Whisper After Midnight",
+      "phase_priority": "P3",
+      "development_status": "planned",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "feat/punjab-chiefs-playable-v1-20261002",
+        "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+        "source_path": "game/history/punjab_chiefs_catalogue.json",
+        "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+        "era": "Late 1790s; the household at night",
+        "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects rumours.",
+        "prerequisites": "None"
+      },
+      "dramatic_question": "Will an accusation become a fact merely because the court writes it down?",
+      "playable_objective": "Hear the messenger, inspect the unsigned account, listen to the attendant, escort her to shelter and choose the night register’s wording.",
+      "encounter_or_choice": "Repeat the allegation with its source, record its uncertain standing, or emphasize the attendant’s direct account according to the available authored choices.",
+      "local_consequence": "The night’s circulation and protection of a witness shape the local ending; an affair, poisoning and guilt remain contested claims.",
+      "cinematic_moment": "An unsigned sheet waits under a lamp while the attendant’s quieter testimony competes with voices beyond the door.",
+      "next_implementation_task": "Give rumor, document and direct testimony distinct staging and journal treatment; make the attendant’s shelter and the register’s final wording visible.",
+      "acceptance_criterion": "The register never states an unsupported allegation as established fact, the attendant reaches shelter, and every ending preserves the source disagreement rather than deleting the dark story.",
+      "historical_basis": "conflicting_accusations_with_original_witness_story; Griffin repeats allegations about Raj Kaur, Lakhpat Rai and matricide, then doubts the killing stories. Buxi describes the struggle over authority and cites Sinha's rejection of Smyth's accusation. Neither establishes guilt. This night, its letter, the witnesses and every spoken line are invented. Poison remains an allegation voiced by a character, never an acquired poison item or biological finding. Timing is deliberately broad; no death in 1801 is asserted.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "Will an accusation become a fact merely because the court writes it down?",
+        "dramatic_turn": "The force of an accusation is interrupted by an attendant whose narrower account asks the player to distinguish repetition from knowledge.",
+        "setup_payoff": "The unsigned sheet and the night register echo one another: inscription can preserve uncertainty or give an unsupported claim the appearance of authority.",
+        "playable_staging": "Keep the sheet under a lamp and the attendant within an actual route to shelter. Avoid reenactments of poisoning or an affair that would visually certify the allegation.",
+        "attention_pattern": "Allow the sensational claim to be heard once, then give equal clarity and uninterrupted space to the attendant’s direct account before the wording choice.",
+        "recovery": "Shelter precedes the final register. End with the night becoming quiet rather than a last accusatory whisper that overrides the chosen uncertainty.",
+        "agency": "Choose attribution and emphasis while protecting the witness. The scene asks what to circulate, not whom to convict.",
+        "acceptance": "All available register wordings preserve their information source, the attendant reaches shelter, and neither image nor saved state resolves affair, poison or matricide as fact."
+      }
+    },
+    {
+      "id": "TALE-009",
+      "title": "Two Names in the Dispatch",
+      "phase_priority": "P3",
+      "development_status": "planned",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "feat/punjab-chiefs-playable-v1-20261002",
+        "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+        "source_path": "game/history/punjab_chiefs_catalogue.json",
+        "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+        "era": "1807; a dispatch from Batala",
+        "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects heirs.",
+        "prerequisites": "None"
+      },
+      "dramatic_question": "What can a courier responsibly carry when a birth announcement has already become a struggle over legitimacy?",
+      "playable_objective": "Receive the announcement, hear Sada Kaur’s instruction, choose how to carry the competing allegation and escort the dispatch rider to departure.",
+      "encounter_or_choice": "Prioritize the formal household announcement or preserve the accusation as an attributed competing account; the courier cannot adjudicate parentage.",
+      "local_consequence": "The dispatch’s wording and handoff differ; neither choice proves substitution, assigns biological truth or decides future succession.",
+      "cinematic_moment": "Two names are spoken over a dispatch being sealed while an older accusation threatens to travel with them.",
+      "next_implementation_task": "Create distinct announcement and rumor witnesses, make the seal and rider handoff visible, and write endings around transmission rather than a solved maternity mystery.",
+      "acceptance_criterion": "Each dispatch can be delivered, its wording matches the chosen treatment, and no ledger, ending or reward encodes strict primogeniture or a confirmed fabricated pregnancy.",
+      "historical_basis": "conflicting_birth_and_legitimacy_accounts; Griffin alleges substituted children and later political acknowledgement; the Memorial records the twins' birth announcement, thanksgiving and Mehtab's maternity. Neither the courier nor the choices establish biological truth. All dialogue, dispatch handling and minor witnesses are original. The scene preserves competing accusations without encoding strict male primogeniture or deciding future accession. Its authored 1807 frame follows the selected announcement variant and does not silently reconcile every source chronology.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "What can a courier responsibly carry when a birth announcement has already become a struggle over legitimacy?",
+        "dramatic_turn": "A birth announcement becomes a dispatch whose wording may carry an accusation farther than any witness can justify.",
+        "setup_payoff": "Two names are repeated from spoken announcement to sealed packet; each repetition tests whether the competing allegation travels with them and how it is attributed.",
+        "playable_staging": "Stage the work at a dispatch table and the rider’s departure. Keep disputed births outside visual reconstruction; the courier handles accounts, not biological proof.",
+        "attention_pattern": "Present the formal announcement cleanly, then the competing claim, then one choice about transmission. Do not bury the distinction beneath a lecture on later succession.",
+        "recovery": "After the rider leaves, leave the dispatch place briefly empty. Resist a closing reveal that claims the courier chose the true parentage.",
+        "agency": "Prioritize the formal announcement or preserve an attributed accusation within the authored options; no choice decides biological truth or future accession.",
+        "acceptance": "The player can repeat both accounts with their speakers, dispatch wording matches the selection, and the sequence never invents strict primogeniture to manufacture a single correct answer."
+      }
+    },
+    {
+      "id": "TALE-010",
+      "title": "The Fortress in the Letter",
+      "phase_priority": "P3",
+      "development_status": "planned",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "feat/punjab-chiefs-playable-v1-20261002",
+        "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+        "source_path": "game/history/punjab_chiefs_catalogue.json",
+        "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+        "era": "Late 1808; a diplomatic approach",
+        "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects overture.",
+        "prerequisites": "None"
+      },
+      "dramatic_question": "How much can a threatened ruler offer before anyone on the other side is authorized to answer?",
+      "playable_objective": "Receive the sealed approach, consult stores, record delivery terms, meet the receiving agent and escort him through the handoff.",
+      "encounter_or_choice": "Carry a narrow approach or a stronger practical assurance within the scene’s choices; question the receiver about the limits of his authority.",
+      "local_consequence": "The delivery record captures the offer and the receiver’s limited mandate; the fort is not transferred and no alliance is concluded.",
+      "cinematic_moment": "The fort remains distant in the composition while the sealed packet crosses a much smaller space between two hands.",
+      "next_implementation_task": "Stage stores, packet and receiver as three different forms of power, and give each ending a concrete receipt that stops short of acceptance.",
+      "acceptance_criterion": "The packet reaches the selected handoff, practical assurances match what was consulted, and every ending remains an approach delivered rather than British protection secured.",
+      "historical_basis": "secondary_diplomatic_account_with_original_courier_scene; The university entry records secret negotiations with British officers. Discover Sikhism describes a November 1808 offer of Atalgarh to Metcalfe tied to restoration of possessions. The packet, route, receiving agent and conditions voiced here are invented. This stage ends with an approach delivered, never a completed alliance, an invented interception or a transfer of the fort. Atalgarh here belongs to Sada's diplomatic story, not Dal Singh's Akalgarh identity.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "How much can a threatened ruler offer before anyone on the other side is authorized to answer?",
+        "dramatic_turn": "A large strategic promise meets the smaller fact that the receiving agent may have no authority to accept it.",
+        "setup_payoff": "The distant fortress and the handheld letter operate at different scales; the final receipt closes only the distance between sender and receiver.",
+        "playable_staging": "Keep the fort in the background when available, then stage the handoff at human scale with the stores consultation and receiver’s mandate made concrete.",
+        "attention_pattern": "Build anticipation through terms and approach, then allow a short, clear limit-of-authority exchange to turn the scene. Avoid escalating music or interface language that implies an alliance is signed.",
+        "recovery": "End on a receipt and the still-untransferred fort. The unresolved answer is the consequence of diplomacy, not a cliffhanger requiring an invented interception.",
+        "agency": "Choose the offered assurance and question the receiver’s remit; delivery remains possible without securing the desired protection.",
+        "acceptance": "Players understand what was offered and what was merely received; no map, reward or summary marks a fort transfer, British alliance or interception absent from the scene."
+      }
+    },
+    {
+      "id": "TALE-011",
+      "title": "Behind the Lowered Curtain",
+      "phase_priority": "P3",
+      "development_status": "planned",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "feat/punjab-chiefs-playable-v1-20261002",
+        "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+        "source_path": "game/history/punjab_chiefs_catalogue.json",
+        "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+        "era": "1820–1821; departure from a watched camp",
+        "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects litter.",
+        "prerequisites": "None"
+      },
+      "dramatic_question": "What loyalty remains possible when escape has become a procession toward a closing gate?",
+      "playable_objective": "Receive Sada Kaur’s instruction, choose the departure account, confront Vasakha Singh and escort the bearers and covered litter to the outer entrance.",
+      "encounter_or_choice": "Protect the bearers’ treatment or emphasize the report’s wording while deciding how openly to confront the informing retainer.",
+      "local_consequence": "The party’s dignity, witness account and treatment at the last gate vary; detention remains the fixed endpoint.",
+      "cinematic_moment": "The lowered curtain moves with each step while the gateway ahead gradually fills the frame.",
+      "next_implementation_task": "Replace abstract escort markers with the litter and bearers’ synchronized movement, stage the retainer confrontation, and author distinct detention acknowledgments.",
+      "acceptance_criterion": "The litter and bearers reach the gate physically, local choices change the promised treatment or account, and no route advertises a successful alternate escape.",
+      "historical_basis": "source_attributed_escape_with_original_retainer_viewpoint; Griffin and the university entry preserve a covered-litter escape followed by detention. Discover Sikhism dates its account to 1820 and names Vasakha Singh as the informing retainer and Desa Singh as the pursuer. This 1820–1821 frame retains chronology variants. The player is a fictional additional retainer; dialogue, papers and movement choices are original. Detention is fixed. Local agency determines the treatment of bearers, the wording of a report and how the party reaches its last gate, never a successful alternate escape.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "What loyalty remains possible when escape has become a procession toward a closing gate?",
+        "dramatic_turn": "An escape route narrows toward detention, making the treatment of those carrying it the part the player can still change.",
+        "setup_payoff": "The lowered curtain conceals Sada Kaur while the bearers’ effort remains visible; the outer gate shifts from hoped-for passage to a fixed boundary.",
+        "playable_staging": "Keep the litter and bearers physically continuous through the approach. Confront the informing retainer within the route, then compose the final gate so dignity and constraint are both visible.",
+        "attention_pattern": "Clarify the retainer’s immediate duties before the confrontation. As the route closes, reduce political exposition and prioritize movement, treatment and the report choice.",
+        "recovery": "After detention, allow an unhurried moment for the bearers and recorded account. Do not replay the route as though a faster run could secretly unlock escape.",
+        "agency": "Choose how to confront, report and protect the bearers within a declared fixed endpoint; local dignity remains consequential.",
+        "acceptance": "Every branch reaches detention, but its treatment and wording differ visibly; failure feedback never suggests a successful alternate escape or resolves the retained 1820–1821 chronology variant."
+      }
+    },
+    {
+      "id": "TALE-012",
+      "title": "When the Camp Falls Quiet",
+      "phase_priority": "P3",
+      "development_status": "planned",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "feat/punjab-chiefs-playable-v1-20261002",
+        "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+        "source_path": "game/history/punjab_chiefs_catalogue.json",
+        "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+        "era": "1792; the camp at Sodhra",
+        "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects sodhra.",
+        "prerequisites": "None"
+      },
+      "dramatic_question": "Can a child receive his father’s authority through a duty before he is ready to receive it through a title?",
+      "playable_objective": "Carry the father’s order, bring the veteran into evacuation work, escort him to the gate, prepare the returning party and deliver the message to Ranjit.",
+      "encounter_or_choice": "Give priority to the people moving out or the wording of the message within the authored choices; practical care makes the handover personal.",
+      "local_consequence": "The evacuation’s immediate care and remembered message differ; Maha’s illness, withdrawal and later death remain fixed in the selected chronology.",
+      "cinematic_moment": "The campaign’s noise recedes while a small order passes from father, to runner, to son beside an evacuation gate.",
+      "next_implementation_task": "Stage the camp’s gradual emptying, build a visible veteran escort and supplies handover, and write the father-son message as declared original drama.",
+      "acceptance_criterion": "The veteran and provision stages complete before the message is delivered, each ending acknowledges the chosen care, and the scene never labels the invented exchange a documented bedside investiture.",
+      "historical_basis": "retrospective_history_with_declared_dramatic_handover; This scene selects Griffin's 1792 illness and withdrawal, not the Memorial's 1790 child-victory outcome. The father's private words, delegated tasks, veteran, young runner, evacuation staging and choices are original drama. Authority passes through a small order to care for the camp; this is not evidence for a documented bedside investiture. Maha's death after his return remains fixed. Mana Singh is a research lead, not the identity assigned to the fictional veteran.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "Can a child receive his father’s authority through a duty before he is ready to receive it through a title?",
+        "dramatic_turn": "The father’s authority reaches the child through a small duty of care as the camp becomes less able to keep its old rhythm.",
+        "setup_payoff": "Repeat the father’s order through runner, veteran and son, changing its emotional weight with each handoff without claiming documented private words.",
+        "playable_staging": "Show evacuation through fewer occupied places and a veteran physically moving to the gate. Keep supplies and the last message tied to the player’s completed duties.",
+        "attention_pattern": "Begin with purposeful camp activity, thin its sound and movement as errands conclude, and reserve the longest uninterrupted exchange for the child receiving the message.",
+        "recovery": "Let a completed act of provision sit before the final words. Avoid a sudden celebratory promotion overlay after an illness-driven withdrawal.",
+        "agency": "Choose the emphasis of care and message within the existing errands. The inherited responsibility is practiced, while the selected withdrawal and death stay fixed.",
+        "acceptance": "The veteran and supplies are dealt with before delivery, the child’s response reflects the chosen care, and the original handover is never labeled a documented bedside investiture."
+      }
+    },
+    {
+      "id": "TALE-013",
+      "title": "Names at the Gate",
+      "phase_priority": "P3",
+      "development_status": "planned",
+      "baseline": {
+        "kind": "playable_sequence",
+        "delivery": "main",
+        "branch": "feat/punjab-chiefs-playable-v1-20261002",
+        "commit": "312414b3b47893f7310e53568c689fcfce1d6ba1",
+        "source_path": "game/history/punjab_chiefs_catalogue.json",
+        "implementation": "Playable blockout adaptation; five beats; local branch outcomes.",
+        "era": "Late 1790s; after the Ramnagar conflict",
+        "launch": "Run res://history/punjab_chiefs_home.tscn; reach story bench; T selects settlement.",
+        "prerequisites": "None"
+      },
+      "dramatic_question": "Can an agreement give a defeated household a future without demanding that it forget its dead?",
+      "playable_objective": "Learn the limits of your promise, hear the representative, escort the family’s reception, clarify provision and service, and settle one immediate need.",
+      "encounter_or_choice": "Emphasize immediate provision or the terms of service; the representative can question what the clerk’s assurances actually mean.",
+      "local_consequence": "A bounded household need is met and terms are recorded locally; employment does not erase bereavement or speak for every Chattha family.",
+      "cinematic_moment": "A family representative hesitates at the same kind of gate that once kept enemies apart, with a clerk waiting inside instead of a drawn weapon.",
+      "next_implementation_task": "Give the representative a particular household concern, stage the clerk’s terms as a conversation and make the final provision or service arrangement visible.",
+      "acceptance_criterion": "The player can promise only the stated terms, the representative reaches the reception physically, and the ending preserves grief alongside the limited settlement.",
+      "historical_basis": "secondary_reference_with_original_local_negotiation; The entry takes the reported estates and military employment offered to Jan Muhammad's sons as its historical anchor. The unnamed family representative, veteran, clerk, guarantees, supplies, dialogue and local outcomes are original. These people speak for particular households, never every Chattha family. The sequence follows the conflict without replaying its killing; jobs and provision do not erase bereavement. The late-1790s period is separate from the 1792 opening.",
+      "implementation_receipt": null,
+      "narrative_direction": {
+        "version": "1792.sequence-direction.v1",
+        "status": "planned_original_direction",
+        "dramatic_question": "Can an agreement give a defeated household a future without demanding that it forget its dead?",
+        "dramatic_turn": "An offer of service opens a future without closing the household’s grief, and the player must make one promise concrete.",
+        "setup_payoff": "The gate recalls conflict but admits a representative to a clerk; names once attached to enemies are now spoken as people awaiting particular terms.",
+        "playable_staging": "Keep the representative’s hesitation and the clerk’s working place visible in one approach. Show the immediate provision or service arrangement physically at the end.",
+        "attention_pattern": "Hear one household concern before explaining terms. Let questions interrupt the administrative rhythm, then resolve a single practical need instead of delivering a general reconciliation speech.",
+        "recovery": "Close with the representative’s specific response and room for unfinished grief. Avoid a celebratory faction-conversion effect.",
+        "agency": "Emphasize provision or service within stated guarantees. The representative may question terms and never speaks for every Chattha household.",
+        "acceptance": "The player can name the promise actually fulfilled, the reception is physically completed, and the ending retains bereavement without treating employment as universal forgiveness."
+      }
+    }
+  ],
+  "secondary_queue": [
+    {
+      "id": "MEM-001",
+      "title": "Maha’s family story / Charat Singh",
+      "kind": "presentation",
+      "phase_priority": "P0",
+      "development_status": "planned",
+      "related_sequence_ids": [
+        "HOME-001"
+      ],
+      "next_implementation_task": "Give the family telling a clear opening and a short handoff to the child’s yard; retain previous, next and skip without adding page-count missions.",
+      "acceptance_criterion": "Finishing, revisiting and skipping all return to a coherent Home start without granting information from later eras.",
+      "counted_as_additional_sequence": false,
+      "baseline": {
+        "delivery": "draft",
+        "branch": "feat/opening-game-v1-20261002",
+        "commit": "21f8cf824d6b5dd98b2bb44dfa37948adafd55e7",
+        "source_path": "docs/BEGINNING_SEQUENCE.md"
+      }
+    },
+    {
+      "id": "CMD-002",
+      "title": "Houses and rivals",
+      "kind": "scenario_variant",
+      "phase_priority": "P4",
+      "development_status": "planned",
+      "related_sequence_ids": [
+        "CMD-001"
+      ],
+      "next_implementation_task": "Author house-specific reactions and companion staging as a scenario variant of the same command order.",
+      "acceptance_criterion": "Expanded house presentation resolves the original order once and does not add riders or a second completion.",
+      "counted_as_additional_sequence": false,
+      "baseline": {
+        "delivery": "main",
+        "branch": "main",
+        "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+        "source_path": "docs/HOUSE_CONFLICT.md"
+      }
+    },
+    {
+      "id": "ROAD-001",
+      "title": "The disputed crossing",
+      "kind": "route_variant",
+      "phase_priority": "P2",
+      "development_status": "planned",
+      "related_sequence_ids": [
+        "HOME-009"
+      ],
+      "next_implementation_task": "Stage the closed bar, keeper and delayed confirmation as three credible return choices sharing one carrier and handover.",
+      "acceptance_criterion": "Recognition, confirmation and bypass all preserve the same cargo and can reach one Home check-in; waiting does not invent an immediate reply.",
+      "counted_as_additional_sequence": false,
+      "baseline": {
+        "delivery": "draft",
+        "branch": "feat/shah-caravan-road-v1",
+        "commit": "b251d6967ec46a95bcee4bbca55737d900b6c66d",
+        "source_path": "docs/DISPUTED_ROAD.md"
+      }
+    },
+    {
+      "id": "MICRO-001",
+      "title": "Saffron in the fold",
+      "kind": "micro_scene",
+      "phase_priority": "P2",
+      "development_status": "planned",
+      "related_sequence_ids": [
+        "HOME-007"
+      ],
+      "next_implementation_task": "Animate or present the cloth being turned so its repair is discovered through the action, then return cleanly to the world.",
+      "acceptance_criterion": "The repair is visible during inspection, interruption restores control, and the optional scene grants no mission or inventory reward.",
+      "counted_as_additional_sequence": false,
+      "baseline": {
+        "delivery": "draft",
+        "branch": "feat/bazaar-listening-performance-20260929",
+        "commit": "acaefc087cb5f6ccb60aa3868bdb907765ed6859",
+        "source_path": "docs/QUIET_OBJECT_STORIES.md"
+      }
+    },
+    {
+      "id": "MICRO-002",
+      "title": "The hole that was not used",
+      "kind": "micro_scene",
+      "phase_priority": "P2",
+      "development_status": "planned",
+      "related_sequence_ids": [
+        "HOME-003"
+      ],
+      "next_implementation_task": "Make the unused harness hole and worn neighboring material legible, with a short observation tied to inspection.",
+      "acceptance_criterion": "The object can be understood without a quest marker, its scene closes safely, and no riding skill is awarded for looking.",
+      "counted_as_additional_sequence": false,
+      "baseline": {
+        "delivery": "draft",
+        "branch": "feat/bazaar-listening-performance-20260929",
+        "commit": "acaefc087cb5f6ccb60aa3868bdb907765ed6859",
+        "source_path": "docs/QUIET_OBJECT_STORIES.md"
+      }
+    },
+    {
+      "id": "MICRO-003",
+      "title": "A pan with two endings",
+      "kind": "micro_scene",
+      "phase_priority": "P2",
+      "development_status": "planned",
+      "related_sequence_ids": [
+        "HOME-013"
+      ],
+      "next_implementation_task": "Stage Mela and Jiva around the pan with different rhythms and reactions for their two endings.",
+      "acceptance_criterion": "Both nearby companions contribute their own fable, missing attendance prompts regrouping, and neither telling becomes a forced canon.",
+      "counted_as_additional_sequence": false,
+      "baseline": {
+        "delivery": "draft",
+        "branch": "feat/bazaar-listening-performance-20260929",
+        "commit": "acaefc087cb5f6ccb60aa3868bdb907765ed6859",
+        "source_path": "docs/QUIET_OBJECT_STORIES.md"
+      }
+    },
+    {
+      "id": "STUDY-001",
+      "title": "Locomotion course",
+      "kind": "study",
+      "phase_priority": "P1",
+      "development_status": "planned",
+      "related_sequence_ids": [
+        "HOME-001",
+        "HOME-005"
+      ],
+      "next_implementation_task": "Use the movement course to qualify the yard and trail’s actual slopes, clearances and stopping distances.",
+      "acceptance_criterion": "The mission geometry can be traversed with its shipped movement controls; the fixture remains outside campaign completion totals.",
+      "counted_as_additional_sequence": false,
+      "baseline": {
+        "delivery": "main",
+        "branch": "main",
+        "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+        "source_path": "docs/LOCOMOTION_FOUNDATION.md"
+      }
+    },
+    {
+      "id": "STUDY-002",
+      "title": "Ground-contact course",
+      "kind": "study",
+      "phase_priority": "P1",
+      "development_status": "planned",
+      "related_sequence_ids": [
+        "HOME-005",
+        "HOME-006"
+      ],
+      "next_implementation_task": "Qualify scrub, bank and bend contact geometry before relying on it for pursuit or stealth staging.",
+      "acceptance_criterion": "The player and pursuer remain grounded at the encounter’s slopes and edges, with no checkpoint placed inside collision.",
+      "counted_as_additional_sequence": false,
+      "baseline": {
+        "delivery": "draft",
+        "branch": "feat/ground-contact-physics-v1-20261002",
+        "commit": "7ab4692886fa7bda97953a948db6ec4bfce50497",
+        "source_path": "docs/GROUND_CONTACT_PHYSICS.md"
+      }
+    },
+    {
+      "id": "STUDY-003",
+      "title": "Horsecraft study",
+      "kind": "study",
+      "phase_priority": "P2",
+      "development_status": "planned",
+      "related_sequence_ids": [
+        "HOME-014"
+      ],
+      "next_implementation_task": "Use the standalone course to qualify balance, paired movement and mounted reload cues before staging the lesson.",
+      "acceptance_criterion": "The required maneuvers work in the study, and exiting practice cannot write any Home capability receipt.",
+      "counted_as_additional_sequence": false,
+      "baseline": {
+        "delivery": "draft",
+        "branch": "feat/opening-game-v1-20261002",
+        "commit": "21f8cf824d6b5dd98b2bb44dfa37948adafd55e7",
+        "source_path": "docs/HORSECRAFT_STUDY.md"
+      }
+    },
+    {
+      "id": "STUDY-004",
+      "title": "Service equipment study",
+      "kind": "study",
+      "phase_priority": "P2",
+      "development_status": "planned",
+      "related_sequence_ids": [
+        "HOME-012",
+        "HOME-017"
+      ],
+      "next_implementation_task": "Review guard silhouettes, articulation and equipment overlap in the actual service and drill poses.",
+      "acceptance_criterion": "Duty and practice poses remain readable without severe equipment intersections; the inspection adds no mission or equipment grant.",
+      "counted_as_additional_sequence": false,
+      "baseline": {
+        "delivery": "main",
+        "branch": "main",
+        "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+        "source_path": "docs/SERVICE_EQUIPMENT.md"
+      }
+    },
+    {
+      "id": "STUDY-005",
+      "title": "Political exposure sandbox",
+      "kind": "study",
+      "phase_priority": "P2",
+      "development_status": "planned",
+      "related_sequence_ids": [
+        "HOME-015",
+        "HOME-016"
+      ],
+      "next_implementation_task": "Qualify how a local witness sees, remembers and reports a boundary crossing or telling before reusing the behavior in stories.",
+      "acceptance_criterion": "A witness needs a real perception or report event; camera-only visibility never becomes character knowledge.",
+      "counted_as_additional_sequence": false,
+      "baseline": {
+        "delivery": "main",
+        "branch": "main",
+        "commit": "8ae0e3a45a5137e4e1dcb92318297515f4b35ea9",
+        "source_path": "docs/POLITICAL_EXPOSURE_VISION.md"
+      }
+    },
+    {
+      "id": "SYSTEM-001",
+      "title": "Hawk scouting",
+      "kind": "mechanic",
+      "phase_priority": "P3",
+      "development_status": "planned",
+      "related_sequence_ids": [
+        "HOME-005",
+        "HOME-015"
+      ],
+      "next_implementation_task": "Choose and reconcile the hawk branch variants, then design one bounded scouting use without replacing ground-level evidence inspection.",
+      "acceptance_criterion": "Hawk contacts are limited to what its mechanic can observe, do not identify hidden motives, and do not complete unrelated quest evidence automatically.",
+      "counted_as_additional_sequence": false,
+      "baseline": {
+        "delivery": "draft",
+        "branch": "feat/hawk-scout-v1-20261002",
+        "commit": "153ed09fb0d843346402d771afb0053a5e1c3f39",
+        "source_path": "docs/HAWK_SCOUT.md"
+      }
+    },
+    {
+      "id": "SYSTEM-002",
+      "title": "Ground Focus",
+      "kind": "mechanic",
+      "phase_priority": "P1",
+      "development_status": "planned",
+      "related_sequence_ids": [
+        "HOME-005",
+        "HOME-007"
+      ],
+      "next_implementation_task": "Connect nearby sensory evidence to the trail and bend while keeping markers temporary and observations grounded.",
+      "acceptance_criterion": "Focus cannot reveal through walls or preserve absent contacts as current facts; toggling it never advances a lesson.",
+      "counted_as_additional_sequence": false,
+      "baseline": {
+        "delivery": "draft",
+        "branch": "feat/ground-focus-v1-20261002",
+        "commit": "79d23545ff8c62ffb782e478497d0bf532767ea2",
+        "source_path": "docs/GROUND_FOCUS.md"
+      }
+    }
+  ],
+  "backlog": [
+    {
+      "id": "YOUTH-bhangi_market_brawl",
+      "title": "The Bhangi Bazaar Brawl",
+      "status": "implemented_adaptation",
+      "related_ids": [
+        "HOME-013"
+      ],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Continue development under HOME-013; keep this catalogue entry as its alias.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-hashmat_ladewali",
+      "title": "The Hunt at Ladewali / Hashmat Khan",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Outline the named source account and distinguish its hunt, confrontation and outcome from the anonymous opening ambush.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-sodhran_command",
+      "title": "The Child at Sodhran",
+      "status": "planned",
+      "related_ids": [
+        "TALE-012"
+      ],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Choose an explicit chronology variant and outline command decisions beyond TALE-012’s evacuation errand.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-throne_lahore_pardon",
+      "title": "The Throne of Lahore: Pardon",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Draft a hearing with a playable act of judgment and a bounded recipient of the pardon.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-regency_escape",
+      "title": "Out of the Regents’ Sight",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Map one departure, its household witnesses and the return consequences without presuming the regents’ motives as fact.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-ammunition_rebellion",
+      "title": "The Inherited Ammunition",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Define the physical ammunition custody, available refusal or delivery choices, and the immediate consequence of each.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-river_races",
+      "title": "Across the River",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Choose a river crossing and qualify swimming or craft behavior before writing the race’s social stakes.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-end_regency",
+      "title": "Taking the Reins",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Map the transfer of particular orders and offices into a playable audience rather than one button granting absolute power.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-boar_hunt",
+      "title": "The Great Boar Hunt",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Define animal behavior, a hunting party’s responsibilities and failure recovery before promising a complete hunt.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-nihang_camp",
+      "title": "A Night in the Nihang Camp",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Choose a host and evening duty through which the player can experience the camp, with attributed religious and oral material.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-bazaar_revelry",
+      "title": "Nights in the Bazaar",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Outline one night with companions, a concrete obligation and a morning consequence; avoid a generic revelry montage.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-afghan_raiders",
+      "title": "Against the Afghan Advance",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Choose a specific threatened place, evacuation or skirmish objective and evidence-limited enemy observations.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-pocket_money_companions",
+      "title": "A Pouch for the Playground",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Design a finite pouch and a choice between friends’ immediate needs with visible accounting.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-captured_falcon",
+      "title": "The Falcon in Another Courtyard",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Define who holds the bird, how the player can negotiate or retrieve it, and how this differs from unlocking the hawk mechanic.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-unwritten_king",
+      "title": "The Unwritten King",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Design an oral judgment or remembered dispatch task whose success does not require the protagonist to read.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-sodhran_naming",
+      "title": "The Day Budh Singh Became Ranjit",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Record the naming tradition and chronology alternatives, then choose a framed messenger viewpoint for the proposed episode.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-ancestral_mare",
+      "title": "Budha Singh and Desi",
+      "status": "planned",
+      "related_ids": [
+        "TALE-004"
+      ],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Decide whether this becomes an expanded ancestor journey or remains an alias of TALE-004; do not count both for the same ride.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-jhang_night_raids",
+      "title": "The Fighting at Jhang",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Outline darkness, scouts, mounted movement and a limited raid objective with a physical withdrawal.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-gujranwala_skirmishes",
+      "title": "The Village Alarm",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Draft a village alarm in which warning, muster and civilian movement precede the bounded fighting.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-palace_purge",
+      "title": "Keys to the Household",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Identify which keys, offices and witnesses the player can affect while keeping allegations distinct from established acts.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-maan_singh_lethal",
+      "title": "The King of Thieves: Lethal Variant",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Define the explicit telling that supports the lethal variant and its local playable choice; do not silently replace a competing pardon account.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-kasur_night",
+      "title": "Night Encounter near Kasur",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Choose the encounter viewpoint, what can be recognized at night and a recoverable route back from the meeting.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-raj_kaur_mystery",
+      "title": "Raj Kaur: Conflicting Accounts",
+      "status": "planned",
+      "related_ids": [
+        "TALE-008"
+      ],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Expand the competing tellers and political stakes beyond TALE-008 without encoding the poison or matricide allegation as solved truth.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-ramnagar_cavalry",
+      "title": "The Clash at Ramnagar",
+      "status": "planned",
+      "related_ids": [
+        "TALE-013"
+      ],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Outline reconnaissance, artillery and mounted objectives separately from TALE-013’s later settlement.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-brick_kilns",
+      "title": "The Battle of the Brick Kilns",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Map kiln geometry, sightlines and one tactical objective before choosing the mission’s full battle scale.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-hound_confrontation",
+      "title": "The Hounds in the Courtyard",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Define handlers, dogs and a readable de-escalation or escape objective before introducing animal pursuit.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-bazaar_arrest",
+      "title": "The Unrecognized Heir",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Design recognition, custody and release as physical stages with different witnesses and a bounded consequence.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "YOUTH-sialkot_tribute",
+      "title": "The Sialkot Tribute Raid",
+      "status": "planned",
+      "related_ids": [],
+      "source_path": "game/youth/story_catalogue.json",
+      "note": "Related recollections do not complete the proposed larger mission.",
+      "next_planning_task": "Define the tribute demand, transport and response choices before representing the whole campaign.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "PLAN-FATHER",
+      "title": "Required pre-Lahore Mahan campaign and childhood reprise",
+      "status": "contract_only",
+      "related_ids": [
+        "MAHA-001"
+      ],
+      "source_path": "docs/MAHAN_INTERLUDE.md",
+      "note": "Four sequencing placeholders; no completed 1797–1798 host or playable reprise.",
+      "next_planning_task": "Specify the pre-Lahore trigger, father-viewpoint handoff, campaign stages and childhood reprise; MAHA-001 is an input, not completion of the contract.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "PLAN-FALL",
+      "title": "Fall of Empire campaign",
+      "status": "contract_only",
+      "related_ids": [
+        "PRO-001"
+      ],
+      "source_path": "docs/FALL_OF_EMPIRE.md",
+      "note": "PR34: eight chapter contracts and a synthetic authoring desk; the later prologue does not implement those chapters.",
+      "next_planning_task": "Keep the eight later-era chapter contracts as future scope; polish PRO-001 only as the current retrospective frame.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "BRIEF-001",
+      "title": "Punjab ecology and running skirmish encounters",
+      "status": "proposed",
+      "related_ids": [],
+      "source_path": "User reference intake, this conversation",
+      "note": "Grassland, river, scrub and wetland scenarios; mounted reload/retreat does not yet constitute a full misl skirmish mission.",
+      "next_planning_task": "Write one grassland running-skirmish encounter and one seasonal river obstacle with terrain-dependent movement, reload and withdrawal.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "BRIEF-002",
+      "title": "Maha’s smallpox vigil and childhood training",
+      "status": "proposed",
+      "related_ids": [],
+      "source_path": "User reference intake, this conversation",
+      "note": "Retain the supplied family tradition as a dramatic proposal; not an implemented bedside mission.",
+      "next_planning_task": "Frame the smallpox vigil as an attributed family recollection and choose a caregiver or attendant action before proposing a playable bedside scene.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "BRIEF-003",
+      "title": "Rasulnagar naming and the three-generation Chattha conflict",
+      "status": "proposed",
+      "related_ids": [],
+      "source_path": "User reference intake, this conversation",
+      "note": "Retain competing chronology; settlement recollection is not the complete siege campaign.",
+      "next_planning_task": "Separate three generations and chronology variants; choose distinct siege, message and settlement viewpoints before setting mission counts.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "BRIEF-004",
+      "title": "Dal Singh and Sada Kaur’s secret alignment",
+      "status": "proposed",
+      "related_ids": [],
+      "source_path": "User reference intake, this conversation",
+      "note": "Regency recollection is related; a full conspiracy mission remains to be authored.",
+      "next_planning_task": "Draft an access or messenger task around the proposed alliance, with the secret’s source and the player’s actual knowledge stated.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "BRIEF-005",
+      "title": "Mathew and the royal caravan",
+      "status": "proposed",
+      "related_ids": [],
+      "source_path": "User reference intake, this conversation",
+      "note": "Foreign visitor/backchannel scenario proposed in the supplied brief.",
+      "next_planning_task": "Outline caravan travel and the foreign visitor’s backchannel using separate public and privately attributed accounts.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "BRIEF-006",
+      "title": "Lahore informants and the 1799 entry",
+      "status": "proposed",
+      "related_ids": [],
+      "source_path": "User reference intake, this conversation",
+      "note": "Intelligence, gate approach and political settlement need a complete authored mission.",
+      "next_planning_task": "Map a Lahore informant chain, gate approach and entry settlement with civic stakes and physically delivered intelligence.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "BRIEF-007",
+      "title": "Palace correspondence and competing intelligence networks",
+      "status": "proposed",
+      "related_ids": [],
+      "source_path": "User reference intake, this conversation",
+      "note": "Household reports, interception and private motives remain attributed proposals.",
+      "next_planning_task": "Design one disputed dispatch route with distinct sender, carrier, receiver and witness knowledge; avoid a universal omniscient spy network.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "BRIEF-008",
+      "title": "Cis-Sutlej estates and diplomatic protection",
+      "status": "proposed",
+      "related_ids": [],
+      "source_path": "User reference intake, this conversation",
+      "note": "Wadni/Himatpur petitions and boundary politics remain proposed.",
+      "next_planning_task": "Choose one petition and boundary crossing to make estate protection concrete, retaining the supplied diplomatic accounts as attributed.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "BRIEF-009",
+      "title": "Rival misls, hill states and regional diplomacy",
+      "status": "proposed",
+      "related_ids": [],
+      "source_path": "User reference intake, this conversation",
+      "note": "Faction descriptions are worldbuilding, not one completed mission per state.",
+      "next_planning_task": "Choose a specific negotiable obligation for each future faction encounter; worldbuilding descriptions alone do not establish missions.",
+      "counts_as_new_playable_sequence": false
+    },
+    {
+      "id": "BRIEF-010",
+      "title": "Sindh, Shikarpur and the Mazari campaign",
+      "status": "proposed",
+      "related_ids": [],
+      "source_path": "User reference intake, this conversation",
+      "note": "Later-life southern campaign material remains proposed.",
+      "next_planning_task": "Separate Shikarpur ambitions, river access and the Mazari operation into research-and-outline tasks before promising a southern campaign.",
+      "counts_as_new_playable_sequence": false
+    }
+  ]
+}

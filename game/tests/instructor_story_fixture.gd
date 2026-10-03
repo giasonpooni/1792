@@ -1,0 +1,31 @@
+# Copyright (c) 2026 Cartesian Graphics. All rights reserved.
+extends RefCounted
+## Explicit presentation/domain setup. Input-driven recruitment is qualified
+## separately in test_instructor_current_integration.gd.
+const State:=preload("res://commissions/commission_state.gd")
+const R:=preload("res://commissions/commission_rules.gd")
+const Base:=preload("res://childhood/childhood_state.gd")
+const Home:=preload("res://tests/gujranwala_fixture.gd")
+const Pose:=preload("res://tests/aftermath_fixture.gd")
+static func make(stage: String="appointed",controlled: bool=false) -> Dictionary:
+	var m:=State.new()
+	assert(m.restore(Home.complete()).is_empty())
+	assert(m.begin_allowance().is_empty())
+	assert(m.operate("accept_delivery").is_empty())
+	assert(Pose.pose(m,R.BROKER).is_empty());assert(m.operate("deliver").is_empty())
+	assert(Pose.pose(m,R.HOME).is_empty());assert(m.operate("hire","guard").is_empty())
+	assert(m.rest_watch().is_empty())
+	if stage=="available": return m.snapshot()
+	assert(m.commission_action("reserve","standard").is_empty())
+	if stage=="reserved": return m.snapshot()
+	assert(Pose.pose(m,R.BROKER).is_empty());assert(m.commission_action("broker").is_empty())
+	if stage=="introduced": return m.snapshot()
+	assert(Pose.pose(m,R.RECEPTION).is_empty());assert(m.commission_action("engage").is_empty())
+	if stage=="escorting": return m.snapshot()
+	var value: Dictionary=m.snapshot()
+	value.commission_actor.position=Base.coords(R.HOME+Vector3(-1,0,0))
+	assert(m.restore(value).is_empty())
+	assert(Pose.pose(m,R.HOME).is_empty());assert(m.commission_action("appoint").is_empty())
+	if controlled: assert(m.commission_action("control",R.SPECIALIST).is_empty())
+	if stage=="active": assert(m.commission_action("lesson_start").is_empty())
+	return m.snapshot()

@@ -15,7 +15,7 @@ is loaded. The same `workshop_world.sample()` method still supplies animation
 and the same `workshop_rules.apply()` reducer supplies all commission transitions.
 The adapter does not duplicate their mathematics or economic rules.
 
-The source manifest selects thirteen exact files, including the unchanged title
+The source manifest selects fourteen exact files, including the shared title
 licence as `workcells/NOTICE.txt`. Only `workshops/workshop_world.gd` (candidate
 presentation/geometry) and `workshops/workshop_rules.gd` (candidate reducer) are
 editable in this slot. Dependencies, harnesses and notices remain protected.
