@@ -7,15 +7,37 @@ save locations and tooling references remain stable.
 
 ## Organization
 
-**Notation Systems Inc.** is the parent organization. Its divisions are:
+**Notation Systems Inc.** is the parent organization: a scientific computing and
+systems engineering company developing computational instruments, software and
+interactive environments for understanding and building physical and virtual
+systems. Its development direction connects measurement, state estimation and
+sensor fusion, scientific modelling, simulation and execution, from materials
+and machines to interactive worlds.
 
-- **Notations Gaming** — games and interactive worlds.
-- **Notations Manufacturing** — industrial design, materials and manufacturing systems.
-- **Notations Laboratories** — research, scientific computing, simulation and experimental validation.
+The parent organization's activities span:
 
-This game is developed by **Notations Gaming**, replacing Cartesian Graphics as
-its current development name. Existing copyright credits, licensing records and
-source attribution retain their recorded identities.
+| Activity | Focus |
+| --- | --- |
+| **Notations Gaming** | Games, graphics, world building, interactive environments and gameplay simulation. |
+| **Notations Manufacturing** | Design, machinery integration, process development, fabrication and production systems. |
+| **Notations Laboratories** | Research and experimental validation in scientific computing, measurement, physics and chemistry modelling, materials and simulation. |
+
+**1792 is the primary Notations Gaming project and a reference workload for game
+production tools.** Its current Godot scenes and documented Foundry workflows
+combine embodied travel, received information, persistent consequences and
+authored visual spaces. Historical reconstruction retains source evidence and
+explicit interpretation; the full biographical campaign remains in development.
+Interaction, visual quality and play guide world building alongside simulation.
+
+Godot owns game state, clock and saves. Shared NET tooling retains separate
+evidence, operation, execution and verification identities. Gameplay state has
+no industrial admission or machinery-control authority. Scientific or industrial
+reuse requires separately established calibration, uncertainty, repeatability,
+validation and operating envelopes appropriate to that application.
+
+Notations Gaming replaces Cartesian Graphics as the current game development
+name. Existing copyright credits, licensing records and source attribution
+retain their recorded identities.
 
 <!-- foundry-delivery-v1 -->
 **Foundry integration on this branch:** [game-owned adapter, terminal connection, and complete retained delivery](docs/FOUNDRY.md). The adapter is a development workload, not a required game service.
