@@ -53,6 +53,10 @@ def main() -> int:
         "horse-grounding", "HORSE_GROUNDING_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_horse_slope_load.gd"],
         "horse-slope-load", "HORSE_SLOPE_LOAD_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_horse_headroom.gd"],
+        "horse-headroom", "HORSE_HEADROOM_TESTS:")
+    run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_horse_headroom_load.gd"],
+        "horse-headroom-load", "HORSE_HEADROOM_LOAD_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_companions.gd"],
         "companions", "COMPANION_TESTS:")
     run([args.godot, "--headless", "--fixed-fps", "60", "--path", "game", "--script", "res://tests/test_character_names.gd"],

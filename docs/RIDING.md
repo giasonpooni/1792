@@ -124,8 +124,8 @@ plane has root height `0.8 * (sec(angle) - 1)` above the plane under its centre;
 that is about **0.229 m**, beyond the old 0.20 m centre ray even while the hull touches
 the ground to one side.
 
-The existing lifted-hull obstruction check remains first. A **0.25 m** downward hull
-sweep then retains the prior **0.05 m** query lift plus **0.20 m** support-search allowance.
+The saved-hull obstruction check remains first. A **0.25 m** downward hull
+sweep then retains the prior **0.05 m** lower-cap tolerance plus **0.20 m** support-search allowance.
 Only a detected contact proceeds to a normal query. That query samples at most 0.00025 m
 beyond the unsafe sweep fraction, with a 0.002 m contact margin, and checks the horse's
 existing floor-angle limit. The normal-query margin does not extend a collision-free
@@ -133,9 +133,30 @@ sweep. No live body moves during validation.
 
 This intentionally preserves flat-ground compatibility: candidate feet at 0.199 m still
 pass, while 0.201 m fails. The allowance is a bounded load tolerance, not proof that a
-forged grounded record is touching the floor. Existing clear airborne-pose handling,
-save fields, staged admission and the single campaign clock remain intact. Irregular
+forged grounded record is touching the floor. Clear airborne poses still require no
+ground support. Save fields, staged admission and the single campaign clock remain intact. Irregular
 terrain, dynamic support and physical horse hoof contacts remain separate work.
+
+### Saved headroom and airborne clearance
+
+The former obstruction query shifted the entire capsule up 0.05 m. A horse that the
+native motor could settle below a 3.21 m or 3.24 m ceiling was consequently refused
+on load: the actual hull top was approximately 3.20 m, but the query reached 3.25 m.
+The same shift could miss a small obstacle penetrating an airborne horse's feet.
+
+Grounded validation now uses a separate capsule with the same **0.8 m** radius,
+height **3.15 m** and centre **1.625 m** above the saved root. Its top remains at
+**3.20 m**, and its lower cap is identical to the old lifted query. This is a lower-cap
+tolerance, including a thin region along the lower flanks, rather than a literal flat
+slice removed from the bottom. The downward sweep and support limits stay the same.
+The live **3.2 m** collision capsule is never resized or moved by the query.
+
+Airborne records use the complete original capsule at its actual **1.6 m** centre.
+They receive no ground-clearance tolerance: a 3 cm foot obstruction is refused,
+while an unobstructed pose with 4 cm of headroom is admitted. Both branches qualify
+the saved pose independently of the live horse's location and preserve its shape
+resource, transforms, velocities and floor state. These checks assume the retained
+upright, yaw-only horse body; they do not add leaning or deformable horse collision.
 
 The footprint bounds in `riding_rules.gd` are prototype guardrails, not Punjab's historical
 frontiers. Spatial load checks cover the horse; general on-foot save/world collision
@@ -217,6 +238,36 @@ speed loss was not reproduced, so the motor, acceleration and braking were retai
 With rerun riding **177**, childhood **110**, companions **229**, and water-round **277**
 checks, saved-support qualification totals **1,021 native checks**, plus **8** structural
 checks. The whole game suite was not rerun for this increment.
+
+The saved-headroom increment adds **77** native checks in `test_horse_headroom.gd`
+and **84** in `test_horse_headroom_load.gd`. Against `4963f53`, the identical final
+tests produce respectively **71 passes / 6 expected failures** and **68 passes /
+16 expected failures**. Direct fixtures cover motor-settled low ceilings, actual head
+and side intersections, airborne foot obstruction, repeated queries, alternating
+grounded/airborne records and live shape/state preservation.
+
+The load fixture exercises both actual **Home and House** writers and load adapters.
+A native settled pose below a low ceiling and a clear airborne pose load successfully;
+a lowered ceiling or an airborne foot blocker refuses atomically. Success restores
+the complete saved authority and clock; refusal preserves the distinguishable live
+state, physical projections, camera and controller ownership. Both outcomes preserve
+the original save bytes. Props and the airborne setup are explicit fixtures, not a
+played campaign route. An initial fixture proof included native floor contact when
+checking overhead clearance; the corrected proof excludes only its known supporting
+platform. Superseded diagnostics are retained separately from qualifying runs.
+
+With rerun ground-support **132**, slope-load **24**, riding **177**, childhood **110**,
+companions **229** and water-round **277** checks, this increment totals **1,110 native
+checks**, plus **8** structural checks. The whole game suite was not rerun. The horse
+motor, locomotion tuning and authored terrain are unchanged by this load correction.
+
+Separate baseline diagnostics found a remaining **39° uphill crest stall**, about
+0.53 m before the top, on both joined box colliders and a continuous triangle surface.
+The horse remains grounded; the cause is unresolved. The tested 39° downhill route
+and 39.9° uphill route complete, so this is not established as an angle threshold.
+These diagnostic scenarios are excluded from the passing assertion total. They
+identify the next contact/movement investigation rather than qualify general
+uneven-terrain support.
 
 `render_riding.gd` creates five controlled render fixtures. They are actual Godot images,
 but capture success is not a human playtest and fixture placement is not autonomous travel.

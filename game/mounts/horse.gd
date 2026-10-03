@@ -9,6 +9,8 @@ const TROT := 6.5
 const ACCELERATION := 4.5
 const BRAKING := 9.0
 const GRAVITY := 22.0
+const SAVED_GROUND_CLEARANCE := 0.05
+const SAVED_SUPPORT_REACH := 0.20
 var speed := 0.0
 var gait_speed_limit := Rules.MAX_SPEED # Optional supplied-condition cap; original default preserved.
 var _rider: Node3D
@@ -27,7 +29,7 @@ func _ready() -> void:
 	_hull.height = 3.2 # Conservative horse+rider hull; no mesh-perfect collision claim.
 	var collider := CollisionShape3D.new()
 	collider.name = "Hull"
-	collider.position.y = 1.6
+	collider.position.y = _hull.height * 0.5
 	collider.shape = _hull
 	add_child(collider)
 	_build_blockout()
@@ -163,16 +165,25 @@ func record_fits_world(record: Dictionary, avatar: CharacterBody3D) -> bool:
 	# Domain validation runs first. Check loaded pose without mutating this body.
 	var query := PhysicsShapeQueryParameters3D.new()
 	query.shape = _hull
+	var center_y := _hull.height * 0.5
+	if record.grounded:
+		# Preserve the existing lower-cap tolerance without lifting the top into
+		# valid headroom. Only this query owns the shortened shape; the live hull
+		# and airborne clearance retain the complete horse+rider capsule.
+		var clearance_hull := _hull.duplicate() as CapsuleShape3D
+		clearance_hull.height -= SAVED_GROUND_CLEARANCE
+		query.shape = clearance_hull
+		center_y += SAVED_GROUND_CLEARANCE * 0.5
 	query.collision_mask = 1
 	query.exclude = [get_rid(), avatar.get_rid()]
-	query.transform = Transform3D(Basis(Vector3.UP, record.yaw), Rules.position(record) + Vector3.UP * 1.65)
+	query.transform = Transform3D(Basis(Vector3.UP, record.yaw), Rules.position(record) + Vector3.UP * center_y)
 	if not get_world_3d().direct_space_state.intersect_shape(query, 1).is_empty():
 		return false
 	if record.grounded:
 		# A rounded hull can stand on a slope with its root above a short centre
 		# ray's reach. Qualify the saved hull itself without moving the live body.
-		# Retain the existing .05 query lift and .20 ground-search allowance.
-		query.motion = Vector3.DOWN * 0.25
+		# Retain the .05 lower-cap tolerance and .20 ground-search allowance.
+		query.motion = Vector3.DOWN * (SAVED_GROUND_CLEARANCE + SAVED_SUPPORT_REACH)
 		var space := get_world_3d().direct_space_state
 		var fraction := space.cast_motion(query)
 		if fraction.size() != 2 or fraction[0] == 1.0:
