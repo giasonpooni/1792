@@ -1,9 +1,9 @@
 # Copyright (c) 2026 Cartesian Graphics. All rights reserved.
 extends SceneTree
-## All thirteen tellings are reached through ordinary input and the existing native
+## All fourteen tellings are reached through ordinary input and the existing native
 ## player/horse motors. Dialogue choices run only after physical admission.
 const Playable := preload("res://history/punjab_chiefs_playable.tscn")
-const IDS := ["delegation", "alliance", "revenge", "desi", "exile", "well", "regency", "rumours", "heirs", "overture", "litter", "sodhra", "settlement"]
+const IDS := ["delegation", "alliance", "revenge", "desi", "exile", "well", "regency", "rumours", "heirs", "overture", "litter", "sodhra", "settlement", "audience"]
 var passed := 0
 var failed := 0
 var scene: Node3D
@@ -174,7 +174,7 @@ func _run() -> void:
 		current_scene = null
 		scene.queue_free()
 		await frames(3)
-	check(completed.size() == IDS.size(), "all thirteen playable sequences completed through their native routes")
+	check(completed.size() == IDS.size(), "all fourteen playable sequences completed through their native routes")
 	check(witnessed_escort_delay, "at least one route actually observed and waited for a lagging companion")
 	check(witnessed_ride, "Desi route actually used mounted motor travel")
 	print("PUNJAB_CHIEFS_JOURNEY_TESTS: %d passed, %d failed" % [passed, failed])

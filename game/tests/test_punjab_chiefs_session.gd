@@ -79,6 +79,9 @@ func _run() -> void:
 	var before: Dictionary = capture()
 	check(entry.open_catalogue().is_empty(), "nearby selector opens")
 	check(entry._catalogue_open and home.process_mode == Node.PROCESS_MODE_DISABLED, "catalogue parks live Home")
+	check(entry._menu.find_child("Story_audience", true, false) is Button,
+		"the existing nearby story bench exposes the audience tale")
+	check("audience" in Session.SEQUENCES, "the retained session allowlist admits the audience tale")
 	await frames(6)
 	check(chapter.model.snapshot() == before.snapshot, "catalogue selection time changes no Home authority")
 	entry.close_catalogue()
@@ -115,6 +118,28 @@ func _run() -> void:
 	removed.free()
 	check(capture() == before, "forced overlay removal restores exact Home")
 	check(not root.disable_3d and not chapter.has_meta(Session.OWNER_META), "forced cleanup releases viewport flags and ownership")
+	# Explicit completed-choice fixture: this checks the actual audience session's
+	# completed-return lifecycle only. Native admission and travelled completion
+	# remain evidence of test_regency_access.gd, rather than this replay fixture.
+	before = capture()
+	var completion_saves := digest_files()
+	var completed := Session.new()
+	root.add_child(completed)
+	check(completed.start_story(chapter, "audience").is_empty(), "actual audience visit starts through the retained Home session")
+	check(completed.lesson.sequence_id == "audience" and completed.lesson.get_world_3d() != chapter.get_world_3d(),
+		"audience lifecycle fixture uses the actual isolated audience scene")
+	check(not completed.finish(true).is_empty(), "audience visit refuses an unearned completed return")
+	while not completed.lesson.model.complete():
+		var beat: Dictionary = completed.lesson.model.current_beat()
+		check(completed.lesson.model.choose(beat.choices[0].id).is_empty(), "completed-choice lifecycle fixture replays " + str(beat.id))
+	check(completed.lesson.can_complete(), "explicit completed-choice fixture permits testing the return transaction")
+	check(chapter.model.present_sha256() == before.sha and capture().bodies == before.bodies,
+		"completed-choice fixture leaves all actual Home bodies and present identity frozen")
+	check(digest_files() == completion_saves, "audience choices cannot write Home save bytes")
+	check(completed.finish(true).is_empty(), "completed audience return uses the retained session transaction")
+	check(capture() == before, "completed audience return restores exact Home state identities bodies layers and audio")
+	check(digest_files() == completion_saves and digest_files() == saves, "completed audience return preserves all retained Home save bytes")
+	check(not root.disable_3d and not chapter.has_meta(Session.OWNER_META), "completed audience return releases drawing and visit ownership")
 	var last := Session.new()
 	root.add_child(last)
 	check(last.start_story(chapter, "exile").is_empty(), "host teardown fixture starts actual visit")

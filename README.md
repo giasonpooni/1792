@@ -190,6 +190,14 @@ Your personal purse and the household coffers are separate. Contracts pay once.
 [Full walkthrough, rules and save behavior](docs/PLAYABLE_GUIDE.md) ·
 [Household economy](docs/GUJRANWALA.md)
 
+The optional **Family Tales** composition now includes **The Account Beyond the
+Curtain**: an adult clerk addresses Raj Kaur at a screened hearing, checks four
+grain bundles, chooses a grain dispatch or remount inspection, accompanies the
+runner and records the local result. Run `godot --path game
+res://history/punjab_chiefs_home.tscn`, then approach the story bench and press
+**T** after the opening. [Entry and controls](docs/PUNJAB_CHIEFS_INTEGRATION.md) ·
+[Authored scope and implementation](docs/REGENCY_ACCESS_DESIGN.md).
+
 ## Gujranwala now has an evidence-bound setting
 
 The existing missions run within a compressed **56 × 56 metre** test area. The
