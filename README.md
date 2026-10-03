@@ -35,8 +35,7 @@ no industrial admission or machinery-control authority. Scientific or industrial
 reuse requires separately established calibration, uncertainty, repeatability,
 validation and operating envelopes appropriate to that application.
 
-Notations Gaming replaces Cartesian Graphics as the current game development
-name. Existing copyright credits, licensing records and source attribution
+Existing copyright credits, licensing records and source attribution
 retain their recorded identities.
 
 Group names declared 3 October 2026. Notation Systems Inc. remains the declared
